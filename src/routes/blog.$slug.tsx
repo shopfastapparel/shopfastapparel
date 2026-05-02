@@ -140,7 +140,7 @@ function BlogPostPage() {
                 Topics
               </div>
               <div className="flex flex-wrap gap-2">
-                {post.keywords.map((k) => (
+                {post.keywords.map((k: string) => (
                   <span
                     key={k}
                     className="text-xs px-2.5 py-1 rounded-full bg-muted text-foreground/80"
