@@ -16,11 +16,13 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LocationsIndexRouteImport } from './routes/locations.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as ServicesTeamBulkRouteImport } from './routes/services.team-bulk'
 import { Route as ServicesPromotionalProductsRouteImport } from './routes/services.promotional-products'
 import { Route as ServicesCustomTshirtsRouteImport } from './routes/services.custom-tshirts'
 import { Route as ProductHandleRouteImport } from './routes/product.$handle'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
@@ -57,6 +59,11 @@ const LocationsIndexRoute = LocationsIndexRouteImport.update({
   path: '/locations/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesTeamBulkRoute = ServicesTeamBulkRouteImport.update({
   id: '/services/team-bulk',
   path: '/services/team-bulk',
@@ -83,6 +90,11 @@ const LocationsSlugRoute = LocationsSlugRouteImport.update({
   path: '/locations/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -91,11 +103,13 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/quote': typeof QuoteRoute
   '/shop': typeof ShopRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
   '/services/custom-tshirts': typeof ServicesCustomTshirtsRoute
   '/services/promotional-products': typeof ServicesPromotionalProductsRoute
   '/services/team-bulk': typeof ServicesTeamBulkRoute
+  '/blog/': typeof BlogIndexRoute
   '/locations/': typeof LocationsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -105,11 +119,13 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/quote': typeof QuoteRoute
   '/shop': typeof ShopRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
   '/services/custom-tshirts': typeof ServicesCustomTshirtsRoute
   '/services/promotional-products': typeof ServicesPromotionalProductsRoute
   '/services/team-bulk': typeof ServicesTeamBulkRoute
+  '/blog': typeof BlogIndexRoute
   '/locations': typeof LocationsIndexRoute
 }
 export interface FileRoutesById {
@@ -120,11 +136,13 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/quote': typeof QuoteRoute
   '/shop': typeof ShopRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
   '/services/custom-tshirts': typeof ServicesCustomTshirtsRoute
   '/services/promotional-products': typeof ServicesPromotionalProductsRoute
   '/services/team-bulk': typeof ServicesTeamBulkRoute
+  '/blog/': typeof BlogIndexRoute
   '/locations/': typeof LocationsIndexRoute
 }
 export interface FileRouteTypes {
@@ -136,11 +154,13 @@ export interface FileRouteTypes {
     | '/faq'
     | '/quote'
     | '/shop'
+    | '/blog/$slug'
     | '/locations/$slug'
     | '/product/$handle'
     | '/services/custom-tshirts'
     | '/services/promotional-products'
     | '/services/team-bulk'
+    | '/blog/'
     | '/locations/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -150,11 +170,13 @@ export interface FileRouteTypes {
     | '/faq'
     | '/quote'
     | '/shop'
+    | '/blog/$slug'
     | '/locations/$slug'
     | '/product/$handle'
     | '/services/custom-tshirts'
     | '/services/promotional-products'
     | '/services/team-bulk'
+    | '/blog'
     | '/locations'
   id:
     | '__root__'
@@ -164,11 +186,13 @@ export interface FileRouteTypes {
     | '/faq'
     | '/quote'
     | '/shop'
+    | '/blog/$slug'
     | '/locations/$slug'
     | '/product/$handle'
     | '/services/custom-tshirts'
     | '/services/promotional-products'
     | '/services/team-bulk'
+    | '/blog/'
     | '/locations/'
   fileRoutesById: FileRoutesById
 }
@@ -179,11 +203,13 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   QuoteRoute: typeof QuoteRoute
   ShopRoute: typeof ShopRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   ProductHandleRoute: typeof ProductHandleRoute
   ServicesCustomTshirtsRoute: typeof ServicesCustomTshirtsRoute
   ServicesPromotionalProductsRoute: typeof ServicesPromotionalProductsRoute
   ServicesTeamBulkRoute: typeof ServicesTeamBulkRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   LocationsIndexRoute: typeof LocationsIndexRoute
 }
 
@@ -238,6 +264,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocationsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services/team-bulk': {
       id: '/services/team-bulk'
       path: '/services/team-bulk'
@@ -273,6 +306,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocationsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -283,11 +323,13 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   QuoteRoute: QuoteRoute,
   ShopRoute: ShopRoute,
+  BlogSlugRoute: BlogSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   ProductHandleRoute: ProductHandleRoute,
   ServicesCustomTshirtsRoute: ServicesCustomTshirtsRoute,
   ServicesPromotionalProductsRoute: ServicesPromotionalProductsRoute,
   ServicesTeamBulkRoute: ServicesTeamBulkRoute,
+  BlogIndexRoute: BlogIndexRoute,
   LocationsIndexRoute: LocationsIndexRoute,
 }
 export const routeTree = rootRouteImport

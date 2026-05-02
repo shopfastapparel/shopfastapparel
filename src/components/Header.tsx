@@ -12,6 +12,7 @@ const NAV = [
   { label: "Promo Products", to: "/services/promotional-products" as const },
   { label: "Shop", to: "/shop" as const },
   { label: "Locations", to: "/locations" as const },
+  { label: "Blog", to: "/blog" as const },
   { label: "FAQ", to: "/faq" as const },
 ];
 
