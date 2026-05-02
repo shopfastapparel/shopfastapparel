@@ -9,38 +9,221 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ShopRouteImport } from './routes/shop'
+import { Route as QuoteRouteImport } from './routes/quote'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LocationsIndexRouteImport } from './routes/locations.index'
+import { Route as ServicesTeamBulkRouteImport } from './routes/services.team-bulk'
+import { Route as ServicesPromotionalProductsRouteImport } from './routes/services.promotional-products'
+import { Route as ServicesCustomTshirtsRouteImport } from './routes/services.custom-tshirts'
+import { Route as ProductHandleRouteImport } from './routes/product.$handle'
+import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuoteRoute = QuoteRouteImport.update({
+  id: '/quote',
+  path: '/quote',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LocationsIndexRoute = LocationsIndexRouteImport.update({
+  id: '/locations/',
+  path: '/locations/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesTeamBulkRoute = ServicesTeamBulkRouteImport.update({
+  id: '/services/team-bulk',
+  path: '/services/team-bulk',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesPromotionalProductsRoute =
+  ServicesPromotionalProductsRouteImport.update({
+    id: '/services/promotional-products',
+    path: '/services/promotional-products',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ServicesCustomTshirtsRoute = ServicesCustomTshirtsRouteImport.update({
+  id: '/services/custom-tshirts',
+  path: '/services/custom-tshirts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductHandleRoute = ProductHandleRouteImport.update({
+  id: '/product/$handle',
+  path: '/product/$handle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocationsSlugRoute = LocationsSlugRouteImport.update({
+  id: '/locations/$slug',
+  path: '/locations/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/quote': typeof QuoteRoute
+  '/shop': typeof ShopRoute
+  '/locations/$slug': typeof LocationsSlugRoute
+  '/product/$handle': typeof ProductHandleRoute
+  '/services/custom-tshirts': typeof ServicesCustomTshirtsRoute
+  '/services/promotional-products': typeof ServicesPromotionalProductsRoute
+  '/services/team-bulk': typeof ServicesTeamBulkRoute
+  '/locations/': typeof LocationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/quote': typeof QuoteRoute
+  '/shop': typeof ShopRoute
+  '/locations/$slug': typeof LocationsSlugRoute
+  '/product/$handle': typeof ProductHandleRoute
+  '/services/custom-tshirts': typeof ServicesCustomTshirtsRoute
+  '/services/promotional-products': typeof ServicesPromotionalProductsRoute
+  '/services/team-bulk': typeof ServicesTeamBulkRoute
+  '/locations': typeof LocationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/quote': typeof QuoteRoute
+  '/shop': typeof ShopRoute
+  '/locations/$slug': typeof LocationsSlugRoute
+  '/product/$handle': typeof ProductHandleRoute
+  '/services/custom-tshirts': typeof ServicesCustomTshirtsRoute
+  '/services/promotional-products': typeof ServicesPromotionalProductsRoute
+  '/services/team-bulk': typeof ServicesTeamBulkRoute
+  '/locations/': typeof LocationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/faq'
+    | '/quote'
+    | '/shop'
+    | '/locations/$slug'
+    | '/product/$handle'
+    | '/services/custom-tshirts'
+    | '/services/promotional-products'
+    | '/services/team-bulk'
+    | '/locations/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/faq'
+    | '/quote'
+    | '/shop'
+    | '/locations/$slug'
+    | '/product/$handle'
+    | '/services/custom-tshirts'
+    | '/services/promotional-products'
+    | '/services/team-bulk'
+    | '/locations'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/faq'
+    | '/quote'
+    | '/shop'
+    | '/locations/$slug'
+    | '/product/$handle'
+    | '/services/custom-tshirts'
+    | '/services/promotional-products'
+    | '/services/team-bulk'
+    | '/locations/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
+  FaqRoute: typeof FaqRoute
+  QuoteRoute: typeof QuoteRoute
+  ShopRoute: typeof ShopRoute
+  LocationsSlugRoute: typeof LocationsSlugRoute
+  ProductHandleRoute: typeof ProductHandleRoute
+  ServicesCustomTshirtsRoute: typeof ServicesCustomTshirtsRoute
+  ServicesPromotionalProductsRoute: typeof ServicesPromotionalProductsRoute
+  ServicesTeamBulkRoute: typeof ServicesTeamBulkRoute
+  LocationsIndexRoute: typeof LocationsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quote': {
+      id: '/quote'
+      path: '/quote'
+      fullPath: '/quote'
+      preLoaderRoute: typeof QuoteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,21 +231,65 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/locations/': {
+      id: '/locations/'
+      path: '/locations'
+      fullPath: '/locations/'
+      preLoaderRoute: typeof LocationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/team-bulk': {
+      id: '/services/team-bulk'
+      path: '/services/team-bulk'
+      fullPath: '/services/team-bulk'
+      preLoaderRoute: typeof ServicesTeamBulkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/promotional-products': {
+      id: '/services/promotional-products'
+      path: '/services/promotional-products'
+      fullPath: '/services/promotional-products'
+      preLoaderRoute: typeof ServicesPromotionalProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/custom-tshirts': {
+      id: '/services/custom-tshirts'
+      path: '/services/custom-tshirts'
+      fullPath: '/services/custom-tshirts'
+      preLoaderRoute: typeof ServicesCustomTshirtsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/product/$handle': {
+      id: '/product/$handle'
+      path: '/product/$handle'
+      fullPath: '/product/$handle'
+      preLoaderRoute: typeof ProductHandleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/locations/$slug': {
+      id: '/locations/$slug'
+      path: '/locations/$slug'
+      fullPath: '/locations/$slug'
+      preLoaderRoute: typeof LocationsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
+  FaqRoute: FaqRoute,
+  QuoteRoute: QuoteRoute,
+  ShopRoute: ShopRoute,
+  LocationsSlugRoute: LocationsSlugRoute,
+  ProductHandleRoute: ProductHandleRoute,
+  ServicesCustomTshirtsRoute: ServicesCustomTshirtsRoute,
+  ServicesPromotionalProductsRoute: ServicesPromotionalProductsRoute,
+  ServicesTeamBulkRoute: ServicesTeamBulkRoute,
+  LocationsIndexRoute: LocationsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
