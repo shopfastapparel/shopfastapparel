@@ -1,11 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
-import { LOCATIONS, getLocation, PRIMARY_PHONE } from "@/lib/locations";
+import { LOCATIONS, getLocation, PRIMARY_PHONE, type LocationInfo } from "@/lib/locations";
 import { CheckCircle2, MapPin, Phone, Clock, Truck } from "lucide-react";
 
 export const Route = createFileRoute("/locations/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): { loc: LocationInfo } => {
     const loc = getLocation(params.slug);
     if (!loc) throw notFound();
     return { loc };
