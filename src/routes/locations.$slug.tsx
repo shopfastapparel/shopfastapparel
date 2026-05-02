@@ -69,7 +69,7 @@ export const Route = createFileRoute("/locations/$slug")({
 });
 
 function LocationPage() {
-  const { loc } = Route.useLoaderData();
+  const { loc } = Route.useLoaderData() as { loc: LocationInfo };
   return (
     <SiteLayout>
       <section className="bg-hero border-b">
