@@ -21,7 +21,6 @@ import {
   Users,
   Zap,
   Gift,
-  Sparkles,
 } from "lucide-react";
 import { LOCATIONS, PRIMARY_EMAIL, PRIMARY_PHONE } from "@/lib/locations";
 
