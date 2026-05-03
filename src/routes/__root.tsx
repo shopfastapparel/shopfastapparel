@@ -30,18 +30,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Fast Apparel — Custom T-Shirt Printing in Atlanta, GA" },
+      { title: "Fast Apparel — DTF Custom T-Shirt Printing in Lawrenceville, GA" },
       {
         name: "description",
         content:
-          "Atlanta's fastest custom t-shirt printing shop. DTF, screen printing & embroidery for teams, businesses, and events. Free mockups, no minimums, fast turnaround.",
+          "Lawrenceville's fastest DTF custom t-shirt printer. Full-color DTF prints for teams, businesses, and events. Free mockups, no minimums, free shipping on bulk orders.",
       },
       { name: "author", content: "Fast Apparel LLC" },
-      { property: "og:title", content: "Fast Apparel — Custom T-Shirt Printing in Atlanta" },
+      { property: "og:title", content: "Fast Apparel — DTF Custom T-Shirt Printing in Lawrenceville" },
       {
         property: "og:description",
         content:
-          "Custom apparel and promotional products done fast. Serving Atlanta, Marietta, Alpharetta, Sandy Springs, Decatur & Roswell.",
+          "DTF custom apparel and promotional products done fast. Serving Lawrenceville, Atlanta, Marietta, Alpharetta, Sandy Springs, Decatur & Roswell.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

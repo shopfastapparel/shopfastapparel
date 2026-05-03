@@ -42,9 +42,9 @@ function AboutPage() {
           to fix it.
         </p>
         <p className="text-lg leading-relaxed mt-5">
-          Today we serve hundreds of Atlanta businesses, schools, sports teams, churches, and
-          event organizers across the metro area. From DTF and screen printing to embroidery and
-          full-service promotional products, we do it all under one roof — fast.
+          Today we serve hundreds of metro Atlanta businesses, schools, sports teams, churches, and
+          event organizers from our Lawrenceville shop. We specialize in full-color DTF custom
+          printing and promotional products — done fast, under one roof.
         </p>
         <p className="text-lg leading-relaxed mt-5">
           Whether you need one shirt or ten thousand, you'll get the same things every time: a free

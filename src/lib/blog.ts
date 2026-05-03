@@ -16,50 +16,42 @@ export interface BlogPost {
 export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "custom-t-shirt-printing-atlanta-guide",
-    title: "Custom T-Shirt Printing in Atlanta: The 2026 Guide for Local Businesses",
+    title: "Custom DTF T-Shirt Printing in Atlanta: The 2026 Guide for Local Businesses",
     description:
-      "Everything Atlanta businesses, schools, and event organizers need to know about ordering custom t-shirts locally — pricing, turnaround, and printing methods.",
+      "Everything Atlanta businesses, schools, and event organizers need to know about ordering custom DTF t-shirts locally — pricing, turnaround, and what to expect.",
     category: "Local Guides",
     city: "Atlanta",
-    readMinutes: 7,
+    readMinutes: 6,
     publishedAt: "2026-04-22",
     author: "Fast Apparel Team",
     cover: { gradient: "from-cyan-brand to-magenta-brand", emoji: "🍑" },
     keywords: [
       "custom t-shirt printing Atlanta",
-      "Atlanta screen printing",
       "DTF printing Atlanta",
       "Atlanta custom shirts",
+      "Lawrenceville DTF printing",
     ],
     body: `## Why local matters in Atlanta
 
-When you order custom t-shirts from a local Atlanta print shop, you cut shipping time, you can pick up same-week, and you get to approve real mockups before anything hits a press. National sites mean 2-week waits and zero accountability when a logo comes back the wrong color.
+When you order custom DTF t-shirts from a local Lawrenceville-based print shop, you cut shipping time, you can pick up same-week, and you get to approve real mockups before anything hits a press. National sites mean 2-week waits and zero accountability when a logo comes back the wrong color.
 
-## What printing method should you choose?
+## Why we DTF-only
 
-### DTF (Direct-to-Film)
-Best for small-batch and full-color art. No minimums, vibrant colors, and great for one-off team and event tees across Midtown, Buckhead, and Old Fourth Ward.
-
-### Screen Printing
-Most cost-effective at 48+ shirts. The classic choice for Atlanta school spirit shirts, large team orders, and 5K event tees.
-
-### Embroidery
-For polos, hats, and corporate uniforms. Premium feel for Buckhead offices and Midtown agencies.
+DTF (direct-to-film) lets us print full-color, photo-quality designs on any color or fabric — with **no minimums and no setup fees**. That means small batches, complex art, and rush jobs all stay affordable, whether you need one shirt or a thousand.
 
 ## Typical Atlanta turnaround
 
 - **DTF small batch:** 3–5 business days
-- **Screen printing (48+):** 5–8 business days
-- **Embroidery:** 7–10 business days
-- **Rush:** Same-week available inside the perimeter
+- **Bulk DTF orders (100+):** 5–8 business days
+- **Rush:** Same-week available across metro Atlanta
 
-## How much do custom t-shirts cost in Atlanta?
+## How much do custom DTF t-shirts cost?
 
-Pricing depends on quantity, garment, and print locations. As a rough guide:
+Pricing depends on quantity, garment, and print size. As a rough guide:
 
-- 24 shirts, 1-color print: ~$11–$14 each
-- 48 shirts, full-color DTF: ~$13–$16 each
-- 100+ shirts, screen print: $9–$12 each
+- 1–23 shirts: ~$15–$22 each
+- 24–47 shirts: ~$13–$16 each
+- 100+ shirts: $9–$12 each (free shipping on bulk orders)
 
 Get a free, exact quote with mockup in 24 hours.`,
   },
@@ -67,7 +59,7 @@ Get a free, exact quote with mockup in 24 hours.`,
     slug: "marietta-team-uniforms-bulk-printing",
     title: "Marietta Team Uniforms: How to Order Bulk Custom Apparel for Cobb County Sports",
     description:
-      "Coaches and team parents in Marietta — here's how to plan, design, and order bulk custom uniforms without missing your season opener.",
+      "Coaches and team parents in Marietta — here's how to plan, design, and order bulk custom DTF uniforms without missing your season opener.",
     category: "Team & Bulk",
     city: "Marietta",
     readMinutes: 6,
@@ -93,17 +85,17 @@ Marietta youth sports programs — East Cobb baseball, West Cobb soccer, Kennesa
 
 ## Bulk pricing for Marietta teams
 
-Order 24+ jerseys and unit pricing drops sharply. Add coach polos and parent fan tees in the same order to maximize savings.
+Order 24+ jerseys and unit pricing drops sharply. Bulk orders ship free. Add coach polos and parent fan tees in the same order to maximize savings.
 
-## Local Cobb County delivery
+## Shipped to your door
 
-We deliver direct to Marietta, Kennesaw, Smyrna, and Powder Springs — no driving across town to pick up boxes.`,
+We ship direct to Marietta, Kennesaw, Smyrna, and Powder Springs — bulk orders ship free.`,
   },
   {
     slug: "alpharetta-corporate-branded-apparel",
-    title: "Alpharetta Corporate Branded Apparel: Premium Merch for North Fulton Offices",
+    title: "Alpharetta Corporate Branded Apparel: Premium DTF Merch for North Fulton Offices",
     description:
-      "From tech park startups to Avalon retail brands, here's how Alpharetta companies are using branded apparel to stand out.",
+      "From tech park startups to Avalon retail brands, here's how Alpharetta companies are using custom DTF apparel to stand out.",
     category: "Custom T-Shirts",
     city: "Alpharetta",
     readMinutes: 5,
@@ -114,7 +106,7 @@ We deliver direct to Marietta, Kennesaw, Smyrna, and Powder Springs — no drivi
       "Alpharetta corporate apparel",
       "branded shirts Alpharetta",
       "company merch Alpharetta",
-      "North Fulton embroidery",
+      "North Fulton DTF printing",
     ],
     body: `## Why Alpharetta companies are upgrading their merch
 
@@ -122,14 +114,14 @@ Generic giveaway shirts are out. Alpharetta tech and corporate teams want **reta
 
 ## What works for corporate orders
 
-- Embroidered polos for client meetings
 - Premium tri-blend tees for company swag drops
-- Quarter-zips for off-sites
+- Full-color DTF logos on dark or light shirts
 - Branded hats for trade shows
+- Event tees with custom names and roles
 
-## Delivered to your Alpharetta office
+## Shipped to your Alpharetta office
 
-We deliver directly to offices in Avalon, Halcyon, Windward, and the GA-400 tech corridor.`,
+Bulk orders ship free to offices in Avalon, Halcyon, Windward, and the GA-400 tech corridor.`,
   },
   {
     slug: "promotional-products-vs-custom-shirts",
@@ -164,7 +156,7 @@ Cheap pens that break, stress balls that get tossed, and anything with a logo so
   },
   {
     slug: "decatur-event-tees-no-minimum",
-    title: "Decatur Event Tees: Why No-Minimum Orders Changed the Game",
+    title: "Decatur Event Tees: Why No-Minimum DTF Orders Changed the Game",
     description:
       "From Oakhurst block parties to Emory student orgs, no-minimum DTF printing makes small custom orders affordable.",
     category: "Local Guides",
@@ -181,7 +173,7 @@ Cheap pens that break, stress balls that get tossed, and anything with a logo so
     ],
     body: `## Small orders, big quality
 
-Decatur is full of small groups — book clubs, neighborhood crews, student orgs near Emory — that just need 5–15 shirts. Old-school screen printing required 24+. **DTF changed that.**
+Decatur is full of small groups — book clubs, neighborhood crews, student orgs near Emory — that just need 5–15 shirts. Old-school methods required 24+ minimums. **DTF changed that.**
 
 ## How it works
 
@@ -189,47 +181,48 @@ You send us the art. We print it onto film, heat-press it onto your chosen garme
 
 ## Local Decatur pickup
 
-Pick up at our shop or schedule local delivery to Oakhurst, Kirkwood, or Avondale Estates.`,
+Pick up at our Lawrenceville shop or have us ship straight to Oakhurst, Kirkwood, or Avondale Estates.`,
   },
   {
-    slug: "screen-printing-vs-dtf-vs-embroidery",
-    title: "Screen Printing vs. DTF vs. Embroidery: Which Is Right for Your Order?",
+    slug: "why-dtf-is-the-best-custom-shirt-method",
+    title: "Why DTF Is the Best Custom T-Shirt Printing Method in 2026",
     description:
-      "A clear comparison of the three most popular custom apparel methods — pricing, durability, and best use cases.",
+      "DTF (direct-to-film) beats screen printing and other older methods for most custom apparel orders. Here's why we print DTF-only.",
     category: "Tips & Trends",
-    readMinutes: 8,
+    readMinutes: 6,
     publishedAt: "2026-03-15",
     author: "Fast Apparel Team",
     cover: { gradient: "from-cyan-brand to-ink", emoji: "🎨" },
     keywords: [
-      "screen printing vs DTF",
-      "DTF vs embroidery",
+      "DTF printing",
+      "best custom shirt method",
+      "DTF vs screen printing",
       "custom apparel methods",
-      "t-shirt printing comparison",
     ],
-    body: `## Quick comparison
+    body: `## What is DTF?
 
-### Screen Printing
-- **Best for:** 48+ shirts, simple 1–4 color designs
-- **Cost:** Lowest per-unit at scale
-- **Durability:** Excellent — outlasts most garments
+DTF (direct-to-film) prints your full-color design onto a special transfer film, which is then heat-pressed onto the garment. The result: vibrant, photo-quality prints on **any color** and **any fabric** — cotton, poly, blends, even nylon.
 
-### DTF (Direct-to-Film)
-- **Best for:** Small batches, full-color/photo art
-- **Cost:** Flat rate, no setup fees
-- **Durability:** Very good — 50+ washes when applied right
+## Why we DTF-only
 
-### Embroidery
-- **Best for:** Polos, hats, jackets, premium feel
-- **Cost:** Highest per-unit but feels expensive (in a good way)
-- **Durability:** Best of all three — thread doesn't fade
+- **No minimums.** One shirt costs the same per-piece as 100.
+- **No setup fees.** No screens to burn, no plates to make.
+- **Full color, every time.** Photo-realistic art with no extra charges per color.
+- **Works on anything.** Light shirts, dark shirts, cotton, poly, blends.
+- **Soft hand-feel.** Modern DTF films sit lighter than older transfers.
+- **Built to last.** 50+ washes when cared for properly.
 
-## How to decide
+## When DTF wins
 
-- Less than 24 pieces? **DTF.**
-- Big team order, 1–3 colors? **Screen print.**
-- Hats, polos, corporate? **Embroidery.**
-- Photo-realistic art on dark shirts? **DTF.**`,
+- Small batch orders (1–47 shirts)
+- Full-color or photo-realistic art
+- Mixed garment colors in a single order
+- Rush deadlines
+- Bulk orders that still want full color
+
+## How to order
+
+Send us your art and quantity. We'll send back a free mockup within 24 hours and your finished order within the week.`,
   },
 ];
 
