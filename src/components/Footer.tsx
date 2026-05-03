@@ -11,8 +11,8 @@ export function Footer() {
             <Logo className="text-background [&_*]:text-background" />
           </div>
           <p className="mt-4 text-sm text-background/70 leading-relaxed">
-            Custom t-shirt printing, embroidery, and promotional products serving Atlanta and the
-            entire metro area.
+            Custom t-shirt printing, embroidery, and promotional products based in Lawrenceville, GA
+            — serving Gwinnett County and the entire metro Atlanta area.
           </p>
           <div className="mt-4 text-sm space-y-1">
             <a href={`tel:${PRIMARY_PHONE}`} className="block hover:text-yellow-brand">
