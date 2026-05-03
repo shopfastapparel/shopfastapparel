@@ -11,8 +11,8 @@ export function Footer() {
             <Logo className="text-background [&_*]:text-background" />
           </div>
           <p className="mt-4 text-sm text-background/70 leading-relaxed">
-            Custom t-shirt printing, embroidery, and promotional products serving Atlanta and the
-            entire metro area.
+            Custom t-shirt printing, embroidery, and promotional products based in Lawrenceville, GA
+            — serving Gwinnett County and the entire metro Atlanta area.
           </p>
           <div className="mt-4 text-sm space-y-1">
             <a href={`tel:${PRIMARY_PHONE}`} className="block hover:text-yellow-brand">
@@ -107,7 +107,7 @@ export function Footer() {
       <div className="border-t border-background/10">
         <div className="mx-auto max-w-7xl px-4 py-5 text-xs text-background/60 flex flex-wrap justify-between gap-2">
           <span>© {new Date().getFullYear()} Fast Apparel LLC. All rights reserved.</span>
-          <span>Atlanta, GA · Custom Apparel & Promotional Products</span>
+          <span>Lawrenceville, GA · Serving Metro Atlanta · Custom Apparel & Promo</span>
         </div>
       </div>
     </footer>

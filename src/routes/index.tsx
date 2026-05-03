@@ -21,18 +21,18 @@ export const Route = createFileRoute("/")({
     meta: [
       {
         title:
-          "Custom T-Shirt Printing in Atlanta, GA | Fast Turnaround DTF & Screen Print | Fast Apparel",
+          "Custom T-Shirt Printing in Lawrenceville, GA | Fast Turnaround DTF & Screen Print | Fast Apparel",
       },
       {
         name: "description",
         content:
-          "Atlanta's #1 custom t-shirt printer. DTF, screen printing, embroidery & promotional products with same-week turnaround. Free mockups, no minimums, serving Atlanta, Marietta, Alpharetta & all of metro GA.",
+          "Lawrenceville's #1 custom t-shirt printer. DTF, screen printing, embroidery & promotional products with same-week turnaround. Free mockups, no minimums, serving Lawrenceville, Gwinnett County, Atlanta & all of metro GA.",
       },
-      { property: "og:title", content: "Custom T-Shirt Printing in Atlanta | Fast Apparel" },
+      { property: "og:title", content: "Custom T-Shirt Printing in Lawrenceville | Fast Apparel" },
       {
         property: "og:description",
         content:
-          "Custom apparel done fast. Serving Atlanta and the metro area with DTF, screen printing, and embroidery.",
+          "Custom apparel done fast. Based in Lawrenceville, GA — serving Gwinnett, Atlanta and the entire metro area with DTF, screen printing, and embroidery.",
       },
     ],
     scripts: [
@@ -47,13 +47,13 @@ export const Route = createFileRoute("/")({
           priceRange: "$$",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Atlanta",
+            addressLocality: "Lawrenceville",
             addressRegion: "GA",
             addressCountry: "US",
           },
           areaServed: LOCATIONS.map((l) => `${l.city}, ${l.state}`),
           description:
-            "Custom t-shirt printing, embroidery, and promotional products in Atlanta and metro Georgia.",
+            "Custom t-shirt printing, embroidery, and promotional products in Lawrenceville, GA and the greater metro Atlanta area.",
         }),
       },
     ],
@@ -72,7 +72,7 @@ function HomePage() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ink text-background text-xs font-medium mb-5">
               <span className="h-1.5 w-1.5 rounded-full bg-yellow-brand" />
-              ATLANTA, GA · CUSTOM PRINT SHOP
+              LAWRENCEVILLE, GA · CUSTOM PRINT SHOP
             </div>
             <h1 className="font-display text-5xl md:text-7xl leading-[0.95] tracking-tight">
               Custom T-Shirt
@@ -81,8 +81,9 @@ function HomePage() {
               <span className="text-cmyk">done fast.</span>
             </h1>
             <p className="mt-6 text-lg text-foreground/80 max-w-xl">
-              Atlanta's go-to custom apparel shop for DTF, screen printing, embroidery, and
-              promotional products. Free mockups. No minimums. Same-week turnaround.
+              Lawrenceville's go-to custom apparel shop for DTF, screen printing, embroidery, and
+              promotional products. Serving Gwinnett County and all of metro Atlanta. Free mockups.
+              No minimums. Same-week turnaround.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="shadow-pop border-2 border-ink">

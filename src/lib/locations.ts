@@ -11,6 +11,21 @@ export interface LocationInfo {
 
 export const LOCATIONS: LocationInfo[] = [
   {
+    slug: "lawrenceville",
+    city: "Lawrenceville",
+    state: "GA",
+    region: "Gwinnett County",
+    zipPrefix: "300",
+    blurb:
+      "Our home base. Lawrenceville's premier custom t-shirt printing shop — DTF, screen printing, and embroidery with same-day pickup for Gwinnett County.",
+    neighborhoods: ["Downtown Lawrenceville", "Sugarloaf", "Collins Hill", "Five Forks", "Grayson"],
+    highlights: [
+      "Local Lawrenceville shop — walk-ins welcome",
+      "Same-day pickup for Gwinnett County orders",
+      "Trusted by Gwinnett schools, churches, and small businesses",
+    ],
+  },
+  {
     slug: "atlanta",
     city: "Atlanta",
     state: "GA",

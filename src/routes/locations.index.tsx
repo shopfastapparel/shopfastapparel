@@ -29,10 +29,11 @@ function LocationsIndex() {
       <section className="border-b bg-hero">
         <div className="mx-auto max-w-7xl px-4 py-16">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-cyan-brand">Locations</p>
-          <h1 className="mt-2 font-display text-5xl md:text-6xl">Serving metro Atlanta</h1>
+          <h1 className="mt-2 font-display text-5xl md:text-6xl">Based in Lawrenceville. Serving metro Atlanta.</h1>
           <p className="mt-4 max-w-2xl text-muted-foreground">
-            From Buckhead to Alpharetta, from Decatur to Marietta — Fast Apparel delivers premium
-            custom apparel printing across the entire metro area with same-week turnaround.
+            Our shop is headquartered in Lawrenceville, GA — and we deliver premium custom apparel
+            printing across Gwinnett County and the entire metro Atlanta area, with same-week
+            turnaround.
           </p>
         </div>
       </section>
