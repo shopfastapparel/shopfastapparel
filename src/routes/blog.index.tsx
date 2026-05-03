@@ -15,7 +15,7 @@ export const Route = createFileRoute("/blog/")({
       {
         name: "description",
         content:
-          "Tips, local guides, and how-tos for custom t-shirt printing, embroidery, team uniforms, and promotional products in Atlanta and metro Georgia.",
+          "Tips, local guides, and how-tos for custom DTF t-shirt printing, team uniforms, and promotional products in Lawrenceville, Atlanta, and metro Georgia.",
       },
       {
         property: "og:title",
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/blog/")({
       {
         property: "og:description",
         content:
-          "Local guides for Atlanta, Marietta, Alpharetta, Decatur, and more. DTF, screen printing, embroidery, and promo product advice.",
+          "Local guides for Lawrenceville, Atlanta, Marietta, Alpharetta, Decatur, and more. DTF custom printing and promo product advice.",
       },
     ],
     scripts: [
@@ -90,9 +90,9 @@ function BlogIndex() {
             Local guides & printing know-how.
           </h1>
           <p className="mt-4 max-w-2xl text-muted-foreground">
-            Tips for ordering custom apparel in Atlanta, Marietta, Alpharetta, Sandy Springs,
-            Decatur, and Roswell — plus how-tos on screen printing, DTF, embroidery, and promo
-            products.
+            Tips for ordering custom DTF apparel in Lawrenceville, Atlanta, Marietta, Alpharetta,
+            Sandy Springs, Decatur, and Roswell — plus how-tos on DTF printing, bulk orders, and
+            promo products.
           </p>
         </div>
       </section>

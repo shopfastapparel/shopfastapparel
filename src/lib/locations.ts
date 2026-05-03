@@ -50,7 +50,7 @@ export const LOCATIONS: LocationInfo[] = [
       "Custom apparel printing for Marietta and Cobb County. Bulk team uniforms, business merch, and event shirts done fast.",
     neighborhoods: ["East Cobb", "West Cobb", "Kennesaw", "Smyrna", "Powder Springs"],
     highlights: [
-      "Local Cobb County delivery",
+      "Free shipping on bulk Cobb County orders",
       "Custom uniforms for Marietta schools and youth sports",
       "Business merch for Cobb-area startups",
     ],
@@ -82,7 +82,7 @@ export const LOCATIONS: LocationInfo[] = [
     highlights: [
       "Same-week corporate orders",
       "Free mockups before you commit",
-      "Direct delivery to Perimeter offices",
+      "Free shipping on bulk orders to Perimeter offices",
     ],
   },
   {
@@ -92,11 +92,11 @@ export const LOCATIONS: LocationInfo[] = [
     region: "DeKalb County",
     zipPrefix: "300",
     blurb:
-      "Decatur's local custom apparel shop. Small-batch DTF, event tees, and embroidered hats — no minimums.",
+      "Decatur's local custom apparel shop. Small-batch DTF and event tees — no minimums.",
     neighborhoods: ["Oakhurst", "Kirkwood", "Avondale Estates", "Druid Hills", "Emory area"],
     highlights: [
       "No-minimum custom shirt orders",
-      "Quick local pickup",
+      "Quick local pickup at our Lawrenceville shop",
       "Perfect for Decatur events and festivals",
     ],
   },
