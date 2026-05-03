@@ -21,18 +21,18 @@ export const Route = createFileRoute("/")({
     meta: [
       {
         title:
-          "Custom T-Shirt Printing in Lawrenceville, GA | Fast Turnaround DTF & Screen Print | Fast Apparel",
+          "Custom DTF T-Shirt Printing in Lawrenceville, GA | Fast Turnaround | Fast Apparel",
       },
       {
         name: "description",
         content:
-          "Lawrenceville's #1 custom t-shirt printer. DTF, screen printing, embroidery & promotional products with same-week turnaround. Free mockups, no minimums, serving Lawrenceville, Gwinnett County, Atlanta & all of metro GA.",
+          "Lawrenceville's #1 DTF custom t-shirt printer. Full-color DTF prints & promotional products with same-week turnaround. Free mockups, no minimums, free shipping on bulk orders. Serving Lawrenceville, Gwinnett County, Atlanta & all of metro GA.",
       },
-      { property: "og:title", content: "Custom T-Shirt Printing in Lawrenceville | Fast Apparel" },
+      { property: "og:title", content: "Custom DTF T-Shirt Printing in Lawrenceville | Fast Apparel" },
       {
         property: "og:description",
         content:
-          "Custom apparel done fast. Based in Lawrenceville, GA — serving Gwinnett, Atlanta and the entire metro area with DTF, screen printing, and embroidery.",
+          "Custom apparel done fast. Based in Lawrenceville, GA — DTF printing for Gwinnett, Atlanta and the entire metro area.",
       },
     ],
     scripts: [
