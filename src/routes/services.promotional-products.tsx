@@ -33,7 +33,7 @@ export const Route = createFileRoute("/services/promotional-products")({
       features={[
         {
           title: "Hats & Headwear",
-          desc: "Embroidered caps, beanies, snapbacks, and trucker hats for every brand and budget.",
+          desc: "Caps, beanies, snapbacks, and trucker hats branded for every brand and budget.",
         },
         {
           title: "Drinkware",
@@ -46,9 +46,9 @@ export const Route = createFileRoute("/services/promotional-products")({
       ]}
       bullets={[
         "Thousands of promotional products to choose from",
-        "Decoration: embroidery, laser etch, full-color print",
+        "Full-color print, laser etch, and pad-print decoration",
         "Trade show & event-ready packaging",
-        "On-site Atlanta delivery for events",
+        "Free shipping on bulk orders",
         "Real samples available before bulk orders",
         "Eco-friendly options available",
       ]}

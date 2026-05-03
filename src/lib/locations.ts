@@ -17,7 +17,7 @@ export const LOCATIONS: LocationInfo[] = [
     region: "Gwinnett County",
     zipPrefix: "300",
     blurb:
-      "Our home base. Lawrenceville's premier custom t-shirt printing shop — DTF, screen printing, and embroidery with same-day pickup for Gwinnett County.",
+      "Our home base. Lawrenceville's premier custom t-shirt printer — full-color DTF and promotional products with same-day pickup for Gwinnett County.",
     neighborhoods: ["Downtown Lawrenceville", "Sugarloaf", "Collins Hill", "Five Forks", "Grayson"],
     highlights: [
       "Local Lawrenceville shop — walk-ins welcome",
@@ -32,11 +32,11 @@ export const LOCATIONS: LocationInfo[] = [
     region: "Metro Atlanta",
     zipPrefix: "303",
     blurb:
-      "Atlanta's go-to custom t-shirt printing shop. DTF, screen printing, and embroidery with the fastest turnaround in the city.",
+      "Atlanta's go-to custom DTF t-shirt printer. Full-color, photo-quality prints with the fastest turnaround in the city.",
     neighborhoods: ["Midtown", "Buckhead", "West Midtown", "Old Fourth Ward", "Inman Park"],
     highlights: [
       "Same-week turnaround inside the perimeter",
-      "Free local pickup for ATL businesses",
+      "Free shipping on bulk ATL orders",
       "Trusted by Atlanta schools, churches, and small businesses",
     ],
   },
@@ -62,12 +62,12 @@ export const LOCATIONS: LocationInfo[] = [
     region: "North Fulton",
     zipPrefix: "300",
     blurb:
-      "Alpharetta's premium custom shirt printer. Corporate-grade DTG, embroidery, and bulk orders for North Fulton businesses.",
+      "Alpharetta's premium custom shirt printer. Full-color DTF and bulk orders for North Fulton businesses.",
     neighborhoods: ["Avalon", "Downtown Alpharetta", "Halcyon", "Crabapple", "Windward"],
     highlights: [
       "Tech park & corporate branded apparel",
       "On-time delivery to Alpharetta offices",
-      "Premium retail-quality printing",
+      "Premium retail-quality DTF printing",
     ],
   },
   {
@@ -107,12 +107,12 @@ export const LOCATIONS: LocationInfo[] = [
     region: "North Fulton",
     zipPrefix: "300",
     blurb:
-      "Roswell custom t-shirt and merch printing. Premium quality with fast turnaround for Roswell schools, teams, and businesses.",
+      "Roswell custom t-shirt and merch printing. Premium DTF quality with fast turnaround for Roswell schools, teams, and businesses.",
     neighborhoods: ["Historic Roswell", "East Roswell", "Crabapple", "Martin's Landing"],
     highlights: [
       "Roswell youth sports uniform specialist",
-      "Local pickup & delivery",
-      "Embroidered polos for Roswell businesses",
+      "Free shipping on bulk orders",
+      "Custom DTF prints for Roswell businesses",
     ],
   },
 ];

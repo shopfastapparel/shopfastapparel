@@ -6,45 +6,45 @@ export const Route = createFileRoute("/services/custom-tshirts")({
     meta: [
       {
         title:
-          "Custom T-Shirt Printing in Atlanta | DTF, Screen Print & DTG | Fast Apparel",
+          "Custom DTF T-Shirt Printing in Lawrenceville & Atlanta | No Minimums | Fast Apparel",
       },
       {
         name: "description",
         content:
-          "Premium custom t-shirt printing in Atlanta. DTF transfers, screen printing, and direct-to-garment with no minimums and same-week turnaround. Free mockups.",
+          "Premium DTF custom t-shirt printing in Lawrenceville, GA & metro Atlanta. Full-color DTF transfers with no minimums and same-week turnaround. Free mockups.",
       },
       {
         property: "og:title",
-        content: "Custom T-Shirt Printing in Atlanta | Fast Apparel",
+        content: "Custom DTF T-Shirt Printing in Lawrenceville & Atlanta | Fast Apparel",
       },
       {
         property: "og:description",
         content:
-          "DTF, screen print & DTG custom t-shirts with no minimums and same-week turnaround.",
+          "Full-color DTF custom t-shirts with no minimums and same-week turnaround.",
       },
     ],
   }),
   component: () => (
     <ServicePage
-      eyebrow="Custom T-Shirt Printing"
+      eyebrow="Custom DTF T-Shirt Printing"
       title={
         <>
-          Custom t-shirt printing in Atlanta — <span className="text-cmyk">no minimums.</span>
+          Custom DTF t-shirt printing — <span className="text-cmyk">no minimums.</span>
         </>
       }
-      intro="From a single one-off design to thousands of bulk shirts, we print on premium Gildan, Bella+Canvas, Next Level, and more. DTF, screen print, and direct-to-garment under one roof."
+      intro="From a single one-off design to thousands of bulk shirts, we DTF print on premium Gildan, Bella+Canvas, Next Level, and more. Full-color, photo-quality prints on any color or fabric."
       features={[
         {
-          title: "DTF Transfers",
-          desc: "Full-color, photo-quality prints on any color or fabric. No minimums. Best for small runs and complex designs.",
+          title: "Full-Color DTF",
+          desc: "Photo-quality, vibrant prints on any color shirt or fabric type. No color limits, no setup fees.",
         },
         {
-          title: "Screen Printing",
-          desc: "The classic. Vibrant ink, ultra-durable. The best value for orders of 24+ shirts.",
+          title: "No Minimums",
+          desc: "Order one shirt or one thousand at the same per-piece price. Perfect for small batches and teams.",
         },
         {
-          title: "DTG Printing",
-          desc: "Direct-to-garment for soft hand-feel and incredible detail on light cotton tees.",
+          title: "Built to Last",
+          desc: "Our DTF prints stay vivid through 50+ washes when cared for properly.",
         },
       ]}
       bullets={[
@@ -52,13 +52,13 @@ export const Route = createFileRoute("/services/custom-tshirts")({
         "Premium blanks: Gildan, Bella+Canvas, Next Level, Comfort Colors",
         "All sizes available — youth to 5XL",
         "Same-week turnaround on most orders",
-        "Free local pickup or fast shipping",
-        "Lowest prices in metro Atlanta — guaranteed",
+        "Free shipping on bulk orders",
+        "Lowest DTF pricing in metro Atlanta — guaranteed",
       ]}
       faqs={[
         {
           q: "What's the minimum order?",
-          a: "There's no minimum for DTF prints — order one shirt or one thousand. Screen printing has a 24-shirt minimum to keep pricing low.",
+          a: "Zero. Order a single shirt or thousands — DTF lets us print at the same per-piece price either way.",
         },
         {
           q: "How fast is your turnaround?",

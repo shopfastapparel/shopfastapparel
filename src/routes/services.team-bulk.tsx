@@ -6,12 +6,12 @@ export const Route = createFileRoute("/services/team-bulk")({
     meta: [
       {
         title:
-          "Team Uniforms & Bulk T-Shirt Orders in Atlanta | Volume Pricing | Fast Apparel",
+          "Team Uniforms & Bulk DTF T-Shirt Orders | Volume Pricing | Fast Apparel",
       },
       {
         name: "description",
         content:
-          "Bulk custom t-shirts and team uniforms for Atlanta schools, sports teams, churches, and corporations. Volume discounts and fast turnaround on orders of 24+.",
+          "Bulk custom DTF t-shirts and team uniforms for Lawrenceville & metro Atlanta schools, sports teams, churches, and corporations. Volume discounts and free shipping on bulk orders.",
       },
       { property: "og:title", content: "Bulk & Team Uniform Printing in Atlanta" },
       {
@@ -29,11 +29,11 @@ export const Route = createFileRoute("/services/team-bulk")({
           Bulk apparel & team uniforms — <span className="text-cmyk">priced to win.</span>
         </>
       }
-      intro="From a 24-shirt school fundraiser to a 10,000-piece corporate run, we make bulk ordering simple. Real-time quotes, dedicated account manager, and the fastest turnaround in metro Atlanta."
+      intro="From a 12-shirt school fundraiser to a 10,000-piece corporate run, we make bulk DTF ordering simple. Real-time quotes, dedicated account manager, free shipping on bulk orders, and the fastest turnaround in metro Atlanta."
       features={[
         {
           title: "Schools & Sports Teams",
-          desc: "Jerseys, practice tees, fan shirts, and spirit wear — with names, numbers, and team logos.",
+          desc: "Jerseys, practice tees, fan shirts, and spirit wear — with names, numbers, and team logos in full-color DTF.",
         },
         {
           title: "Corporate & Brand Merch",
@@ -46,6 +46,7 @@ export const Route = createFileRoute("/services/team-bulk")({
       ]}
       bullets={[
         "Volume pricing — bigger orders = bigger savings",
+        "Free shipping on bulk orders",
         "Names & numbers added at no rush charge",
         "Dedicated bulk-order account manager",
         "Pre-production samples available",
@@ -55,7 +56,7 @@ export const Route = createFileRoute("/services/team-bulk")({
       faqs={[
         {
           q: "Do you offer volume discounts?",
-          a: "Yes. Pricing automatically tiers down at 24, 48, 72, 144, and 288+ pieces.",
+          a: "Yes. Pricing automatically tiers down at 12, 24, 48, 72, 144, and 288+ pieces. Bulk orders also ship free.",
         },
         {
           q: "Can you add names and numbers?",

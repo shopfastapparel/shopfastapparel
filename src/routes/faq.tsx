@@ -8,7 +8,7 @@ const FAQS = [
   },
   {
     q: "Do you have a minimum order?",
-    a: "No minimum on DTF prints — order one shirt or one thousand. Screen printing has a 24-shirt minimum to keep per-piece pricing low.",
+    a: "No minimum on DTF prints — order one shirt or one thousand at the same per-piece price.",
   },
   {
     q: "What apparel brands do you carry?",
@@ -16,7 +16,7 @@ const FAQS = [
   },
   {
     q: "Where are you located and what areas do you serve?",
-    a: "We're based in Atlanta, GA and serve the entire metro area including Marietta, Alpharetta, Sandy Springs, Decatur, Roswell, Kennesaw, and Smyrna. We also ship nationwide.",
+    a: "We're based in Lawrenceville, GA and serve Gwinnett County and the entire metro Atlanta area including Atlanta, Marietta, Alpharetta, Sandy Springs, Decatur, and Roswell. We also ship nationwide.",
   },
   {
     q: "Do you offer free mockups?",
@@ -35,12 +35,16 @@ const FAQS = [
     a: "Yes, for qualified schools, government entities, churches, and established businesses. Ask about it during your quote.",
   },
   {
+    q: "Do you ship orders? Is shipping free?",
+    a: "Yes — we ship nationwide. Bulk orders ship free. Smaller orders are charged actual shipping cost at checkout.",
+  },
+  {
     q: "Can you ship directly to my customers, employees, or event venue?",
     a: "Yes. We offer kitting, individual fulfillment, and direct shipping for distributed teams and events.",
   },
   {
-    q: "What's the difference between DTF, screen printing, and DTG?",
-    a: "DTF (direct-to-film) is best for small runs and full-color designs on any fabric. Screen printing is the most cost-effective for orders of 24+ with simple designs. DTG (direct-to-garment) gives a soft hand-feel and high detail on light cotton tees.",
+    q: "Why DTF instead of screen printing or embroidery?",
+    a: "DTF (direct-to-film) gives full-color, photo-quality prints on any fabric or color with no minimums and no setup fees — making it faster, more flexible, and more affordable than screen printing or embroidery for most orders.",
   },
 ];
 
