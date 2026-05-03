@@ -45,7 +45,7 @@ export const Route = createFileRoute("/quote")({
   component: QuotePage,
 });
 
-type ServiceKey = "custom-tshirts" | "team-bulk" | "embroidery" | "promo" | "other";
+type ServiceKey = "custom-tshirts" | "team-bulk" | "promo" | "other";
 type TurnaroundKey = "rush" | "standard" | "flexible";
 type QuantityKey = "1-23" | "24-47" | "48-99" | "100-249" | "250-499" | "500+";
 
@@ -80,7 +80,7 @@ const SERVICES: {
   {
     key: "custom-tshirts",
     label: "Custom T-Shirts",
-    blurb: "DTF, screen printing, full-color art",
+    blurb: "Full-color DTF prints, no minimums",
     Icon: Shirt,
   },
   {
@@ -88,12 +88,6 @@ const SERVICES: {
     label: "Team / Bulk Order",
     blurb: "Sports, schools, large events",
     Icon: Users,
-  },
-  {
-    key: "embroidery",
-    label: "Embroidery",
-    blurb: "Hats, polos, jackets, premium feel",
-    Icon: Sparkles,
   },
   {
     key: "promo",
@@ -110,10 +104,10 @@ const SERVICES: {
 ];
 
 const QUANTITIES: { key: QuantityKey; label: string; hint: string }[] = [
-  { key: "1-23", label: "1–23", hint: "Small batch / DTF" },
+  { key: "1-23", label: "1–23", hint: "Small batch DTF" },
   { key: "24-47", label: "24–47", hint: "Small team" },
-  { key: "48-99", label: "48–99", hint: "Screen print starts saving" },
-  { key: "100-249", label: "100–249", hint: "Volume pricing" },
+  { key: "48-99", label: "48–99", hint: "Volume pricing kicks in" },
+  { key: "100-249", label: "100–249", hint: "Free shipping on bulk" },
   { key: "250-499", label: "250–499", hint: "Best per-unit value" },
   { key: "500+", label: "500+", hint: "Wholesale tier" },
 ];
