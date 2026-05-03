@@ -53,7 +53,7 @@ export const Route = createFileRoute("/")({
           },
           areaServed: LOCATIONS.map((l) => `${l.city}, ${l.state}`),
           description:
-            "Custom t-shirt printing, embroidery, and promotional products in Lawrenceville, GA and the greater metro Atlanta area.",
+            "DTF custom t-shirt printing and promotional products in Lawrenceville, GA and the greater metro Atlanta area.",
         }),
       },
     ],
@@ -81,9 +81,9 @@ function HomePage() {
               <span className="text-cmyk">done fast.</span>
             </h1>
             <p className="mt-6 text-lg text-foreground/80 max-w-xl">
-              Lawrenceville's go-to custom apparel shop for DTF, screen printing, embroidery, and
-              promotional products. Serving Gwinnett County and all of metro Atlanta. Free mockups.
-              No minimums. Same-week turnaround.
+              Lawrenceville's go-to custom apparel shop for DTF printing and promotional products.
+              Serving Gwinnett County and all of metro Atlanta. Free mockups. No minimums. Same-week
+              turnaround. Free shipping on bulk orders.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="shadow-pop border-2 border-ink">
@@ -103,7 +103,7 @@ function HomePage() {
                 <ShieldCheck className="h-4 w-4 text-cyan-brand" /> 100% satisfaction
               </span>
               <span className="flex items-center gap-1.5">
-                <Truck className="h-4 w-4 text-foreground" /> Free local delivery
+                <Truck className="h-4 w-4 text-foreground" /> Free shipping on bulk orders
               </span>
             </div>
           </div>
@@ -151,8 +151,8 @@ function HomePage() {
           {[
             {
               icon: PaintBucket,
-              title: "Custom T-Shirt Printing",
-              desc: "DTF, screen printing & DTG. Premium quality on Gildan, Bella+Canvas, Next Level and more.",
+              title: "Custom DTF T-Shirt Printing",
+              desc: "Full-color DTF transfers with no minimums. Premium quality on Gildan, Bella+Canvas, Next Level and more.",
               to: "/services/custom-tshirts" as const,
               color: "bg-cyan-brand",
             },
