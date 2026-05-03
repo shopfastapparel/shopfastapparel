@@ -21,18 +21,18 @@ export const Route = createFileRoute("/")({
     meta: [
       {
         title:
-          "Custom T-Shirt Printing in Atlanta, GA | Fast Turnaround DTF & Screen Print | Fast Apparel",
+          "Custom T-Shirt Printing in Lawrenceville, GA | Fast Turnaround DTF & Screen Print | Fast Apparel",
       },
       {
         name: "description",
         content:
-          "Atlanta's #1 custom t-shirt printer. DTF, screen printing, embroidery & promotional products with same-week turnaround. Free mockups, no minimums, serving Atlanta, Marietta, Alpharetta & all of metro GA.",
+          "Lawrenceville's #1 custom t-shirt printer. DTF, screen printing, embroidery & promotional products with same-week turnaround. Free mockups, no minimums, serving Lawrenceville, Gwinnett County, Atlanta & all of metro GA.",
       },
-      { property: "og:title", content: "Custom T-Shirt Printing in Atlanta | Fast Apparel" },
+      { property: "og:title", content: "Custom T-Shirt Printing in Lawrenceville | Fast Apparel" },
       {
         property: "og:description",
         content:
-          "Custom apparel done fast. Serving Atlanta and the metro area with DTF, screen printing, and embroidery.",
+          "Custom apparel done fast. Based in Lawrenceville, GA — serving Gwinnett, Atlanta and the entire metro area with DTF, screen printing, and embroidery.",
       },
     ],
     scripts: [
@@ -47,13 +47,13 @@ export const Route = createFileRoute("/")({
           priceRange: "$$",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Atlanta",
+            addressLocality: "Lawrenceville",
             addressRegion: "GA",
             addressCountry: "US",
           },
           areaServed: LOCATIONS.map((l) => `${l.city}, ${l.state}`),
           description:
-            "Custom t-shirt printing, embroidery, and promotional products in Atlanta and metro Georgia.",
+            "Custom t-shirt printing, embroidery, and promotional products in Lawrenceville, GA and the greater metro Atlanta area.",
         }),
       },
     ],
