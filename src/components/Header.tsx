@@ -32,7 +32,7 @@ export function Header() {
       <div className="bg-ink text-background text-xs">
         <div className="mx-auto max-w-7xl px-4 py-2 flex items-center justify-between gap-4">
           <span className="font-medium tracking-wide">
-            FREE MOCKUPS · FAST ATLANTA TURNAROUND · NO MINIMUMS ON DTF
+            FREE MOCKUPS · LAWRENCEVILLE PICKUP · NO MINIMUMS ON DTF
           </span>
           <a href={`tel:${PRIMARY_PHONE}`} className="hidden sm:inline hover:text-yellow-brand">
             Call {PRIMARY_PHONE}
