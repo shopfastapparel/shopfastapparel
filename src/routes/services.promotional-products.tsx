@@ -11,13 +11,13 @@ export const Route = createFileRoute("/services/promotional-products")({
       {
         name: "description",
         content:
-          "Branded promotional products for Atlanta businesses — hats, drinkware, bags, pens, and giveaways. Perfect for events, marketing, and corporate gifts.",
+          "Branded UV DTF promotional products for Atlanta businesses — hats, drinkware, bags, and giveaways. Vibrant full-color prints for events, marketing, and corporate gifts.",
       },
       { property: "og:title", content: "Promotional Products in Atlanta" },
       {
         property: "og:description",
         content:
-          "Custom branded swag and promotional products for events, marketing, and giveaways.",
+          "Custom UV DTF branded swag and promotional products for events, marketing, and giveaways.",
       },
     ],
   }),
