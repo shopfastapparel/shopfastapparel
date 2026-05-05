@@ -29,37 +29,37 @@ export const Route = createFileRoute("/services/promotional-products")({
           Branded swag that <span className="text-cmyk">actually gets used.</span>
         </>
       }
-      intro="Custom hats, drinkware, bags, tech accessories, and giveaways for trade shows, events, and corporate gifting. Thousands of products, one shop."
+      intro="Custom hats, drinkware, bags, tech accessories, and giveaways decorated with vibrant UV DTF prints. Thousands of products, one shop."
       features={[
         {
           title: "Hats & Headwear",
-          desc: "Caps, beanies, snapbacks, and trucker hats branded for every brand and budget.",
+          desc: "Caps, beanies, snapbacks, and trucker hats branded with full-color UV DTF prints.",
         },
         {
           title: "Drinkware",
-          desc: "Tumblers, water bottles, mugs, and glassware with full-color or laser-etched logos.",
+          desc: "Tumblers, water bottles, mugs, and glassware decorated with photo-quality UV DTF transfers.",
         },
         {
           title: "Bags & Tech",
-          desc: "Tote bags, backpacks, pop sockets, chargers, and giveaway essentials.",
+          desc: "Tote bags, backpacks, pop sockets, chargers, and giveaway essentials — all printed with UV DTF.",
         },
       ]}
       bullets={[
         "Thousands of promotional products to choose from",
-        "Full-color print, laser etch, and pad-print decoration",
-        "Trade show & event-ready packaging",
+        "Full-color UV DTF decoration — vibrant, durable, photo-quality",
+        "No minimums — order one or order a thousand",
         "Free shipping on bulk orders",
         "Real samples available before bulk orders",
-        "Eco-friendly options available",
+        "Eco-friendly product options available",
       ]}
       faqs={[
         {
           q: "Can you handle event deadlines?",
-          a: "Yes. Tell us your event date and we'll commit to it. Rush production is available.",
+          a: "Yes. Tell us your event date and we'll commit to it. Most orders are completed in as little as 7 days, and rush production is available.",
         },
         {
-          q: "Can you ship directly to events or attendees?",
-          a: "Absolutely — we offer direct shipping, kitting, and individual fulfillment for distributed teams.",
+          q: "What is UV DTF?",
+          a: "UV DTF (Direct-to-Film) is a transfer process that prints full-color, photo-quality graphics that adhere to hard surfaces like tumblers, bottles, hats, phone cases, and more — no laser etching or pad printing required.",
         },
       ]}
     />
