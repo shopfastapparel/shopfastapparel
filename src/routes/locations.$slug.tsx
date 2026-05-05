@@ -152,7 +152,7 @@ function LocationPage() {
             <h3 className="font-display text-xl">Local in {loc.city}</h3>
             <ul className="mt-4 space-y-3 text-sm">
               <li className="flex items-start gap-2">
-                <Clock className="h-4 w-4 text-magenta-brand mt-0.5" /> Same-week turnaround
+                <Clock className="h-4 w-4 text-magenta-brand mt-0.5" /> Most orders completed in as little as 7 days turnaround
               </li>
               <li className="flex items-start gap-2">
                 <Truck className="h-4 w-4 text-cyan-brand mt-0.5" /> Free local delivery

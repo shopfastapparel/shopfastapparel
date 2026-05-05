@@ -16,7 +16,7 @@ export const Route = createFileRoute("/locations/")({
       {
         property: "og:description",
         content:
-          "Local custom DTF apparel printing across metro Atlanta. Find your city for same-week turnaround and free shipping on bulk orders.",
+          "Local custom DTF apparel printing across metro Atlanta. Find your city for most orders completed in as little as 7 days and free shipping on bulk orders.",
       },
     ],
   }),

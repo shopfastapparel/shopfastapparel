@@ -122,7 +122,7 @@ const TURNAROUNDS: {
     key: "rush",
     label: "Rush",
     estimate: "3–5 business days",
-    blurb: "Same-week turnaround in metro Atlanta",
+    blurb: "Most orders completed in as little as 7 days turnaround in metro Atlanta",
     Icon: Zap,
   },
   {
