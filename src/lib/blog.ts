@@ -37,7 +37,7 @@ When you order custom DTF t-shirts from a local Lawrenceville-based print shop, 
 
 ## Why we DTF-only
 
-DTF (direct-to-film) lets us print full-color, photo-quality designs on any color or fabric — with **no minimums and no setup fees**. That means small batches, complex art, and rush jobs all stay affordable, whether you need one shirt or a thousand.
+DTF (direct-to-film) lets us print full-color, photo-quality designs on any color or fabric — with **low minimums and no setup fees**. That means small batches, complex art, and rush jobs all stay affordable, whether you need one shirt or a thousand.
 
 ## Typical Atlanta turnaround
 
@@ -158,7 +158,7 @@ Cheap pens that break, stress balls that get tossed, and anything with a logo so
     slug: "decatur-event-tees-no-minimum",
     title: "Decatur Event Tees: Why No-Minimum DTF Orders Changed the Game",
     description:
-      "From Oakhurst block parties to Emory student orgs, no-minimum DTF printing makes small custom orders affordable.",
+      "From Oakhurst block parties to Emory student orgs, low-minimum DTF printing makes small custom orders affordable.",
     category: "Local Guides",
     city: "Decatur",
     readMinutes: 5,
@@ -167,7 +167,7 @@ Cheap pens that break, stress balls that get tossed, and anything with a logo so
     cover: { gradient: "from-magenta-brand to-cyan-brand", emoji: "🎉" },
     keywords: [
       "Decatur custom shirts",
-      "no minimum t-shirt printing",
+      "low minimum t-shirt printing",
       "Oakhurst event tees",
       "Emory student org shirts",
     ],
@@ -205,7 +205,7 @@ DTF (direct-to-film) prints your full-color design onto a special transfer film,
 
 ## Why we DTF-only
 
-- **No minimums.** One shirt costs the same per-piece as 100.
+- **Low minimums.** One shirt costs the same per-piece as 100.
 - **No setup fees.** No screens to burn, no plates to make.
 - **Full color, every time.** Photo-realistic art with no extra charges per color.
 - **Works on anything.** Light shirts, dark shirts, cotton, poly, blends.

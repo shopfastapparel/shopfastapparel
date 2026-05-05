@@ -34,7 +34,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "Lawrenceville's fastest DTF custom t-shirt printer. Full-color DTF prints for teams, businesses, and events. Free mockups, no minimums, free shipping on bulk orders.",
+          "Lawrenceville's fastest DTF custom t-shirt printer. Full-color DTF prints for teams, businesses, and events. Free mockups, low minimums, free shipping on bulk orders.",
       },
       { name: "author", content: "Fast Apparel LLC" },
       { property: "og:title", content: "Fast Apparel — DTF Custom T-Shirt Printing in Lawrenceville" },

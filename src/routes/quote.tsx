@@ -79,7 +79,7 @@ const SERVICES: {
   {
     key: "custom-tshirts",
     label: "Custom T-Shirts",
-    blurb: "Full-color DTF prints, no minimums",
+    blurb: "Full-color DTF prints, low minimums",
     Icon: Shirt,
   },
   {

@@ -26,7 +26,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Lawrenceville's #1 DTF custom t-shirt printer. Full-color DTF prints & promotional products with most orders completed in as little as 7 days. Free mockups, no minimums, free shipping on bulk orders. Serving Lawrenceville, Gwinnett County, Atlanta & all of metro GA.",
+          "Lawrenceville's #1 DTF custom t-shirt printer. Full-color DTF prints & promotional products with most orders completed in as little as 7 days. Free mockups, low minimums, free shipping on bulk orders. Serving Lawrenceville, Gwinnett County, Atlanta & all of metro GA.",
       },
       { property: "og:title", content: "Custom DTF T-Shirt Printing in Lawrenceville | Fast Apparel" },
       {
@@ -82,7 +82,7 @@ function HomePage() {
             </h1>
             <p className="mt-6 text-lg text-foreground/80 max-w-xl">
               Lawrenceville's go-to custom apparel shop for DTF printing and promotional products.
-              Serving Gwinnett County and all of metro Atlanta. Free mockups. No minimums. Most orders completed in as little as 7 days
+              Serving Gwinnett County and all of metro Atlanta. Free mockups. Low minimums. Most orders completed in as little as 7 days
               turnaround. Free shipping on bulk orders.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -152,7 +152,7 @@ function HomePage() {
             {
               icon: PaintBucket,
               title: "Custom DTF T-Shirt Printing",
-              desc: "Full-color DTF transfers with no minimums. Premium quality on Gildan, Bella+Canvas, Next Level and more.",
+              desc: "Full-color DTF transfers with low minimums. Premium quality on Gildan, Bella+Canvas, Next Level and more.",
               to: "/services/custom-tshirts" as const,
               color: "bg-cyan-brand",
             },

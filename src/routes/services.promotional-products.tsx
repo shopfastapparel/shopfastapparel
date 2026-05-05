@@ -47,7 +47,7 @@ export const Route = createFileRoute("/services/promotional-products")({
       bullets={[
         "Thousands of promotional products to choose from",
         "Full-color UV DTF decoration — vibrant, durable, photo-quality",
-        "No minimums — order one or order a thousand",
+        "Low minimums — order one or order a thousand",
         "Free shipping on bulk orders",
         "Real samples available before bulk orders",
         "Eco-friendly product options available",
