@@ -33,7 +33,7 @@ export const Route = createFileRoute("/services/promotional-products")({
       features={[
         {
           title: "Hats & Headwear",
-          desc: "Caps, beanies, snapbacks, and trucker hats branded with full-color UV DTF prints.",
+          desc: "Caps, beanies, snapbacks, and trucker hats decorated with DTF transfers or custom patches.",
         },
         {
           title: "Drinkware",
