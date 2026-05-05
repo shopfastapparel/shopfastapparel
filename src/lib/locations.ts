@@ -92,10 +92,10 @@ export const LOCATIONS: LocationInfo[] = [
     region: "DeKalb County",
     zipPrefix: "300",
     blurb:
-      "Decatur's local custom apparel shop. Small-batch DTF and event tees — no minimums.",
+      "Decatur's local custom apparel shop. Small-batch DTF and event tees — low minimums.",
     neighborhoods: ["Oakhurst", "Kirkwood", "Avondale Estates", "Druid Hills", "Emory area"],
     highlights: [
-      "No-minimum custom shirt orders",
+      "Low-minimum custom shirt orders",
       "Quick local pickup at our Lawrenceville shop",
       "Perfect for Decatur events and festivals",
     ],

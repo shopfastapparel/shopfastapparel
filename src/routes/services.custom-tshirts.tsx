@@ -6,12 +6,12 @@ export const Route = createFileRoute("/services/custom-tshirts")({
     meta: [
       {
         title:
-          "Custom DTF T-Shirt Printing in Lawrenceville & Atlanta | No Minimums | Fast Apparel",
+          "Custom DTF T-Shirt Printing in Lawrenceville & Atlanta | Low Minimums | Fast Apparel",
       },
       {
         name: "description",
         content:
-          "Premium DTF custom t-shirt printing in Lawrenceville, GA & metro Atlanta. Full-color DTF transfers with no minimums and most orders completed in as little as 7 days. Free mockups.",
+          "Premium DTF custom t-shirt printing in Lawrenceville, GA & metro Atlanta. Full-color DTF transfers with low minimums and most orders completed in as little as 7 days. Free mockups.",
       },
       {
         property: "og:title",
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/services/custom-tshirts")({
       {
         property: "og:description",
         content:
-          "Full-color DTF custom t-shirts with no minimums and most orders completed in as little as 7 days.",
+          "Full-color DTF custom t-shirts with low minimums and most orders completed in as little as 7 days.",
       },
     ],
   }),
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/services/custom-tshirts")({
       eyebrow="Custom DTF T-Shirt Printing"
       title={
         <>
-          Custom DTF t-shirt printing — <span className="text-cmyk">no minimums.</span>
+          Custom DTF t-shirt printing — <span className="text-cmyk">low minimums.</span>
         </>
       }
       intro="From a single one-off design to thousands of bulk shirts, we DTF print on premium Gildan, Bella+Canvas, Next Level, and more. Full-color, photo-quality prints on any color or fabric."
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/services/custom-tshirts")({
           desc: "Photo-quality, vibrant prints on any color shirt or fabric type. No color limits, no setup fees.",
         },
         {
-          title: "No Minimums",
+          title: "Low Minimums",
           desc: "Order one shirt or one thousand at the same per-piece price. Perfect for small batches and teams.",
         },
         {

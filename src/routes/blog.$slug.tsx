@@ -122,7 +122,7 @@ function BlogPostPage() {
           <div className="mt-12 rounded-xl border-2 border-ink bg-card p-6 md:p-8 shadow-pop">
             <h3 className="font-display text-2xl">Ready to start your project?</h3>
             <p className="mt-2 text-muted-foreground">
-              Get a free quote and digital mockup in 24 hours. No pressure, no minimums on DTF.
+              Get a free quote and digital mockup in 24 hours. No pressure, low minimums on DTF.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               <Button asChild size="lg" className="border-2 border-ink shadow-pop">

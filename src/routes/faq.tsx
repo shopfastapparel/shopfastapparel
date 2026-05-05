@@ -8,7 +8,7 @@ const FAQS = [
   },
   {
     q: "Do you have a minimum order?",
-    a: "No minimum on DTF prints — order one shirt or one thousand at the same per-piece price.",
+    a: "Low minimum on DTF prints — order one shirt or one thousand at the same per-piece price.",
   },
   {
     q: "What apparel brands do you carry?",
@@ -44,7 +44,7 @@ const FAQS = [
   },
   {
     q: "Why DTF instead of screen printing or embroidery?",
-    a: "DTF (direct-to-film) gives full-color, photo-quality prints on any fabric or color with no minimums and no setup fees — making it faster, more flexible, and more affordable than screen printing or embroidery for most orders.",
+    a: "DTF (direct-to-film) gives full-color, photo-quality prints on any fabric or color with low minimums and no setup fees — making it faster, more flexible, and more affordable than screen printing or embroidery for most orders.",
   },
 ];
 

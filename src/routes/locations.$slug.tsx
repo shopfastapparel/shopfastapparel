@@ -14,7 +14,7 @@ export const Route = createFileRoute("/locations/$slug")({
     if (!loaderData) return {};
     const { loc } = loaderData;
     const title = `Custom T-Shirt Printing in ${loc.city}, ${loc.state} | Fast Apparel`;
-    const description = `${loc.blurb} Free mockups, fast turnaround, no minimums. Call ${PRIMARY_PHONE}.`;
+    const description = `${loc.blurb} Free mockups, fast turnaround, low minimums. Call ${PRIMARY_PHONE}.`;
     return {
       meta: [
         { title },
@@ -158,7 +158,7 @@ function LocationPage() {
                 <Truck className="h-4 w-4 text-cyan-brand mt-0.5" /> Free local delivery
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle2 className="h-4 w-4 text-foreground mt-0.5" /> No minimums on DTF
+                <CheckCircle2 className="h-4 w-4 text-foreground mt-0.5" /> Low minimums on DTF
               </li>
             </ul>
             <Button asChild className="w-full mt-6">
