@@ -156,7 +156,7 @@ Cheap pens that break, stress balls that get tossed, and anything with a logo so
   },
   {
     slug: "decatur-event-tees-no-minimum",
-    title: "Decatur Event Tees: Why No-Minimum DTF Orders Changed the Game",
+    title: "Decatur Event Tees: Why Low-Minimum DTF Orders Changed the Game",
     description:
       "From Oakhurst block parties to Emory student orgs, low-minimum DTF printing makes small custom orders affordable.",
     category: "Local Guides",

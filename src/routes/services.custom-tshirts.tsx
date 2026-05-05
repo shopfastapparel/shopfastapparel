@@ -6,7 +6,7 @@ export const Route = createFileRoute("/services/custom-tshirts")({
     meta: [
       {
         title:
-          "Custom DTF T-Shirt Printing in Lawrenceville & Atlanta | No Minimums | Fast Apparel",
+          "Custom DTF T-Shirt Printing in Lawrenceville & Atlanta | Low Minimums | Fast Apparel",
       },
       {
         name: "description",
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/services/custom-tshirts")({
           desc: "Photo-quality, vibrant prints on any color shirt or fabric type. No color limits, no setup fees.",
         },
         {
-          title: "No Minimums",
+          title: "Low Minimums",
           desc: "Order one shirt or one thousand at the same per-piece price. Perfect for small batches and teams.",
         },
         {
