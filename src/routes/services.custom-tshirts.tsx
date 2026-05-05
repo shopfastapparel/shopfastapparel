@@ -11,7 +11,7 @@ export const Route = createFileRoute("/services/custom-tshirts")({
       {
         name: "description",
         content:
-          "Premium DTF custom t-shirt printing in Lawrenceville, GA & metro Atlanta. Full-color DTF transfers with no minimums and same-week turnaround. Free mockups.",
+          "Premium DTF custom t-shirt printing in Lawrenceville, GA & metro Atlanta. Full-color DTF transfers with no minimums and most orders completed in as little as 7 days. Free mockups.",
       },
       {
         property: "og:title",
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/services/custom-tshirts")({
       {
         property: "og:description",
         content:
-          "Full-color DTF custom t-shirts with no minimums and same-week turnaround.",
+          "Full-color DTF custom t-shirts with no minimums and most orders completed in as little as 7 days.",
       },
     ],
   }),
@@ -51,7 +51,7 @@ export const Route = createFileRoute("/services/custom-tshirts")({
         "Free digital mockup with every order",
         "Premium blanks: Gildan, Bella+Canvas, Next Level, Comfort Colors",
         "All sizes available — youth to 5XL",
-        "Same-week turnaround on most orders",
+        "Most orders completed in as little as 7 days turnaround on most orders",
         "Free shipping on bulk orders",
         "Lowest DTF pricing in metro Atlanta — guaranteed",
       ]}

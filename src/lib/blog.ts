@@ -33,7 +33,7 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     body: `## Why local matters in Atlanta
 
-When you order custom DTF t-shirts from a local Lawrenceville-based print shop, you cut shipping time, you can pick up same-week, and you get to approve real mockups before anything hits a press. National sites mean 2-week waits and zero accountability when a logo comes back the wrong color.
+When you order custom DTF t-shirts from a local Lawrenceville-based print shop, you cut shipping time, you can pick up in as little as 7 days, and you get to approve real mockups before anything hits a press. National sites mean 2-week waits and zero accountability when a logo comes back the wrong color.
 
 ## Why we DTF-only
 
@@ -43,7 +43,7 @@ DTF (direct-to-film) lets us print full-color, photo-quality designs on any colo
 
 - **DTF small batch:** 3–5 business days
 - **Bulk DTF orders (100+):** 5–8 business days
-- **Rush:** Same-week available across metro Atlanta
+- **Rush:** Most orders completed in as little as 7 days
 
 ## How much do custom DTF t-shirts cost?
 

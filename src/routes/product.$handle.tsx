@@ -160,7 +160,7 @@ function ProductPage() {
 
           <div className="mt-8 text-sm text-muted-foreground space-y-1">
             <p>✓ Free mockup with every order</p>
-            <p>✓ Atlanta same-week turnaround</p>
+            <p>✓ Most orders completed in as little as 7 days</p>
             <p>✓ 100% satisfaction guarantee</p>
           </div>
         </div>

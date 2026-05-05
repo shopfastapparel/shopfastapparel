@@ -16,7 +16,7 @@ export const Route = createFileRoute("/locations/")({
       {
         property: "og:description",
         content:
-          "Local custom DTF apparel printing across metro Atlanta. Find your city for same-week turnaround and free shipping on bulk orders.",
+          "Local custom DTF apparel printing across metro Atlanta. Find your city for most orders completed in as little as 7 days and free shipping on bulk orders.",
       },
     ],
   }),
@@ -32,8 +32,8 @@ function LocationsIndex() {
           <h1 className="mt-2 font-display text-5xl md:text-6xl">Based in Lawrenceville. Serving metro Atlanta.</h1>
           <p className="mt-4 max-w-2xl text-muted-foreground">
             Our shop is headquartered in Lawrenceville, GA — and we deliver premium custom apparel
-            printing across Gwinnett County and the entire metro Atlanta area, with same-week
-            turnaround.
+            printing across Gwinnett County and the entire metro Atlanta area — most orders
+            completed in as little as 7 days.
           </p>
         </div>
       </section>

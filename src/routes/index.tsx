@@ -26,7 +26,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Lawrenceville's #1 DTF custom t-shirt printer. Full-color DTF prints & promotional products with same-week turnaround. Free mockups, no minimums, free shipping on bulk orders. Serving Lawrenceville, Gwinnett County, Atlanta & all of metro GA.",
+          "Lawrenceville's #1 DTF custom t-shirt printer. Full-color DTF prints & promotional products with most orders completed in as little as 7 days. Free mockups, no minimums, free shipping on bulk orders. Serving Lawrenceville, Gwinnett County, Atlanta & all of metro GA.",
       },
       { property: "og:title", content: "Custom DTF T-Shirt Printing in Lawrenceville | Fast Apparel" },
       {
@@ -82,7 +82,7 @@ function HomePage() {
             </h1>
             <p className="mt-6 text-lg text-foreground/80 max-w-xl">
               Lawrenceville's go-to custom apparel shop for DTF printing and promotional products.
-              Serving Gwinnett County and all of metro Atlanta. Free mockups. No minimums. Same-week
+              Serving Gwinnett County and all of metro Atlanta. Free mockups. No minimums. Most orders completed in as little as 7 days
               turnaround. Free shipping on bulk orders.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -97,7 +97,7 @@ function HomePage() {
             </div>
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium">
               <span className="flex items-center gap-1.5">
-                <Zap className="h-4 w-4 text-magenta-brand" /> Same-week turnaround
+                <Zap className="h-4 w-4 text-magenta-brand" /> Most orders completed in as little as 7 days turnaround
               </span>
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-cyan-brand" /> 100% satisfaction
@@ -234,7 +234,7 @@ function HomePage() {
           </p>
           <h2 className="mt-2 font-display text-4xl md:text-5xl">Local custom printing, fast.</h2>
           <p className="mt-4 text-muted-foreground">
-            Free mockups and same-week turnaround across the metro Atlanta area.
+            Free mockups and most orders completed in as little as 7 days across the metro Atlanta area.
           </p>
         </div>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
