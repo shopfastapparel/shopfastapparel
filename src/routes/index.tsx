@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
+import { Testimonials } from "@/components/Testimonials";
 import { useProducts } from "@/hooks/useProducts";
 import { LOCATIONS } from "@/lib/locations";
 import {
