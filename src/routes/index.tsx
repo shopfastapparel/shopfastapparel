@@ -258,6 +258,8 @@ function HomePage() {
         </div>
       </section>
 
+      <Testimonials />
+
       {/* TESTIMONIAL CTA */}
       <section className="bg-ink text-background">
         <div className="mx-auto max-w-7xl px-4 py-20 grid md:grid-cols-2 gap-10 items-center">
