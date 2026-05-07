@@ -37,7 +37,7 @@ export const Route = createRootRoute({
           "Lawrenceville's fastest DTF custom t-shirt printer. Full-color DTF prints for teams, businesses, and events. Free mockups, low minimums, free shipping on bulk orders.",
       },
       { name: "author", content: "Fast Apparel LLC" },
-      { property: "og:title", content: "Fast Apparel — DTF Custom T-Shirt Printing in Lawrenceville" },
+      { property: "og:title", content: "Fast Apparel — DTF Custom T-Shirt Printing in Lawrenceville, GA" },
       {
         property: "og:description",
         content:
@@ -46,6 +46,12 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#0f172a" },
+      { name: "twitter:title", content: "Fast Apparel — DTF Custom T-Shirt Printing in Lawrenceville, GA" },
+      { name: "description", content: "SEO Shirt Finder is an e-commerce platform for custom apparel, optimized for local search and lead generation." },
+      { property: "og:description", content: "SEO Shirt Finder is an e-commerce platform for custom apparel, optimized for local search and lead generation." },
+      { name: "twitter:description", content: "SEO Shirt Finder is an e-commerce platform for custom apparel, optimized for local search and lead generation." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe155d54-5040-492c-ada5-149c7b8bba47/id-preview-20374dae--dd11a175-0db8-4bc2-878d-abff80c8f5c9.lovable.app-1778075118442.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe155d54-5040-492c-ada5-149c7b8bba47/id-preview-20374dae--dd11a175-0db8-4bc2-878d-abff80c8f5c9.lovable.app-1778075118442.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
