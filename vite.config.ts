@@ -7,4 +7,9 @@ import { nitro } from "nitro/vite";
 
 export default defineConfig({
   plugins: [tailwindcss(), tsconfigPaths(), tanstackStart(), nitro(), viteReact()],
+  server: {
+    host: "::",
+    port: 8080,
+    strictPort: true,
+  },
 });
