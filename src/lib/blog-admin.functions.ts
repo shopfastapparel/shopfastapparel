@@ -28,8 +28,9 @@ export const setBlogPostStatus = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const { supabase } = context;
-    const update: Record<string, unknown> = { status: data.status };
-    if (data.status === "published") update.published_at = new Date().toISOString();
+    const update = data.status === "published"
+      ? { status: data.status, published_at: new Date().toISOString() }
+      : { status: data.status };
     const { error } = await supabase.from("blog_posts").update(update).eq("id", data.id);
     if (error) throw error;
     return { ok: true };
