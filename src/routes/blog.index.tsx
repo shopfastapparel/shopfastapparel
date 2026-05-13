@@ -4,6 +4,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { BLOG_POSTS } from "@/lib/blog";
+import { fetchAllPosts } from "@/lib/blog-data";
 import { Calendar, Clock, MapPin, Search } from "lucide-react";
 
 export const Route = createFileRoute("/blog/")({
@@ -48,6 +49,7 @@ export const Route = createFileRoute("/blog/")({
       },
     ],
   }),
+  loader: () => fetchAllPosts().then((posts) => ({ posts })),
   component: BlogIndex,
 });
 
