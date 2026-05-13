@@ -4,6 +4,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { BLOG_POSTS } from "@/lib/blog";
+import { fetchAllPosts } from "@/lib/blog-data";
 import { Calendar, Clock, MapPin, Search } from "lucide-react";
 
 export const Route = createFileRoute("/blog/")({
@@ -48,6 +49,7 @@ export const Route = createFileRoute("/blog/")({
       },
     ],
   }),
+  loader: () => fetchAllPosts().then((posts) => ({ posts })),
   component: BlogIndex,
 });
 
@@ -61,11 +63,12 @@ const CATEGORIES = [
 ] as const;
 
 function BlogIndex() {
+  const { posts } = Route.useLoaderData();
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("All");
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
-    return BLOG_POSTS.filter((p) => {
+    return posts.filter((p: typeof posts[number]) => {
       if (category !== "All" && p.category !== category) return false;
       if (query.trim()) {
         const q = query.toLowerCase();
@@ -179,7 +182,7 @@ function BlogIndex() {
             )}
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {rest.map((p) => (
+              {rest.map((p: typeof rest[number]) => (
                 <Link
                   key={p.slug}
                   to="/blog/$slug"

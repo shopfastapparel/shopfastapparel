@@ -3,14 +3,17 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MarkdownLite } from "@/components/MarkdownLite";
-import { BLOG_POSTS, getPost, getRelatedPosts } from "@/lib/blog";
+import { BLOG_POSTS } from "@/lib/blog";
+import { fetchAllPosts, relatedFrom } from "@/lib/blog-data";
 import { ArrowLeft, Calendar, Clock, MapPin } from "lucide-react";
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: ({ params }) => {
-    const post = getPost(params.slug);
+  loader: async ({ params }) => {
+    const all = await fetchAllPosts();
+    const post = all.find((p) => p.slug === params.slug);
     if (!post) throw notFound();
-    return { post };
+    const related = relatedFrom(all, params.slug, 3);
+    return { post, related };
   },
   head: ({ loaderData }) => {
     const post = loaderData?.post;
@@ -69,8 +72,7 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function BlogPostPage() {
-  const { post } = Route.useLoaderData();
-  const related = getRelatedPosts(post.slug, 3);
+  const { post, related } = Route.useLoaderData();
 
   return (
     <SiteLayout>
@@ -158,7 +160,7 @@ function BlogPostPage() {
             <div className="mx-auto max-w-7xl px-4 py-14">
               <h2 className="font-display text-3xl mb-6">Related reads</h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {related.map((p) => (
+                {related.map((p: typeof related[number]) => (
                   <Link
                     key={p.slug}
                     to="/blog/$slug"
