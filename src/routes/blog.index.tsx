@@ -63,11 +63,12 @@ const CATEGORIES = [
 ] as const;
 
 function BlogIndex() {
+  const { posts } = Route.useLoaderData();
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("All");
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
-    return BLOG_POSTS.filter((p) => {
+    return posts.filter((p) => {
       if (category !== "All" && p.category !== category) return false;
       if (query.trim()) {
         const q = query.toLowerCase();
