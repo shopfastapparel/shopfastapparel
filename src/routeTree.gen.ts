@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as QuoteRouteImport } from './routes/quote'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
@@ -23,6 +24,7 @@ import { Route as ServicesCustomTshirtsRouteImport } from './routes/services.cus
 import { Route as ProductHandleRouteImport } from './routes/product.$handle'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 import { Route as ApiPublicHooksGenerateBlogPostRouteImport } from './routes/api/public/hooks/generate-blog-post'
 
 const ShopRoute = ShopRouteImport.update({
@@ -33,6 +35,11 @@ const ShopRoute = ShopRouteImport.update({
 const QuoteRoute = QuoteRouteImport.update({
   id: '/quote',
   path: '/quote',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -96,6 +103,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminBlogRoute = AdminBlogRouteImport.update({
+  id: '/admin/blog',
+  path: '/admin/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicHooksGenerateBlogPostRoute =
   ApiPublicHooksGenerateBlogPostRouteImport.update({
     id: '/api/public/hooks/generate-blog-post',
@@ -108,8 +120,10 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/login': typeof LoginRoute
   '/quote': typeof QuoteRoute
   '/shop': typeof ShopRoute
+  '/admin/blog': typeof AdminBlogRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -125,8 +139,10 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/login': typeof LoginRoute
   '/quote': typeof QuoteRoute
   '/shop': typeof ShopRoute
+  '/admin/blog': typeof AdminBlogRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -143,8 +159,10 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/login': typeof LoginRoute
   '/quote': typeof QuoteRoute
   '/shop': typeof ShopRoute
+  '/admin/blog': typeof AdminBlogRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -162,8 +180,10 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/faq'
+    | '/login'
     | '/quote'
     | '/shop'
+    | '/admin/blog'
     | '/blog/$slug'
     | '/locations/$slug'
     | '/product/$handle'
@@ -179,8 +199,10 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/faq'
+    | '/login'
     | '/quote'
     | '/shop'
+    | '/admin/blog'
     | '/blog/$slug'
     | '/locations/$slug'
     | '/product/$handle'
@@ -196,8 +218,10 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/faq'
+    | '/login'
     | '/quote'
     | '/shop'
+    | '/admin/blog'
     | '/blog/$slug'
     | '/locations/$slug'
     | '/product/$handle'
@@ -214,8 +238,10 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
+  LoginRoute: typeof LoginRoute
   QuoteRoute: typeof QuoteRoute
   ShopRoute: typeof ShopRoute
+  AdminBlogRoute: typeof AdminBlogRoute
   BlogSlugRoute: typeof BlogSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   ProductHandleRoute: typeof ProductHandleRoute
@@ -241,6 +267,13 @@ declare module '@tanstack/react-router' {
       path: '/quote'
       fullPath: '/quote'
       preLoaderRoute: typeof QuoteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -327,6 +360,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/blog': {
+      id: '/admin/blog'
+      path: '/admin/blog'
+      fullPath: '/admin/blog'
+      preLoaderRoute: typeof AdminBlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hooks/generate-blog-post': {
       id: '/api/public/hooks/generate-blog-post'
       path: '/api/public/hooks/generate-blog-post'
@@ -342,8 +382,10 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
+  LoginRoute: LoginRoute,
   QuoteRoute: QuoteRoute,
   ShopRoute: ShopRoute,
+  AdminBlogRoute: AdminBlogRoute,
   BlogSlugRoute: BlogSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   ProductHandleRoute: ProductHandleRoute,
