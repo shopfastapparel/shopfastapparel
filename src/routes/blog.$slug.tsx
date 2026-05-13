@@ -160,7 +160,7 @@ function BlogPostPage() {
             <div className="mx-auto max-w-7xl px-4 py-14">
               <h2 className="font-display text-3xl mb-6">Related reads</h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {related.map((p) => (
+                {related.map((p: typeof related[number]) => (
                   <Link
                     key={p.slug}
                     to="/blog/$slug"
