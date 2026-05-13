@@ -72,8 +72,7 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function BlogPostPage() {
-  const { post } = Route.useLoaderData();
-  const related = getRelatedPosts(post.slug, 3);
+  const { post, related } = Route.useLoaderData();
 
   return (
     <SiteLayout>
