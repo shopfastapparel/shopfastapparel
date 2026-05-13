@@ -68,7 +68,7 @@ function BlogIndex() {
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
-    return posts.filter((p) => {
+    return posts.filter((p: typeof posts[number]) => {
       if (category !== "All" && p.category !== category) return false;
       if (query.trim()) {
         const q = query.toLowerCase();
@@ -182,7 +182,7 @@ function BlogIndex() {
             )}
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {rest.map((p) => (
+              {rest.map((p: typeof rest[number]) => (
                 <Link
                   key={p.slug}
                   to="/blog/$slug"
