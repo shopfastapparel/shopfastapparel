@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { submitQuoteRequest } from "@/lib/quote.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -261,6 +262,29 @@ function QuotePage() {
 
     setSubmitting(true);
     try {
+      const filePaths: string[] = [];
+
+      // Upload files to Supabase Storage
+      for (const f of state.files) {
+        const filePath = `${Date.now()}-${f.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+        
+        // Convert dataUrl to Blob
+        const res = await fetch(f.dataUrl);
+        const blob = await res.blob();
+
+        const { error: uploadError } = await supabase.storage
+          .from("quote_artwork")
+          .upload(filePath, blob, { contentType: f.type });
+
+        if (uploadError) {
+          console.error("[quote] File upload failed for", f.name, uploadError);
+          throw new Error("Failed to upload artwork: " + f.name);
+        }
+        
+        // Push object containing original name and the storage path
+        filePaths.push(JSON.stringify({ name: f.name, path: filePath }));
+      }
+
       await submitQuoteRequest({
         data: {
           service: serviceLabel,
@@ -270,7 +294,7 @@ function QuotePage() {
           deadline: state.deadline || undefined,
           city: state.city || undefined,
           details: state.details,
-          fileNames: state.files.map((f) => f.name),
+          fileNames: filePaths,
           name: state.name,
           company: state.company || undefined,
           email: state.email,

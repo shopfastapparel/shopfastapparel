@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { Resend } from "resend";
 import { PRIMARY_EMAIL, PRIMARY_PHONE } from "@/lib/locations";
+import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 const quoteSchema = z.object({
   service: z.string().min(1),
@@ -20,7 +21,7 @@ const quoteSchema = z.object({
 
 type QuoteData = z.infer<typeof quoteSchema>;
 
-function buildOwnerEmailHtml(data: QuoteData): string {
+function buildOwnerEmailHtml(data: QuoteData, fileLinksHtml: string): string {
   return `
 <!DOCTYPE html>
 <html>
@@ -58,7 +59,7 @@ function buildOwnerEmailHtml(data: QuoteData): string {
         <tr><td>Quantity</td><td>${data.quantity}</td></tr>
         <tr><td>Turnaround</td><td>${data.turnaround} · ${data.turnaroundEstimate}</td></tr>
         ${data.deadline ? `<tr><td>Deadline</td><td>${data.deadline}</td></tr>` : ""}
-        <tr><td>Files</td><td>${data.fileNames.length > 0 ? data.fileNames.join(", ") : "None attached"}</td></tr>
+        <tr><td style="vertical-align: top;">Files</td><td>${fileLinksHtml}</td></tr>
       </table>
 
       <strong>Project Details:</strong>
@@ -131,8 +132,32 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
 
     const resend = new Resend(apiKey);
 
-    // Determine sender — use verified domain if available, otherwise Resend default
-    const from = process.env.RESEND_FROM_EMAIL || "Fast Apparel Quotes <onboarding@resend.dev>";
+    // Generate signed URLs for artwork
+    const fileLinksHtmlArray: string[] = [];
+    if (data.fileNames && data.fileNames.length > 0) {
+      for (const jsonStr of data.fileNames) {
+        try {
+          const { name, path } = JSON.parse(jsonStr);
+          if (path) {
+            const { data: signedUrlData } = await supabaseAdmin.storage
+              .from("quote_artwork")
+              .createSignedUrl(path, 60 * 60 * 24 * 30); // 30 days valid
+              
+            if (signedUrlData?.signedUrl) {
+              fileLinksHtmlArray.push(`<a href="${signedUrlData.signedUrl}" target="_blank" style="color: #ff2d8a;">${name}</a>`);
+            } else {
+              fileLinksHtmlArray.push(name);
+            }
+          } else {
+            fileLinksHtmlArray.push(jsonStr);
+          }
+        } catch {
+          // Fallback if not JSON (e.g. old clients)
+          fileLinksHtmlArray.push(jsonStr);
+        }
+      }
+    }
+    const fileLinksHtml = fileLinksHtmlArray.length > 0 ? fileLinksHtmlArray.join("<br>") : "None attached";
 
     // Send email to shop owner
     const toEmail = process.env.RESEND_TO_EMAIL || "shopfastapparel@gmail.com";
@@ -140,7 +165,7 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
       from,
       to: [toEmail],
       subject: `Quote Request — ${data.service} — ${data.name}`,
-      html: buildOwnerEmailHtml(data),
+      html: buildOwnerEmailHtml(data, fileLinksHtml),
       replyTo: data.email,
     });
 

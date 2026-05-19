@@ -88,3 +88,27 @@ $$;
 
 create trigger blog_posts_updated_at before update on public.blog_posts
   for each row execute function public.set_updated_at();
+
+-- ============================================
+-- STORAGE CONFIGURATION
+-- ============================================
+
+insert into storage.buckets (id, name, public) 
+values ('quote_artwork', 'quote_artwork', false)
+on conflict (id) do nothing;
+
+-- Enable RLS on objects
+alter table storage.objects enable row level security;
+
+-- Policy: Anyone can upload artwork (to allow non-logged-in customers to submit quotes)
+create policy "Anyone can upload quote artwork" on storage.objects
+  for insert to public
+  with check (bucket_id = 'quote_artwork');
+
+-- Policy: Only admins can view/download artwork
+create policy "Admins can view quote artwork" on storage.objects
+  for select to authenticated
+  using (
+    bucket_id = 'quote_artwork' 
+    and (public.has_role(auth.uid(), 'admin') or auth.jwt() ->> 'email' = 'shopfastapparel@gmail.com')
+  );
