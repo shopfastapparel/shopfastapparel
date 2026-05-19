@@ -135,9 +135,10 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
     const from = process.env.RESEND_FROM_EMAIL || "Fast Apparel Quotes <onboarding@resend.dev>";
 
     // Send email to shop owner
+    const toEmail = process.env.RESEND_TO_EMAIL || "shopfastapparel@gmail.com";
     const { error: ownerError } = await resend.emails.send({
       from,
-      to: [PRIMARY_EMAIL],
+      to: [toEmail],
       subject: `Quote Request — ${data.service} — ${data.name}`,
       html: buildOwnerEmailHtml(data),
       replyTo: data.email,
