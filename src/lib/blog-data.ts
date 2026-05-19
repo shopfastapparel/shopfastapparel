@@ -12,6 +12,8 @@ type Row = {
   author: string;
   cover_gradient: string;
   cover_emoji: string;
+  cover_image_url: string | null;
+  cover_image_credit: string | null;
   keywords: string[];
   body: string;
 };
@@ -27,6 +29,8 @@ function rowToPost(r: Row): BlogPost {
     publishedAt: r.published_at,
     author: r.author,
     cover: { gradient: r.cover_gradient, emoji: r.cover_emoji },
+    coverImageUrl: r.cover_image_url ?? undefined,
+    coverImageCredit: r.cover_image_credit ?? undefined,
     keywords: r.keywords,
     body: r.body,
   };
@@ -36,7 +40,7 @@ export async function fetchAllPosts(): Promise<BlogPost[]> {
   const { data, error } = await supabase
     .from("blog_posts")
     .select(
-      "slug,title,description,category,city,read_minutes,published_at,author,cover_gradient,cover_emoji,keywords,body",
+      "slug,title,description,category,city,read_minutes,published_at,author,cover_gradient,cover_emoji,cover_image_url,cover_image_credit,keywords,body",
     )
     .eq("status", "published")
     .order("published_at", { ascending: false });

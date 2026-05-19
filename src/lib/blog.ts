@@ -8,6 +8,8 @@ export interface BlogPost {
   publishedAt: string; // ISO date
   author: string;
   cover: { gradient: string; emoji: string };
+  coverImageUrl?: string;
+  coverImageCredit?: string;
   keywords: string[];
   // Markdown-ish body using a tiny subset: ## H2, ### H3, blank line paragraphs, - bullets
   body: string;

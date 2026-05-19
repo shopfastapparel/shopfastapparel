@@ -141,11 +141,22 @@ function BlogIndex() {
                 className="block group mb-12"
               >
                 <article className="grid md:grid-cols-2 gap-6 bg-card border-2 border-ink rounded-xl overflow-hidden shadow-pop">
-                  <div
-                    className={`aspect-[4/3] md:aspect-auto bg-gradient-to-br ${featured.cover.gradient} flex items-center justify-center text-8xl`}
-                  >
-                    <span aria-hidden>{featured.cover.emoji}</span>
-                  </div>
+                  {featured.coverImageUrl ? (
+                    <div className="aspect-[4/3] md:aspect-auto overflow-hidden">
+                      <img
+                        src={featured.coverImageUrl}
+                        alt={featured.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      className={`aspect-[4/3] md:aspect-auto bg-gradient-to-br ${featured.cover.gradient} flex items-center justify-center text-8xl`}
+                    >
+                      <span aria-hidden>{featured.cover.emoji}</span>
+                    </div>
+                  )}
                   <div className="p-6 md:p-8 flex flex-col justify-center">
                     <div className="flex flex-wrap items-center gap-2 text-xs">
                       <Badge variant="outline" className="border-ink">
@@ -189,11 +200,22 @@ function BlogIndex() {
                   params={{ slug: p.slug }}
                   className="group block bg-card border-2 border-ink rounded-xl overflow-hidden hover:shadow-pop hover:-translate-y-0.5 transition-all"
                 >
-                  <div
-                    className={`aspect-[16/10] bg-gradient-to-br ${p.cover.gradient} flex items-center justify-center text-6xl`}
-                  >
-                    <span aria-hidden>{p.cover.emoji}</span>
-                  </div>
+                  {p.coverImageUrl ? (
+                    <div className="aspect-[16/10] overflow-hidden">
+                      <img
+                        src={p.coverImageUrl}
+                        alt={p.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      className={`aspect-[16/10] bg-gradient-to-br ${p.cover.gradient} flex items-center justify-center text-6xl`}
+                    >
+                      <span aria-hidden>{p.cover.emoji}</span>
+                    </div>
+                  )}
                   <div className="p-5">
                     <div className="flex flex-wrap items-center gap-2 text-xs">
                       <Badge variant="secondary">{p.category}</Badge>

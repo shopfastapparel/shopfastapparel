@@ -77,46 +77,98 @@ function BlogPostPage() {
   return (
     <SiteLayout>
       <article>
-        <header
-          className={`bg-gradient-to-br ${post.cover.gradient} text-background border-b-2 border-ink`}
-        >
-          <div className="mx-auto max-w-3xl px-4 py-14 md:py-20">
-            <Link
-              to="/blog"
-              className="inline-flex items-center gap-1 text-sm font-semibold opacity-80 hover:opacity-100"
-            >
-              <ArrowLeft className="h-4 w-4" /> All articles
-            </Link>
-            <div className="mt-5 flex flex-wrap items-center gap-2 text-xs">
-              <Badge className="bg-background text-foreground hover:bg-background">
-                {post.category}
-              </Badge>
-              {post.city && (
-                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-background/20">
-                  <MapPin className="h-3 w-3" /> {post.city}, GA
+        {post.coverImageUrl ? (
+          <header className="relative border-b-2 border-ink">
+            <div className="absolute inset-0">
+              <img
+                src={post.coverImageUrl}
+                alt={post.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/30" />
+            </div>
+            <div className="relative mx-auto max-w-3xl px-4 py-14 md:py-20 text-white">
+              <Link
+                to="/blog"
+                className="inline-flex items-center gap-1 text-sm font-semibold opacity-80 hover:opacity-100"
+              >
+                <ArrowLeft className="h-4 w-4" /> All articles
+              </Link>
+              <div className="mt-5 flex flex-wrap items-center gap-2 text-xs">
+                <Badge className="bg-white/20 text-white hover:bg-white/30 border-white/30">
+                  {post.category}
+                </Badge>
+                {post.city && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/20">
+                    <MapPin className="h-3 w-3" /> {post.city}, GA
+                  </span>
+                )}
+              </div>
+              <h1 className="mt-5 font-display text-4xl md:text-6xl leading-[1.05]">
+                {post.title}
+              </h1>
+              <p className="mt-5 text-lg opacity-90 max-w-2xl">{post.description}</p>
+              <div className="mt-6 flex items-center gap-5 text-sm opacity-80">
+                <span className="inline-flex items-center gap-1.5">
+                  <Calendar className="h-4 w-4" />
+                  {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
                 </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Clock className="h-4 w-4" />
+                  {post.readMinutes} min read
+                </span>
+              </div>
+              {post.coverImageCredit && (
+                <p className="mt-3 text-xs opacity-50">{post.coverImageCredit}</p>
               )}
             </div>
-            <h1 className="mt-5 font-display text-4xl md:text-6xl leading-[1.05]">
-              {post.title}
-            </h1>
-            <p className="mt-5 text-lg opacity-90 max-w-2xl">{post.description}</p>
-            <div className="mt-6 flex items-center gap-5 text-sm opacity-80">
-              <span className="inline-flex items-center gap-1.5">
-                <Calendar className="h-4 w-4" />
-                {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Clock className="h-4 w-4" />
-                {post.readMinutes} min read
-              </span>
+          </header>
+        ) : (
+          <header
+            className={`bg-gradient-to-br ${post.cover.gradient} text-background border-b-2 border-ink`}
+          >
+            <div className="mx-auto max-w-3xl px-4 py-14 md:py-20">
+              <Link
+                to="/blog"
+                className="inline-flex items-center gap-1 text-sm font-semibold opacity-80 hover:opacity-100"
+              >
+                <ArrowLeft className="h-4 w-4" /> All articles
+              </Link>
+              <div className="mt-5 flex flex-wrap items-center gap-2 text-xs">
+                <Badge className="bg-background text-foreground hover:bg-background">
+                  {post.category}
+                </Badge>
+                {post.city && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-background/20">
+                    <MapPin className="h-3 w-3" /> {post.city}, GA
+                  </span>
+                )}
+              </div>
+              <h1 className="mt-5 font-display text-4xl md:text-6xl leading-[1.05]">
+                {post.title}
+              </h1>
+              <p className="mt-5 text-lg opacity-90 max-w-2xl">{post.description}</p>
+              <div className="mt-6 flex items-center gap-5 text-sm opacity-80">
+                <span className="inline-flex items-center gap-1.5">
+                  <Calendar className="h-4 w-4" />
+                  {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Clock className="h-4 w-4" />
+                  {post.readMinutes} min read
+                </span>
+              </div>
             </div>
-          </div>
-        </header>
+          </header>
+        )}
 
         <div className="mx-auto max-w-3xl px-4 py-12">
           <MarkdownLite content={post.body} />
@@ -167,11 +219,22 @@ function BlogPostPage() {
                     params={{ slug: p.slug }}
                     className="group block bg-background border-2 border-ink rounded-xl overflow-hidden hover:shadow-pop hover:-translate-y-0.5 transition-all"
                   >
-                    <div
-                      className={`aspect-[16/10] bg-gradient-to-br ${p.cover.gradient} flex items-center justify-center text-5xl`}
-                    >
-                      <span aria-hidden>{p.cover.emoji}</span>
-                    </div>
+                    {p.coverImageUrl ? (
+                      <div className="aspect-[16/10] overflow-hidden">
+                        <img
+                          src={p.coverImageUrl}
+                          alt={p.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        className={`aspect-[16/10] bg-gradient-to-br ${p.cover.gradient} flex items-center justify-center text-5xl`}
+                      >
+                        <span aria-hidden>{p.cover.emoji}</span>
+                      </div>
+                    )}
                     <div className="p-5">
                       <Badge variant="secondary">{p.category}</Badge>
                       <h3 className="mt-3 font-display text-lg group-hover:text-magenta-brand transition-colors">
