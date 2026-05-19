@@ -138,6 +138,28 @@ export function Testimonials() {
             </figure>
           ))}
         </div>
+
+        {/* RECENT PROJECTS SCROLLING MARQUEE */}
+        <div className="mt-24 w-[100vw] relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden border-y-2 border-ink bg-cyan-brand/10">
+          <div className="py-2 text-center uppercase tracking-[0.3em] font-bold text-xs bg-ink text-yellow-brand border-b-2 border-ink">
+            Fresh off the press — Recent Customer Projects
+          </div>
+          <div className="flex animate-marquee py-8" style={{ width: 'max-content' }}>
+            {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((num, idx) => (
+              <div 
+                key={idx} 
+                className="w-64 h-64 md:w-80 md:h-80 flex-shrink-0 mx-4 border-2 border-ink rounded-xl overflow-hidden shadow-pop bg-background transition-transform duration-300 hover:-translate-y-2"
+              >
+                <img 
+                  src={`/images/projects/project-${num}.png`} 
+                  alt={`Customer project ${num}`}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
