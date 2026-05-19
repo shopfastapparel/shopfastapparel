@@ -8,6 +8,7 @@ export type ApparelStyle = {
   fabricWeight: string;
   features: string[];
   description: string;
+  specSheetUrl: string;
 };
 
 export const APPAREL_STYLES: ApparelStyle[] = [
@@ -25,7 +26,8 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Seamless tubular body",
       "High stitch density"
     ],
-    description: "The Gildan Softstyle offers an incredibly soft feel and a modern classic fit, making it an everyday staple. With its lightweight, breathable fabric, it provides a perfect canvas for high-quality custom prints."
+    description: "The Gildan Softstyle offers an incredibly soft feel and a modern classic fit, making it an everyday staple. With its lightweight, breathable fabric, it provides a perfect canvas for high-quality custom prints.",
+    specSheetUrl: "https://www.fullsource.com/media/pdf/Gildan_64000_Spec_Sheet.pdf"
   },
   {
     id: "gildan-64000b",
@@ -41,7 +43,8 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Seamless tubular body",
       "CPSIA Tracking Label Compliant"
     ],
-    description: "Designed for comfort and durability, this youth tee brings the beloved softness of the adult Softstyle line to kids. Perfect for playground adventures and custom team gear."
+    description: "Designed for comfort and durability, this youth tee brings the beloved softness of the adult Softstyle line to kids. Perfect for playground adventures and custom team gear.",
+    specSheetUrl: "https://cloudfront.net/Gildan_64000B_Spec_Sheet.pdf"
   },
   {
     id: "gildan-18500",
@@ -57,7 +60,8 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Double-lined hood with drawcord",
       "Front pouch pocket"
     ],
-    description: "Stay cozy and warm with this classic, midweight hooded sweatshirt. Featuring a soft, pill-resistant fleece interior and a spacious front pocket, it's the ultimate go-to layer for chilly days."
+    description: "Stay cozy and warm with this classic, midweight hooded sweatshirt. Featuring a soft, pill-resistant fleece interior and a spacious front pocket, it's the ultimate go-to layer for chilly days.",
+    specSheetUrl: "https://districtcustomprinting.com/wp-content/uploads/2021/03/Gildan_18500_Spec_Sheet.pdf"
   },
   {
     id: "gildan-18000",
@@ -73,7 +77,8 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "1x1 rib with spandex cuffs and waistband",
       "Double-needle stitching"
     ],
-    description: "This essential crewneck sweatshirt delivers the perfect balance of warmth and comfort without the bulk. Its durable, pill-resistant fabric ensures long-lasting wear and a smooth printing surface."
+    description: "This essential crewneck sweatshirt delivers the perfect balance of warmth and comfort without the bulk. Its durable, pill-resistant fabric ensures long-lasting wear and a smooth printing surface.",
+    specSheetUrl: "https://www.fullsource.com/media/pdf/Gildan_18000_Spec_Sheet.pdf"
   },
   {
     id: "c2-sport-5100",
@@ -89,7 +94,8 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Antimicrobial properties",
       "Double-needle stitched hem"
     ],
-    description: "Engineered for active lifestyles, this performance tee wicks away sweat and controls odor to keep you cool and dry. Its ultra-lightweight fabric makes it a top choice for workouts and sports teams."
+    description: "Engineered for active lifestyles, this performance tee wicks away sweat and controls odor to keep you cool and dry. Its ultra-lightweight fabric makes it a top choice for workouts and sports teams.",
+    specSheetUrl: "https://pattillmanfoundation.org/wp-content/uploads/2023/02/C2-Sport_5100_Spec_Sheet.pdf"
   },
   {
     id: "comfort-colors-1717",
@@ -105,7 +111,8 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Seamless tubular body",
       "Highly pre-shrunk"
     ],
-    description: "Experience the ultimate lived-in comfort with this premium, heavyweight garment-dyed tee. Its relaxed fit and vintage wash give it a perfectly broken-in look and incredibly soft feel right from the first wear."
+    description: "Experience the ultimate lived-in comfort with this premium, heavyweight garment-dyed tee. Its relaxed fit and vintage wash give it a perfectly broken-in look and incredibly soft feel right from the first wear.",
+    specSheetUrl: "https://www.ssactivewear.com/p/comfort_colors/1717"
   },
   {
     id: "bella-canvas-3001",
@@ -121,7 +128,8 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Retail fit",
       "Shoulder-to-shoulder taping"
     ],
-    description: "A modern classic, this premium jersey tee features a tailored, retail-ready fit and unparalleled softness. Crafted from high-quality Airlume combed cotton, it offers a flawless, smooth surface."
+    description: "A modern classic, this premium jersey tee features a tailored, retail-ready fit and unparalleled softness. Crafted from high-quality Airlume combed cotton, it offers a flawless, smooth surface.",
+    specSheetUrl: "https://www.bellacanvas.com/spec/3001%20specs.pdf"
   },
   {
     id: "next-level-6210",
@@ -137,6 +145,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Slightly heathered appearance",
       "Side-seamed construction"
     ],
-    description: "Blending the best of cotton and polyester, this top-selling CVC tee delivers supreme softness, durability, and a subtle heathered look. Its lightweight, breathable fabric and flattering retail fit make it a premium choice."
+    description: "Blending the best of cotton and polyester, this top-selling CVC tee delivers supreme softness, durability, and a subtle heathered look. Its lightweight, breathable fabric and flattering retail fit make it a premium choice.",
+    specSheetUrl: "https://www.ssactivewear.com/p/next_level/6210"
   }
 ];

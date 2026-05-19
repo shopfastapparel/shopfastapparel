@@ -70,11 +70,20 @@ function ShirtColorsPage() {
                   </div>
                 </div>
 
-                <Button asChild className="w-full bg-magenta-brand hover:bg-magenta-brand/90 text-background">
-                  <Link to="/quote">
-                    Request a Quote
-                  </Link>
-                </Button>
+                <div className="flex flex-col gap-2 mt-auto">
+                  <Button asChild className="w-full bg-magenta-brand hover:bg-magenta-brand/90 text-background">
+                    <Link to="/quote">
+                      Request a Quote
+                    </Link>
+                  </Button>
+                  {apparel.specSheetUrl && (
+                    <Button asChild variant="outline" className="w-full border-ink text-ink hover:bg-ink hover:text-background">
+                      <a href={apparel.specSheetUrl} target="_blank" rel="noopener noreferrer">
+                        View Spec Sheet
+                      </a>
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           ))}
