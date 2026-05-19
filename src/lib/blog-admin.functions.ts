@@ -37,6 +37,33 @@ export const listAllBlogPosts = createServerFn({ method: "GET" })
     const { supabase, userId } = context;
     await ensureAdmin(supabase, userId);
 
+    // Auto-seed: if no posts exist in DB, import the static posts
+    const { count } = await supabase
+      .from("blog_posts")
+      .select("id", { count: "exact", head: true });
+
+    if (count === 0) {
+      const { BLOG_POSTS } = await import("@/lib/blog");
+      const rows = BLOG_POSTS.map((p) => ({
+        slug: p.slug,
+        title: p.title,
+        description: p.description,
+        body: p.body,
+        category: p.category,
+        city: p.city ?? null,
+        read_minutes: p.readMinutes,
+        author: p.author,
+        cover_gradient: p.cover.gradient,
+        cover_emoji: p.cover.emoji,
+        keywords: p.keywords,
+        status: "published" as const,
+        published_at: p.publishedAt,
+      }));
+      const { error: seedErr } = await supabase.from("blog_posts").insert(rows);
+      if (seedErr) console.error("[blog-seed]", seedErr.message);
+      else console.log(`[blog-seed] Seeded ${rows.length} static posts`);
+    }
+
     const { data, error } = await supabase
       .from("blog_posts")
       .select("*")
