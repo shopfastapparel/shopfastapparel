@@ -24,13 +24,13 @@ export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server
       ];
       const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Connect Supabase in Lovable Cloud.`;
       console.error(`[Supabase] ${message}`);
-      throw new Response(message, { status: 500 });
+      throw new Error(message);
     }
 
     const request = getRequest();
 
     if (!request?.headers) {
-      throw new Response('Unauthorized: No request headers available', { status: 401 });
+      throw new Error('Unauthorized');
     }
 
     // Try Authorization header first, then fall back to cookie
@@ -45,7 +45,7 @@ export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server
     }
 
     if (!token) {
-      throw new Response('Unauthorized: No token provided', { status: 401 });
+      throw new Error('Unauthorized');
     }
 
     const supabase = createClient<Database>(
@@ -68,7 +68,7 @@ export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server
     // Use getUser(token) to validate the JWT — getClaims does not exist in supabase-js v2
     const { data, error } = await supabase.auth.getUser(token);
     if (error || !data?.user) {
-      throw new Response('Unauthorized: Invalid token', { status: 401 });
+      throw new Error('Unauthorized');
     }
 
     return next({

@@ -37,10 +37,23 @@ function AdminBlog() {
 
   const load = useCallback(async () => {
     try {
+      // Ensure the auth cookie is set before the server call
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        navigate({ to: "/login" });
+        return;
+      }
+      document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+
       const data = await list();
       setPosts(data);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "Failed to load";
+    } catch (e: unknown) {
+      const msg =
+        e instanceof Error
+          ? e.message
+          : typeof e === "string"
+            ? e
+            : "Failed to load";
       if (msg.includes("Forbidden")) {
         toast.error("Your account isn't an admin yet. Ask the site owner to grant access.");
       } else if (msg.includes("Unauthorized")) {
@@ -55,12 +68,16 @@ function AdminBlog() {
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase.auth.getUser();
-      if (!data.user) {
+      try {
+        const { data } = await supabase.auth.getUser();
+        if (!data.user) {
+          navigate({ to: "/login" });
+          return;
+        }
+        load();
+      } catch {
         navigate({ to: "/login" });
-        return;
       }
-      load();
     })();
   }, [load, navigate]);
 
