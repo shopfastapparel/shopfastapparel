@@ -112,7 +112,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Highly pre-shrunk"
     ],
     description: "Experience the ultimate lived-in comfort with this premium, heavyweight garment-dyed tee. Its relaxed fit and vintage wash give it a perfectly broken-in look and incredibly soft feel right from the first wear.",
-    specSheetUrl: "https://www.ssactivewear.com/p/comfort_colors/1717"
+    specSheetUrl: "/specs/comfort-colors-1717.pdf"
   },
   {
     id: "bella-canvas-3001",
@@ -129,7 +129,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Shoulder-to-shoulder taping"
     ],
     description: "A modern classic, this premium jersey tee features a tailored, retail-ready fit and unparalleled softness. Crafted from high-quality Airlume combed cotton, it offers a flawless, smooth surface.",
-    specSheetUrl: "https://www.bellacanvas.com/spec/3001%20specs.pdf"
+    specSheetUrl: "/specs/bella-canvas-3001.pdf"
   },
   {
     id: "next-level-6210",
@@ -146,6 +146,6 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Side-seamed construction"
     ],
     description: "Blending the best of cotton and polyester, this top-selling CVC tee delivers supreme softness, durability, and a subtle heathered look. Its lightweight, breathable fabric and flattering retail fit make it a premium choice.",
-    specSheetUrl: "https://www.ssactivewear.com/p/next_level/6210"
+    specSheetUrl: "/specs/next-level-6210.pdf"
   }
 ];
