@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
@@ -64,29 +65,57 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const { products, loading } = useProducts(8);
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 },
+    },
+  };
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100, damping: 20 } },
+  };
+
+  const fadeInLeft = {
+    hidden: { opacity: 0, x: -40 },
+    show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 100, damping: 20 } },
+  };
+
+  const fadeInRight = {
+    hidden: { opacity: 0, x: 40 },
+    show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 100, damping: 20 } },
+  };
+
   return (
     <SiteLayout>
       {/* HERO */}
       <section className="relative bg-hero overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,oklch(0.88_0.18_95/.35),transparent_60%)]" />
         <div className="relative mx-auto max-w-7xl px-4 py-16 md:py-24 grid lg:grid-cols-2 gap-10 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ink text-background text-xs font-medium mb-5">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+          >
+            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ink text-background text-xs font-medium mb-5">
               <span className="h-1.5 w-1.5 rounded-full bg-yellow-brand" />
               LAWRENCEVILLE, GA · CUSTOM PRINT SHOP
-            </div>
-            <h1 className="font-display text-5xl md:text-7xl leading-[0.95] tracking-tight">
+            </motion.div>
+            <motion.h1 variants={fadeInUp} className="font-display text-5xl md:text-7xl leading-[0.95] tracking-tight">
               Custom T-Shirt
               <br />
               Printing,{" "}
               <span className="text-cmyk">done fast.</span>
-            </h1>
-            <p className="mt-6 text-lg text-foreground/80 max-w-xl">
+            </motion.h1>
+            <motion.p variants={fadeInUp} className="mt-6 text-lg text-foreground/80 max-w-xl">
               Lawrenceville's go-to custom apparel shop for DTF printing and promotional products.
               Serving Gwinnett County and all of metro Atlanta. Free mockups. Low minimums. Most orders completed in as little as 7 days
               turnaround. Free shipping on bulk orders.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            </motion.p>
+            <motion.div variants={fadeInUp} className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="shadow-pop border-2 border-ink">
                 <Link to="/quote">
                   Get Free Mockup <ArrowRight className="ml-2 h-4 w-4" />
@@ -95,8 +124,8 @@ function HomePage() {
               <Button asChild variant="outline" size="lg" className="border-2 border-ink">
                 <Link to="/shop">Shop Products</Link>
               </Button>
-            </div>
-            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium">
+            </motion.div>
+            <motion.div variants={fadeInUp} className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium">
               <span className="flex items-center gap-1.5">
                 <Zap className="h-4 w-4 text-magenta-brand" /> Most orders completed in as little as 7 days turnaround
               </span>
@@ -106,49 +135,72 @@ function HomePage() {
               <span className="flex items-center gap-1.5">
                 <Truck className="h-4 w-4 text-foreground" /> Free shipping on bulk orders
               </span>
-            </div>
-          </div>
-          <div className="relative">
-            <div className="absolute -inset-6 bg-cmyk opacity-20 blur-3xl rounded-full" />
+            </motion.div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, rotate: -2 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ type: "spring", stiffness: 80, damping: 20, delay: 0.3 }}
+            className="relative"
+          >
+            <div className="absolute -inset-6 bg-cmyk opacity-20 blur-3xl rounded-full animate-pulse" />
             <img
               src={heroShirts}
               alt="Custom printed t-shirts in cyan, magenta, and yellow"
-              className="relative rounded-2xl shadow-pop-lg border-2 border-ink"
+              className="relative rounded-2xl shadow-pop-lg border-2 border-ink hover:-translate-y-2 transition-transform duration-500"
             />
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* TRUST BAR */}
-      <section className="border-y bg-card">
-        <div className="mx-auto max-w-7xl px-4 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <section className="border-y bg-card overflow-hidden">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="mx-auto max-w-7xl px-4 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center"
+        >
           {[
             { n: "10K+", l: "Shirts printed" },
             { n: "500+", l: "Atlanta businesses served" },
             { n: "3-5", l: "Day turnaround" },
             { n: "5★", l: "Average customer rating" },
           ].map((s) => (
-            <div key={s.l}>
-              <div className="font-display text-3xl">{s.n}</div>
-              <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">
+            <motion.div key={s.l} variants={fadeInUp}>
+              <div className="font-display text-4xl text-ink">{s.n}</div>
+              <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground mt-1">
                 {s.l}
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* SERVICES */}
-      <section className="mx-auto max-w-7xl px-4 py-20">
-        <div className="max-w-2xl mb-12">
+      <section className="mx-auto max-w-7xl px-4 py-20 overflow-hidden">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={fadeInLeft}
+          className="max-w-2xl mb-12"
+        >
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-magenta-brand">
             What we print
           </p>
           <h2 className="mt-2 font-display text-4xl md:text-5xl">
             Custom apparel for every Atlanta business, team, and event.
           </h2>
-        </div>
-        <div className="grid md:grid-cols-3 gap-6">
+        </motion.div>
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid md:grid-cols-3 gap-6"
+        >
           {[
             {
               icon: PaintBucket,
@@ -172,22 +224,23 @@ function HomePage() {
               color: "bg-yellow-brand",
             },
           ].map((s) => (
-            <Link
-              key={s.title}
-              to={s.to}
-              className="group bg-card border-2 border-ink rounded-xl p-6 hover:shadow-pop transition-all hover:-translate-y-1"
-            >
-              <div className={`h-12 w-12 rounded-lg grid place-items-center ${s.color} mb-5`}>
-                <s.icon className="h-6 w-6 text-ink" />
-              </div>
-              <h3 className="font-display text-2xl">{s.title}</h3>
-              <p className="mt-2 text-muted-foreground">{s.desc}</p>
-              <span className="mt-4 inline-flex items-center text-sm font-semibold group-hover:text-magenta-brand">
-                Learn more <ArrowRight className="ml-1 h-4 w-4" />
-              </span>
-            </Link>
+            <motion.div key={s.title} variants={fadeInUp}>
+              <Link
+                to={s.to}
+                className="group block bg-card border-2 border-ink rounded-xl p-6 hover:shadow-pop transition-all hover:-translate-y-1 h-full"
+              >
+                <div className={`h-12 w-12 rounded-lg grid place-items-center ${s.color} mb-5 group-hover:scale-110 transition-transform`}>
+                  <s.icon className="h-6 w-6 text-ink" />
+                </div>
+                <h3 className="font-display text-2xl">{s.title}</h3>
+                <p className="mt-2 text-muted-foreground">{s.desc}</p>
+                <span className="mt-4 inline-flex items-center text-sm font-semibold group-hover:text-magenta-brand">
+                  Learn more <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* PRODUCTS */}
@@ -228,8 +281,14 @@ function HomePage() {
       </section>
 
       {/* LOCATIONS */}
-      <section className="mx-auto max-w-7xl px-4 py-20">
-        <div className="max-w-2xl mb-10">
+      <section className="mx-auto max-w-7xl px-4 py-20 overflow-hidden">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={fadeInLeft}
+          className="max-w-2xl mb-10"
+        >
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-yellow-brand">
             Serving metro Atlanta
           </p>
@@ -237,25 +296,32 @@ function HomePage() {
           <p className="mt-4 text-muted-foreground">
             Free mockups and most orders completed in as little as 7 days across the metro Atlanta area.
           </p>
-        </div>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+        </motion.div>
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid sm:grid-cols-2 md:grid-cols-3 gap-4"
+        >
           {LOCATIONS.map((l) => (
-            <Link
-              key={l.slug}
-              to="/locations/$slug"
-              params={{ slug: l.slug }}
-              className="group bg-card border-2 border-ink rounded-xl p-5 hover:bg-ink hover:text-background transition-colors"
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="font-display text-xl">
-                  {l.city}, {l.state}
-                </h3>
-                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </div>
-              <p className="mt-1 text-xs uppercase tracking-wider opacity-70">{l.region}</p>
-            </Link>
+            <motion.div key={l.slug} variants={fadeInUp}>
+              <Link
+                to="/locations/$slug"
+                params={{ slug: l.slug }}
+                className="block group bg-card border-2 border-ink rounded-xl p-5 hover:bg-ink hover:text-background hover:-translate-y-1 hover:shadow-pop transition-all"
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="font-display text-xl">
+                    {l.city}, {l.state}
+                  </h3>
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-wider opacity-70 group-hover:text-yellow-brand transition-colors">{l.region}</p>
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       <Testimonials />
