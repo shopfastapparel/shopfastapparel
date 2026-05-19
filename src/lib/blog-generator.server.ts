@@ -1,4 +1,4 @@
-import { generateText, Output } from "ai";
+import { generateObject } from "ai";
 import { z } from "zod";
 import { getGeminiModel } from "./ai-gateway.server";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
@@ -123,28 +123,24 @@ ${usedTitles.slice(0, 30).map((t) => `- ${t}`).join("\n")}
 
 Pick a fresh, specific angle (don't repeat above). Make the title compelling and keyword-rich. Output structured fields plus the markdown body.`;
 
-  const { experimental_output } = await generateText({
+  const { object: out } = await generateObject({
     model,
     system: systemPrompt,
     prompt: userPrompt,
-    experimental_output: Output.object({
-      schema: z.object({
-        title: z.string().min(20).max(120),
-        description: z.string().min(80).max(220),
-        keywords: z.array(z.string()).min(3).max(8),
-        readMinutes: z.number().int().min(3).max(10),
-        emoji: z.string().min(1).max(4),
-        imageSearchQuery: z
-          .string()
-          .describe(
-            "A short 2-4 word Unsplash search query for a relevant cover photo, e.g. 'custom t-shirts printing' or 'youth sports team'",
-          ),
-        body: z.string().min(400),
-      }),
+    schema: z.object({
+      title: z.string(),
+      description: z.string(),
+      keywords: z.array(z.string()),
+      readMinutes: z.number().int(),
+      emoji: z.string(),
+      imageSearchQuery: z
+        .string()
+        .describe(
+          "A short 2-4 word Unsplash search query for a relevant cover photo, e.g. 'custom t-shirts printing' or 'youth sports team'",
+        ),
+      body: z.string(),
     }),
   });
-
-  const out = experimental_output;
 
   // Fetch a cover image from Unsplash
   const coverImage = await fetchCoverImage(out.imageSearchQuery);
