@@ -11,9 +11,10 @@ interface ServicePageProps {
   features: { title: string; desc: string }[];
   bullets: string[];
   faqs?: { q: string; a: string }[];
+  gallery?: { src: string; alt: string }[];
 }
 
-export function ServicePage({ eyebrow, title, intro, features, bullets, faqs }: ServicePageProps) {
+export function ServicePage({ eyebrow, title, intro, features, bullets, faqs, gallery }: ServicePageProps) {
   return (
     <SiteLayout>
       <section className="bg-hero border-b">
@@ -84,6 +85,27 @@ export function ServicePage({ eyebrow, title, intro, features, bullets, faqs }: 
           </div>
         </div>
       </section>
+
+      {gallery && gallery.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 py-16">
+          <h2 className="font-display text-4xl mb-8 text-center">See our work</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {gallery.map((img, i) => (
+              <div
+                key={i}
+                className="rounded-xl border-2 border-ink overflow-hidden shadow-pop hover:-translate-y-1 transition-transform group"
+              >
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  className="w-full h-auto aspect-square object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {faqs && faqs.length > 0 && (
         <section className="mx-auto max-w-4xl px-4 py-16">

@@ -73,6 +73,20 @@ export const Route = createFileRoute("/services/custom-tshirts")({
           a: "AI, EPS, PDF, PNG, and JPG. We can also help clean up or recreate artwork if needed.",
         },
       ]}
+      gallery={[
+        {
+          src: "/images/dtf-heat-press.png",
+          alt: "Worker operating a double platen heat press machine",
+        },
+        {
+          src: "/images/dtf-shirts-stacked.png",
+          alt: "Stack of vibrant custom printed DTF t-shirts",
+        },
+        {
+          src: "/images/dtf-shirts-boxed.png",
+          alt: "Custom t-shirts neatly folded and packed in shipping boxes",
+        },
+      ]}
     />
   ),
 });
