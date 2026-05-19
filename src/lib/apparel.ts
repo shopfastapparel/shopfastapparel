@@ -44,7 +44,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "CPSIA Tracking Label Compliant"
     ],
     description: "Designed for comfort and durability, this youth tee brings the beloved softness of the adult Softstyle line to kids. Perfect for playground adventures and custom team gear.",
-    specSheetUrl: "https://cloudfront.net/Gildan_64000B_Spec_Sheet.pdf"
+    specSheetUrl: "/specs/gildan-64000b.pdf"
   },
   {
     id: "gildan-18500",
@@ -78,7 +78,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Double-needle stitching"
     ],
     description: "This essential crewneck sweatshirt delivers the perfect balance of warmth and comfort without the bulk. Its durable, pill-resistant fabric ensures long-lasting wear and a smooth printing surface.",
-    specSheetUrl: "https://www.fullsource.com/media/pdf/Gildan_18000_Spec_Sheet.pdf"
+    specSheetUrl: "/specs/gildan-18000.pdf"
   },
   {
     id: "c2-sport-5100",
@@ -95,7 +95,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Double-needle stitched hem"
     ],
     description: "Engineered for active lifestyles, this performance tee wicks away sweat and controls odor to keep you cool and dry. Its ultra-lightweight fabric makes it a top choice for workouts and sports teams.",
-    specSheetUrl: "https://pattillmanfoundation.org/wp-content/uploads/2023/02/C2-Sport_5100_Spec_Sheet.pdf"
+    specSheetUrl: "/specs/c2-sport-5100.pdf"
   },
   {
     id: "comfort-colors-1717",
