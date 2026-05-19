@@ -11,7 +11,7 @@ export const listAllBlogPosts = createServerFn({ method: "GET" })
       .select("role")
       .eq("user_id", userId);
     const isAdmin = roles?.some((r) => r.role === "admin") ?? false;
-    if (!isAdmin) throw new Response("Forbidden", { status: 403 });
+    if (!isAdmin) throw new Error("Forbidden");
 
     const { data, error } = await supabase
       .from("blog_posts")
@@ -55,7 +55,7 @@ export const generateBlogPostNow = createServerFn({ method: "POST" })
       .select("role")
       .eq("user_id", userId);
     const isAdmin = roles?.some((r) => r.role === "admin") ?? false;
-    if (!isAdmin) throw new Response("Forbidden", { status: 403 });
+    if (!isAdmin) throw new Error("Forbidden");
 
     const { generateAndStoreBlogPost } = await import("@/lib/blog-generator.server");
     const post = await generateAndStoreBlogPost();
