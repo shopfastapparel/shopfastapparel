@@ -1,6 +1,6 @@
 import { generateText, Output } from "ai";
 import { z } from "zod";
-import { createLovableAiGatewayProvider } from "./ai-gateway.server";
+import { getGeminiModel } from "./ai-gateway.server";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { BLOG_POSTS } from "./blog";
 
@@ -51,9 +51,44 @@ function slugify(s: string) {
     .slice(0, 80);
 }
 
+/**
+ * Fetch a relevant cover photo from Unsplash.
+ * Falls back gracefully if the key is missing or the request fails.
+ */
+async function fetchCoverImage(
+  query: string,
+): Promise<{ url: string; credit: string } | null> {
+  const key = process.env.UNSPLASH_ACCESS_KEY;
+  if (!key) {
+    console.warn("[blog-gen] No UNSPLASH_ACCESS_KEY, skipping cover image");
+    return null;
+  }
+
+  try {
+    const res = await fetch(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=5&orientation=landscape`,
+      { headers: { Authorization: `Client-ID ${key}` } },
+    );
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    const photos = data.results ?? [];
+    if (photos.length === 0) return null;
+
+    // Pick a random photo from top 5
+    const photo = photos[Math.floor(Math.random() * photos.length)];
+    return {
+      url: photo.urls.regular, // 1080px wide
+      credit: `Photo by ${photo.user.name} on Unsplash`,
+    };
+  } catch (e) {
+    console.error("[blog-gen] Unsplash fetch failed:", e);
+    return null;
+  }
+}
+
 export async function generateAndStoreBlogPost() {
-  const apiKey = process.env.LOVABLE_API_KEY;
-  if (!apiKey) throw new Error("Missing LOVABLE_API_KEY");
+  const model = getGeminiModel();
 
   // Pull existing slugs/titles to avoid duplicates
   const { data: existing } = await supabaseAdmin
@@ -69,11 +104,10 @@ export async function generateAndStoreBlogPost() {
 
   // Bias: ~60% local, 40% industry-general
   const localFocus = Math.random() < 0.6;
-  const category = localFocus ? pick(["Local Guides", "Team & Bulk", "Custom T-Shirts"]) : pick(CATEGORIES);
+  const category = localFocus
+    ? pick(["Local Guides", "Team & Bulk", "Custom T-Shirts"])
+    : pick(CATEGORIES);
   const city = localFocus ? pick(ATL_CITIES) : null;
-
-  const gateway = createLovableAiGatewayProvider(apiKey);
-  const model = gateway("google/gemini-2.5-pro");
 
   const systemPrompt = `You are an SEO content writer for Fast Apparel, a Lawrenceville, GA-based DTF (direct-to-film) custom t-shirt and promotional-product printing company serving metro Atlanta. We do DTF only — low minimums, no setup fees, full color, ships free on bulk orders, ~7-day turnaround.
 
@@ -100,16 +134,29 @@ Pick a fresh, specific angle (don't repeat above). Make the title compelling and
         keywords: z.array(z.string()).min(3).max(8),
         readMinutes: z.number().int().min(3).max(10),
         emoji: z.string().min(1).max(4),
+        imageSearchQuery: z
+          .string()
+          .describe(
+            "A short 2-4 word Unsplash search query for a relevant cover photo, e.g. 'custom t-shirts printing' or 'youth sports team'",
+          ),
         body: z.string().min(400),
       }),
     }),
   });
 
   const out = experimental_output;
+
+  // Fetch a cover image from Unsplash
+  const coverImage = await fetchCoverImage(out.imageSearchQuery);
+
   let slug = slugify(out.title);
   if (!slug) slug = `post-${Date.now()}`;
+
   // Ensure uniqueness
-  const allSlugs = new Set([...BLOG_POSTS.map((p) => p.slug), ...(existing?.map((e) => e.slug) ?? [])]);
+  const allSlugs = new Set([
+    ...BLOG_POSTS.map((p) => p.slug),
+    ...(existing?.map((e) => e.slug) ?? []),
+  ]);
   let unique = slug;
   let i = 2;
   while (allSlugs.has(unique)) {
@@ -130,6 +177,8 @@ Pick a fresh, specific angle (don't repeat above). Make the title compelling and
       keywords: out.keywords,
       body: out.body,
       status: "draft",
+      cover_image_url: coverImage?.url ?? null,
+      cover_image_credit: coverImage?.credit ?? null,
     })
     .select()
     .single();

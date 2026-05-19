@@ -1,11 +1,11 @@
-import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+import { google } from "@ai-sdk/google";
 
-export const createLovableAiGatewayProvider = (lovableApiKey: string) =>
-  createOpenAICompatible({
-    name: "lovable",
-    baseURL: "https://ai.gateway.lovable.dev/v1",
-    headers: {
-      "Lovable-API-Key": lovableApiKey,
-      "X-Lovable-AIG-SDK": "vercel-ai-sdk",
-    },
-  });
+/**
+ * Creates a Google Gemini model instance for blog generation.
+ * Uses GOOGLE_GENERATIVE_AI_API_KEY from environment.
+ */
+export function getGeminiModel(modelId = "gemini-2.5-flash-preview-05-20") {
+  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+  if (!apiKey) throw new Error("Missing GOOGLE_GENERATIVE_AI_API_KEY");
+  return google(modelId);
+}
