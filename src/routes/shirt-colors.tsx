@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { APPAREL_STYLES } from "../lib/apparel";
 import { Button } from "../components/ui/button";
+import { SiteLayout } from "../components/SiteLayout";
 import { Check } from "lucide-react";
 
 export const Route = createFileRoute("/shirt-colors")({
@@ -9,8 +10,9 @@ export const Route = createFileRoute("/shirt-colors")({
 
 function ShirtColorsPage() {
   return (
-    <div className="bg-background min-h-screen">
-      {/* HERO SECTION */}
+    <SiteLayout>
+      <div className="bg-background min-h-screen">
+        {/* HERO SECTION */}
       <section className="bg-ink text-background py-24 px-4 border-b-2 border-ink">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-yellow-brand mb-4">
@@ -103,5 +105,6 @@ function ShirtColorsPage() {
         </div>
       </section>
     </div>
+    </SiteLayout>
   );
 }
