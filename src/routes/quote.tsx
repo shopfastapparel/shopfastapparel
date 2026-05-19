@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { submitQuoteRequest } from "@/lib/quote.functions";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -178,6 +179,7 @@ function validateEmail(email: string) {
 function QuotePage() {
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [state, setState] = useState<QuoteState>({
     service: "",
     quantity: "",
@@ -253,37 +255,40 @@ function QuotePage() {
     );
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const serviceLabel = SERVICES.find((s) => s.key === state.service)?.label ?? "";
-    const turnaroundLabel = TURNAROUNDS.find((t) => t.key === state.turnaround);
-    const lines = [
-      `Name: ${state.name}`,
-      `Company: ${state.company || "—"}`,
-      `Email: ${state.email}`,
-      `Phone: ${state.phone || "—"}`,
-      `City: ${state.city || "—"}`,
-      "",
-      `Service: ${serviceLabel}`,
-      `Quantity: ${state.quantity}`,
-      `Turnaround: ${turnaroundLabel?.label} (${turnaroundLabel?.estimate})`,
-      `Deadline: ${state.deadline || "—"}`,
-      "",
-      "Project details:",
-      state.details,
-      "",
-      `Files attached (${state.files.length}):`,
-      ...state.files.map((f) => `- ${f.name} (${formatBytes(f.size)})`),
-      "",
-      "(Files were attached in the quote builder — please reply and we'll share an upload link if needed.)",
-    ];
-    const subject = `Quote request — ${serviceLabel} — ${state.name}`;
-    window.location.href = `mailto:${PRIMARY_EMAIL}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(lines.join("\n"))}`;
-    setSubmitted(true);
-    toast.success("Quote request prepared", {
-      description: "Your email client should open. Or call us at " + PRIMARY_PHONE,
-    });
+    const turnaroundInfo = TURNAROUNDS.find((t) => t.key === state.turnaround);
+
+    setSubmitting(true);
+    try {
+      await submitQuoteRequest({
+        data: {
+          service: serviceLabel,
+          quantity: state.quantity,
+          turnaround: turnaroundInfo?.label ?? "",
+          turnaroundEstimate: turnaroundInfo?.estimate ?? "",
+          deadline: state.deadline || undefined,
+          city: state.city || undefined,
+          details: state.details,
+          fileNames: state.files.map((f) => f.name),
+          name: state.name,
+          company: state.company || undefined,
+          email: state.email,
+          phone: state.phone || undefined,
+        },
+      });
+      setSubmitted(true);
+      toast.success("Quote request sent!", {
+        description: "We'll respond within 24 hours with pricing and a free mockup.",
+      });
+    } catch (e) {
+      console.error("[quote] Submit failed:", e);
+      toast.error("Failed to send quote", {
+        description: "Please try again or call us at " + PRIMARY_PHONE,
+      });
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   if (submitted) {
@@ -638,10 +643,22 @@ function QuotePage() {
                 type="button"
                 size="lg"
                 onClick={handleSubmit}
-                disabled={!canAdvance}
+                disabled={!canAdvance || submitting}
                 className="shadow-pop border-2 border-ink"
               >
-                <Send className="h-4 w-4 mr-2" /> Send Quote Request
+                {submitting ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Sending…
+                  </>
+                ) : (
+                  <>
+                    <Send className="h-4 w-4 mr-2" /> Send Quote Request
+                  </>
+                )}
               </Button>
             )}
           </div>

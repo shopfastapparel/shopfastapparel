@@ -1,0 +1,166 @@
+import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
+import { Resend } from "resend";
+import { PRIMARY_EMAIL, PRIMARY_PHONE } from "@/lib/locations";
+
+const quoteSchema = z.object({
+  service: z.string().min(1),
+  quantity: z.string().min(1),
+  turnaround: z.string().min(1),
+  turnaroundEstimate: z.string(),
+  deadline: z.string().optional(),
+  city: z.string().optional(),
+  details: z.string().min(1),
+  fileNames: z.array(z.string()),
+  name: z.string().min(1),
+  company: z.string().optional(),
+  email: z.string().email(),
+  phone: z.string().optional(),
+});
+
+type QuoteData = z.infer<typeof quoteSchema>;
+
+function buildOwnerEmailHtml(data: QuoteData): string {
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a2e; margin: 0; padding: 0; background: #f4f4f5; }
+    .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; }
+    .header { background: linear-gradient(135deg, #00d4ff, #ff2d8a); padding: 24px 32px; color: #fff; }
+    .header h1 { margin: 0; font-size: 22px; }
+    .header p { margin: 8px 0 0; opacity: 0.9; font-size: 14px; }
+    .body { padding: 24px 32px; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+    td { padding: 10px 12px; border-bottom: 1px solid #e4e4e7; font-size: 14px; }
+    td:first-child { color: #71717a; width: 140px; }
+    td:last-child { font-weight: 600; }
+    .details { background: #f4f4f5; border-radius: 8px; padding: 16px; margin: 16px 0; font-size: 14px; white-space: pre-wrap; }
+    .cta { display: inline-block; background: #ff2d8a; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; margin-top: 16px; }
+    .footer { padding: 16px 32px; background: #f4f4f5; font-size: 12px; color: #71717a; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📬 New Quote Request</h1>
+      <p>From ${data.name}${data.company ? ` · ${data.company}` : ""}</p>
+    </div>
+    <div class="body">
+      <table>
+        <tr><td>Name</td><td>${data.name}</td></tr>
+        ${data.company ? `<tr><td>Company</td><td>${data.company}</td></tr>` : ""}
+        <tr><td>Email</td><td><a href="mailto:${data.email}">${data.email}</a></td></tr>
+        ${data.phone ? `<tr><td>Phone</td><td><a href="tel:${data.phone}">${data.phone}</a></td></tr>` : ""}
+        ${data.city ? `<tr><td>City</td><td>${data.city}</td></tr>` : ""}
+        <tr><td>Service</td><td>${data.service}</td></tr>
+        <tr><td>Quantity</td><td>${data.quantity}</td></tr>
+        <tr><td>Turnaround</td><td>${data.turnaround} · ${data.turnaroundEstimate}</td></tr>
+        ${data.deadline ? `<tr><td>Deadline</td><td>${data.deadline}</td></tr>` : ""}
+        <tr><td>Files</td><td>${data.fileNames.length > 0 ? data.fileNames.join(", ") : "None attached"}</td></tr>
+      </table>
+
+      <strong>Project Details:</strong>
+      <div class="details">${data.details}</div>
+
+      <a href="mailto:${data.email}?subject=Re: Your Fast Apparel Quote Request" class="cta">
+        Reply to ${data.name}
+      </a>
+    </div>
+    <div class="footer">
+      Sent from the Fast Apparel quote builder · shopfastapparel.com
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+function buildCustomerEmailHtml(data: QuoteData): string {
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a2e; margin: 0; padding: 0; background: #f4f4f5; }
+    .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; }
+    .header { background: linear-gradient(135deg, #00d4ff, #ff2d8a); padding: 24px 32px; color: #fff; }
+    .header h1 { margin: 0; font-size: 22px; }
+    .body { padding: 24px 32px; font-size: 15px; line-height: 1.6; }
+    .summary { background: #f4f4f5; border-radius: 8px; padding: 16px; margin: 16px 0; font-size: 14px; }
+    .summary strong { display: block; margin-bottom: 8px; }
+    .footer { padding: 16px 32px; background: #f4f4f5; font-size: 12px; color: #71717a; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>✅ We got your quote request!</h1>
+    </div>
+    <div class="body">
+      <p>Hey ${data.name.split(" ")[0]},</p>
+      <p>Thanks for reaching out! We received your quote request and will get back to you with <strong>pricing and a free digital mockup within 24 hours</strong>.</p>
+
+      <div class="summary">
+        <strong>Your request summary:</strong>
+        Service: ${data.service}<br>
+        Quantity: ${data.quantity}<br>
+        Turnaround: ${data.turnaround} · ${data.turnaroundEstimate}<br>
+        ${data.city ? `City: ${data.city}<br>` : ""}
+        ${data.deadline ? `Deadline: ${data.deadline}<br>` : ""}
+      </div>
+
+      <p>Need it sooner? Give us a call at <strong>${PRIMARY_PHONE}</strong>.</p>
+      <p>— The Fast Apparel Team</p>
+    </div>
+    <div class="footer">
+      Fast Apparel · Lawrenceville, GA · <a href="https://shopfastapparel.com">shopfastapparel.com</a>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+export const submitQuoteRequest = createServerFn({ method: "POST" })
+  .inputValidator((d) => quoteSchema.parse(d))
+  .handler(async ({ data }) => {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      throw new Error("Email service not configured");
+    }
+
+    const resend = new Resend(apiKey);
+
+    // Determine sender — use verified domain if available, otherwise Resend default
+    const from = process.env.RESEND_FROM_EMAIL || "Fast Apparel Quotes <onboarding@resend.dev>";
+
+    // Send email to shop owner
+    const { error: ownerError } = await resend.emails.send({
+      from,
+      to: [PRIMARY_EMAIL],
+      subject: `Quote Request — ${data.service} — ${data.name}`,
+      html: buildOwnerEmailHtml(data),
+      replyTo: data.email,
+    });
+
+    if (ownerError) {
+      console.error("[quote] Owner email failed:", ownerError);
+      throw new Error("Failed to send quote request");
+    }
+
+    // Send confirmation email to customer
+    try {
+      await resend.emails.send({
+        from,
+        to: [data.email],
+        subject: "We got your quote request! — Fast Apparel",
+        html: buildCustomerEmailHtml(data),
+      });
+    } catch (e) {
+      // Don't fail the whole request if confirmation email fails
+      console.error("[quote] Customer confirmation failed:", e);
+    }
+
+    console.log(`[quote] Quote submitted: ${data.service} from ${data.name} (${data.email})`);
+    return { ok: true };
+  });
