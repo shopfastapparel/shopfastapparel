@@ -2,16 +2,40 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
+/**
+ * Bootstrap helper: if no admins exist yet, auto-promote the current user.
+ * Once at least one admin exists, this becomes a simple role check.
+ */
+async function ensureAdmin(supabase: any, userId: string) {
+  const { data: roles } = await supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", userId);
+  const isAdmin = roles?.some((r: any) => r.role === "admin") ?? false;
+  if (isAdmin) return;
+
+  // Check if ANY admin exists
+  const { data: allAdmins } = await supabase
+    .from("user_roles")
+    .select("id")
+    .eq("role", "admin")
+    .limit(1);
+
+  if (!allAdmins || allAdmins.length === 0) {
+    // No admins exist — bootstrap: promote this user
+    await supabase.from("user_roles").insert({ user_id: userId, role: "admin" });
+    console.log(`[Bootstrap] Auto-promoted user ${userId} to admin (first user)`);
+    return;
+  }
+
+  throw new Error("Forbidden");
+}
+
 export const listAllBlogPosts = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
-    const { data: roles } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId);
-    const isAdmin = roles?.some((r) => r.role === "admin") ?? false;
-    if (!isAdmin) throw new Error("Forbidden");
+    await ensureAdmin(supabase, userId);
 
     const { data, error } = await supabase
       .from("blog_posts")
@@ -50,12 +74,7 @@ export const generateBlogPostNow = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
-    const { data: roles } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId);
-    const isAdmin = roles?.some((r) => r.role === "admin") ?? false;
-    if (!isAdmin) throw new Error("Forbidden");
+    await ensureAdmin(supabase, userId);
 
     const { generateAndStoreBlogPost } = await import("@/lib/blog-generator.server");
     const post = await generateAndStoreBlogPost();
