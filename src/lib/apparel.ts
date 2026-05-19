@@ -27,7 +27,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "High stitch density"
     ],
     description: "The Gildan Softstyle offers an incredibly soft feel and a modern classic fit, making it an everyday staple. With its lightweight, breathable fabric, it provides a perfect canvas for high-quality custom prints.",
-    specSheetUrl: "https://www.fullsource.com/media/pdf/Gildan_64000_Spec_Sheet.pdf"
+    specSheetUrl: "/specs/gildan-64000.pdf"
   },
   {
     id: "gildan-64000b",
@@ -61,7 +61,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Front pouch pocket"
     ],
     description: "Stay cozy and warm with this classic, midweight hooded sweatshirt. Featuring a soft, pill-resistant fleece interior and a spacious front pocket, it's the ultimate go-to layer for chilly days.",
-    specSheetUrl: "https://districtcustomprinting.com/wp-content/uploads/2021/03/Gildan_18500_Spec_Sheet.pdf"
+    specSheetUrl: "/specs/gildan-18500.pdf"
   },
   {
     id: "gildan-18000",
