@@ -108,7 +108,7 @@ export function Testimonials() {
             Fresh off the press — Recent Customer Projects
           </div>
           <div className="flex animate-marquee py-8" style={{ width: 'max-content' }}>
-            {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((num, idx) => (
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num, idx) => (
               <div 
                 key={idx} 
                 className="w-64 h-64 md:w-80 md:h-80 flex-shrink-0 mx-4 border-2 border-ink rounded-xl overflow-hidden shadow-pop bg-background transition-transform duration-300 hover:-translate-y-2"
