@@ -1,4 +1,4 @@
-import { Star, BadgeCheck } from "lucide-react";
+import { Star, BadgeCheck, ExternalLink } from "lucide-react";
 
 export type Review = {
   name: string;
@@ -82,24 +82,34 @@ export function Testimonials() {
   return (
     <section className="bg-background border-y-2 border-ink">
       <div className="mx-auto max-w-7xl px-4 py-20">
-        <div className="max-w-2xl mb-12">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-magenta-brand">
-            Real customer reviews
-          </p>
-          <h2 className="mt-2 font-display text-4xl md:text-5xl">
-            We let our customers speak for us.
-          </h2>
-          <div className="mt-4 flex items-center gap-3">
-            <div className="flex">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="h-5 w-5 fill-yellow-brand text-yellow-brand" />
-              ))}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
+          <div className="max-w-2xl">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-magenta-brand">
+              Real customer reviews
+            </p>
+            <h2 className="mt-2 font-display text-4xl md:text-5xl">
+              We let our customers speak for us.
+            </h2>
+            <div className="mt-4 flex items-center gap-3">
+              <div className="flex">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-5 w-5 fill-yellow-brand text-yellow-brand" />
+                ))}
+              </div>
+              <span className="font-semibold">5.0</span>
+              <span className="text-muted-foreground text-sm">
+                · Based on 42+ Google reviews
+              </span>
             </div>
-            <span className="font-semibold">5.00</span>
-            <span className="text-muted-foreground text-sm">
-              · Based on 42+ verified reviews
-            </span>
           </div>
+          <a
+            href="https://g.page/r/your-google-review-link" // User can update this link later
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 border-2 border-ink rounded-lg font-bold text-sm hover:bg-ink hover:text-background transition-colors shadow-pop whitespace-nowrap"
+          >
+            Review us on Google <ExternalLink className="h-4 w-4" />
+          </a>
         </div>
 
         {/* RECENT PROJECTS SCROLLING MARQUEE */}
@@ -114,7 +124,7 @@ export function Testimonials() {
                 className="w-64 h-64 md:w-80 md:h-80 flex-shrink-0 mx-4 border-2 border-ink rounded-xl overflow-hidden shadow-pop bg-background transition-transform duration-300 hover:-translate-y-2"
               >
                 <img 
-                  src={`/images/projects/project-${num}.png`} 
+                  src={`/images/projects/project-${num}.jpg`} 
                   alt={`Customer project ${num}`}
                   className="w-full h-full object-cover"
                   loading="lazy"

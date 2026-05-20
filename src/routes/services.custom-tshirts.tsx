@@ -75,15 +75,15 @@ export const Route = createFileRoute("/services/custom-tshirts")({
       ]}
       gallery={[
         {
-          src: "/images/dtf-heat-press.png",
+          src: "/images/dtf-heat-press.jpg",
           alt: "Worker operating a double platen heat press machine",
         },
         {
-          src: "/images/dtf-shirts-stacked.png",
+          src: "/images/dtf-shirts-stacked.jpg",
           alt: "Stack of vibrant custom printed DTF t-shirts",
         },
         {
-          src: "/images/dtf-shirts-boxed.png",
+          src: "/images/dtf-shirts-boxed.jpg",
           alt: "Custom t-shirts neatly folded and packed in shipping boxes",
         },
       ]}

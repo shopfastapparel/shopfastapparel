@@ -18,7 +18,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
     name: "Gildan Softstyle T-Shirt",
     brand: "Gildan",
     model: "64000",
-    image: "/images/apparel/gildan-64000.png",
+    image: "/images/apparel/gildan-64000.jpg",
     fabricComposition: "100% ring-spun cotton (Heathers are 65/35 poly/cotton)",
     fabricWeight: "4.5 oz/yd²",
     features: [
@@ -36,7 +36,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
     name: "Gildan Softstyle Youth T-Shirt",
     brand: "Gildan",
     model: "64000B",
-    image: "/images/apparel/gildan-64000b.png",
+    image: "/images/apparel/gildan-64000b.jpg",
     fabricComposition: "100% ring-spun US cotton",
     fabricWeight: "4.5 oz/yd²",
     features: [
@@ -53,7 +53,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
     name: "Gildan Heavy Blend Hoodie",
     brand: "Gildan",
     model: "18500",
-    image: "/images/apparel/gildan-18500.png",
+    image: "/images/apparel/gildan-18500.jpg",
     fabricComposition: "50% cotton, 50% polyester",
     fabricWeight: "8.0 oz/yd²",
     features: [
@@ -70,7 +70,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
     name: "Gildan Heavy Blend Crewneck",
     brand: "Gildan",
     model: "18000",
-    image: "/images/apparel/gildan-18000.png",
+    image: "/images/apparel/gildan-18000.jpg",
     fabricComposition: "50% cotton, 50% polyester",
     fabricWeight: "8.0 oz/yd²",
     features: [
@@ -87,7 +87,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
     name: "C2 Sport Performance T-Shirt",
     brand: "C2 Sport",
     model: "5100",
-    image: "/images/apparel/c2-sport-5100.png",
+    image: "/images/apparel/c2-sport-5100.jpg",
     fabricComposition: "100% polyester",
     fabricWeight: "3.5 oz/yd²",
     features: [
@@ -104,7 +104,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
     name: "Comfort Colors Heavyweight T-Shirt",
     brand: "Comfort Colors",
     model: "1717",
-    image: "/images/apparel/comfort-colors-1717.png",
+    image: "/images/apparel/comfort-colors-1717.jpg",
     fabricComposition: "100% ring-spun US cotton",
     fabricWeight: "6.1 oz/yd²",
     features: [
@@ -122,7 +122,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
     name: "Bella Canvas Premium Jersey T-Shirt",
     brand: "Bella Canvas",
     model: "3001",
-    image: "/images/apparel/bella-canvas-3001.png",
+    image: "/images/apparel/bella-canvas-3001.jpg",
     fabricComposition: "100% Airlume combed and ring-spun cotton",
     fabricWeight: "4.2 oz/yd²",
     features: [
@@ -140,7 +140,7 @@ export const APPAREL_STYLES: ApparelStyle[] = [
     name: "Next Level CVC Crew T-Shirt",
     brand: "Next Level",
     model: "6210",
-    image: "/images/apparel/next-level-6210.png",
+    image: "/images/apparel/next-level-6210.jpg",
     fabricComposition: "60% combed ring-spun cotton, 40% polyester jersey",
     fabricWeight: "4.3 oz/yd²",
     features: [

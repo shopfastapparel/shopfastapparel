@@ -185,6 +185,51 @@ function LocationPage() {
           </div>
         </aside>
       </section>
+
+      {/* LOCATION FAQ */}
+      <section className="bg-muted border-t-2 border-ink">
+        <div className="mx-auto max-w-4xl px-4 py-20">
+          <h2 className="font-display text-4xl text-center mb-10">Frequently Asked Questions in {loc.city}</h2>
+          <div className="space-y-4">
+            <details className="group border-2 border-ink bg-card rounded-lg overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+              <summary className="flex items-center justify-between p-5 font-bold cursor-pointer hover:bg-magenta-brand/10 transition-colors">
+                How fast can you print custom apparel for {loc.city} orders?
+                <span className="transition-transform group-open:rotate-180 text-magenta-brand">▼</span>
+              </summary>
+              <div className="p-5 pt-0 text-muted-foreground border-t-2 border-ink/10 mt-2">
+                Most orders in {loc.region} are completed in 7-10 days from artwork approval. If you have an urgent deadline for an event in {loc.city}, let us know—we often accommodate rush orders!
+              </div>
+            </details>
+            <details className="group border-2 border-ink bg-card rounded-lg overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+              <summary className="flex items-center justify-between p-5 font-bold cursor-pointer hover:bg-magenta-brand/10 transition-colors">
+                Do you have a minimum order requirement?
+                <span className="transition-transform group-open:rotate-180 text-magenta-brand">▼</span>
+              </summary>
+              <div className="p-5 pt-0 text-muted-foreground border-t-2 border-ink/10 mt-2">
+                For our premium DTF printing, we have incredibly low minimums. You can order just a handful of shirts, making it perfect for small businesses, local {loc.city} teams, or family events. Volume discounts are available for bulk orders.
+              </div>
+            </details>
+            <details className="group border-2 border-ink bg-card rounded-lg overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+              <summary className="flex items-center justify-between p-5 font-bold cursor-pointer hover:bg-magenta-brand/10 transition-colors">
+                Will I see a proof before you print?
+                <span className="transition-transform group-open:rotate-180 text-magenta-brand">▼</span>
+              </summary>
+              <div className="p-5 pt-0 text-muted-foreground border-t-2 border-ink/10 mt-2">
+                Yes, absolutely! We provide a free digital mockup for every order. We won't start production until you are 100% happy with how your design looks.
+              </div>
+            </details>
+            <details className="group border-2 border-ink bg-card rounded-lg overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+              <summary className="flex items-center justify-between p-5 font-bold cursor-pointer hover:bg-magenta-brand/10 transition-colors">
+                Do you deliver to {loc.city}?
+                <span className="transition-transform group-open:rotate-180 text-magenta-brand">▼</span>
+              </summary>
+              <div className="p-5 pt-0 text-muted-foreground border-t-2 border-ink/10 mt-2">
+                Yes! We offer free delivery on qualifying bulk orders throughout {loc.region}, and standard shipping options for everything else. You can also pick up your order locally at our Lawrenceville shop.
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
     </SiteLayout>
   );
 }

@@ -5,6 +5,14 @@ import { SiteLayout } from "../components/SiteLayout";
 import { Check, Info, AlertTriangle } from "lucide-react";
 
 export const Route = createFileRoute("/shirt-colors")({
+  head: () => ({
+    meta: [
+      { title: "Apparel Blanks & Shirt Colors | Fast Apparel" },
+      { name: "description", content: "Explore our premium apparel blanks, shirt colors, and brand spec sheets. Find Gildan, Bella Canvas, Next Level, and Comfort Colors options for your custom prints." },
+      { property: "og:title", content: "Apparel Blanks & Shirt Colors | Fast Apparel" },
+      { property: "og:description", content: "Explore our premium apparel blanks, shirt colors, and brand spec sheets for your custom prints." },
+    ],
+  }),
   component: ShirtColorsPage,
 });
 

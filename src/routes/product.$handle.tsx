@@ -102,7 +102,7 @@ function ProductPage() {
                     i === imgIdx ? "border-magenta-brand" : "border-transparent"
                   }`}
                 >
-                  <img src={img.node.url} alt="" className="w-full h-full object-cover" />
+                  <img src={img.node.url} alt={img.node.altText ?? `Thumbnail ${i + 1} for ${product.title}`} className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
