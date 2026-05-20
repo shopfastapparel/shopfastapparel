@@ -42,6 +42,13 @@ function ShirtColorsPage() {
                 <div className="absolute top-4 left-4 bg-yellow-brand text-ink font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-full border-2 border-ink">
                   {apparel.brand}
                 </div>
+                {apparel.badge && (
+                  <div className={`absolute top-4 right-4 font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-full border-2 border-ink ${
+                    apparel.badge === "Best Seller" ? "bg-magenta-brand text-background" : "bg-cyan-brand text-ink"
+                  }`}>
+                    {apparel.badge}
+                  </div>
+                )}
               </div>
               
               <div className="p-6 flex flex-col flex-1">

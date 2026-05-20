@@ -9,6 +9,7 @@ export type ApparelStyle = {
   features: string[];
   description: string;
   specSheetUrl: string;
+  badge?: "Best Seller" | "Premium";
 };
 
 export const APPAREL_STYLES: ApparelStyle[] = [
@@ -27,7 +28,8 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "High stitch density"
     ],
     description: "The Gildan Softstyle offers an incredibly soft feel and a modern classic fit, making it an everyday staple. With its lightweight, breathable fabric, it provides a perfect canvas for high-quality custom prints.",
-    specSheetUrl: "/specs/gildan-64000.pdf"
+    specSheetUrl: "/specs/gildan-64000.pdf",
+    badge: "Best Seller"
   },
   {
     id: "gildan-64000b",
@@ -112,7 +114,8 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Highly pre-shrunk"
     ],
     description: "Experience the ultimate lived-in comfort with this premium, heavyweight garment-dyed tee. Its relaxed fit and vintage wash give it a perfectly broken-in look and incredibly soft feel right from the first wear.",
-    specSheetUrl: "/specs/comfort-colors-1717.pdf"
+    specSheetUrl: "/specs/comfort-colors-1717.pdf",
+    badge: "Premium"
   },
   {
     id: "bella-canvas-3001",
@@ -129,7 +132,8 @@ export const APPAREL_STYLES: ApparelStyle[] = [
       "Shoulder-to-shoulder taping"
     ],
     description: "A modern classic, this premium jersey tee features a tailored, retail-ready fit and unparalleled softness. Crafted from high-quality Airlume combed cotton, it offers a flawless, smooth surface.",
-    specSheetUrl: "/specs/bella-canvas-3001.pdf"
+    specSheetUrl: "/specs/bella-canvas-3001.pdf",
+    badge: "Premium"
   },
   {
     id: "next-level-6210",
