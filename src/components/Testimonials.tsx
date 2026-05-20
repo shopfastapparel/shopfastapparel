@@ -103,7 +103,7 @@ export function Testimonials() {
             </div>
           </div>
           <a
-            href="https://g.page/r/your-google-review-link" // User can update this link later
+            href="https://share.google/a062JEeKOiIY8A9vK"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-4 py-2 border-2 border-ink rounded-lg font-bold text-sm hover:bg-ink hover:text-background transition-colors shadow-pop whitespace-nowrap"
