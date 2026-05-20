@@ -111,7 +111,7 @@ export function Footer() {
       </div>
       <div className="border-t border-background/10">
         <div className="mx-auto max-w-7xl px-4 py-5 text-xs text-background/60 flex flex-wrap justify-between gap-2">
-          <span>© {new Date().getFullYear()} Fast Apparel LLC. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Fast Apparel LLC. A Subsidiary of Johnson Enterprises of GA LLC. All rights reserved.</span>
           <span>Lawrenceville, GA · Serving Metro Atlanta · Custom Apparel & Promo</span>
         </div>
       </div>
