@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { APPAREL_STYLES } from "../lib/apparel";
 import { Button } from "../components/ui/button";
 import { SiteLayout } from "../components/SiteLayout";
-import { Check } from "lucide-react";
+import { Check, Info, AlertTriangle } from "lucide-react";
 
 export const Route = createFileRoute("/shirt-colors")({
   component: ShirtColorsPage,
@@ -89,6 +89,45 @@ function ShirtColorsPage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+      
+      {/* NOTICES */}
+      <section className="max-w-7xl mx-auto px-4 pb-20">
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="bg-yellow-brand/10 border-2 border-yellow-brand rounded-xl p-8 shadow-pop">
+            <div className="flex items-center gap-3 mb-4 text-ink">
+              <Info className="h-6 w-6" />
+              <h3 className="font-display text-2xl">Why Color Charts Matter</h3>
+            </div>
+            <p className="text-foreground/80 mb-4 font-medium">
+              Ordering custom apparel online makes it tricky to know exactly what shade you'll receive. These official spec sheets give you the most accurate reference for every available color.
+            </p>
+            <p className="text-sm text-foreground/70">
+              <strong className="text-ink">Note:</strong> We don't always carry every single color listed on these spec sheets for every package. Please check with us for current stock availability.
+            </p>
+          </div>
+
+          <div className="bg-muted border-2 border-ink rounded-xl p-8 shadow-pop">
+            <div className="flex items-center gap-3 mb-4 text-ink">
+              <AlertTriangle className="h-6 w-6" />
+              <h3 className="font-display text-2xl">Good to Know</h3>
+            </div>
+            <ul className="space-y-3 text-foreground/80 font-medium">
+              <li className="flex items-start gap-2">
+                <span className="text-ink shrink-0 mt-1">•</span>
+                <span><strong className="text-ink">Dye Lot Variations:</strong> Colors may vary slightly between production runs. This is standard in garment manufacturing.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-ink shrink-0 mt-1">•</span>
+                <span><strong className="text-ink">Sourcing:</strong> We purchase high-quality blank garments from trusted vendor networks and do not manufacture them in-house.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-ink shrink-0 mt-1">•</span>
+                <span><strong className="text-ink">Screen Differences:</strong> Monitor settings can affect how colors appear. The spec sheets provide the most accurate reference.</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
       
