@@ -5,7 +5,10 @@ from email.mime.image import MIMEImage
 import csv
 import os
 import time
+import json
 import requests
+import re
+from datetime import datetime
 from io import BytesIO
 from PIL import Image, ImageEnhance, ImageStat
 
@@ -14,6 +17,7 @@ SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "shopfastapparel@gmail.com")
 SENDER_PASSWORD = os.environ.get("SENDER_PASSWORD", "gutcjhfuvljllxtm")
+ADMIN_EMAIL = "shopfastapparel@gmail.com" # Where to send the daily summary
 
 SUBJECT = "Fast, local custom apparel for {company_name}"
 BODY_TEMPLATE = """
@@ -60,85 +64,93 @@ BODY_TEMPLATE = """
 </html>
 """
 
-def generate_mockup(logo_url, base_shirt_path):
+SUMMARY_TEMPLATE = """
+<html>
+  <body style="font-family: Arial, sans-serif; color: #333333; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px;">
+    <h2 style="color: #FF007F;">Daily Sales Prospector Summary</h2>
+    <p>Here are the leads that were contacted today:</p>
+    <hr style="border: 1px solid #eee; margin-bottom: 20px;" />
+    {leads_html}
+  </body>
+</html>
+"""
+
+def generate_mockup(logo_url, base_shirt_path, company_name, mockups_dir):
     try:
-        # Download prospect logo
         headers = {'User-Agent': 'Mozilla/5.0'}
         response = requests.get(logo_url, headers=headers, timeout=10)
         response.raise_for_status()
         logo = Image.open(BytesIO(response.content)).convert("RGBA")
         
-        # Load shirt template
         shirt = Image.open(base_shirt_path).convert("RGBA")
         
-        # Determine contrast (mostly dark or mostly light)
         grayscale = logo.convert("L")
         stat = ImageStat.Stat(grayscale)
         avg_brightness = stat.mean[0] if isinstance(stat.mean, list) else stat.mean
         
-        # Explicit Black or White shirt
         if avg_brightness > 128:
-            # Logo is light -> Make shirt explicitly BLACK
             shirt = ImageEnhance.Brightness(shirt).enhance(0.15)
         else:
-            # Logo is dark -> Make shirt explicitly WHITE
             shirt = ImageEnhance.Brightness(shirt).enhance(1.6)
             shirt = ImageEnhance.Contrast(shirt).enhance(1.1)
         
-        # Resize logo for center chest
         target_width = int(shirt.width * 0.4)
         aspect_ratio = logo.height / logo.width
         target_height = int(target_width * aspect_ratio)
         logo = logo.resize((target_width, target_height), Image.Resampling.LANCZOS)
         
-        # Calculate center chest position
         x = (shirt.width - target_width) // 2
         y = int(shirt.height * 0.3)
         
-        # Composite prospect logo
         shirt.paste(logo, (x, y), logo)
         
-        # Add Fast Apparel Watermark
         watermark_url = "https://www.shopfastapparel.com/assets/logo-jiaNr5LV.png"
         wm_res = requests.get(watermark_url, headers=headers, timeout=10)
         watermark = Image.open(BytesIO(wm_res.content)).convert("RGBA")
         
-        # Resize watermark to be small (20% of shirt width)
         wm_width = int(shirt.width * 0.25)
         wm_height = int(wm_width * (watermark.height / watermark.width))
         watermark = watermark.resize((wm_width, wm_height), Image.Resampling.LANCZOS)
         
-        # Reduce opacity to 50%
         alpha = watermark.getchannel('A')
         watermark.putalpha(alpha.point(lambda p: p * 0.5))
         
-        # Paste watermark in bottom right corner
         wm_x = shirt.width - wm_width - 20
         wm_y = shirt.height - wm_height - 20
         shirt.paste(watermark, (wm_x, wm_y), watermark)
         
-        # Save to buffer
+        shirt_rgb = shirt.convert("RGB")
+        
+        # Save to buffer for email
         buf = BytesIO()
-        shirt.convert("RGB").save(buf, format="JPEG", quality=85)
-        return buf.getvalue()
+        shirt_rgb.save(buf, format="JPEG", quality=85)
+        
+        # Save to disk for dashboard
+        slug = re.sub(r'[^a-z0-9]+', '-', company_name.lower()).strip('-')
+        timestamp = int(time.time())
+        filename = f"{slug}-{timestamp}.jpg"
+        filepath = os.path.join(mockups_dir, filename)
+        shirt_rgb.save(filepath, format="JPEG", quality=85)
+        
+        public_url = f"/admin/mockups/{filename}"
+        
+        return buf.getvalue(), public_url
     except Exception as e:
         print(f"Mockup generation failed: {e}")
-        return None
+        return None, None
 
-def send_email(to_email, company_name, mockup_bytes):
+def send_prospect_email(to_email, company_name, mockup_bytes):
     msg = MIMEMultipart('related')
     msg['From'] = SENDER_EMAIL
     msg['To'] = to_email
     msg['Subject'] = SUBJECT.format(company_name=company_name)
     
-    # Attach HTML body
     msg_alternative = MIMEMultipart('alternative')
     msg.attach(msg_alternative)
     
     body = BODY_TEMPLATE.format(company_name=company_name)
     msg_alternative.attach(MIMEText(body, 'html'))
     
-    # Attach Image Inline
     if mockup_bytes:
         img = MIMEImage(mockup_bytes)
         img.add_header('Content-ID', '<mockup>')
@@ -151,23 +163,74 @@ def send_email(to_email, company_name, mockup_bytes):
         server.login(SENDER_EMAIL, SENDER_PASSWORD)
         server.send_message(msg)
         server.quit()
-        print(f"Successfully sent email to {to_email}")
         return True
     except Exception as e:
         print(f"Failed to send to {to_email}: {e}")
         return False
 
+def send_summary_email(sent_leads_data):
+    if not sent_leads_data:
+        return
+        
+    msg = MIMEMultipart('related')
+    msg['From'] = SENDER_EMAIL
+    msg['To'] = ADMIN_EMAIL
+    msg['Subject'] = f"Daily Sales Prospector Summary - {len(sent_leads_data)} Sent"
+    
+    msg_alternative = MIMEMultipart('alternative')
+    msg.attach(msg_alternative)
+    
+    leads_html = ""
+    
+    for idx, lead in enumerate(sent_leads_data):
+        cid = f"mockup_{idx}"
+        leads_html += f"""
+        <div style="margin-bottom: 30px; padding: 15px; border: 1px solid #eee; border-radius: 8px;">
+            <h3 style="margin-top: 0;">{lead['company']}</h3>
+            <p><strong>Email:</strong> {lead['email']}<br>
+            <strong>Industry:</strong> {lead['industry']}<br>
+            <strong>Website:</strong> <a href="{lead['website']}">{lead['website']}</a></p>
+            <img src="cid:{cid}" style="max-width: 300px; border-radius: 8px; border: 1px solid #ccc;" />
+        </div>
+        """
+        
+    body = SUMMARY_TEMPLATE.format(leads_html=leads_html)
+    msg_alternative.attach(MIMEText(body, 'html'))
+    
+    # Attach all mockups
+    for idx, lead in enumerate(sent_leads_data):
+        if lead['mockup_bytes']:
+            img = MIMEImage(lead['mockup_bytes'])
+            img.add_header('Content-ID', f'<{cid}>'.replace(cid, f'mockup_{idx}'))
+            img.add_header('Content-Disposition', 'inline', filename=f"mockup_{idx}.jpg")
+            msg.attach(img)
+            
+    try:
+        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        server.starttls()
+        server.login(SENDER_EMAIL, SENDER_PASSWORD)
+        server.send_message(msg)
+        server.quit()
+        print("Successfully sent daily summary email.")
+    except Exception as e:
+        print(f"Failed to send summary email: {e}")
+
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
     leads_file = os.path.join(script_dir, 'leads.csv')
     contacted_file = os.path.join(script_dir, 'leads_contacted.csv')
-    base_shirt_path = os.path.join(os.path.dirname(script_dir), 'public', 'images', 'apparel', 'gildan-64000.jpg')
+    base_shirt_path = os.path.join(project_root, 'public', 'images', 'apparel', 'gildan-64000.jpg')
+    
+    mockups_dir = os.path.join(project_root, 'public', 'admin', 'mockups')
+    sales_data_file = os.path.join(project_root, 'public', 'admin', 'sales_data.json')
     
     if not os.path.exists(leads_file):
         print("No leads to process.")
         return
         
     successful_leads = []
+    sent_leads_data = [] # For summary email and JSON
     
     # Process leads
     with open(leads_file, 'r', encoding='utf-8') as f:
@@ -182,19 +245,53 @@ def main():
                 
             print(f"Sending to {company_name} ({email}) with logo {logo_url}...")
             
-            mockup_bytes = generate_mockup(logo_url, base_shirt_path)
+            mockup_bytes, mockup_url = generate_mockup(logo_url, base_shirt_path, company_name, mockups_dir)
             
-            # Skip sending if mockup fails (or we could send without mockup, but better to skip for high quality)
             if not mockup_bytes:
                 print(f"Skipping {company_name} due to mockup failure.")
                 continue
                 
-            success = send_email(email, company_name, mockup_bytes)
+            success = send_prospect_email(email, company_name, mockup_bytes)
             
             if success:
                 successful_leads.append(row)
+                sent_leads_data.append({
+                    "company": company_name,
+                    "email": email,
+                    "industry": industry,
+                    "website": website,
+                    "logo_url": logo_url,
+                    "mockup_url": mockup_url,
+                    "mockup_bytes": mockup_bytes,
+                    "date": datetime.now().isoformat()
+                })
                 
-            time.sleep(2) # Pause between emails to avoid spam filters
+            time.sleep(2)
+            
+    # Send Summary
+    send_summary_email(sent_leads_data)
+            
+    # Update JSON database
+    if sent_leads_data:
+        existing_data = []
+        if os.path.exists(sales_data_file):
+            try:
+                with open(sales_data_file, 'r', encoding='utf-8') as f:
+                    existing_data = json.load(f)
+            except:
+                existing_data = []
+                
+        # Remove bytes before saving to JSON
+        json_data_to_append = []
+        for d in sent_leads_data:
+            clean_d = d.copy()
+            del clean_d["mockup_bytes"]
+            json_data_to_append.append(clean_d)
+            
+        existing_data.extend(json_data_to_append)
+        
+        with open(sales_data_file, 'w', encoding='utf-8') as f:
+            json.dump(existing_data, f, indent=2)
             
     # Append successful to contacted
     if successful_leads:
