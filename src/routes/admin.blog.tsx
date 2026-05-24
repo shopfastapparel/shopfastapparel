@@ -12,6 +12,7 @@ import {
 } from "@/lib/blog-admin.functions";
 import { toast } from "sonner";
 import { Loader2, Sparkles, Check, X, Trash2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin/blog")({
   head: () => ({ meta: [{ title: "Blog drafts | Fast Apparel" }, { name: "robots", content: "noindex" }] }),
@@ -57,19 +58,8 @@ function AdminBlog() {
   }, [list, navigate]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await supabase.auth.getUser();
-        if (!data.user) {
-          navigate({ to: "/login" });
-          return;
-        }
-        load();
-      } catch {
-        navigate({ to: "/login" });
-      }
-    })();
-  }, [load, navigate]);
+    load();
+  }, [load]);
 
   const onAction = async (id: string, action: "publish" | "reject" | "delete" | "unpublish") => {
     try {
