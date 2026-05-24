@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute, useRouter, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +22,7 @@ type Row = Awaited<ReturnType<typeof listAllBlogPosts>>[number];
 
 function AdminBlog() {
   const router = useRouter();
+  const navigate = useNavigate();
   const list = useServerFn(listAllBlogPosts);
   const setStatus = useServerFn(setBlogPostStatus);
   const del = useServerFn(deleteBlogPost);
