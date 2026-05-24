@@ -1,11 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
-import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MarkdownLite } from "@/components/MarkdownLite";
-import { supabase } from "@/integrations/supabase/client";
 import {
   listAllBlogPosts,
   setBlogPostStatus,
@@ -23,7 +21,6 @@ export const Route = createFileRoute("/admin/blog")({
 type Row = Awaited<ReturnType<typeof listAllBlogPosts>>[number];
 
 function AdminBlog() {
-  const navigate = useNavigate();
   const router = useRouter();
   const list = useServerFn(listAllBlogPosts);
   const setStatus = useServerFn(setBlogPostStatus);
@@ -37,14 +34,6 @@ function AdminBlog() {
 
   const load = useCallback(async () => {
     try {
-      // Ensure the auth cookie is set before the server call
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token) {
-        navigate({ to: "/login" });
-        return;
-      }
-      document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
-
       const data = await list();
       setPosts(data);
     } catch (e: unknown) {
@@ -119,8 +108,7 @@ function AdminBlog() {
   const filtered = (posts ?? []).filter((p) => filter === "all" || p.status === filter);
 
   return (
-    <SiteLayout>
-      <div className="mx-auto max-w-5xl px-4 py-12">
+    <div className="mx-auto max-w-5xl px-4 py-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="font-display text-4xl">Blog drafts</h1>
@@ -215,6 +203,6 @@ function AdminBlog() {
           </div>
         )}
       </div>
-    </SiteLayout>
+    </div>
   );
 }
