@@ -51,6 +51,7 @@ BODY_TEMPLATE = """
       <p style="margin: 0; font-size: 14px; color: #4B5563;">Owner, Fast Apparel</p>
       <p style="margin: 5px 0 0 0; font-size: 14px;">
         <a href="mailto:shopfastapparel@gmail.com" style="color: #FF007F; text-decoration: none;">shopfastapparel@gmail.com</a> | 
+        <a href="tel:678-491-2655" style="color: #FF007F; text-decoration: none;">678-491-2655</a> | 
         <a href="https://www.shopfastapparel.com" style="color: #FF007F; text-decoration: none;">Website</a>
       </p>
     </div>
@@ -61,7 +62,7 @@ BODY_TEMPLATE = """
 
 def generate_mockup(logo_url, base_shirt_path):
     try:
-        # Download logo
+        # Download prospect logo
         headers = {'User-Agent': 'Mozilla/5.0'}
         response = requests.get(logo_url, headers=headers, timeout=10)
         response.raise_for_status()
@@ -70,15 +71,19 @@ def generate_mockup(logo_url, base_shirt_path):
         # Load shirt template
         shirt = Image.open(base_shirt_path).convert("RGBA")
         
-        # Determine contrast (simple check to see if logo is mostly dark or light)
+        # Determine contrast (mostly dark or mostly light)
         grayscale = logo.convert("L")
         stat = ImageStat.Stat(grayscale)
         avg_brightness = stat.mean[0] if isinstance(stat.mean, list) else stat.mean
         
-        # If logo is very bright/white, darken the shirt slightly for contrast
-        # If logo is dark, the default light gray/white shirt is fine.
-        if avg_brightness > 180:
-            shirt = ImageEnhance.Brightness(shirt).enhance(0.4) # Make shirt dark gray
+        # Explicit Black or White shirt
+        if avg_brightness > 128:
+            # Logo is light -> Make shirt explicitly BLACK
+            shirt = ImageEnhance.Brightness(shirt).enhance(0.15)
+        else:
+            # Logo is dark -> Make shirt explicitly WHITE
+            shirt = ImageEnhance.Brightness(shirt).enhance(1.6)
+            shirt = ImageEnhance.Contrast(shirt).enhance(1.1)
         
         # Resize logo for center chest
         target_width = int(shirt.width * 0.4)
@@ -90,8 +95,27 @@ def generate_mockup(logo_url, base_shirt_path):
         x = (shirt.width - target_width) // 2
         y = int(shirt.height * 0.3)
         
-        # Composite
+        # Composite prospect logo
         shirt.paste(logo, (x, y), logo)
+        
+        # Add Fast Apparel Watermark
+        watermark_url = "https://www.shopfastapparel.com/assets/logo-jiaNr5LV.png"
+        wm_res = requests.get(watermark_url, headers=headers, timeout=10)
+        watermark = Image.open(BytesIO(wm_res.content)).convert("RGBA")
+        
+        # Resize watermark to be small (20% of shirt width)
+        wm_width = int(shirt.width * 0.25)
+        wm_height = int(wm_width * (watermark.height / watermark.width))
+        watermark = watermark.resize((wm_width, wm_height), Image.Resampling.LANCZOS)
+        
+        # Reduce opacity to 50%
+        alpha = watermark.getchannel('A')
+        watermark.putalpha(alpha.point(lambda p: p * 0.5))
+        
+        # Paste watermark in bottom right corner
+        wm_x = shirt.width - wm_width - 20
+        wm_y = shirt.height - wm_height - 20
+        shirt.paste(watermark, (wm_x, wm_y), watermark)
         
         # Save to buffer
         buf = BytesIO()
