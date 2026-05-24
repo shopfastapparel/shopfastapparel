@@ -1,14 +1,10 @@
-import { createFileRoute, Outlet, Link, useNavigate, useLocation } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
+import { useNavigate, useLocation, Link } from '@tanstack/react-router';
 import { SiteLayout } from '@/components/SiteLayout';
 import { supabase } from '@/integrations/supabase/client';
 import { LayoutDashboard, FileText } from 'lucide-react';
 
-export const Route = createFileRoute('/admin')({
-  component: AdminLayout,
-});
-
-function AdminLayout() {
+export function AdminLayout({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
@@ -75,7 +71,7 @@ function AdminLayout() {
 
         {/* Content Area */}
         <div className="py-8">
-          <Outlet />
+          {children}
         </div>
       </div>
     </SiteLayout>

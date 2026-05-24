@@ -25,7 +25,6 @@ import { Route as ProductHandleRouteImport } from './routes/product.$handle'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
-import { Route as AdminSalesRouteImport } from './routes/admin.sales'
 import { Route as ApiPublicHooksGenerateBlogPostRouteImport } from './routes/api/public/hooks/generate-blog-post'
 
 const ShopRoute = ShopRouteImport.update({
@@ -109,11 +108,6 @@ const AdminBlogRoute = AdminBlogRouteImport.update({
   path: '/admin/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminSalesRoute = AdminSalesRouteImport.update({
-  id: '/admin/sales',
-  path: '/admin/sales',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiPublicHooksGenerateBlogPostRoute =
   ApiPublicHooksGenerateBlogPostRouteImport.update({
     id: '/api/public/hooks/generate-blog-post',
@@ -130,7 +124,6 @@ export interface FileRoutesByFullPath {
   '/quote': typeof QuoteRoute
   '/shop': typeof ShopRoute
   '/admin/blog': typeof AdminBlogRoute
-  '/admin/sales': typeof AdminSalesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -150,7 +143,6 @@ export interface FileRoutesByTo {
   '/quote': typeof QuoteRoute
   '/shop': typeof ShopRoute
   '/admin/blog': typeof AdminBlogRoute
-  '/admin/sales': typeof AdminSalesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -171,7 +163,6 @@ export interface FileRoutesById {
   '/quote': typeof QuoteRoute
   '/shop': typeof ShopRoute
   '/admin/blog': typeof AdminBlogRoute
-  '/admin/sales': typeof AdminSalesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -193,7 +184,6 @@ export interface FileRouteTypes {
     | '/quote'
     | '/shop'
     | '/admin/blog'
-    | '/admin/sales'
     | '/blog/$slug'
     | '/locations/$slug'
     | '/product/$handle'
@@ -213,7 +203,6 @@ export interface FileRouteTypes {
     | '/quote'
     | '/shop'
     | '/admin/blog'
-    | '/admin/sales'
     | '/blog/$slug'
     | '/locations/$slug'
     | '/product/$handle'
@@ -233,7 +222,6 @@ export interface FileRouteTypes {
     | '/quote'
     | '/shop'
     | '/admin/blog'
-    | '/admin/sales'
     | '/blog/$slug'
     | '/locations/$slug'
     | '/product/$handle'
@@ -254,7 +242,6 @@ export interface RootRouteChildren {
   QuoteRoute: typeof QuoteRoute
   ShopRoute: typeof ShopRoute
   AdminBlogRoute: typeof AdminBlogRoute
-  AdminSalesRoute: typeof AdminSalesRoute
   BlogSlugRoute: typeof BlogSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   ProductHandleRoute: typeof ProductHandleRoute
@@ -380,13 +367,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlogRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/sales': {
-      id: '/admin/sales'
-      path: '/admin/sales'
-      fullPath: '/admin/sales'
-      preLoaderRoute: typeof AdminSalesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/public/hooks/generate-blog-post': {
       id: '/api/public/hooks/generate-blog-post'
       path: '/api/public/hooks/generate-blog-post'
@@ -406,7 +386,6 @@ const rootRouteChildren: RootRouteChildren = {
   QuoteRoute: QuoteRoute,
   ShopRoute: ShopRoute,
   AdminBlogRoute: AdminBlogRoute,
-  AdminSalesRoute: AdminSalesRoute,
   BlogSlugRoute: BlogSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   ProductHandleRoute: ProductHandleRoute,

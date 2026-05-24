@@ -12,6 +12,7 @@ import {
 } from "@/lib/blog-admin.functions";
 import { toast } from "sonner";
 import { Loader2, Sparkles, Check, X, Trash2 } from "lucide-react";
+import { AdminLayout } from "@/components/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin/blog")({
@@ -99,7 +100,8 @@ function AdminBlog() {
   const filtered = (posts ?? []).filter((p) => filter === "all" || p.status === filter);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <AdminLayout>
+      <div className="mx-auto max-w-5xl px-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="font-display text-4xl">Blog drafts</h1>
@@ -194,6 +196,6 @@ function AdminBlog() {
           </div>
         )}
       </div>
-    </div>
+    </AdminLayout>
   );
 }

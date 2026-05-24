@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
+import { AdminLayout } from '@/components/AdminLayout'
 
 export const Route = createFileRoute('/admin/sales')({
   component: SalesDashboard,
@@ -34,7 +35,8 @@ function SalesDashboard() {
   }, []);
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <AdminLayout>
+      <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="mb-8 flex justify-between items-end">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 tracking-tight">AI Sales Dashboard</h1>
@@ -124,6 +126,7 @@ function SalesDashboard() {
             </div>
           </div>
         )}
-    </div>
+      </div>
+    </AdminLayout>
   );
 }
