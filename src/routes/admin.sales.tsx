@@ -1,5 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
+import { SiteLayout } from "@/components/SiteLayout"
+import { supabase } from "@/integrations/supabase/client"
 
 export const Route = createFileRoute('/admin/sales')({
   component: SalesDashboard,
@@ -16,25 +18,35 @@ interface SalesLead {
 }
 
 function SalesDashboard() {
+  const navigate = useNavigate();
   const [leads, setLeads] = useState<SalesLead[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/admin/sales_data.json')
-      .then((res) => res.json())
-      .then((data) => {
-        // Sort newest first
-        const sortedData = data.sort((a: SalesLead, b: SalesLead) => 
-          new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-        setLeads(sortedData);
-      })
-      .catch((err) => console.error("Failed to fetch sales data", err))
-      .finally(() => setLoading(false));
-  }, []);
+    // Check Authentication
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        navigate({ to: "/login" });
+        return;
+      }
+      
+      // Fetch data if authenticated
+      fetch('/admin/sales_data.json')
+        .then((res) => res.json())
+        .then((data) => {
+          const sortedData = data.sort((a: SalesLead, b: SalesLead) => 
+            new Date(b.date).getTime() - new Date(a.date).getTime()
+          );
+          setLeads(sortedData);
+        })
+        .catch((err) => console.error("Failed to fetch sales data", err))
+        .finally(() => setLoading(false));
+    });
+  }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <SiteLayout>
+      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8 flex justify-between items-end">
           <div>
@@ -127,5 +139,6 @@ function SalesDashboard() {
         )}
       </div>
     </div>
+    </SiteLayout>
   );
 }

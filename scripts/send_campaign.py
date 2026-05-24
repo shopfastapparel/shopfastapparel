@@ -8,6 +8,7 @@ import time
 import json
 import requests
 import re
+import subprocess
 from datetime import datetime
 from io import BytesIO
 from PIL import Image, ImageEnhance, ImageStat
@@ -307,6 +308,21 @@ def main():
     with open(leads_file, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(["Organization Name", "Contact Email", "Industry", "Website", "Logo URL"])
+        
+    # Auto-sync to GitHub so live website updates
+    print("Pushing dashboard data to live website via Git...")
+    try:
+        subprocess.run(['git', 'add', 'public/admin/mockups/', 'public/admin/sales_data.json', 'scripts/leads.csv', 'scripts/leads_contacted.csv'], cwd=project_root, check=True)
+        # Check if there are changes to commit
+        status = subprocess.run(['git', 'status', '--porcelain'], cwd=project_root, capture_output=True, text=True)
+        if status.stdout.strip():
+            subprocess.run(['git', 'commit', '-m', 'chore: auto-update daily sales data'], cwd=project_root, check=True)
+            subprocess.run(['git', 'push'], cwd=project_root, check=True)
+            print("Successfully synced data to live website.")
+        else:
+            print("No data changes to sync.")
+    except Exception as e:
+        print(f"Git auto-sync failed: {e}")
 
 if __name__ == "__main__":
     main()

@@ -35,7 +35,7 @@ function LoginPage() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
       }
-      navigate({ to: "/admin/blog" });
+      navigate({ to: "/admin/sales" });
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Something went wrong";
       toast.error(msg);
@@ -49,7 +49,7 @@ function LoginPage() {
       <div className="mx-auto max-w-md px-4 py-20">
         <h1 className="font-display text-4xl">{mode === "signin" ? "Sign in" : "Create account"}</h1>
         <p className="mt-2 text-muted-foreground text-sm">
-          Admin access for blog draft review.
+          Admin access for blog drafts and the sales dashboard.
         </p>
         <form onSubmit={submit} className="mt-8 space-y-4">
           <div>
