@@ -110,7 +110,7 @@ const ServicesCustomTshirtsRoute = ServicesCustomTshirtsRouteImport.update({
 } as any)
 
 const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/',
+  id: '/admin/',
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
@@ -134,13 +134,13 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 } as any)
 
 const AdminSalesRoute = AdminSalesRouteImport.update({
-  id: '/sales',
+  id: '/admin/sales',
   path: '/sales',
   getParentRoute: () => AdminRoute,
 } as any)
 
 const AdminBlogRoute = AdminBlogRouteImport.update({
-  id: '/blog',
+  id: '/admin/blog',
   path: '/blog',
   getParentRoute: () => AdminRoute,
 } as any)
