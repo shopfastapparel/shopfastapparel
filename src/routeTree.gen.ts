@@ -16,98 +16,135 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as LocationsIndexRouteImport } from './routes/locations.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as ServicesTeamBulkRouteImport } from './routes/services.team-bulk'
 import { Route as ServicesPromotionalProductsRouteImport } from './routes/services.promotional-products'
 import { Route as ServicesCustomTshirtsRouteImport } from './routes/services.custom-tshirts'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ProductHandleRouteImport } from './routes/product.$handle'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AdminSalesRouteImport } from './routes/admin.sales'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 import { Route as ApiPublicHooksGenerateBlogPostRouteImport } from './routes/api/public/hooks/generate-blog-post'
+
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
   getParentRoute: () => rootRouteImport,
 } as any)
+
 const QuoteRoute = QuoteRouteImport.update({
   id: '/quote',
   path: '/quote',
   getParentRoute: () => rootRouteImport,
 } as any)
+
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+
 const LocationsIndexRoute = LocationsIndexRouteImport.update({
   id: '/locations/',
   path: '/locations/',
   getParentRoute: () => rootRouteImport,
 } as any)
+
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
+
 const ServicesTeamBulkRoute = ServicesTeamBulkRouteImport.update({
   id: '/services/team-bulk',
   path: '/services/team-bulk',
   getParentRoute: () => rootRouteImport,
 } as any)
+
 const ServicesPromotionalProductsRoute =
   ServicesPromotionalProductsRouteImport.update({
     id: '/services/promotional-products',
     path: '/services/promotional-products',
     getParentRoute: () => rootRouteImport,
   } as any)
+
 const ServicesCustomTshirtsRoute = ServicesCustomTshirtsRouteImport.update({
   id: '/services/custom-tshirts',
   path: '/services/custom-tshirts',
   getParentRoute: () => rootRouteImport,
 } as any)
+
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+
 const ProductHandleRoute = ProductHandleRouteImport.update({
   id: '/product/$handle',
   path: '/product/$handle',
   getParentRoute: () => rootRouteImport,
 } as any)
+
 const LocationsSlugRoute = LocationsSlugRouteImport.update({
   id: '/locations/$slug',
   path: '/locations/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminBlogRoute = AdminBlogRouteImport.update({
-  id: '/admin/blog',
-  path: '/admin/blog',
-  getParentRoute: () => rootRouteImport,
+
+const AdminSalesRoute = AdminSalesRouteImport.update({
+  id: '/sales',
+  path: '/sales',
+  getParentRoute: () => AdminRoute,
 } as any)
+
+const AdminBlogRoute = AdminBlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => AdminRoute,
+} as any)
+
 const ApiPublicHooksGenerateBlogPostRoute =
   ApiPublicHooksGenerateBlogPostRouteImport.update({
     id: '/api/public/hooks/generate-blog-post',
@@ -117,13 +154,16 @@ const ApiPublicHooksGenerateBlogPostRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/quote': typeof QuoteRoute
   '/shop': typeof ShopRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/sales': typeof AdminSalesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -136,6 +176,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminIndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
@@ -143,6 +184,7 @@ export interface FileRoutesByTo {
   '/quote': typeof QuoteRoute
   '/shop': typeof ShopRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/sales': typeof AdminSalesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -156,13 +198,16 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/quote': typeof QuoteRoute
   '/shop': typeof ShopRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/sales': typeof AdminSalesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -177,13 +222,16 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/about'
     | '/contact'
     | '/faq'
     | '/login'
     | '/quote'
     | '/shop'
+    | '/admin/'
     | '/admin/blog'
+    | '/admin/sales'
     | '/blog/$slug'
     | '/locations/$slug'
     | '/product/$handle'
@@ -196,6 +244,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/about'
     | '/contact'
     | '/faq'
@@ -203,6 +252,7 @@ export interface FileRouteTypes {
     | '/quote'
     | '/shop'
     | '/admin/blog'
+    | '/admin/sales'
     | '/blog/$slug'
     | '/locations/$slug'
     | '/product/$handle'
@@ -215,13 +265,16 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/about'
     | '/contact'
     | '/faq'
     | '/login'
     | '/quote'
     | '/shop'
+    | '/admin/'
     | '/admin/blog'
+    | '/admin/sales'
     | '/blog/$slug'
     | '/locations/$slug'
     | '/product/$handle'
@@ -235,13 +288,13 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
   QuoteRoute: typeof QuoteRoute
   ShopRoute: typeof ShopRoute
-  AdminBlogRoute: typeof AdminBlogRoute
   BlogSlugRoute: typeof BlogSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   ProductHandleRoute: typeof ProductHandleRoute
@@ -253,8 +306,31 @@ export interface RootRouteChildren {
   ApiPublicHooksGenerateBlogPostRoute: typeof ApiPublicHooksGenerateBlogPostRoute
 }
 
+interface AdminRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminBlogRoute: typeof AdminBlogRoute
+  AdminSalesRoute: typeof AdminSalesRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+  AdminBlogRoute: AdminBlogRoute,
+  AdminSalesRoute: AdminSalesRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(
+  AdminRouteChildren,
+)
+
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
@@ -303,6 +379,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteImport
+    }
+    '/admin/blog': {
+      id: '/admin/blog'
+      path: '/blog'
+      fullPath: '/admin/blog'
+      preLoaderRoute: typeof AdminBlogRouteImport
+      parentRoute: typeof AdminRouteImport
+    }
+    '/admin/sales': {
+      id: '/admin/sales'
+      path: '/sales'
+      fullPath: '/admin/sales'
+      preLoaderRoute: typeof AdminSalesRouteImport
+      parentRoute: typeof AdminRouteImport
     }
     '/locations/': {
       id: '/locations/'
@@ -360,13 +457,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/blog': {
-      id: '/admin/blog'
-      path: '/admin/blog'
-      fullPath: '/admin/blog'
-      preLoaderRoute: typeof AdminBlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/public/hooks/generate-blog-post': {
       id: '/api/public/hooks/generate-blog-post'
       path: '/api/public/hooks/generate-blog-post'
@@ -379,13 +469,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
   QuoteRoute: QuoteRoute,
   ShopRoute: ShopRoute,
-  AdminBlogRoute: AdminBlogRoute,
   BlogSlugRoute: BlogSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   ProductHandleRoute: ProductHandleRoute,
@@ -396,6 +486,7 @@ const rootRouteChildren: RootRouteChildren = {
   LocationsIndexRoute: LocationsIndexRoute,
   ApiPublicHooksGenerateBlogPostRoute: ApiPublicHooksGenerateBlogPostRoute,
 }
+
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
