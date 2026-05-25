@@ -224,7 +224,7 @@ function LocationPage() {
                 <span className="transition-transform group-open:rotate-180 text-magenta-brand">▼</span>
               </summary>
               <div className="p-5 pt-0 text-muted-foreground border-t-2 border-ink/10 mt-2">
-                Yes! We offer free delivery on qualifying bulk orders throughout {loc.region}, and standard shipping options for everything else. You can also pick up your order locally at our Lawrenceville shop.
+                Yes! We offer free shipping on orders over $149, and standard shipping options for everything else. You can also opt for local delivery if you are within 10 miles of Lawrenceville.
               </div>
             </details>
           </div>

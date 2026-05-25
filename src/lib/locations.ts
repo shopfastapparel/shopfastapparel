@@ -17,11 +17,11 @@ export const LOCATIONS: LocationInfo[] = [
     region: "Gwinnett County",
     zipPrefix: "300",
     blurb:
-      "Our home base. Lawrenceville's premier custom t-shirt printer — full-color DTF and promotional products with same-day pickup for Gwinnett County.",
+      "Our home base. Lawrenceville's premier custom t-shirt printer — full-color DTF and promotional products with local delivery options for Gwinnett County.",
     neighborhoods: ["Downtown Lawrenceville", "Sugarloaf", "Collins Hill", "Five Forks", "Grayson"],
-    highlights: [
-      "Local Lawrenceville shop — walk-ins welcome",
-      "Same-day pickup for Gwinnett County orders",
+    features: [
+      "Local delivery available within 10 miles",
+      "Free shipping on orders over $149",
       "Trusted by Gwinnett schools, churches, and small businesses",
     ],
   },
@@ -94,9 +94,9 @@ export const LOCATIONS: LocationInfo[] = [
     blurb:
       "Decatur's local custom apparel shop. Small-batch DTF and event tees — low minimums.",
     neighborhoods: ["Oakhurst", "Kirkwood", "Avondale Estates", "Druid Hills", "Emory area"],
-    highlights: [
-      "Low-minimum custom shirt orders",
-      "Quick local pickup at our Lawrenceville shop",
+    features: [
+      "Local delivery available for Duluth businesses",
+      "Low minimums on DTF transfers",
       "Perfect for Decatur events and festivals",
     ],
   },

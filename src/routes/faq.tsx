@@ -16,7 +16,7 @@ const FAQS = [
   },
   {
     q: "Where are you located and what areas do you serve?",
-    a: "We're based in Lawrenceville, GA and serve Gwinnett County and the entire metro Atlanta area including Atlanta, Marietta, Alpharetta, Sandy Springs, Decatur, and Roswell. We also ship nationwide.",
+    a: "We are a home-based print shop located in Lawrenceville, GA. We primarily ship all orders nationwide, and we also offer a local delivery option for clients within 10 miles of Lawrenceville. We proudly serve Gwinnett County and the entire metro Atlanta area.",
   },
   {
     q: "Do you offer free mockups?",
@@ -36,7 +36,7 @@ const FAQS = [
   },
   {
     q: "Do you ship orders? Is shipping free?",
-    a: "Yes — we ship nationwide. Bulk orders ship free. Smaller orders are charged actual shipping cost at checkout.",
+    a: "Yes — we ship nationwide! Orders over $149 ship for free. We also offer local delivery up to 10 miles from Lawrenceville, GA. Smaller orders under $149 are charged actual shipping costs.",
   },
   {
     q: "Can you ship directly to my customers, employees, or event venue?",

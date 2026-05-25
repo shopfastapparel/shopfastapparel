@@ -551,7 +551,7 @@ function QuotePage() {
                   </div>
                   <div className="mt-1 text-foreground/80">
                     {turnaroundChoice.estimate} after art approval. Inside the perimeter? Free local
-                    pickup.
+                    delivery.
                   </div>
                 </div>
               )}

@@ -35,7 +35,7 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     body: `## Why local matters in Atlanta
 
-When you order custom DTF t-shirts from a local Lawrenceville-based print shop, you cut shipping time, you can pick up in as little as 7 days, and you get to approve real mockups before anything hits a press. National sites mean 2-week waits and zero accountability when a logo comes back the wrong color.
+When you order custom DTF t-shirts from a local Lawrenceville-based print shop, you cut shipping time, you can get local delivery in as little as 7 days, and you get to approve real mockups before anything hits a press. National sites mean 2-week waits and zero accountability when a logo comes back the wrong color.
 
 ## Why we DTF-only
 
@@ -181,9 +181,9 @@ Decatur is full of small groups — book clubs, neighborhood crews, student orgs
 
 You send us the art. We print it onto film, heat-press it onto your chosen garment, and you get retail-quality shirts in any quantity. One shirt or fifteen — same per-piece price.
 
-## Local Decatur pickup
+## Local delivery to Decatur
 
-Pick up at our Lawrenceville shop or have us ship straight to Oakhurst, Kirkwood, or Avondale Estates.`,
+Get fast local delivery from our Lawrenceville shop or have us ship straight to Oakhurst, Kirkwood, or Avondale Estates.`,
   },
   {
     slug: "why-dtf-is-the-best-custom-shirt-method",

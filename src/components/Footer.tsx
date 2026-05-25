@@ -12,7 +12,7 @@ export function Footer() {
           </div>
           <p className="mt-4 text-sm text-background/70 leading-relaxed">
             DTF custom t-shirt printing and promotional products based in Lawrenceville, GA — serving
-            Gwinnett County and the entire metro Atlanta area. Free shipping on bulk orders.
+            Gwinnett County and the entire metro Atlanta area. Free shipping on orders over $149.
           </p>
           <div className="mt-4 text-sm space-y-1">
             <a href={`tel:${PRIMARY_PHONE}`} className="block hover:text-yellow-brand">
