@@ -1,6 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ServicePage } from "@/components/ServicePage";
 
+import imgTumbler from "@/assets/promo/tumbler.png";
+import imgBag from "@/assets/promo/bag.png";
+import imgWaterBottle from "@/assets/promo/water_bottle.png";
+import imgPhoneCase from "@/assets/promo/phone_case.png";
+import imgKoozie from "@/assets/promo/koozie.png";
+import imgCoffeeMug from "@/assets/promo/coffee_mug.png";
+
 export const Route = createFileRoute("/services/promotional-products")({
   head: () => ({
     meta: [
@@ -61,6 +68,14 @@ export const Route = createFileRoute("/services/promotional-products")({
           q: "What is UV DTF?",
           a: "UV DTF (Direct-to-Film) is a transfer process that prints full-color, photo-quality graphics that adhere to hard surfaces like tumblers, bottles, hats, phone cases, and more — no laser etching or pad printing required.",
         },
+      ]}
+      gallery={[
+        { src: imgTumbler, alt: "Custom branded Stanley Cup tumbler with UV DTF", title: "Travel Tumblers", link: "/quote" },
+        { src: imgBag, alt: "Custom branded canvas tote bag", title: "Canvas Totes & Bags", link: "/quote" },
+        { src: imgWaterBottle, alt: "Sleek metal water bottle with UV DTF logo", title: "Water Bottles", link: "/quote" },
+        { src: imgPhoneCase, alt: "Custom smartphone case with vibrant graphic", title: "Phone Cases", link: "/quote" },
+        { src: imgKoozie, alt: "Custom branded neoprene beer koozie", title: "Can Coolers", link: "/quote" },
+        { src: imgCoffeeMug, alt: "Ceramic coffee mug with glossy UV printed logo", title: "Coffee Mugs", link: "/quote" },
       ]}
     />
   ),

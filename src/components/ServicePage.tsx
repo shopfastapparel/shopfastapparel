@@ -11,7 +11,7 @@ interface ServicePageProps {
   features: { title: string; desc: string }[];
   bullets: string[];
   faqs?: { q: string; a: string }[];
-  gallery?: { src: string; alt: string }[];
+  gallery?: { src: string; alt: string; link?: string; title?: string }[];
 }
 
 export function ServicePage({ eyebrow, title, intro, features, bullets, faqs, gallery }: ServicePageProps) {
@@ -90,19 +90,34 @@ export function ServicePage({ eyebrow, title, intro, features, bullets, faqs, ga
         <section className="mx-auto max-w-7xl px-4 py-16">
           <h2 className="font-display text-4xl mb-8 text-center">See our work</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {gallery.map((img, i) => (
-              <div
-                key={i}
-                className="rounded-xl border-2 border-ink overflow-hidden shadow-pop hover:-translate-y-1 transition-transform group"
-              >
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  className="w-full h-auto aspect-square object-cover group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
-                />
-              </div>
-            ))}
+            {gallery.map((img, i) => {
+              const imageContent = (
+                <div
+                  key={i}
+                  className="rounded-xl border-2 border-ink overflow-hidden shadow-pop hover:-translate-y-1 transition-transform group relative bg-card"
+                >
+                  <img
+                    src={img.src}
+                    alt={img.alt}
+                    className="w-full h-auto aspect-square object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  {img.title && (
+                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 pt-12">
+                      <p className="text-white font-display text-xl tracking-tight">{img.title}</p>
+                    </div>
+                  )}
+                </div>
+              );
+
+              return img.link ? (
+                <Link key={i} to={img.link} className="block">
+                  {imageContent}
+                </Link>
+              ) : (
+                imageContent
+              );
+            })}
           </div>
         </section>
       )}
