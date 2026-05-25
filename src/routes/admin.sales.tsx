@@ -1,19 +1,24 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 import { AdminLayout } from '@/components/AdminLayout'
+import { supabase } from '@/integrations/supabase/client'
+import { CheckCircle2, MousePointerClick } from 'lucide-react'
 
 export const Route = createFileRoute('/admin/sales')({
   component: SalesDashboard,
 })
 
 interface SalesLead {
+  id: string;
   company: string;
   email: string;
   industry: string;
   website: string;
   logo_url: string;
   mockup_url: string;
-  date: string;
+  created_at: string;
+  clicked: boolean;
+  clicked_at: string | null;
 }
 
 function SalesDashboard() {
@@ -21,16 +26,17 @@ function SalesDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch data directly (auth is handled by parent)
-    fetch('/admin/sales_data.json')
-      .then((res) => res.json())
-      .then((data) => {
-        const sortedData = data.sort((a: SalesLead, b: SalesLead) => 
-          new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-        setLeads(sortedData);
+    supabase
+      .from('sales_leads')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("Failed to fetch sales leads from Supabase", error);
+        } else {
+          setLeads(data as SalesLead[]);
+        }
       })
-      .catch((err) => console.error("Failed to fetch sales data", err))
       .finally(() => setLoading(false));
   }, []);
 
@@ -75,6 +81,9 @@ function SalesDashboard() {
                       Date Contacted
                     </th>
                     <th scope="col" className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th scope="col" className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Mockup Preview
                     </th>
                   </tr>
@@ -101,11 +110,24 @@ function SalesDashboard() {
                       </td>
                       <td className="px-6 py-6 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
-                          {new Date(lead.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}
+                          {new Date(lead.created_at).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}
                         </div>
                         <div className="text-xs text-gray-500 mt-1">
-                          {new Date(lead.date).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
+                          {new Date(lead.created_at).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
                         </div>
+                      </td>
+                      <td className="px-6 py-6 whitespace-nowrap text-center">
+                        {lead.clicked ? (
+                          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">
+                            <MousePointerClick className="w-4 h-4" />
+                            <span className="text-xs font-bold tracking-wide">CLICKED</span>
+                          </div>
+                        ) : (
+                          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-gray-50 text-gray-500 border border-gray-200">
+                            <CheckCircle2 className="w-4 h-4" />
+                            <span className="text-xs font-medium tracking-wide">Sent</span>
+                          </div>
+                        )}
                       </td>
                       <td className="px-6 py-6 whitespace-nowrap text-center">
                         {lead.mockup_url ? (

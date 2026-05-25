@@ -26,6 +26,7 @@ import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 import { Route as AdminSalesRouteImport } from './routes/admin.sales'
+import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
 import { Route as ApiPublicHooksGenerateBlogPostRouteImport } from './routes/api/public/hooks/generate-blog-post'
 
 const ShopRoute = ShopRouteImport.update({
@@ -114,6 +115,11 @@ const AdminSalesRoute = AdminSalesRouteImport.update({
   path: '/admin/sales',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicTrackRoute = ApiPublicTrackRouteImport.update({
+  id: '/api/public/track',
+  path: '/api/public/track',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicHooksGenerateBlogPostRoute =
   ApiPublicHooksGenerateBlogPostRouteImport.update({
     id: '/api/public/hooks/generate-blog-post',
@@ -159,6 +165,7 @@ export interface FileRoutesByTo {
   '/services/team-bulk': typeof ServicesTeamBulkRoute
   '/blog': typeof BlogIndexRoute
   '/locations': typeof LocationsIndexRoute
+  '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/hooks/generate-blog-post': typeof ApiPublicHooksGenerateBlogPostRoute
 }
 export interface FileRoutesById {
@@ -222,6 +229,7 @@ export interface FileRouteTypes {
     | '/services/team-bulk'
     | '/blog'
     | '/locations'
+    | '/api/public/track'
     | '/api/public/hooks/generate-blog-post'
   id:
     | '__root__'
@@ -263,6 +271,7 @@ export interface RootRouteChildren {
   ServicesTeamBulkRoute: typeof ServicesTeamBulkRoute
   BlogIndexRoute: typeof BlogIndexRoute
   LocationsIndexRoute: typeof LocationsIndexRoute
+  ApiPublicTrackRoute: typeof ApiPublicTrackRoute
   ApiPublicHooksGenerateBlogPostRoute: typeof ApiPublicHooksGenerateBlogPostRoute
 }
 
@@ -387,6 +396,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSalesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/track': {
+      id: '/api/public/track'
+      path: '/api/public/track'
+      fullPath: '/api/public/track'
+      preLoaderRoute: typeof ApiPublicTrackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hooks/generate-blog-post': {
       id: '/api/public/hooks/generate-blog-post'
       path: '/api/public/hooks/generate-blog-post'
@@ -415,6 +431,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesTeamBulkRoute: ServicesTeamBulkRoute,
   BlogIndexRoute: BlogIndexRoute,
   LocationsIndexRoute: LocationsIndexRoute,
+  ApiPublicTrackRoute: ApiPublicTrackRoute,
   ApiPublicHooksGenerateBlogPostRoute: ApiPublicHooksGenerateBlogPostRoute,
 }
 export const routeTree = rootRouteImport

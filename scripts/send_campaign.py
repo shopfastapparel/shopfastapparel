@@ -12,6 +12,11 @@ import subprocess
 from datetime import datetime
 from io import BytesIO
 from PIL import Image, ImageEnhance, ImageStat
+import uuid
+from dotenv import load_dotenv
+
+# Load env variables from root .env
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 
 # --- CONFIGURATION ---
 SMTP_SERVER = "smtp.gmail.com"
@@ -19,6 +24,9 @@ SMTP_PORT = 587
 SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "shopfastapparel@gmail.com")
 SENDER_PASSWORD = os.environ.get("SENDER_PASSWORD", "gutcjhfuvljllxtm")
 ADMIN_EMAIL = "shopfastapparel@gmail.com" # Where to send the daily summary
+
+SUPABASE_URL = os.environ.get("VITE_SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("VITE_SUPABASE_PUBLISHABLE_KEY")
 
 SUBJECT = "Fast, local custom apparel for {company_name}"
 BODY_TEMPLATE = """
@@ -42,10 +50,12 @@ BODY_TEMPLATE = """
     <p>I actually went ahead and created a quick mockup of how your logo would look on our premium DTF shirts—check it out below!</p>
     
     <div style="text-align: center; margin: 30px 0;">
-      <img src="cid:mockup" alt="Your Custom Shirt Mockup" style="max-width: 100%; border-radius: 12px; border: 2px solid #E5E7EB; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);" />
+      <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}">
+        <img src="cid:mockup" alt="Your Custom Shirt Mockup" style="max-width: 100%; border-radius: 12px; border: 2px solid #E5E7EB; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);" />
+      </a>
     </div>
     
-    <p>Check out some of our recent work on our website: <a href="https://www.shopfastapparel.com" style="color: #FF007F; text-decoration: none; font-weight: bold;">Shop Fast Apparel</a></p>
+    <p>Check out some of our recent work on our website: <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}" style="color: #FF007F; text-decoration: none; font-weight: bold;">Shop Fast Apparel</a></p>
     
     <p>Would love to help you out on your next project!</p>
     <br>
@@ -57,7 +67,7 @@ BODY_TEMPLATE = """
       <p style="margin: 5px 0 0 0; font-size: 14px;">
         <a href="mailto:shopfastapparel@gmail.com" style="color: #FF007F; text-decoration: none;">shopfastapparel@gmail.com</a> | 
         <a href="tel:678-491-2655" style="color: #FF007F; text-decoration: none;">678-491-2655</a> | 
-        <a href="https://www.shopfastapparel.com" style="color: #FF007F; text-decoration: none;">Website</a>
+        <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}" style="color: #FF007F; text-decoration: none;">Website</a>
       </p>
     </div>
     
@@ -140,7 +150,7 @@ def generate_mockup(logo_url, base_shirt_path, company_name, mockups_dir):
         print(f"Mockup generation failed: {e}")
         return None, None
 
-def send_prospect_email(to_email, company_name, mockup_bytes):
+def send_prospect_email(to_email, company_name, mockup_bytes, lead_id):
     msg = MIMEMultipart('related')
     msg['From'] = SENDER_EMAIL
     msg['To'] = to_email
@@ -149,7 +159,7 @@ def send_prospect_email(to_email, company_name, mockup_bytes):
     msg_alternative = MIMEMultipart('alternative')
     msg.attach(msg_alternative)
     
-    body = BODY_TEMPLATE.format(company_name=company_name)
+    body = BODY_TEMPLATE.format(company_name=company_name, lead_id=lead_id)
     msg_alternative.attach(MIMEText(body, 'html'))
     
     if mockup_bytes:
@@ -252,17 +262,41 @@ def main():
                 print(f"Skipping {company_name} due to mockup failure.")
                 continue
                 
-            success = send_prospect_email(email, company_name, mockup_bytes)
+            lead_id = str(uuid.uuid4())
+            success = send_prospect_email(email, company_name, mockup_bytes, lead_id)
             
             if success:
                 successful_leads.append(row)
-                sent_leads_data.append({
+                
+                lead_data = {
+                    "id": lead_id,
                     "company": company_name,
                     "email": email,
                     "industry": industry,
                     "website": website,
                     "logo_url": logo_url,
-                    "mockup_url": mockup_url,
+                    "mockup_url": mockup_url
+                }
+                
+                # Insert into Supabase
+                try:
+                    if SUPABASE_URL and SUPABASE_KEY:
+                        sb_res = requests.post(
+                            f"{SUPABASE_URL}/rest/v1/sales_leads",
+                            headers={
+                                "apikey": SUPABASE_KEY,
+                                "Authorization": f"Bearer {SUPABASE_KEY}",
+                                "Content-Type": "application/json",
+                                "Prefer": "return=minimal"
+                            },
+                            json=lead_data
+                        )
+                        sb_res.raise_for_status()
+                except Exception as e:
+                    print(f"Failed to insert into Supabase: {e}")
+
+                sent_leads_data.append({
+                    **lead_data,
                     "mockup_bytes": mockup_bytes,
                     "date": datetime.now().isoformat()
                 })
@@ -272,27 +306,7 @@ def main():
     # Send Summary
     send_summary_email(sent_leads_data)
             
-    # Update JSON database
-    if sent_leads_data:
-        existing_data = []
-        if os.path.exists(sales_data_file):
-            try:
-                with open(sales_data_file, 'r', encoding='utf-8') as f:
-                    existing_data = json.load(f)
-            except:
-                existing_data = []
-                
-        # Remove bytes before saving to JSON
-        json_data_to_append = []
-        for d in sent_leads_data:
-            clean_d = d.copy()
-            del clean_d["mockup_bytes"]
-            json_data_to_append.append(clean_d)
-            
-        existing_data.extend(json_data_to_append)
-        
-        with open(sales_data_file, 'w', encoding='utf-8') as f:
-            json.dump(existing_data, f, indent=2)
+    # (JSON database update removed in favor of Supabase)
             
     # Append successful to contacted
     if successful_leads:
@@ -312,15 +326,12 @@ def main():
     # Auto-sync to GitHub so live website updates
     print("Pushing dashboard data to live website via Git...")
     try:
-        subprocess.run(['git', 'add', 'public/admin/mockups/', 'public/admin/sales_data.json', 'scripts/leads.csv', 'scripts/leads_contacted.csv'], cwd=project_root, check=True)
-        # Check if there are changes to commit
-        status = subprocess.run(['git', 'status', '--porcelain'], cwd=project_root, capture_output=True, text=True)
-        if status.stdout.strip():
-            subprocess.run(['git', 'commit', '-m', 'chore: auto-update daily sales data'], cwd=project_root, check=True)
-            subprocess.run(['git', 'push'], cwd=project_root, check=True)
-            print("Successfully synced data to live website.")
-        else:
-            print("No data changes to sync.")
+        # Commit to Git disabled as data is in Supabase now
+        # subprocess.run(['git', 'add', 'public/admin/sales_data.json', 'public/admin/mockups/'], cwd=project_root)
+        subprocess.run(['git', 'add', 'public/admin/mockups/'], cwd=project_root)
+        subprocess.run(['git', 'commit', '-m', f"chore: add {len(successful_leads)} new mockups"], cwd=project_root)
+        subprocess.run(['git', 'push'], cwd=project_root)
+        print("Successfully synced data to live website.")
     except Exception as e:
         print(f"Git auto-sync failed: {e}")
 
