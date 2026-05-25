@@ -30,48 +30,157 @@ SUPABASE_KEY = os.environ.get("VITE_SUPABASE_PUBLISHABLE_KEY")
 
 SUBJECT = "Fast, local custom apparel for {company_name}"
 BODY_TEMPLATE = """
+<!DOCTYPE html>
 <html>
-  <body style="font-family: Arial, sans-serif; color: #333333; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px;">
-    
-    <!-- HEADER LOGO -->
-    <div style="text-align: center; margin-bottom: 30px;">
-      <img src="https://www.shopfastapparel.com/assets/logo-jiaNr5LV.png" alt="Fast Apparel" style="max-height: 60px; width: auto;" />
-    </div>
-
-    <!-- BODY -->
-    <p>Hi there,</p>
-    
-    <p>I'm reaching out because I love what you guys are doing at <strong>{company_name}</strong>!</p>
-    
-    <p>I run <strong>Fast Apparel</strong>, a local custom print shop right here in Lawrenceville/Atlanta. We specialize in high-quality DTF (Direct to Film) t-shirts and promotional products with super fast turnaround times.</p>
-    
-    <p>Since you're local, I wanted to see if you had any upcoming needs for team shirts, event merch, or uniforms? We offer free mockups and have <strong>no minimums</strong> on our DTF prints.</p>
-    
-    <p>I actually went ahead and created a quick mockup of how your logo would look on our premium DTF shirts—check it out below!</p>
-    
-    <div style="text-align: center; margin: 30px 0;">
-      <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}">
-        <img src="cid:mockup" alt="Your Custom Shirt Mockup" style="max-width: 100%; border-radius: 12px; border: 2px solid #E5E7EB; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);" />
-      </a>
-    </div>
-    
-    <p>Check out some of our recent work on our website: <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}" style="color: #FF007F; text-decoration: none; font-weight: bold;">Shop Fast Apparel</a></p>
-    
-    <p>Would love to help you out on your next project!</p>
-    <br>
-    
-    <!-- SIGNATURE -->
-    <div style="border-top: 2px solid #E5E7EB; padding-top: 15px; margin-top: 20px;">
-      <p style="margin: 0; font-size: 16px; font-weight: bold; color: #111827;">Tavarus Johnson</p>
-      <p style="margin: 0; font-size: 14px; color: #4B5563;">Owner, Fast Apparel</p>
-      <p style="margin: 5px 0 0 0; font-size: 14px;">
-        <a href="mailto:shopfastapparel@gmail.com" style="color: #FF007F; text-decoration: none;">shopfastapparel@gmail.com</a> | 
-        <a href="tel:678-491-2655" style="color: #FF007F; text-decoration: none;">678-491-2655</a> | 
-        <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}" style="color: #FF007F; text-decoration: none;">Website</a>
-      </p>
-    </div>
-    
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body {{
+    margin: 0;
+    padding: 0;
+    background-color: #F3F4F6;
+    font-family: 'Outfit', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }}
+  .wrapper {{
+    width: 100%;
+    table-layout: fixed;
+    background-color: #F3F4F6;
+    padding: 40px 20px;
+  }}
+  .main {{
+    background-color: #ffffff;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border-top: 4px solid #FF007F;
+  }}
+  .header {{
+    padding: 30px;
+    text-align: center;
+    background-color: #ffffff;
+    border-bottom: 1px solid #F3F4F6;
+  }}
+  .header img {{
+    height: 40px;
+    width: auto;
+  }}
+  .content {{
+    padding: 40px 30px;
+    color: #374151;
+    font-size: 16px;
+    line-height: 1.6;
+  }}
+  .h1 {{
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }}
+  .mockup-container {{
+    background-color: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin: 30px 0;
+  }}
+  .mockup-image {{
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+  }}
+  .cta-button {{
+    display: inline-block;
+    background-color: #FF007F;
+    color: #ffffff !important;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 14px 32px;
+    border-radius: 50px;
+    margin-top: 20px;
+    text-align: center;
+  }}
+  .footer {{
+    padding: 30px;
+    background-color: #F9FAFB;
+    border-top: 1px solid #E5E7EB;
+    text-align: center;
+    color: #6B7280;
+    font-size: 14px;
+  }}
+  .signature-name {{
+    font-weight: 700;
+    color: #111827;
+    font-size: 16px;
+    margin: 0 0 4px 0;
+  }}
+  .signature-title {{
+    color: #6B7280;
+    margin: 0;
+  }}
+  .links a {{
+    color: #FF007F;
+    text-decoration: none;
+    font-weight: 600;
+  }}
+</style>
+</head>
+<body>
+  <div class="wrapper">
+    <table class="main" width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td class="header">
+          <img src="https://www.shopfastapparel.com/assets/logo-jiaNr5LV.png" alt="Fast Apparel">
+        </td>
+      </tr>
+      <tr>
+        <td class="content">
+          <h1 class="h1">Custom gear that stands out.</h1>
+          <p>Hi there,</p>
+          <p>I'm reaching out because I love what you guys are doing at <strong>{company_name}</strong>!</p>
+          <p>I run <strong>Fast Apparel</strong>, a local custom print shop right here in Lawrenceville/Atlanta. We specialize in high-quality DTF (Direct to Film) t-shirts and promotional products with super fast turnaround times.</p>
+          <p>Since you're local, I wanted to see if you had any upcoming needs for team shirts, event merch, or uniforms? We offer free mockups and have <strong>no minimums</strong> on our DTF prints.</p>
+          
+          <div class="mockup-container">
+            <p style="margin-top: 0; font-size: 14px; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Custom Mockup Generated For You</p>
+            <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}">
+              <img src="cid:mockup" alt="Your Custom Shirt Mockup" class="mockup-image" />
+            </a>
+            <div>
+              <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}" class="cta-button">See Pricing & Details</a>
+            </div>
+          </div>
+          
+          <p>Would love to help you out on your next project! Feel free to reply directly to this email or grab a quote on our site.</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="footer">
+          <p class="signature-name">Tavarus Johnson</p>
+          <p class="signature-title">Owner, Fast Apparel</p>
+          <p class="links" style="margin-top: 15px;">
+            <a href="mailto:shopfastapparel@gmail.com">Email Me</a> &nbsp;|&nbsp; 
+            <a href="tel:678-491-2655">678-491-2655</a> &nbsp;|&nbsp; 
+            <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}">Visit Website</a>
+          </p>
+          <p style="font-size: 12px; color: #9CA3AF; margin-top: 20px;">
+            A Subsidiary of Johnson Enterprises of GA LLC<br>
+            Atlanta, GA
+          </p>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
 </html>
 """
 
