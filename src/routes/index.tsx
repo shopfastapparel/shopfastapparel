@@ -15,6 +15,9 @@ import {
   Gift,
   Star,
   ArrowRight,
+  Stethoscope,
+  ChefHat,
+  Briefcase,
 } from "lucide-react";
 import heroShirts from "@/assets/hero-shirts.jpg";
 
@@ -221,6 +224,27 @@ function HomePage() {
               title: "Promotional Products",
               desc: "Branded swag, giveaways, hats, drinkware. Perfect for events, marketing, and corporate gifts.",
               to: "/services/promotional-products" as const,
+              color: "bg-yellow-brand",
+            },
+            {
+              icon: Stethoscope,
+              title: "Scrubs & Medical Uniforms",
+              desc: "Premium, comfortable medical apparel customized with your clinic or hospital's logo.",
+              to: "/quote" as const,
+              color: "bg-cyan-brand",
+            },
+            {
+              icon: ChefHat,
+              title: "Chef Uniforms & Aprons",
+              desc: "Durable, high-quality culinary wear designed to withstand the heat of the kitchen.",
+              to: "/quote" as const,
+              color: "bg-magenta-brand",
+            },
+            {
+              icon: Briefcase,
+              title: "Polos & Business Apparel",
+              desc: "Professional corporate wear that elevates your brand in the office or at trade shows.",
+              to: "/quote" as const,
               color: "bg-yellow-brand",
             },
           ].map((s) => (
