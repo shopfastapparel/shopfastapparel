@@ -1,4 +1,7 @@
-import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, Link, createRootRoute, HeadContent, Scripts, ScrollRestoration } from "@tanstack/react-router";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { DiscountPopup } from "@/components/DiscountPopup";
 import { Toaster } from "@/components/ui/sonner";
 
 import appCss from "../styles.css?url";
@@ -78,8 +81,12 @@ function RootShell({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <Header />
         {children}
-        <Toaster position="top-right" richColors />
+        <Footer />
+        <DiscountPopup />
+        <Toaster position="top-center" />
+        <ScrollRestoration />
         <Scripts />
       </body>
     </html>
