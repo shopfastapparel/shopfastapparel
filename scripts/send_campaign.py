@@ -256,8 +256,17 @@ def generate_mockup(logo_url, base_shirt_path, company_name, mockups_dir):
         
         return buf.getvalue(), public_url
     except Exception as e:
-        print(f"Mockup generation failed: {e}")
-        return None, None
+        print(f"Mockup generation failed: {e}. Using fallback mockup.")
+        try:
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            project_root = os.path.dirname(script_dir)
+            fallback_path = os.path.join(project_root, 'public', 'images', 'apparel', 'fallback-mockup.png')
+            with open(fallback_path, 'rb') as f:
+                fallback_bytes = f.read()
+            return fallback_bytes, "/images/apparel/fallback-mockup.png"
+        except Exception as fallback_err:
+            print(f"Fallback mockup also failed: {fallback_err}")
+            return None, None
 
 def send_prospect_email(to_email, company_name, mockup_bytes, lead_id):
     msg = MIMEMultipart('related')
@@ -340,7 +349,7 @@ def main():
     project_root = os.path.dirname(script_dir)
     leads_file = os.path.join(script_dir, 'leads.csv')
     contacted_file = os.path.join(script_dir, 'leads_contacted.csv')
-    base_shirt_path = os.path.join(project_root, 'public', 'images', 'apparel', 'gildan-64000.jpg')
+    base_shirt_path = os.path.join(project_root, 'public', 'images', 'apparel', 'white-shirt.png')
     
     mockups_dir = os.path.join(project_root, 'public', 'admin', 'mockups')
     sales_data_file = os.path.join(project_root, 'public', 'admin', 'sales_data.json')
