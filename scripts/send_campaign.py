@@ -197,6 +197,9 @@ SUMMARY_TEMPLATE = """
 
 def generate_mockup(logo_url, base_shirt_path, company_name, mockups_dir):
     try:
+        if not logo_url or "ui-avatars.com" in logo_url.lower():
+            raise ValueError("No logo found. Triggering fallback shirt.")
+            
         headers = {'User-Agent': 'Mozilla/5.0'}
         response = requests.get(logo_url, headers=headers, timeout=10)
         response.raise_for_status()
