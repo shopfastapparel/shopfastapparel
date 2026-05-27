@@ -204,15 +204,8 @@ def generate_mockup(logo_url, base_shirt_path, company_name, mockups_dir):
         
         shirt = Image.open(base_shirt_path).convert("RGBA")
         
-        grayscale = logo.convert("L")
-        stat = ImageStat.Stat(grayscale)
-        avg_brightness = stat.mean[0] if isinstance(stat.mean, list) else stat.mean
-        
-        if avg_brightness > 128:
-            shirt = ImageEnhance.Brightness(shirt).enhance(0.15)
-        else:
-            shirt = ImageEnhance.Brightness(shirt).enhance(1.6)
-            shirt = ImageEnhance.Contrast(shirt).enhance(1.1)
+        # Removed automatic shirt brightness adjustment so the shirt stays white.
+        # If the logo is too bright, we could darken the logo itself, but for now we keep the shirt pure white.
         
         target_width = int(shirt.width * 0.4)
         aspect_ratio = logo.height / logo.width
