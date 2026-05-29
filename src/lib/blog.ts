@@ -27,6 +27,7 @@ export const BLOG_POSTS: BlogPost[] = [
     publishedAt: "2026-05-29",
     author: "Fast Apparel Team",
     cover: { gradient: "from-cyan-brand to-ink", emoji: "🏃" },
+    coverImageUrl: "/images/blog/athleisure-cover.png",
     keywords: [
       "corporate athleisure Atlanta",
       "company performance wear",
@@ -49,6 +50,8 @@ At Fast Apparel, we are seeing a massive spike in orders for:
 - **Lightweight Hoodies & Quarter-Zips:** The new unofficial uniform of the modern office.
 
 ## Why Print DTF on Performance Wear?
+
+![DTF printed directly on athletic mesh](/images/blog/athleisure-sub.png)
 
 Historically, printing on moisture-wicking polyester was a nightmare. Screen printing inks would crack or bleed, and the thick plastic feel ruined the breathability of the shirt. 
 
