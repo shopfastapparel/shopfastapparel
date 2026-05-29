@@ -17,6 +17,48 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "corporate-athleisure-trend-atlanta",
+    title: "The Rise of Corporate Athleisure: Why Polos Are Out and Performance Wear Is In",
+    description:
+      "Atlanta businesses are ditching stiff corporate polos for premium performance tees and quarter-zips. Here is how to upgrade your team's merch to clothing they actually want to wear.",
+    category: "Custom T-Shirts",
+    city: "Atlanta",
+    readMinutes: 5,
+    publishedAt: "2026-05-29",
+    author: "Fast Apparel Team",
+    cover: { gradient: "from-cyan-brand to-ink", emoji: "🏃" },
+    keywords: [
+      "corporate athleisure Atlanta",
+      "company performance wear",
+      "custom quarter-zips",
+      "modern corporate apparel",
+    ],
+    body: `## The End of the Stiff Corporate Polo
+
+If you walk into any tech office in Alpharetta or startup hub in Midtown Atlanta, you'll notice a massive shift in what the team is wearing. The traditional, scratchy corporate polo with a tiny embroidered logo on the chest is dead. 
+
+Today’s workforce wants **comfort and performance**. They want gear they can wear to the office, to the gym, and on a weekend hike.
+
+## Enter Corporate Athleisure
+
+Athleisure has dominated the retail space for a decade, and it has finally completely taken over corporate merch. Brands like Nike, Lululemon, and Patagonia set the standard, and now local businesses expect that same level of quality for their team apparel.
+
+At Fast Apparel, we are seeing a massive spike in orders for:
+- **Performance Tees (like the C2 Sport 5100):** Moisture-wicking, breathable, and perfect for active teams or outdoor events.
+- **Premium Tri-Blends (like the Bella Canvas 3001):** Ultra-soft, retail-quality shirts that feel like your favorite vintage tee.
+- **Lightweight Hoodies & Quarter-Zips:** The new unofficial uniform of the modern office.
+
+## Why Print DTF on Performance Wear?
+
+Historically, printing on moisture-wicking polyester was a nightmare. Screen printing inks would crack or bleed, and the thick plastic feel ruined the breathability of the shirt. 
+
+Our **DTF (Direct-to-Film)** process solves this completely. The prints stretch with the fabric, sit extremely lightly on the garment, and allow us to print full-color photo-realistic logos on 100% polyester without any issues.
+
+## Upgrade Your Team
+
+Stop wasting your marketing budget on stiff shirts your employees leave in the bottom of their closet. Upgrade your team to retail-quality performance wear. With our low minimums, you can outfit your entire staff—whether that's 5 people or 500—without breaking the bank.`,
+  },
+  {
     slug: "uv-dtf-promotional-products-atlanta",
     title: "Beyond T-Shirts: How UV DTF is Revolutionizing Promotional Products in Atlanta",
     description:
