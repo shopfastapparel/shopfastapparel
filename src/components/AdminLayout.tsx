@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from '@tanstack/react-router';
 import { SiteLayout } from '@/components/SiteLayout';
 import { supabase } from '@/integrations/supabase/client';
-import { LayoutDashboard, FileText } from 'lucide-react';
+import { LayoutDashboard, FileText, Mail } from 'lucide-react';
 
 export function AdminLayout({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
@@ -64,6 +64,18 @@ export function AdminLayout({ children }: { children: ReactNode }) {
               >
                 <FileText className="h-4 w-4" />
                 <span>Blog Drafts</span>
+              </Link>
+
+              <Link 
+                to="/admin/subscribers" 
+                className={`flex items-center space-x-2 text-sm font-medium h-full border-b-2 px-1 transition-colors ${
+                  location.pathname === '/admin/subscribers' 
+                    ? 'border-primary text-primary' 
+                    : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300'
+                }`}
+              >
+                <Mail className="h-4 w-4" />
+                <span>Subscribers</span>
               </Link>
             </div>
           </div>
