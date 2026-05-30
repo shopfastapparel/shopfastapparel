@@ -267,6 +267,52 @@ function HomePage() {
         </motion.div>
       </section>
 
+      {/* FAMILY TEES SUBLET */}
+      <section className="bg-magenta-brand/10 border-t border-magenta-brand/20">
+        <div className="mx-auto max-w-7xl px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeInLeft}
+          >
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-magenta-brand mb-2">
+              Family & Events
+            </p>
+            <h2 className="font-display text-3xl md:text-4xl leading-tight text-ink">
+              Matching tees for reunions, vacations & milestones.
+            </h2>
+            <p className="mt-4 text-foreground/80 text-lg">
+              Bring the family together in style. We offer premium custom apparel for family reunions, beach vacations, and milestone birthdays. 
+              Plus, use our <strong>Free Bulk Size Collection Tool</strong> to easily gather everyone's sizes without messy group texts.
+            </p>
+            <div className="mt-6">
+              <Button asChild variant="default" className="shadow-pop border-2 border-ink">
+                <Link to="/services/family-tees">Explore Family Tees</Link>
+              </Button>
+            </div>
+          </motion.div>
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeInRight}
+            className="grid grid-cols-2 gap-4"
+          >
+            <img 
+              src="/images/family-tees/reunion.png" 
+              alt="Family Reunion" 
+              className="rounded-xl border-2 border-ink shadow-sm w-full h-48 object-cover translate-y-4"
+            />
+            <img 
+              src="/images/family-tees/vacation.png" 
+              alt="Family Vacation" 
+              className="rounded-xl border-2 border-ink shadow-sm w-full h-48 object-cover -translate-y-4"
+            />
+          </motion.div>
+        </div>
+      </section>
+
       {/* PRODUCTS */}
       <section className="bg-muted/40 border-y">
         <div className="mx-auto max-w-7xl px-4 py-20">
