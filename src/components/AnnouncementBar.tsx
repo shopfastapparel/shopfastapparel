@@ -38,7 +38,7 @@ export function AnnouncementBar() {
       .channel('schema-db-changes')
       .on(
         'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'announcement_settings' },
+        { event: '*', schema: 'public', table: 'announcement_settings' },
         (payload) => {
           const newData = payload.new as AnnouncementSettings;
           setSettings(newData);
