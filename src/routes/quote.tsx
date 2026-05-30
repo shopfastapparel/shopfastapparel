@@ -46,7 +46,7 @@ export const Route = createFileRoute("/quote")({
   component: QuotePage,
 });
 
-type ServiceKey = "custom-tshirts" | "team-bulk" | "promo" | "other";
+type ServiceKey = "custom-tshirts" | "team-bulk" | "family-tees" | "promo" | "other";
 type TurnaroundKey = "rush" | "standard" | "flexible";
 type QuantityKey = "1-23" | "24-47" | "48-99" | "100-249" | "250-499" | "500+";
 
@@ -88,6 +88,12 @@ const SERVICES: {
     key: "team-bulk",
     label: "Team / Bulk Order",
     blurb: "Sports, schools, large events",
+    Icon: Users,
+  },
+  {
+    key: "family-tees",
+    label: "Family Tees",
+    blurb: "Reunions, holidays & milestones",
     Icon: Users,
   },
   {
