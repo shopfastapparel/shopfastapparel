@@ -1,5 +1,6 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts, ScrollRestoration } from "@tanstack/react-router";
 import { DiscountPopup } from "@/components/DiscountPopup";
+import { FomoPopup } from "@/components/FomoPopup";
 import { Toaster } from "@/components/ui/sonner";
 
 import appCss from "../styles.css?url";
@@ -81,6 +82,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
       <body>
         {children}
         <DiscountPopup />
+        <FomoPopup />
         <Toaster position="top-center" />
         <ScrollRestoration />
         <Scripts />
