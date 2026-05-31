@@ -50,53 +50,23 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             <div className="flex h-14 items-center space-x-8">
               <span className="font-bold text-gray-900 tracking-tight uppercase text-sm border-r border-gray-200 pr-6 mr-2">Admin Hub</span>
               
-              <Link 
-                to="/admin/sales" 
-                className={`flex items-center space-x-2 text-sm font-medium h-full border-b-2 px-1 transition-colors ${
-                  location.pathname === '/admin/sales' 
-                    ? 'border-primary text-primary' 
-                    : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300'
-                }`}
-              >
-                <LayoutDashboard className="h-4 w-4" />
-                <span>Sales Dashboard</span>
-              </Link>
-
-              <Link 
-                to="/admin/blog" 
-                className={`flex items-center space-x-2 text-sm font-medium h-full border-b-2 px-1 transition-colors ${
-                  location.pathname === '/admin/blog' 
-                    ? 'border-primary text-primary' 
-                    : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300'
-                }`}
-              >
-                <FileText className="h-4 w-4" />
-                <span>Blog Drafts</span>
-              </Link>
-
-              <Link 
-                to="/admin/subscribers" 
-                className={`flex items-center space-x-2 text-sm font-medium h-full border-b-2 px-1 transition-colors ${
-                  location.pathname === '/admin/subscribers' 
-                    ? 'border-primary text-primary' 
-                    : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300'
-                }`}
-              >
-                <Mail className="h-4 w-4" />
-                <span>Subscribers</span>
-              </Link>
-
-              <Link 
-                to="/admin/announcement" 
-                className={`flex items-center space-x-2 text-sm font-medium h-full border-b-2 px-1 transition-colors ${
-                  location.pathname === '/admin/announcement' 
-                    ? 'border-primary text-primary' 
-                    : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300'
-                }`}
-              >
-                <Megaphone className="h-4 w-4" />
-                <span>Announcement Bar</span>
-              </Link>
+              {TABS.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <Link 
+                    key={tab.id}
+                    to={tab.to} 
+                    className={`flex items-center space-x-2 text-sm font-medium h-full border-b-2 px-1 transition-colors ${
+                      location.pathname === tab.to
+                        ? 'border-primary text-primary' 
+                        : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300'
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span>{tab.label}</span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </div>
