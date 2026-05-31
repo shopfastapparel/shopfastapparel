@@ -2,7 +2,15 @@ import { ReactNode, useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from '@tanstack/react-router';
 import { SiteLayout } from '@/components/SiteLayout';
 import { supabase } from '@/integrations/supabase/client';
-import { LayoutDashboard, FileText, Mail, Megaphone } from 'lucide-react';
+import { LayoutDashboard, FileText, Mail, Megaphone, MessageSquare } from 'lucide-react';
+
+const TABS = [
+  { id: "sales", label: "Sales Dashboard", to: "/admin/sales", icon: LayoutDashboard },
+  { id: "blog", label: "Blog Drafts", to: "/admin/blog", icon: FileText },
+  { id: "subscribers", label: "Subscribers", to: "/admin/subscribers", icon: Mail },
+  { id: "announcement", label: "Announcement Bar", to: "/admin/announcement", icon: Megaphone },
+  { id: "quotes", label: "Quote Requests", to: "/admin/quotes", icon: MessageSquare },
+];
 
 export function AdminLayout({ children }: { children: ReactNode }) {
   const navigate = useNavigate();

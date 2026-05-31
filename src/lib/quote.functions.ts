@@ -159,6 +159,36 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
     }
     const fileLinksHtml = fileLinksHtmlArray.length > 0 ? fileLinksHtmlArray.join("<br>") : "None attached";
 
+    // Save to Database
+    const { data: dbRecord, error: dbError } = await supabaseAdmin
+      .from("quote_requests")
+      .insert([
+        {
+          service: data.service,
+          quantity: data.quantity,
+          turnaround: data.turnaround,
+          turnaround_estimate: data.turnaroundEstimate,
+          deadline: data.deadline,
+          city: data.city,
+          details: data.details,
+          file_names: data.fileNames,
+          name: data.name,
+          company: data.company,
+          email: data.email,
+          phone: data.phone,
+          status: "New Request"
+        }
+      ])
+      .select('id')
+      .single();
+
+    if (dbError) {
+      console.error("[quote] Database insert failed:", dbError);
+      // We'll still try to send the email as a fallback, but this shouldn't fail.
+    }
+
+    const quoteId = dbRecord?.id || "N/A";
+
     // Determine sender — use verified domain if available, otherwise Resend default
     const from = process.env.RESEND_FROM_EMAIL || "Fast Apparel Quotes <onboarding@resend.dev>";
 
@@ -167,7 +197,7 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
     const { error: ownerError } = await resend.emails.send({
       from,
       to: [toEmail],
-      subject: `Quote Request — ${data.service} — ${data.name}`,
+      subject: `Quote Request [${quoteId.substring(0, 8)}] — ${data.service} — ${data.name}`,
       html: buildOwnerEmailHtml(data, fileLinksHtml),
       replyTo: data.email,
     });
