@@ -7,21 +7,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { processCustomerApproval } from "@/lib/mockup.functions";
 import { toast } from "sonner";
 import { CheckCircle2, XCircle, AlertCircle, RefreshCw } from "lucide-react";
+import { Tables } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/mockup/$id")({
   component: MockupApprovalPage,
 });
 
-type Quote = {
-  id: string;
-  created_at: string;
-  status: string;
-  service: string;
-  name: string;
-  quantity: string;
-  mockup_url: string | null;
-  mockup_feedback: string | null;
-};
+type Quote = Tables<"quote_requests">;
 
 function MockupApprovalPage() {
   const { id } = Route.useParams();

@@ -9,25 +9,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { sendMockup, updateQuoteStatus } from "@/lib/mockup.functions";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Eye, Upload, CheckCircle2, FileImage } from "lucide-react";
+import { FileImage } from "lucide-react";
+import { Tables } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/admin/quotes")({
   component: AdminQuotes,
 });
 
-type Quote = {
-  id: string;
-  created_at: string;
-  status: string;
-  service: string;
-  name: string;
-  email: string;
-  quantity: string;
-  details: string;
-  file_names: string[];
-  mockup_url: string | null;
-  mockup_feedback: string | null;
-};
+type Quote = Tables<"quote_requests">;
 
 const STATUS_OPTIONS = [
   "New Request",
