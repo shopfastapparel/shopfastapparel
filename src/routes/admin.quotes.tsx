@@ -51,7 +51,7 @@ function AdminQuotes() {
     
     // Subscribe to realtime updates
     const channel = supabase
-      .channel('schema-db-changes')
+      .channel('quotes-db-changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'quote_requests' }, () => {
         fetchQuotes();
       })
