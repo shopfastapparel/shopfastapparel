@@ -14,6 +14,15 @@ import { Tables } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/admin/quotes")({
   component: AdminQuotes,
+  errorComponent: ({ error }) => (
+    <AdminLayout>
+      <div className="p-8 bg-red-500/10 border-2 border-red-500 text-red-700 rounded-xl m-8">
+        <h2 className="font-display text-2xl mb-4">Route Error</h2>
+        <p className="font-mono text-sm">{error.message}</p>
+        <pre className="mt-4 text-xs overflow-auto max-h-[300px]">{error.stack}</pre>
+      </div>
+    </AdminLayout>
+  )
 });
 
 type Quote = Tables<"quote_requests">;
