@@ -71,6 +71,69 @@ export type Database = {
         }
         Relationships: []
       }
+      quote_requests: {
+        Row: {
+          id: string
+          created_at: string
+          status: string
+          service: string | null
+          quantity: string | null
+          turnaround: string | null
+          turnaround_estimate: string | null
+          deadline: string | null
+          city: string | null
+          details: string | null
+          file_names: Json | null
+          name: string
+          company: string | null
+          email: string
+          phone: string | null
+          mockup_url: string | null
+          mockup_feedback: string | null
+          price_quote: number | null
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          status?: string
+          service?: string | null
+          quantity?: string | null
+          turnaround?: string | null
+          turnaround_estimate?: string | null
+          deadline?: string | null
+          city?: string | null
+          details?: string | null
+          file_names?: Json | null
+          name: string
+          company?: string | null
+          email: string
+          phone?: string | null
+          mockup_url?: string | null
+          mockup_feedback?: string | null
+          price_quote?: number | null
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          status?: string
+          service?: string | null
+          quantity?: string | null
+          turnaround?: string | null
+          turnaround_estimate?: string | null
+          deadline?: string | null
+          city?: string | null
+          details?: string | null
+          file_names?: Json | null
+          name?: string
+          company?: string | null
+          email?: string
+          phone?: string | null
+          mockup_url?: string | null
+          mockup_feedback?: string | null
+          price_quote?: number | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
