@@ -69,7 +69,7 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const { products, loading } = useProducts(8);
 
-  const staggerContainer = {
+  const staggerContainer: any = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -77,17 +77,17 @@ function HomePage() {
     },
   };
 
-  const fadeInUp = {
+  const fadeInUp: any = {
     hidden: { opacity: 0, y: 30 },
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100, damping: 20 } },
   };
 
-  const fadeInLeft = {
+  const fadeInLeft: any = {
     hidden: { opacity: 0, x: -40 },
     show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 100, damping: 20 } },
   };
 
-  const fadeInRight = {
+  const fadeInRight: any = {
     hidden: { opacity: 0, x: 40 },
     show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 100, damping: 20 } },
   };

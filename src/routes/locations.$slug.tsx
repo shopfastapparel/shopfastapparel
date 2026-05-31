@@ -102,7 +102,7 @@ function LocationPage() {
           <div>
             <h2 className="font-display text-3xl">Why {loc.city} chooses Fast Apparel</h2>
             <ul className="mt-5 space-y-3">
-              {loc.highlights.map((h) => (
+              {loc.highlights?.map((h) => (
                 <li key={h} className="flex gap-3">
                   <CheckCircle2 className="h-5 w-5 text-magenta-brand flex-shrink-0 mt-0.5" />
                   <span>{h}</span>

@@ -22,6 +22,8 @@ export type Database = {
           city: string | null
           cover_emoji: string
           cover_gradient: string
+          cover_image_url: string | null
+          cover_image_credit: string | null
           created_at: string
           description: string
           id: string
@@ -40,7 +42,8 @@ export type Database = {
           city?: string | null
           cover_emoji?: string
           cover_gradient?: string
-          created_at?: string
+          cover_image_url?: string | null
+          cover_image_credit?: string | null
           description: string
           id?: string
           keywords?: string[]
@@ -58,6 +61,8 @@ export type Database = {
           city?: string | null
           cover_emoji?: string
           cover_gradient?: string
+          cover_image_url?: string | null
+          cover_image_credit?: string | null
           created_at?: string
           description?: string
           id?: string
@@ -131,6 +136,96 @@ export type Database = {
           mockup_url?: string | null
           mockup_feedback?: string | null
           price_quote?: number | null
+        }
+        Relationships: []
+      }
+      announcement_settings: {
+        Row: {
+          id: string
+          message: string
+          is_active: boolean
+          theme: string
+          link_url: string | null
+          link_text: string | null
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          message: string
+          is_active?: boolean
+          theme?: string
+          link_url?: string | null
+          link_text?: string | null
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          message?: string
+          is_active?: boolean
+          theme?: string
+          link_url?: string | null
+          link_text?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sales_leads: {
+        Row: {
+          id: string
+          name: string
+          email: string
+          company: string | null
+          industry: string | null
+          website: string | null
+          annual_volume: string | null
+          current_pain_points: string | null
+          status: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          email: string
+          company?: string | null
+          industry?: string | null
+          website?: string | null
+          annual_volume?: string | null
+          current_pain_points?: string | null
+          status?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          email?: string
+          company?: string | null
+          industry?: string | null
+          website?: string | null
+          annual_volume?: string | null
+          current_pain_points?: string | null
+          status?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      newsletter_subscribers: {
+        Row: {
+          id: string
+          email: string
+          status: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          email: string
+          status?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          status?: string
+          created_at?: string
         }
         Relationships: []
       }

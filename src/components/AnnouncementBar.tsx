@@ -22,12 +22,12 @@ export function AnnouncementBar() {
     supabase
       .from("announcement_settings")
       .select("*")
-      .eq("id", 1)
+      .eq("id", 1 as any)
       .single()
       .then(({ data, error }) => {
         if (!error && data) {
-          setSettings(data as AnnouncementSettings);
-          if (data.is_active && data.text_content) {
+          setSettings(data as any);
+          if ((data as any).is_active && (data as any).text_content) {
             setIsVisible(true);
           }
         }

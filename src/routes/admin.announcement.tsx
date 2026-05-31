@@ -33,11 +33,11 @@ function AnnouncementAdmin() {
     supabase
       .from('announcement_settings')
       .select('*')
-      .eq('id', 1)
+      .eq('id', 1 as any)
       .single()
       .then(({ data, error }) => {
         if (!error && data) {
-          setSettings(data as AnnouncementSettings);
+          setSettings(data as any);
         }
         setLoading(false);
       });
@@ -46,19 +46,13 @@ function AnnouncementAdmin() {
   const handleSave = async () => {
     setSaving(true);
     
-    // Check if row exists
-    const { data: existing } = await supabase.from('announcement_settings').select('id').eq('id', 1).single();
-    
-    let result;
-    if (existing) {
-      result = await supabase.from('announcement_settings').update(settings).eq('id', 1);
-    } else {
-      result = await supabase.from('announcement_settings').insert([settings]);
-    }
+    const { error } = await supabase
+      .from('announcement_settings')
+      .upsert(settings as any, { onConflict: 'id' });
 
-    if (result.error) {
+    if (error) {
       toast.error("Failed to save settings. Did you run the SQL snippet?");
-      console.error(result.error);
+      console.error(error);
     } else {
       toast.success("Announcement bar settings saved instantly!");
     }

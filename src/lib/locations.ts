@@ -6,7 +6,8 @@ export interface LocationInfo {
   zipPrefix: string;
   blurb: string;
   neighborhoods: string[];
-  highlights: string[];
+  highlights?: string[];
+  features?: string[];
 }
 
 export const LOCATIONS: LocationInfo[] = [

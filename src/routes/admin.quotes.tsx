@@ -178,7 +178,7 @@ function AdminQuotes() {
                     <td className="px-6 py-4">
                       <div className="font-medium">{q.name}</div>
                       <div className="text-xs text-muted-foreground">
-                        <a href={\`mailto:\${q.email}\`} className="hover:underline">{q.email}</a>
+                        <a href={`mailto:${q.email}`} className="hover:underline">{q.email}</a>
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -187,7 +187,7 @@ function AdminQuotes() {
                     </td>
                     <td className="px-6 py-4">
                       <Select value={q.status} onValueChange={(val) => handleStatusChange(q.id, val)}>
-                        <SelectTrigger className={\`h-8 text-xs font-semibold uppercase tracking-wider border \${getStatusColor(q.status)}\`}>
+                        <SelectTrigger className={`h-8 text-xs font-semibold uppercase tracking-wider border ${getStatusColor(q.status)}`}>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>

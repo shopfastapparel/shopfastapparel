@@ -275,7 +275,7 @@ function QuotePage() {
         const filePath = `${Date.now()}-${f.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
         
         // Convert dataUrl to Blob
-        const res = await fetch(f.dataUrl);
+        const res = await fetch(f.dataUrl as string);
         const blob = await res.blob();
 
         const { error: uploadError } = await supabase.storage

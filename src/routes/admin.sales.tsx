@@ -34,10 +34,10 @@ function SalesDashboard() {
         if (error) {
           console.error("Failed to fetch sales leads from Supabase", error);
         } else {
-          setLeads(data as SalesLead[]);
+          setLeads(data as any);
         }
-      })
-      .finally(() => setLoading(false));
+        setLoading(false);
+      });
   }, []);
 
   return (

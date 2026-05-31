@@ -30,8 +30,8 @@ function SubscribersDashboard() {
         } else {
           setSubscribers(data as Subscriber[]);
         }
-      })
-      .finally(() => setLoading(false));
+        setLoading(false);
+      });
   }, []);
 
   const downloadCSV = () => {

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ShopRouteImport } from './routes/shop'
+import { Route as ShirtColorsRouteImport } from './routes/shirt-colors'
 import { Route as QuoteRouteImport } from './routes/quote'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as FaqRouteImport } from './routes/faq'
@@ -20,18 +21,30 @@ import { Route as LocationsIndexRouteImport } from './routes/locations.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as ServicesTeamBulkRouteImport } from './routes/services.team-bulk'
 import { Route as ServicesPromotionalProductsRouteImport } from './routes/services.promotional-products'
+import { Route as ServicesFamilyTeesRouteImport } from './routes/services.family-tees'
 import { Route as ServicesCustomTshirtsRouteImport } from './routes/services.custom-tshirts'
 import { Route as ProductHandleRouteImport } from './routes/product.$handle'
+import { Route as MockupIdRouteImport } from './routes/mockup.$id'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
-import { Route as AdminBlogRouteImport } from './routes/admin.blog'
+import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
 import { Route as AdminSalesRouteImport } from './routes/admin.sales'
+import { Route as AdminQuotesRouteImport } from './routes/admin.quotes'
+import { Route as AdminBlogRouteImport } from './routes/admin.blog'
+import { Route as AdminAnnouncementRouteImport } from './routes/admin.announcement'
+import { Route as ApiPublicVoiceRouteImport } from './routes/api/public/voice'
 import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
+import { Route as ApiCronGenerateBlogRouteImport } from './routes/api/cron/generate-blog'
 import { Route as ApiPublicHooksGenerateBlogPostRouteImport } from './routes/api/public/hooks/generate-blog-post'
 
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShirtColorsRoute = ShirtColorsRouteImport.update({
+  id: '/shirt-colors',
+  path: '/shirt-colors',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuoteRoute = QuoteRouteImport.update({
@@ -85,6 +98,11 @@ const ServicesPromotionalProductsRoute =
     path: '/services/promotional-products',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ServicesFamilyTeesRoute = ServicesFamilyTeesRouteImport.update({
+  id: '/services/family-tees',
+  path: '/services/family-tees',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesCustomTshirtsRoute = ServicesCustomTshirtsRouteImport.update({
   id: '/services/custom-tshirts',
   path: '/services/custom-tshirts',
@@ -93,6 +111,11 @@ const ServicesCustomTshirtsRoute = ServicesCustomTshirtsRouteImport.update({
 const ProductHandleRoute = ProductHandleRouteImport.update({
   id: '/product/$handle',
   path: '/product/$handle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MockupIdRoute = MockupIdRouteImport.update({
+  id: '/mockup/$id',
+  path: '/mockup/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LocationsSlugRoute = LocationsSlugRouteImport.update({
@@ -105,9 +128,9 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminBlogRoute = AdminBlogRouteImport.update({
-  id: '/admin/blog',
-  path: '/admin/blog',
+const AdminSubscribersRoute = AdminSubscribersRouteImport.update({
+  id: '/admin/subscribers',
+  path: '/admin/subscribers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminSalesRoute = AdminSalesRouteImport.update({
@@ -115,9 +138,34 @@ const AdminSalesRoute = AdminSalesRouteImport.update({
   path: '/admin/sales',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminQuotesRoute = AdminQuotesRouteImport.update({
+  id: '/admin/quotes',
+  path: '/admin/quotes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBlogRoute = AdminBlogRouteImport.update({
+  id: '/admin/blog',
+  path: '/admin/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAnnouncementRoute = AdminAnnouncementRouteImport.update({
+  id: '/admin/announcement',
+  path: '/admin/announcement',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicVoiceRoute = ApiPublicVoiceRouteImport.update({
+  id: '/api/public/voice',
+  path: '/api/public/voice',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicTrackRoute = ApiPublicTrackRouteImport.update({
   id: '/api/public/track',
   path: '/api/public/track',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCronGenerateBlogRoute = ApiCronGenerateBlogRouteImport.update({
+  id: '/api/cron/generate-blog',
+  path: '/api/cron/generate-blog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicHooksGenerateBlogPostRoute =
@@ -134,17 +182,26 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/quote': typeof QuoteRoute
+  '/shirt-colors': typeof ShirtColorsRoute
   '/shop': typeof ShopRoute
+  '/admin/announcement': typeof AdminAnnouncementRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/quotes': typeof AdminQuotesRoute
   '/admin/sales': typeof AdminSalesRoute
+  '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
+  '/mockup/$id': typeof MockupIdRoute
   '/product/$handle': typeof ProductHandleRoute
   '/services/custom-tshirts': typeof ServicesCustomTshirtsRoute
+  '/services/family-tees': typeof ServicesFamilyTeesRoute
   '/services/promotional-products': typeof ServicesPromotionalProductsRoute
   '/services/team-bulk': typeof ServicesTeamBulkRoute
   '/blog/': typeof BlogIndexRoute
   '/locations/': typeof LocationsIndexRoute
+  '/api/cron/generate-blog': typeof ApiCronGenerateBlogRoute
+  '/api/public/track': typeof ApiPublicTrackRoute
+  '/api/public/voice': typeof ApiPublicVoiceRoute
   '/api/public/hooks/generate-blog-post': typeof ApiPublicHooksGenerateBlogPostRoute
 }
 export interface FileRoutesByTo {
@@ -154,18 +211,26 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/quote': typeof QuoteRoute
+  '/shirt-colors': typeof ShirtColorsRoute
   '/shop': typeof ShopRoute
+  '/admin/announcement': typeof AdminAnnouncementRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/quotes': typeof AdminQuotesRoute
   '/admin/sales': typeof AdminSalesRoute
+  '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
+  '/mockup/$id': typeof MockupIdRoute
   '/product/$handle': typeof ProductHandleRoute
   '/services/custom-tshirts': typeof ServicesCustomTshirtsRoute
+  '/services/family-tees': typeof ServicesFamilyTeesRoute
   '/services/promotional-products': typeof ServicesPromotionalProductsRoute
   '/services/team-bulk': typeof ServicesTeamBulkRoute
   '/blog': typeof BlogIndexRoute
   '/locations': typeof LocationsIndexRoute
+  '/api/cron/generate-blog': typeof ApiCronGenerateBlogRoute
   '/api/public/track': typeof ApiPublicTrackRoute
+  '/api/public/voice': typeof ApiPublicVoiceRoute
   '/api/public/hooks/generate-blog-post': typeof ApiPublicHooksGenerateBlogPostRoute
 }
 export interface FileRoutesById {
@@ -176,17 +241,26 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/quote': typeof QuoteRoute
+  '/shirt-colors': typeof ShirtColorsRoute
   '/shop': typeof ShopRoute
+  '/admin/announcement': typeof AdminAnnouncementRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/quotes': typeof AdminQuotesRoute
   '/admin/sales': typeof AdminSalesRoute
+  '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
+  '/mockup/$id': typeof MockupIdRoute
   '/product/$handle': typeof ProductHandleRoute
   '/services/custom-tshirts': typeof ServicesCustomTshirtsRoute
+  '/services/family-tees': typeof ServicesFamilyTeesRoute
   '/services/promotional-products': typeof ServicesPromotionalProductsRoute
   '/services/team-bulk': typeof ServicesTeamBulkRoute
   '/blog/': typeof BlogIndexRoute
   '/locations/': typeof LocationsIndexRoute
+  '/api/cron/generate-blog': typeof ApiCronGenerateBlogRoute
+  '/api/public/track': typeof ApiPublicTrackRoute
+  '/api/public/voice': typeof ApiPublicVoiceRoute
   '/api/public/hooks/generate-blog-post': typeof ApiPublicHooksGenerateBlogPostRoute
 }
 export interface FileRouteTypes {
@@ -198,17 +272,26 @@ export interface FileRouteTypes {
     | '/faq'
     | '/login'
     | '/quote'
+    | '/shirt-colors'
     | '/shop'
+    | '/admin/announcement'
     | '/admin/blog'
+    | '/admin/quotes'
     | '/admin/sales'
+    | '/admin/subscribers'
     | '/blog/$slug'
     | '/locations/$slug'
+    | '/mockup/$id'
     | '/product/$handle'
     | '/services/custom-tshirts'
+    | '/services/family-tees'
     | '/services/promotional-products'
     | '/services/team-bulk'
     | '/blog/'
     | '/locations/'
+    | '/api/cron/generate-blog'
+    | '/api/public/track'
+    | '/api/public/voice'
     | '/api/public/hooks/generate-blog-post'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -218,18 +301,26 @@ export interface FileRouteTypes {
     | '/faq'
     | '/login'
     | '/quote'
+    | '/shirt-colors'
     | '/shop'
+    | '/admin/announcement'
     | '/admin/blog'
+    | '/admin/quotes'
     | '/admin/sales'
+    | '/admin/subscribers'
     | '/blog/$slug'
     | '/locations/$slug'
+    | '/mockup/$id'
     | '/product/$handle'
     | '/services/custom-tshirts'
+    | '/services/family-tees'
     | '/services/promotional-products'
     | '/services/team-bulk'
     | '/blog'
     | '/locations'
+    | '/api/cron/generate-blog'
     | '/api/public/track'
+    | '/api/public/voice'
     | '/api/public/hooks/generate-blog-post'
   id:
     | '__root__'
@@ -239,17 +330,26 @@ export interface FileRouteTypes {
     | '/faq'
     | '/login'
     | '/quote'
+    | '/shirt-colors'
     | '/shop'
+    | '/admin/announcement'
     | '/admin/blog'
+    | '/admin/quotes'
     | '/admin/sales'
+    | '/admin/subscribers'
     | '/blog/$slug'
     | '/locations/$slug'
+    | '/mockup/$id'
     | '/product/$handle'
     | '/services/custom-tshirts'
+    | '/services/family-tees'
     | '/services/promotional-products'
     | '/services/team-bulk'
     | '/blog/'
     | '/locations/'
+    | '/api/cron/generate-blog'
+    | '/api/public/track'
+    | '/api/public/voice'
     | '/api/public/hooks/generate-blog-post'
   fileRoutesById: FileRoutesById
 }
@@ -260,18 +360,26 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
   QuoteRoute: typeof QuoteRoute
+  ShirtColorsRoute: typeof ShirtColorsRoute
   ShopRoute: typeof ShopRoute
+  AdminAnnouncementRoute: typeof AdminAnnouncementRoute
   AdminBlogRoute: typeof AdminBlogRoute
+  AdminQuotesRoute: typeof AdminQuotesRoute
   AdminSalesRoute: typeof AdminSalesRoute
+  AdminSubscribersRoute: typeof AdminSubscribersRoute
   BlogSlugRoute: typeof BlogSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
+  MockupIdRoute: typeof MockupIdRoute
   ProductHandleRoute: typeof ProductHandleRoute
   ServicesCustomTshirtsRoute: typeof ServicesCustomTshirtsRoute
+  ServicesFamilyTeesRoute: typeof ServicesFamilyTeesRoute
   ServicesPromotionalProductsRoute: typeof ServicesPromotionalProductsRoute
   ServicesTeamBulkRoute: typeof ServicesTeamBulkRoute
   BlogIndexRoute: typeof BlogIndexRoute
   LocationsIndexRoute: typeof LocationsIndexRoute
+  ApiCronGenerateBlogRoute: typeof ApiCronGenerateBlogRoute
   ApiPublicTrackRoute: typeof ApiPublicTrackRoute
+  ApiPublicVoiceRoute: typeof ApiPublicVoiceRoute
   ApiPublicHooksGenerateBlogPostRoute: typeof ApiPublicHooksGenerateBlogPostRoute
 }
 
@@ -282,6 +390,13 @@ declare module '@tanstack/react-router' {
       path: '/shop'
       fullPath: '/shop'
       preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shirt-colors': {
+      id: '/shirt-colors'
+      path: '/shirt-colors'
+      fullPath: '/shirt-colors'
+      preLoaderRoute: typeof ShirtColorsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/quote': {
@@ -354,6 +469,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesPromotionalProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/family-tees': {
+      id: '/services/family-tees'
+      path: '/services/family-tees'
+      fullPath: '/services/family-tees'
+      preLoaderRoute: typeof ServicesFamilyTeesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services/custom-tshirts': {
       id: '/services/custom-tshirts'
       path: '/services/custom-tshirts'
@@ -366,6 +488,13 @@ declare module '@tanstack/react-router' {
       path: '/product/$handle'
       fullPath: '/product/$handle'
       preLoaderRoute: typeof ProductHandleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mockup/$id': {
+      id: '/mockup/$id'
+      path: '/mockup/$id'
+      fullPath: '/mockup/$id'
+      preLoaderRoute: typeof MockupIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/locations/$slug': {
@@ -382,11 +511,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/blog': {
-      id: '/admin/blog'
-      path: '/admin/blog'
-      fullPath: '/admin/blog'
-      preLoaderRoute: typeof AdminBlogRouteImport
+    '/admin/subscribers': {
+      id: '/admin/subscribers'
+      path: '/admin/subscribers'
+      fullPath: '/admin/subscribers'
+      preLoaderRoute: typeof AdminSubscribersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/sales': {
@@ -396,11 +525,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSalesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/quotes': {
+      id: '/admin/quotes'
+      path: '/admin/quotes'
+      fullPath: '/admin/quotes'
+      preLoaderRoute: typeof AdminQuotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/blog': {
+      id: '/admin/blog'
+      path: '/admin/blog'
+      fullPath: '/admin/blog'
+      preLoaderRoute: typeof AdminBlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/announcement': {
+      id: '/admin/announcement'
+      path: '/admin/announcement'
+      fullPath: '/admin/announcement'
+      preLoaderRoute: typeof AdminAnnouncementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/voice': {
+      id: '/api/public/voice'
+      path: '/api/public/voice'
+      fullPath: '/api/public/voice'
+      preLoaderRoute: typeof ApiPublicVoiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/track': {
       id: '/api/public/track'
       path: '/api/public/track'
       fullPath: '/api/public/track'
       preLoaderRoute: typeof ApiPublicTrackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/cron/generate-blog': {
+      id: '/api/cron/generate-blog'
+      path: '/api/cron/generate-blog'
+      fullPath: '/api/cron/generate-blog'
+      preLoaderRoute: typeof ApiCronGenerateBlogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/hooks/generate-blog-post': {
@@ -420,29 +584,28 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
   QuoteRoute: QuoteRoute,
+  ShirtColorsRoute: ShirtColorsRoute,
   ShopRoute: ShopRoute,
+  AdminAnnouncementRoute: AdminAnnouncementRoute,
   AdminBlogRoute: AdminBlogRoute,
+  AdminQuotesRoute: AdminQuotesRoute,
   AdminSalesRoute: AdminSalesRoute,
+  AdminSubscribersRoute: AdminSubscribersRoute,
   BlogSlugRoute: BlogSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
+  MockupIdRoute: MockupIdRoute,
   ProductHandleRoute: ProductHandleRoute,
   ServicesCustomTshirtsRoute: ServicesCustomTshirtsRoute,
+  ServicesFamilyTeesRoute: ServicesFamilyTeesRoute,
   ServicesPromotionalProductsRoute: ServicesPromotionalProductsRoute,
   ServicesTeamBulkRoute: ServicesTeamBulkRoute,
   BlogIndexRoute: BlogIndexRoute,
   LocationsIndexRoute: LocationsIndexRoute,
+  ApiCronGenerateBlogRoute: ApiCronGenerateBlogRoute,
   ApiPublicTrackRoute: ApiPublicTrackRoute,
+  ApiPublicVoiceRoute: ApiPublicVoiceRoute,
   ApiPublicHooksGenerateBlogPostRoute: ApiPublicHooksGenerateBlogPostRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
