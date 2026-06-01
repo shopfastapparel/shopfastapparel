@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { submitQuoteRequest } from "@/lib/quote.functions";
+import ReCAPTCHA from "react-google-recaptcha";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
@@ -187,6 +188,7 @@ function QuotePage() {
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [state, setState] = useState<QuoteState>({
     service: "",
     quantity: "",
@@ -263,6 +265,10 @@ function QuotePage() {
   }
 
   async function handleSubmit() {
+    if (!captchaToken) {
+      toast.error("Please complete the reCAPTCHA verification.");
+      return;
+    }
     const serviceLabel = SERVICES.find((s) => s.key === state.service)?.label ?? "";
     const turnaroundInfo = TURNAROUNDS.find((t) => t.key === state.turnaround);
 
@@ -305,6 +311,7 @@ function QuotePage() {
           company: state.company || undefined,
           email: state.email,
           phone: state.phone || undefined,
+          captchaToken: captchaToken,
         },
       });
       setSubmitted(true);
@@ -644,6 +651,12 @@ function QuotePage() {
                 </div>
               </div>
 
+              <div className="mt-8 flex justify-center">
+                <ReCAPTCHA
+                  sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"}
+                  onChange={(token) => setCaptchaToken(token)}
+                />
+              </div>
               <Summary state={state} />
             </StepWrapper>
           )}

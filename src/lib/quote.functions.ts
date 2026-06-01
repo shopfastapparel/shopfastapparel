@@ -17,6 +17,7 @@ const quoteSchema = z.object({
   company: z.string().optional(),
   email: z.string().email(),
   phone: z.string().optional(),
+  captchaToken: z.string().min(1),
 });
 
 type QuoteData = z.infer<typeof quoteSchema>;
@@ -125,6 +126,21 @@ function buildCustomerEmailHtml(data: QuoteData): string {
 export const submitQuoteRequest = createServerFn({ method: "POST" })
   .inputValidator((d) => quoteSchema.parse(d))
   .handler(async ({ data }) => {
+    const captchaSecret = process.env.RECAPTCHA_SECRET_KEY || "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe";
+    const captchaVerifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        secret: captchaSecret,
+        response: data.captchaToken
+      }).toString()
+    });
+    
+    const captchaVerifyResult = await captchaVerifyRes.json();
+    if (!captchaVerifyResult.success) {
+      throw new Error("CAPTCHA verification failed. Please try again.");
+    }
+
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
       throw new Error("Email service not configured");
