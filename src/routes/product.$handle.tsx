@@ -135,20 +135,22 @@ function ProductPage() {
                   <div className="space-y-4">
                     {/* Color Selector */}
                     <div>
-                      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                        {Array.from(new Set(inventory.map(i => i.colorName))).sort().map(color => {
-                          const isSelected = selectedColor === color;
+                      <div className="flex flex-wrap gap-2 pb-2">
+                        {Array.from(new Set(inventory.map(i => i.colorName))).sort().map(colorName => {
+                          const isSelected = selectedColor === colorName;
+                          const hex = inventory.find(i => i.colorName === colorName)?.colorHex || '#ccc';
                           return (
                             <button
-                              key={color}
-                              onClick={() => setSelectedColor(color)}
-                              className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors border ${
+                              key={colorName}
+                              onClick={() => setSelectedColor(colorName)}
+                              className={`flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-colors border ${
                                 isSelected 
                                   ? 'bg-ink text-background border-ink shadow-sm' 
                                   : 'bg-background text-foreground border-border hover:border-ink/30 hover:bg-muted'
                               }`}
                             >
-                              {color}
+                              <div className="w-4 h-4 rounded-full border shadow-inner" style={{ backgroundColor: hex }}></div>
+                              {colorName}
                             </button>
                           );
                         })}

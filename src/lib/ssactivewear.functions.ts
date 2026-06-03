@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export type InventoryItem = {
   colorName: string;
+  colorHex?: string;
   sizeName: string;
   qty: number;
   sku: string;
@@ -53,6 +54,7 @@ export const fetchLiveInventory = createServerFn({ method: "POST" })
       // Map the S&S payload to our simplified frontend matrix
       const inventory: InventoryItem[] = products.map((p) => ({
         colorName: p.colorName || "Unknown",
+        colorHex: p.color1 || undefined,
         sizeName: p.sizeName || "OS",
         qty: p.qty || 0,
         sku: p.sku || "",
