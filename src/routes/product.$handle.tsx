@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { fetchLiveInventory, type InventoryItem } from "@/lib/ssactivewear.server";
+import { fetchLiveInventory, type InventoryItem } from "@/lib/ssactivewear.functions";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { APPAREL_STYLES } from "@/lib/apparel";
