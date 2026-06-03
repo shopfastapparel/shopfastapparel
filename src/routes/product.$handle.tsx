@@ -135,7 +135,10 @@ function ProductPage() {
                   <div className="space-y-4">
                     {/* Color Selector */}
                     <div>
-                      <div className="flex flex-wrap gap-2 pb-2">
+                      <div className="text-sm font-bold mb-3">
+                        Color: <span className="text-muted-foreground font-medium">{selectedColor}</span>
+                      </div>
+                      <div className="flex flex-wrap gap-2.5 pb-4">
                         {Array.from(new Set(inventory.map(i => i.colorName))).sort().map(colorName => {
                           const isSelected = selectedColor === colorName;
                           const hex = inventory.find(i => i.colorName === colorName)?.colorHex || '#ccc';
@@ -143,15 +146,15 @@ function ProductPage() {
                             <button
                               key={colorName}
                               onClick={() => setSelectedColor(colorName)}
-                              className={`flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-colors border ${
+                              title={colorName}
+                              className={`w-8 h-8 rounded-full border border-black/10 transition-all ${
                                 isSelected 
-                                  ? 'bg-ink text-background border-ink shadow-sm' 
-                                  : 'bg-background text-foreground border-border hover:border-ink/30 hover:bg-muted'
+                                  ? 'ring-2 ring-ink ring-offset-2 scale-110 shadow-sm' 
+                                  : 'hover:scale-105 hover:shadow-sm'
                               }`}
-                            >
-                              <div className="w-4 h-4 rounded-full border shadow-inner" style={{ backgroundColor: hex }}></div>
-                              {colorName}
-                            </button>
+                              style={{ backgroundColor: hex }}
+                              aria-label={`Select color ${colorName}`}
+                            />
                           );
                         })}
                       </div>
