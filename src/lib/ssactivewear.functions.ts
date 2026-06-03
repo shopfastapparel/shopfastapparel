@@ -15,8 +15,8 @@ export const fetchLiveInventory = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { styleId } = data;
     
-    const accountNo = process.env.SS_ACCOUNT_NUMBER;
-    const apiKey = process.env.SS_API_KEY;
+    const accountNo = process.env.SS_ACCOUNT_NUMBER?.trim();
+    const apiKey = process.env.SS_API_KEY?.trim();
 
     // Optional: Log on server to verify keys are loaded
     console.log(`Fetching S&S Activewear Live Inventory for style: ${styleId}`);
