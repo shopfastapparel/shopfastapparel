@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { Testimonials } from "@/components/Testimonials";
-import { useProducts } from "@/hooks/useProducts";
+import { APPAREL_STYLES } from "@/lib/apparel";
 import { LOCATIONS } from "@/lib/locations";
 import {
   Zap,
@@ -67,7 +67,7 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const { products, loading } = useProducts(8);
+  const products = APPAREL_STYLES.slice(0, 8);
 
   const staggerContainer: any = {
     hidden: { opacity: 0 },
@@ -327,26 +327,11 @@ function HomePage() {
               <Link to="/shop">View all</Link>
             </Button>
           </div>
-          {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="aspect-square bg-muted animate-pulse rounded-xl" />
-              ))}
-            </div>
-          ) : products.length === 0 ? (
-            <div className="text-center py-16 bg-card border rounded-xl">
-              <p className="font-display text-xl">No products found</p>
-              <p className="mt-2 text-muted-foreground">
-                Tell the chat what product to add and we'll create it in your Shopify store.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-              {products.map((p) => (
-                <ProductCard key={p.node.id} product={p} />
-              ))}
-            </div>
-          )}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            {products.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
         </div>
       </section>
 

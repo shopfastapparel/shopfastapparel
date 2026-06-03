@@ -1,53 +1,17 @@
-import { useEffect, useState } from "react";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import {
-  storefrontApiRequest,
-  PRODUCT_BY_HANDLE_QUERY,
-  type ShopifyProduct,
-} from "@/lib/shopify";
-import { useCartStore } from "@/stores/cartStore";
-import { toast } from "sonner";
+import { APPAREL_STYLES } from "@/lib/apparel";
+import { CheckCircle2, ChevronRight, Shield } from "lucide-react";
 
 export const Route = createFileRoute("/product/$handle")({
   component: ProductPage,
 });
 
-interface ProductData {
-  product: ShopifyProduct["node"] | null;
-}
-
 function ProductPage() {
   const { handle } = useParams({ from: "/product/$handle" });
-  const [product, setProduct] = useState<ShopifyProduct["node"] | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
-  const [imgIdx, setImgIdx] = useState(0);
-  const addItem = useCartStore((s) => s.addItem);
-  const isAdding = useCartStore((s) => s.isLoading);
+  const product = APPAREL_STYLES.find((p) => p.id === handle);
 
-  useEffect(() => {
-    setLoading(true);
-    storefrontApiRequest<ProductData>(PRODUCT_BY_HANDLE_QUERY, { handle })
-      .then((res) => {
-        const p = res?.data?.product ?? null;
-        setProduct(p);
-        setSelectedVariantId(p?.variants.edges[0]?.node.id ?? null);
-      })
-      .finally(() => setLoading(false));
-  }, [handle]);
-
-  if (loading) {
-    return (
-      <SiteLayout>
-        <div className="grid place-items-center min-h-[60vh]">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-        </div>
-      </SiteLayout>
-    );
-  }
   if (!product) {
     return (
       <SiteLayout>
@@ -61,107 +25,89 @@ function ProductPage() {
     );
   }
 
-  const variant =
-    product.variants.edges.find((v) => v.node.id === selectedVariantId)?.node ??
-    product.variants.edges[0].node;
-  const images = product.images.edges;
-
-  const handleAdd = async () => {
-    if (!variant) return;
-    await addItem({
-      product: { node: product },
-      variantId: variant.id,
-      variantTitle: variant.title,
-      price: variant.price,
-      quantity: 1,
-      selectedOptions: variant.selectedOptions || [],
-    });
-    toast.success("Added to cart");
-  };
-
   return (
     <SiteLayout>
-      <section className="mx-auto max-w-7xl px-4 py-12 grid lg:grid-cols-2 gap-12">
-        <div>
-          <div className="aspect-square rounded-xl overflow-hidden bg-muted border">
-            {images[imgIdx] && (
-              <img
-                src={images[imgIdx].node.url}
-                alt={images[imgIdx].node.altText ?? product.title}
-                className="w-full h-full object-cover"
-              />
-            )}
-          </div>
-          {images.length > 1 && (
-            <div className="mt-4 grid grid-cols-5 gap-2">
-              {images.map((img, i) => (
-                <button
-                  key={img.node.url}
-                  onClick={() => setImgIdx(i)}
-                  className={`aspect-square rounded-md overflow-hidden border-2 ${
-                    i === imgIdx ? "border-magenta-brand" : "border-transparent"
-                  }`}
-                >
-                  <img src={img.node.url} alt={img.node.altText ?? `Thumbnail ${i + 1} for ${product.title}`} className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
-          )}
+      {/* Breadcrumbs */}
+      <div className="border-b bg-muted/50">
+        <div className="mx-auto max-w-7xl px-4 py-3 text-sm flex items-center gap-2 text-muted-foreground">
+          <Link to="/shop" className="hover:text-foreground">Shop Catalog</Link>
+          <ChevronRight className="h-4 w-4" />
+          <span className="font-medium text-foreground">{product.name}</span>
         </div>
-        <div>
-          <Link to="/shop" className="text-sm text-muted-foreground hover:text-foreground">
-            ← Back to shop
-          </Link>
-          <h1 className="mt-3 font-display text-4xl md:text-5xl">{product.title}</h1>
-          <div className="mt-4 text-2xl font-semibold">
-            ${parseFloat(variant.price.amount).toFixed(2)}
-          </div>
-          {product.description && (
-            <p className="mt-5 text-muted-foreground leading-relaxed whitespace-pre-line">
-              {product.description}
-            </p>
-          )}
+      </div>
 
-          {product.options.map((opt) => (
-            <div key={opt.name} className="mt-6">
-              <p className="text-sm font-semibold mb-2">{opt.name}</p>
-              <div className="flex flex-wrap gap-2">
-                {product.variants.edges.map(({ node: v }) => {
-                  const optVal = v.selectedOptions.find((o) => o.name === opt.name)?.value;
-                  if (!optVal) return null;
-                  const active = v.id === selectedVariantId;
-                  return (
-                    <button
-                      key={v.id + opt.name}
-                      onClick={() => setSelectedVariantId(v.id)}
-                      disabled={!v.availableForSale}
-                      className={`px-3 py-1.5 text-sm rounded-md border-2 transition-colors ${
-                        active
-                          ? "border-ink bg-ink text-background"
-                          : "border-border hover:border-ink"
-                      } ${!v.availableForSale ? "opacity-50 line-through" : ""}`}
-                    >
-                      {optVal}
-                    </button>
-                  );
-                })}
+      <section className="mx-auto max-w-7xl px-4 py-12 lg:py-20 grid lg:grid-cols-2 gap-12 lg:gap-20">
+        {/* Left Column: Images */}
+        <div className="space-y-4">
+          <div className="aspect-[4/5] md:aspect-square bg-muted rounded-2xl overflow-hidden border">
+            <img 
+              src={product.image} 
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+
+        {/* Right Column: Details & Quote */}
+        <div className="flex flex-col">
+          <div className="inline-flex items-center gap-2 text-magenta-brand text-sm font-bold uppercase tracking-wider mb-4">
+            {product.brand}
+          </div>
+          <h1 className="font-display text-4xl lg:text-5xl tracking-tight text-ink">
+            {product.name}
+          </h1>
+          
+          <div className="mt-4 p-5 bg-yellow-brand/10 border-2 border-yellow-brand rounded-xl">
+            <p className="font-medium text-foreground">
+              Interested in custom printing on the <span className="font-bold">{product.name}</span>? Request a quote to receive exact pricing based on your bulk quantity, print colors, and turnaround requirements.
+            </p>
+          </div>
+
+          <div className="mt-8 prose prose-gray">
+            <p>{product.description}</p>
+          </div>
+
+          <div className="mt-8 space-y-6 flex-1">
+            <div className="grid sm:grid-cols-2 gap-4">
+               <div>
+                 <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1 block">Fabric</span>
+                 <p className="text-sm font-medium">{product.fabricWeight} — {product.fabricComposition}</p>
+               </div>
+               <div>
+                 <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1 block">Features</span>
+                 <ul className="space-y-1">
+                   {product.features.map((feat, i) => (
+                     <li key={i} className="text-sm font-medium flex items-start gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-cyan-brand shrink-0 mt-0.5" />
+                        {feat}
+                     </li>
+                   ))}
+                 </ul>
+               </div>
+            </div>
+
+            <div className="pt-6 border-t space-y-3">
+              <div className="flex items-center gap-3 text-sm font-medium">
+                <Shield className="h-5 w-5 text-magenta-brand" /> Free Digital Mockup Before Printing
               </div>
             </div>
-          ))}
+          </div>
 
-          <Button
-            onClick={handleAdd}
-            disabled={isAdding || !variant?.availableForSale}
-            size="lg"
-            className="mt-8 w-full sm:w-auto shadow-pop border-2 border-ink"
-          >
-            {isAdding ? <Loader2 className="h-4 w-4 animate-spin" /> : "Add to Cart"}
-          </Button>
-
-          <div className="mt-8 text-sm text-muted-foreground space-y-1">
-            <p>✓ Free mockup with every order</p>
-            <p>✓ Most orders completed in as little as 7 days</p>
-            <p>✓ 100% satisfaction guarantee</p>
+          {/* Action Area */}
+          <div className="mt-10 pt-6 border-t sticky bottom-0 bg-background/95 backdrop-blur py-4">
+            <Button asChild size="lg" className="w-full text-lg h-14 shadow-pop border-2 border-ink">
+              <Link to="/quote" search={{ service: "custom-tshirts" }}>Request a Quote for this Item</Link>
+            </Button>
+            <p className="text-center text-xs text-muted-foreground mt-3">
+              No payment required. Get a price & mockup within 24 hours.
+            </p>
+            {product.specSheetUrl && (
+              <div className="mt-4 text-center">
+                <a href={product.specSheetUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-cyan-brand hover:underline">
+                  View Manufacturer Spec Sheet
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </section>

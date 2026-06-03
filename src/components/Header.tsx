@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Logo";
-import { CartDrawer } from "@/components/CartDrawer";
+
 import { PRIMARY_PHONE } from "@/lib/locations";
 
 const NAV = [
@@ -64,7 +64,7 @@ export function Header() {
             <Button asChild variant="default" size="sm" className="hidden md:inline-flex">
               <Link to="/quote">Get Free Quote</Link>
             </Button>
-            <CartDrawer />
+
             <button
               className="lg:hidden p-2 rounded-md hover:bg-muted"
               onClick={() => setOpen(!open)}

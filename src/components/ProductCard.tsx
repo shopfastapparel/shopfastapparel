@@ -1,36 +1,37 @@
 import { Link } from "@tanstack/react-router";
-import type { ShopifyProduct } from "@/lib/shopify";
+import type { ApparelStyle } from "@/lib/apparel";
 
-export function ProductCard({ product }: { product: ShopifyProduct }) {
-  const p = product.node;
-  const img = p.images.edges[0]?.node;
-  const price = parseFloat(p.priceRange.minVariantPrice.amount);
+export function ProductCard({ product }: { product: ApparelStyle }) {
   return (
     <Link
       to="/product/$handle"
-      params={{ handle: p.handle }}
-      className="group block bg-card border rounded-xl overflow-hidden hover:shadow-pop hover:border-ink hover:-translate-y-0.5 transition-all"
+      params={{ handle: product.id }}
+      className="group block bg-card border-2 border-transparent hover:border-ink rounded-xl overflow-hidden shadow-sm hover:shadow-pop hover:-translate-y-1 transition-all relative"
     >
-      <div className="aspect-square bg-muted overflow-hidden">
-        {img ? (
-          <img
-            src={img.url}
-            alt={img.altText ?? p.title}
-            loading="lazy"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        ) : (
-          <div className="w-full h-full grid place-items-center text-muted-foreground text-sm">
-            No image
+      <div className="aspect-square bg-muted overflow-hidden relative">
+        <img
+          src={product.image}
+          alt={product.name}
+          loading="lazy"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute top-3 left-3 bg-yellow-brand text-ink font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-ink shadow-sm">
+          {product.brand}
+        </div>
+        {product.badge && (
+          <div className={`absolute top-3 right-3 font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-ink shadow-sm ${
+            product.badge === "Best Seller" ? "bg-magenta-brand text-background" : "bg-cyan-brand text-ink"
+          }`}>
+            {product.badge}
           </div>
         )}
       </div>
       <div className="p-4">
-        <h3 className="font-display text-base leading-snug line-clamp-2">{p.title}</h3>
-        <div className="mt-2 flex items-center justify-between">
-          <span className="font-semibold">From ${price.toFixed(2)}</span>
-          <span className="text-xs text-magenta-brand font-medium uppercase tracking-wider">
-            Customize →
+        <p className="text-xs text-muted-foreground font-semibold mb-1">Style #{product.model}</p>
+        <h3 className="font-display text-base leading-snug line-clamp-2">{product.name}</h3>
+        <div className="mt-3 flex items-center justify-between">
+          <span className="text-xs text-magenta-brand font-medium uppercase tracking-wider group-hover:underline">
+            View Details / Quote →
           </span>
         </div>
       </div>
