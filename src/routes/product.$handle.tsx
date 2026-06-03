@@ -16,12 +16,19 @@ function ProductPage() {
 
   const [inventory, setInventory] = useState<InventoryItem[] | null>(null);
   const [loadingInv, setLoadingInv] = useState(true);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   useEffect(() => {
     if (!product?.ssStyleId) return;
     setLoadingInv(true);
     fetchLiveInventory({ data: { styleId: product.ssStyleId } })
-      .then((res: InventoryItem[]) => setInventory(res))
+      .then((res: InventoryItem[]) => {
+        setInventory(res);
+        if (res && res.length > 0) {
+          const uniqueColors = Array.from(new Set(res.map(i => i.colorName))).sort();
+          setSelectedColor(uniqueColors[0] || null);
+        }
+      })
       .catch((err: unknown) => console.error(err))
       .finally(() => setLoadingInv(false));
   }, [product?.ssStyleId]);
@@ -125,25 +132,62 @@ function ProductPage() {
                 ) : null}
                 
                 {inventory && inventory.length > 0 ? (
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {/* Render unique colors and total stock for brevity, or full list */}
-                    {Array.from(new Set(inventory.map(i => i.colorName))).slice(0, 9).map(color => {
-                      const colorItems = inventory.filter(i => i.colorName === color);
-                      const totalStock = colorItems.reduce((acc, curr) => acc + curr.qty, 0);
-                      
-                      return (
-                        <div key={color} className="flex flex-col p-3 bg-card border rounded-lg shadow-sm">
-                          <span className="font-semibold text-sm truncate" title={color}>{color}</span>
-                          <span className={`text-xs mt-1 font-medium ${totalStock < 50 ? 'text-red-500' : 'text-green-600'}`}>
-                            {totalStock > 0 ? `${totalStock} in stock` : 'Out of stock'}
-                          </span>
-                        </div>
-                      )
-                    })}
-                    {new Set(inventory.map(i => i.colorName)).size > 9 && (
-                       <div className="flex items-center justify-center p-3 text-xs text-muted-foreground font-medium">
-                         + More colors available
-                       </div>
+                  <div className="space-y-4">
+                    {/* Color Selector */}
+                    <div>
+                      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                        {Array.from(new Set(inventory.map(i => i.colorName))).sort().map(color => {
+                          const isSelected = selectedColor === color;
+                          return (
+                            <button
+                              key={color}
+                              onClick={() => setSelectedColor(color)}
+                              className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors border ${
+                                isSelected 
+                                  ? 'bg-ink text-background border-ink shadow-sm' 
+                                  : 'bg-background text-foreground border-border hover:border-ink/30 hover:bg-muted'
+                              }`}
+                            >
+                              {color}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Size & Quantity Grid for Selected Color */}
+                    {selectedColor && (
+                      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+                        {inventory
+                          .filter(i => i.colorName === selectedColor)
+                          // Basic sort so S comes before M etc if possible (or just alphabetic fallback)
+                          .sort((a, b) => {
+                             const order = { "XS": 1, "S": 2, "M": 3, "L": 4, "XL": 5, "2XL": 6, "3XL": 7, "4XL": 8 };
+                             const aVal = order[a.sizeName as keyof typeof order] || 99;
+                             const bVal = order[b.sizeName as keyof typeof order] || 99;
+                             return aVal - bVal || a.sizeName.localeCompare(b.sizeName);
+                          })
+                          .map((item, idx) => {
+                            const isOutOfStock = item.qty === 0;
+                            const isLowStock = item.qty > 0 && item.qty < 50;
+                            return (
+                              <div 
+                                key={idx} 
+                                className={`flex flex-col items-center justify-center p-2 rounded-lg border text-center ${
+                                  isOutOfStock ? 'opacity-50 bg-muted/50 border-dashed' : 'bg-card shadow-sm'
+                                }`}
+                              >
+                                <span className="font-bold text-sm">{item.sizeName}</span>
+                                <span className={`text-xs font-medium mt-0.5 ${
+                                  isOutOfStock ? 'text-muted-foreground' : 
+                                  isLowStock ? 'text-orange-500' : 'text-green-600'
+                                }`}>
+                                  {isOutOfStock ? '0' : item.qty}
+                                </span>
+                              </div>
+                            );
+                          })}
+                      </div>
                     )}
                   </div>
                 ) : !loadingInv ? (
