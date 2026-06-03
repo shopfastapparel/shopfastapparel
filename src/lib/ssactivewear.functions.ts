@@ -23,7 +23,7 @@ export const fetchLiveInventory = createServerFn({ method: "POST" })
 
     if (!accountNo || !apiKey) {
       console.warn("Missing S&S credentials. Falling back to simulated inventory.");
-      return generateSimulatedInventory(styleId);
+      return [{ colorName: "DEBUG_ERR", sizeName: "Missing Vercel Env Vars", qty: 0, sku: "ERR-ENV" }];
     }
 
     try {
@@ -38,7 +38,7 @@ export const fetchLiveInventory = createServerFn({ method: "POST" })
       });
 
       if (!res.ok) {
-        throw new Error(`S&S API returned ${res.status}: ${res.statusText}`);
+        return [{ colorName: "DEBUG_ERR", sizeName: `HTTP ${res.status}: ${res.statusText}`, qty: 0, sku: "ERR-HTTP" }];
       }
 
       const products: any[] = await res.json();
@@ -47,7 +47,7 @@ export const fetchLiveInventory = createServerFn({ method: "POST" })
       // If no products found or it returns an error object
       if (!Array.isArray(products) || products.length === 0) {
          console.warn(`No inventory found for style ${styleId}. Falling back to simulated.`);
-         return generateSimulatedInventory(styleId);
+         return [{ colorName: "DEBUG_ERR", sizeName: `No Data from S&S (Type: ${typeof products})`, qty: 0, sku: "ERR-NODATA" }];
       }
 
       // Map the S&S payload to our simplified frontend matrix
@@ -60,11 +60,9 @@ export const fetchLiveInventory = createServerFn({ method: "POST" })
 
       return inventory;
 
-    } catch (err) {
+    } catch (err: any) {
       console.error("S&S Activewear API Error:", err);
-      // For demonstration and fallback, return simulated inventory if the API call fails
-      // (e.g. if the styleId mapping isn't 100% exact yet)
-      return generateSimulatedInventory(styleId);
+      return [{ colorName: "DEBUG_ERR", sizeName: `Exception: ${err.message}`, qty: 0, sku: "ERR-EXC" }];
     }
   });
 
