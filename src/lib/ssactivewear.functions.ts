@@ -30,7 +30,7 @@ export const fetchLiveInventory = createServerFn({ method: "POST" })
       const authHeader = "Basic " + Buffer.from(`${accountNo}:${apiKey}`).toString("base64");
       
       // We fetch all SKUs for the specific styleID
-      const res = await fetch(`https://api.ssactivewear.com/v2/products/?style=${styleId}`, {
+      const res = await fetch(`https://api.ssactivewear.com/v2/products/?styleID=${styleId}`, {
         headers: {
           "Authorization": authHeader,
           "Accept": "application/json"
