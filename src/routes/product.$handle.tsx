@@ -1,4 +1,6 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { fetchLiveInventory, type InventoryItem } from "@/lib/ssactivewear.server";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { APPAREL_STYLES } from "@/lib/apparel";
@@ -11,6 +13,18 @@ export const Route = createFileRoute("/product/$handle")({
 function ProductPage() {
   const { handle } = useParams({ from: "/product/$handle" });
   const product = APPAREL_STYLES.find((p) => p.id === handle);
+
+  const [inventory, setInventory] = useState<InventoryItem[] | null>(null);
+  const [loadingInv, setLoadingInv] = useState(true);
+
+  useEffect(() => {
+    if (!product?.ssStyleId) return;
+    setLoadingInv(true);
+    fetchLiveInventory({ data: { styleId: product.ssStyleId } })
+      .then((res: InventoryItem[]) => setInventory(res))
+      .catch((err: unknown) => console.error(err))
+      .finally(() => setLoadingInv(false));
+  }, [product?.ssStyleId]);
 
   if (!product) {
     return (
@@ -89,6 +103,54 @@ function ProductPage() {
             <div className="pt-6 border-t space-y-3">
               <div className="flex items-center gap-3 text-sm font-medium">
                 <Shield className="h-5 w-5 text-magenta-brand" /> Free Digital Mockup Before Printing
+              </div>
+            </div>
+
+            {/* Live Inventory Matrix */}
+            <div className="pt-6 border-t">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground block">
+                  Live Warehouse Inventory
+                </span>
+                {loadingInv && (
+                  <span className="text-xs text-muted-foreground animate-pulse">Syncing with S&S Activewear...</span>
+                )}
+              </div>
+              
+              <div className="bg-muted/30 border rounded-xl p-4 overflow-hidden relative min-h-[150px]">
+                {loadingInv ? (
+                  <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm z-10">
+                    <div className="h-6 w-6 border-2 border-ink border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                ) : null}
+                
+                {inventory && inventory.length > 0 ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {/* Render unique colors and total stock for brevity, or full list */}
+                    {Array.from(new Set(inventory.map(i => i.colorName))).slice(0, 9).map(color => {
+                      const colorItems = inventory.filter(i => i.colorName === color);
+                      const totalStock = colorItems.reduce((acc, curr) => acc + curr.qty, 0);
+                      
+                      return (
+                        <div key={color} className="flex flex-col p-3 bg-card border rounded-lg shadow-sm">
+                          <span className="font-semibold text-sm truncate" title={color}>{color}</span>
+                          <span className={`text-xs mt-1 font-medium ${totalStock < 50 ? 'text-red-500' : 'text-green-600'}`}>
+                            {totalStock > 0 ? `${totalStock} in stock` : 'Out of stock'}
+                          </span>
+                        </div>
+                      )
+                    })}
+                    {new Set(inventory.map(i => i.colorName)).size > 9 && (
+                       <div className="flex items-center justify-center p-3 text-xs text-muted-foreground font-medium">
+                         + More colors available
+                       </div>
+                    )}
+                  </div>
+                ) : !loadingInv ? (
+                  <div className="text-center text-sm text-muted-foreground py-8">
+                    Inventory data currently unavailable for this style.
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
