@@ -38,7 +38,7 @@ export const fetchLiveInventory = createServerFn({ method: "POST" })
       });
 
       if (!res.ok) {
-        return [{ colorName: "DEBUG_ERR", sizeName: `HTTP ${res.status}: ${res.statusText}`, qty: 0, sku: "ERR-HTTP" }];
+        return [{ colorName: "DEBUG_ERR", sizeName: `HTTP ${res.status}. Acct:${accountNo?.substring(0,3)} Key:${apiKey?.substring(0,3)}`, qty: 0, sku: "ERR-HTTP" }];
       }
 
       const products: any[] = await res.json();
