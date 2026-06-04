@@ -7,6 +7,7 @@ export type InventoryItem = {
   sizeName: string;
   qty: number;
   sku: string;
+  basePrice?: number;
 };
 
 // This server function runs securely on the backend (Node/Vercel)
@@ -58,6 +59,7 @@ export const fetchLiveInventory = createServerFn({ method: "POST" })
         sizeName: p.sizeName || "OS",
         qty: p.qty || 0,
         sku: p.sku || "",
+        basePrice: p.piecePrice || 0,
       }));
 
       return inventory;

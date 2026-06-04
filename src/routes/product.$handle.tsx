@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { fetchLiveInventory, type InventoryItem } from "@/lib/ssactivewear.functions";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,15 @@ function ProductPage() {
       .catch((err: unknown) => console.error(err))
       .finally(() => setLoadingInv(false));
   }, [product?.ssStyleId]);
+
+  const startingPrice = useMemo(() => {
+    if (!inventory || inventory.length === 0) return null;
+    const lowestBasePrice = Math.min(...inventory.map(i => i.basePrice || 999));
+    if (lowestBasePrice === 999 || lowestBasePrice === 0) return null;
+    
+    // 50% Profit Margin formula: (Base Cost + $1 Shipping + $2 Print) * 2
+    return ((lowestBasePrice + 1.00 + 2.00) * 2).toFixed(2);
+  }, [inventory]);
 
   if (!product) {
     return (
@@ -77,6 +86,14 @@ function ProductPage() {
           <h1 className="font-display text-4xl lg:text-5xl tracking-tight text-ink">
             {product.name}
           </h1>
+          
+          {startingPrice && (
+            <div className="mt-3 inline-flex items-baseline gap-2">
+              <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Starting at</span>
+              <span className="font-display text-3xl text-cyan-brand">${startingPrice}</span>
+              <span className="text-sm font-medium text-muted-foreground">/ shirt</span>
+            </div>
+          )}
           
           <div className="mt-4 p-5 bg-yellow-brand/10 border-2 border-yellow-brand rounded-xl">
             <p className="font-medium text-foreground">
@@ -214,7 +231,7 @@ function ProductPage() {
           {/* Action Area */}
           <div className="mt-10 pt-6 border-t sticky bottom-0 bg-background/95 backdrop-blur py-4">
             <Button asChild size="lg" className="w-full text-lg h-14 shadow-pop border-2 border-ink">
-              <Link to="/quote" search={{ service: "custom-tshirts" }}>Request a Quote for this Item</Link>
+              <Link to="/quote" search={{ service: "custom-tshirts", productId: product.id }}>Request a Quote for this Item</Link>
             </Button>
             <p className="text-center text-xs text-muted-foreground mt-3">
               No payment required. Get a price & mockup within 24 hours.

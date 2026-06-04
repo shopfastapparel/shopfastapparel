@@ -27,7 +27,16 @@ import {
 } from "lucide-react";
 import { LOCATIONS, PRIMARY_EMAIL, PRIMARY_PHONE } from "@/lib/locations";
 
+type QuoteSearch = {
+  service?: ServiceKey;
+  productId?: string;
+};
+
 export const Route = createFileRoute("/quote")({
+  validateSearch: (search: Record<string, unknown>): QuoteSearch => ({
+    service: search.service as ServiceKey | undefined,
+    productId: search.productId as string | undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Get a Free Custom Apparel Quote | Atlanta | Fast Apparel" },
@@ -71,6 +80,7 @@ interface QuoteState {
   company: string;
   email: string;
   phone: string;
+  productId: string;
 }
 
 const SERVICES: {
@@ -185,12 +195,13 @@ function validateEmail(email: string) {
 }
 
 function QuotePage() {
+  const searchParams = Route.useSearch();
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [state, setState] = useState<QuoteState>({
-    service: "",
+    service: searchParams.service || "",
     quantity: "",
     turnaround: "",
     deadline: "",
@@ -201,6 +212,7 @@ function QuotePage() {
     company: "",
     email: "",
     phone: "",
+    productId: searchParams.productId || "",
   });
 
   const update = <K extends keyof QuoteState>(key: K, value: QuoteState[K]) =>
@@ -312,6 +324,7 @@ function QuotePage() {
           email: state.email,
           phone: state.phone || undefined,
           captchaToken: captchaToken,
+          productId: state.productId || undefined,
         },
       });
       setSubmitted(true);

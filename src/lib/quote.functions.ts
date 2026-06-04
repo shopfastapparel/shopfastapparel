@@ -18,6 +18,7 @@ const quoteSchema = z.object({
   email: z.string().email(),
   phone: z.string().optional(),
   captchaToken: z.string().min(1),
+  productId: z.string().optional(),
 });
 
 type QuoteData = z.infer<typeof quoteSchema>;
@@ -148,6 +149,58 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
 
     const resend = new Resend(apiKey);
 
+    // Calculate auto margins if productId is provided
+    let calculatedQuote = null;
+    let detailsString = data.details;
+
+    if (data.productId) {
+      try {
+        const { APPAREL_STYLES } = await import("@/lib/apparel");
+        const product = APPAREL_STYLES.find(p => p.id === data.productId);
+        
+        if (product && product.ssStyleId) {
+          const { fetchLiveInventory } = await import("@/lib/ssactivewear.functions");
+          const inventory = await fetchLiveInventory({ data: { styleId: product.ssStyleId } });
+          
+          if (inventory && inventory.length > 0) {
+            const lowestBasePrice = Math.min(...inventory.map((i: any) => i.basePrice || 999));
+            if (lowestBasePrice !== 999 && lowestBasePrice > 0) {
+              const qtyMatch = data.quantity.match(/\d+/);
+              let estQty = 1;
+              if (qtyMatch) {
+                estQty = parseInt(qtyMatch[0], 10);
+                if (data.quantity.includes("24")) estQty = 24;
+                if (data.quantity.includes("48")) estQty = 48;
+                if (data.quantity.includes("100")) estQty = 100;
+                if (data.quantity.includes("250")) estQty = 250;
+                if (data.quantity.includes("500")) estQty = 500;
+              }
+
+              const unitCost = lowestBasePrice + 1.00 + 2.00;
+              const unitRevenue = unitCost * 2; // 50% Profit Margin
+              
+              const totalCost = unitCost * estQty;
+              const totalRevenue = unitRevenue * estQty;
+              const estProfit = totalRevenue - totalCost;
+
+              calculatedQuote = parseFloat(totalRevenue.toFixed(2));
+
+              detailsString += `\n\n=== AUTO MARGIN CALC ===\n`;
+              detailsString += `Product: ${product.name}\n`;
+              detailsString += `Base Blank Cost: $${lowestBasePrice.toFixed(2)}\n`;
+              detailsString += `Total Unit Cost (+Ship/Print): $${unitCost.toFixed(2)}\n`;
+              detailsString += `Suggested Unit Price: $${unitRevenue.toFixed(2)}\n`;
+              detailsString += `Est. Total Cost: $${totalCost.toFixed(2)}\n`;
+              detailsString += `Est. Total Quote: $${totalRevenue.toFixed(2)}\n`;
+              detailsString += `Est. Profit: $${estProfit.toFixed(2)} (50% Margin)\n`;
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Failed to auto-calculate margins:", err);
+      }
+    }
+
     // Generate signed URLs for artwork
     const fileLinksHtmlArray: string[] = [];
     if (data.fileNames && data.fileNames.length > 0) {
@@ -186,13 +239,14 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
           turnaround_estimate: data.turnaroundEstimate,
           deadline: data.deadline,
           city: data.city,
-          details: data.details,
+          details: detailsString,
           file_names: data.fileNames,
           name: data.name,
           company: data.company,
           email: data.email,
           phone: data.phone,
-          status: "New Request"
+          status: "New Request",
+          price_quote: calculatedQuote
         }
       ])
       .select('id')
