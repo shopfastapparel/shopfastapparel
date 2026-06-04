@@ -138,7 +138,7 @@ function ProductPage() {
                       <div className="text-sm font-bold mb-3">
                         Color: <span className="text-muted-foreground font-medium">{selectedColor}</span>
                       </div>
-                      <div className="flex flex-wrap gap-2.5 pb-4">
+                      <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-x-2 gap-y-4 pb-4">
                         {Array.from(new Set(inventory.map(i => i.colorName))).sort().map(colorName => {
                           const isSelected = selectedColor === colorName;
                           const hex = inventory.find(i => i.colorName === colorName)?.colorHex || '#ccc';
@@ -147,14 +147,21 @@ function ProductPage() {
                               key={colorName}
                               onClick={() => setSelectedColor(colorName)}
                               title={colorName}
-                              className={`w-8 h-8 rounded-full border border-black/10 transition-all ${
-                                isSelected 
-                                  ? 'ring-2 ring-ink ring-offset-2 scale-110 shadow-sm' 
-                                  : 'hover:scale-105 hover:shadow-sm'
-                              }`}
-                              style={{ backgroundColor: hex }}
+                              className="flex flex-col items-center gap-1.5 transition-all group"
                               aria-label={`Select color ${colorName}`}
-                            />
+                            >
+                              <div 
+                                className={`w-8 h-8 rounded-full border border-black/10 transition-all ${
+                                  isSelected 
+                                    ? 'ring-2 ring-ink ring-offset-2 scale-110 shadow-sm' 
+                                    : 'group-hover:scale-105 group-hover:shadow-sm'
+                                }`}
+                                style={{ backgroundColor: hex }}
+                              />
+                              <span className={`text-[10px] leading-tight text-center line-clamp-2 px-1 ${isSelected ? 'font-bold text-ink' : 'font-medium text-muted-foreground group-hover:text-foreground'}`}>
+                                {colorName}
+                              </span>
+                            </button>
                           );
                         })}
                       </div>
