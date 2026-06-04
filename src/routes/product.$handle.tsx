@@ -35,8 +35,9 @@ function ProductPage() {
 
   const startingPrice = useMemo(() => {
     if (!inventory || inventory.length === 0) return null;
-    const lowestBasePrice = Math.min(...inventory.map(i => i.basePrice || 999));
-    if (lowestBasePrice === 999 || lowestBasePrice === 0) return null;
+    const validPrices = inventory.map(i => i.basePrice).filter(p => p !== undefined && p > 0) as number[];
+    if (validPrices.length === 0) return null;
+    const lowestBasePrice = Math.min(...validPrices);
     
     // 50% Profit Margin formula: (Base Cost + $1 Shipping + $2 Print) * 2
     return ((lowestBasePrice + 1.00 + 2.00) * 2).toFixed(2);

@@ -26,13 +26,18 @@ export function ProductCard({ product }: { product: ApparelStyle }) {
           </div>
         )}
       </div>
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-grow">
         <p className="text-xs text-muted-foreground font-semibold mb-1">Style #{product.model}</p>
         <h3 className="font-display text-base leading-snug line-clamp-2">{product.name}</h3>
-        <div className="mt-3 flex items-center justify-between">
+        <div className="mt-auto pt-3 flex items-center justify-between">
           <span className="text-xs text-magenta-brand font-medium uppercase tracking-wider group-hover:underline">
             View Details / Quote →
           </span>
+          {product.baseCost && (
+            <span className="text-xs font-bold text-cyan-brand whitespace-nowrap">
+              From ${((product.baseCost + 1.00 + 2.00) * 2).toFixed(2)}
+            </span>
+          )}
         </div>
       </div>
     </Link>
