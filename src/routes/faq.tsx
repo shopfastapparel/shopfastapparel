@@ -46,6 +46,10 @@ const FAQS = [
     q: "Why DTF instead of screen printing or embroidery?",
     a: "DTF (direct-to-film) gives full-color, photo-quality prints on any fabric or color with low minimums and no setup fees — making it faster, more flexible, and more affordable than screen printing or embroidery for most orders.",
   },
+  {
+    q: "Where can you place logos on a t-shirt, and what are the standard sizes?",
+    a: "We offer several standard print locations including Left Chest (2.5\"-5\"), Full Front (10\"-12\"), Oversize Front (12\"-15\"), Back Collar (1\"-3\"), Upper Back (10\"-14\"), Full Back (10\"-14\"), and Sleeves (1\"-4\"). You can view our full Logo Placements Guide under the design resources on our product pages for visual examples and exact dimensions.",
+  },
 ];
 
 export const Route = createFileRoute("/faq")({
