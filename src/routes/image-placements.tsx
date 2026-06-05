@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
+import { PrintLocationsGraphic } from "@/components/PrintLocationsGraphic";
 
 export const Route = createFileRoute("/image-placements")({
   head: () => ({
@@ -25,7 +26,11 @@ function ImagePlacementsPage() {
           </h1>
         </div>
       </section>
-      <section className="mx-auto max-w-4xl px-4 py-14">
+      <section className="mx-auto max-w-5xl px-4 py-8">
+        <PrintLocationsGraphic />
+      </section>
+
+      <section className="mx-auto max-w-4xl px-4 py-8">
         <div className="prose prose-lg">
           <p className="text-xl text-muted-foreground leading-relaxed mb-10">
             When designing custom apparel, choosing the right artwork is only half the battle. 
@@ -69,17 +74,71 @@ function ImagePlacementsPage() {
 
             <hr className="border-border" />
 
-            {/* Full Back */}
+            {/* Oversize Front */}
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
-                <img src="/images/blog/placement_full_back.png" alt="Full Back Placement" className="rounded-2xl shadow-lg border w-full object-cover aspect-square" />
+                <img src="/images/blog/placement_oversize_front.png" alt="Oversize Front Placement" className="rounded-2xl shadow-lg border w-full object-cover aspect-square" />
               </div>
               <div>
-                <h2 className="text-3xl font-bold mt-0">3. Full Back</h2>
+                <h2 className="text-3xl font-bold mt-0">3. Oversize Front</h2>
+                <p className="text-lg text-muted-foreground italic mb-4">Maximum impact streetwear style.</p>
+                <p>Oversize printing pushes the boundaries of traditional center chest printing. It spans from the chest down to the mid-stomach, offering a massive canvas. This is heavily favored by modern streetwear brands, fitness apparel, and statement graphics.</p>
+                <ul className="mt-4">
+                  <li><strong>Standard Size:</strong> 12" - 15" wide.</li>
+                  <li><strong>Best For:</strong> Streetwear designs, bold graphics, statement merchandise.</li>
+                </ul>
+              </div>
+            </div>
+
+            <hr className="border-border" />
+
+            {/* Back Collar */}
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div className="md:order-2">
+                <img src="/images/blog/placement_back_collar.png" alt="Back Collar Placement" className="rounded-2xl shadow-lg border w-full object-cover aspect-square" />
+              </div>
+              <div className="md:order-1">
+                <h2 className="text-3xl font-bold mt-0">4. Back Collar (Small Upper Back)</h2>
+                <p className="text-lg text-muted-foreground italic mb-4">A subtle mark of authenticity.</p>
+                <p>Printed just an inch or two beneath the back collar seam, this small placement is perfect for a brand's logo, an icon, or a secondary mark. It acts much like an exterior woven label, adding a subtle premium touch.</p>
+                <ul className="mt-4">
+                  <li><strong>Standard Size:</strong> 1" - 3" wide.</li>
+                  <li><strong>Best For:</strong> Small brand logos, icons, minimalist accents.</li>
+                </ul>
+              </div>
+            </div>
+
+            <hr className="border-border" />
+
+            {/* Upper Back */}
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <img src="/images/blog/placement_upper_back.png" alt="Upper Back Placement" className="rounded-2xl shadow-lg border w-full object-cover aspect-square" />
+              </div>
+              <div>
+                <h2 className="text-3xl font-bold mt-0">5. Upper Back</h2>
+                <p className="text-lg text-muted-foreground italic mb-4">Broad and highly visible.</p>
+                <p>Sitting squarely across the shoulder blades, the upper back is ideal for wide typography, team names, or event titles. It is highly visible from a distance and is universally understood as a prime branding location.</p>
+                <ul className="mt-4">
+                  <li><strong>Standard Size:</strong> 10" - 14" wide.</li>
+                  <li><strong>Best For:</strong> Team names, wide logos, security/staff lettering.</li>
+                </ul>
+              </div>
+            </div>
+
+            <hr className="border-border" />
+
+            {/* Full Back */}
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div className="md:order-2">
+                <img src="/images/blog/placement_full_back.png" alt="Full Back Placement" className="rounded-2xl shadow-lg border w-full object-cover aspect-square" />
+              </div>
+              <div className="md:order-1">
+                <h2 className="text-3xl font-bold mt-0">6. Full Back</h2>
                 <p className="text-lg text-muted-foreground italic mb-4">The walking billboard.</p>
                 <p>The full back provides the largest canvas on the shirt. Because the back is relatively flat and doesn't stretch as much as the front during movement, large graphics sit perfectly here. This is often paired with a subtle Left Chest logo on the front.</p>
                 <ul className="mt-4">
-                  <li><strong>Standard Size:</strong> 11" to 13" wide.</li>
+                  <li><strong>Standard Size:</strong> 10" to 14" wide.</li>
                   <li><strong>Best For:</strong> Staff shirts (e.g., "SECURITY" or "STAFF"), tour dates, sponsor lists, large intricate designs.</li>
                 </ul>
               </div>
@@ -92,8 +151,8 @@ function ImagePlacementsPage() {
               <div className="md:order-2">
                 <img src="/images/blog/placement_sleeve.png" alt="Sleeve Placement" className="rounded-2xl shadow-lg border w-full object-cover aspect-square" />
               </div>
-              <div className="md:order-1">
-                <h2 className="text-3xl font-bold mt-0">4. Sleeves</h2>
+              <div>
+                <h2 className="text-3xl font-bold mt-0">7. Sleeves</h2>
                 <p className="text-lg text-muted-foreground italic mb-4">The modern retail touch.</p>
                 <p>Printing on the left or right sleeve adds a premium, high-end retail feel to any garment. It's a great secondary location to feature a brand icon, an American flag, or a sponsor logo without cluttering the main body of the shirt.</p>
                 <ul className="mt-4">
