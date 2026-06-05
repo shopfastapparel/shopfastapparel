@@ -67,6 +67,7 @@ export const Route = createFileRoute("/services/team-bulk")({
           a: "Yes, for qualified schools, government entities, and established businesses. Just ask during your quote.",
         },
       ]}
+      showCalculator={true}
     />
   ),
 });

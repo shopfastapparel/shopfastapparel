@@ -73,6 +73,7 @@ export const Route = createFileRoute("/services/custom-tshirts")({
           a: "AI, EPS, PDF, PNG, and JPG. We can also help clean up or recreate artwork if needed.",
         },
       ]}
+      showCalculator={true}
       gallery={[
         {
           src: "/images/dtf-heat-press.jpg",

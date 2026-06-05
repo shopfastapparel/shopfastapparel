@@ -1,8 +1,11 @@
 import type { ReactNode } from "react";
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2 } from "lucide-react";
+import { PricingCalculator } from "@/components/PricingCalculator";
+import { APPAREL_STYLES } from "@/lib/apparel";
 
 interface ServicePageProps {
   eyebrow: string;
@@ -12,9 +15,13 @@ interface ServicePageProps {
   bullets: string[];
   faqs?: { q: string; a: string }[];
   gallery?: { src: string; alt: string; link?: string; title?: string }[];
+  showCalculator?: boolean;
 }
 
-export function ServicePage({ eyebrow, title, intro, features, bullets, faqs, gallery }: ServicePageProps) {
+export function ServicePage({ eyebrow, title, intro, features, bullets, faqs, gallery, showCalculator }: ServicePageProps) {
+  const [selectedStyleId, setSelectedStyleId] = useState<string>(APPAREL_STYLES[0].id);
+  const selectedStyle = APPAREL_STYLES.find(s => s.id === selectedStyleId) || APPAREL_STYLES[0];
+
   return (
     <SiteLayout>
       <section className="bg-hero border-b">
@@ -85,6 +92,48 @@ export function ServicePage({ eyebrow, title, intro, features, bullets, faqs, ga
           </div>
         </div>
       </section>
+
+      {showCalculator && (
+        <section className="py-20 bg-background border-b">
+          <div className="mx-auto max-w-5xl px-4">
+            <div className="text-center mb-12">
+              <h2 className="font-display text-3xl md:text-4xl">Calculate Your Pricing</h2>
+              <p className="mt-4 text-muted-foreground">Select a shirt style and estimate your custom apparel costs instantly.</p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-12 items-start">
+              <div className="bg-card p-6 rounded-2xl border-2 border-ink shadow-[4px_4px_0px_0px_#1a1a2e]">
+                <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3">
+                  Select Garment Style
+                </label>
+                <select
+                  value={selectedStyleId}
+                  onChange={(e) => setSelectedStyleId(e.target.value)}
+                  className="w-full text-lg font-medium px-4 py-3 border-2 border-ink rounded-lg focus:ring-2 focus:ring-yellow-brand focus:border-ink outline-none transition-all bg-background mb-6 cursor-pointer appearance-none"
+                  style={{ backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}
+                >
+                  {APPAREL_STYLES.map(style => (
+                    <option key={style.id} value={style.id}>
+                      {style.name}
+                    </option>
+                  ))}
+                </select>
+                
+                <div className="flex gap-4 items-center">
+                  <img src={selectedStyle.image} alt={selectedStyle.name} className="w-24 h-24 rounded-lg object-cover border-2 border-ink shadow-sm" />
+                  <div>
+                    <h4 className="font-bold text-lg leading-tight mb-1">{selectedStyle.name}</h4>
+                    <p className="text-sm text-muted-foreground line-clamp-3">{selectedStyle.description}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <PricingCalculator baseCost={selectedStyle.baseCost || 4.00} productId={selectedStyle.id} />
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {gallery && gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-16">
