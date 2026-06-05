@@ -241,10 +241,22 @@ function ProductPage() {
           </div>
           
           {product.specSheetUrl && (
-            <div className="mt-8 pt-6 border-t text-center">
+            <div className="mt-8 pt-6 border-t flex flex-col gap-4">
+              <Link to="/image-placements" className="inline-flex items-center gap-2 text-sm font-medium text-magenta-brand hover:underline">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-image w-5 h-5"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                View Standard Logo Placements Guide
+              </Link>
               <a href={product.specSheetUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-cyan-brand hover:underline">
                 View Manufacturer Spec Sheet
               </a>
+            </div>
+          )}
+          {!product.specSheetUrl && (
+            <div className="mt-8 pt-6 border-t flex flex-col gap-4">
+              <Link to="/image-placements" className="inline-flex items-center gap-2 text-sm font-medium text-magenta-brand hover:underline">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-image w-5 h-5"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                View Standard Logo Placements Guide
+              </Link>
             </div>
           )}
         </div>
