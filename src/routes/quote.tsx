@@ -27,15 +27,23 @@ import {
 } from "lucide-react";
 import { LOCATIONS, PRIMARY_EMAIL, PRIMARY_PHONE } from "@/lib/locations";
 
+type ServiceKey = "custom-tshirts" | "team-bulk" | "family-tees" | "promo" | "other";
+type TurnaroundKey = "rush" | "standard" | "flexible";
+type QuantityKey = "1-23" | "24-47" | "48-99" | "100-249" | "250-499" | "500+";
+
 type QuoteSearch = {
   service?: ServiceKey;
   productId?: string;
+  quantity?: QuantityKey;
+  printLocations?: number;
 };
 
 export const Route = createFileRoute("/quote")({
   validateSearch: (search: Record<string, unknown>): QuoteSearch => ({
     service: search.service as ServiceKey | undefined,
     productId: search.productId as string | undefined,
+    quantity: search.quantity as QuantityKey | undefined,
+    printLocations: search.printLocations ? Number(search.printLocations) : undefined,
   }),
   head: () => ({
     meta: [
@@ -56,9 +64,7 @@ export const Route = createFileRoute("/quote")({
   component: QuotePage,
 });
 
-type ServiceKey = "custom-tshirts" | "team-bulk" | "family-tees" | "promo" | "other";
-type TurnaroundKey = "rush" | "standard" | "flexible";
-type QuantityKey = "1-23" | "24-47" | "48-99" | "100-249" | "250-499" | "500+";
+
 
 interface UploadedFile {
   id: string;
@@ -81,6 +87,7 @@ interface QuoteState {
   email: string;
   phone: string;
   productId: string;
+  printLocations?: number;
 }
 
 const SERVICES: {
@@ -200,19 +207,25 @@ function QuotePage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  
+  const defaultDetails = searchParams.printLocations 
+    ? `Required Print Locations: ${searchParams.printLocations}\n\n`
+    : "";
+
   const [state, setState] = useState<QuoteState>({
     service: searchParams.service || "",
-    quantity: "",
+    quantity: searchParams.quantity || "",
     turnaround: "",
     deadline: "",
     city: "",
-    details: "",
+    details: defaultDetails,
     files: [],
     name: "",
     company: "",
     email: "",
     phone: "",
     productId: searchParams.productId || "",
+    printLocations: searchParams.printLocations,
   });
 
   const update = <K extends keyof QuoteState>(key: K, value: QuoteState[K]) =>
@@ -325,6 +338,7 @@ function QuotePage() {
           phone: state.phone || undefined,
           captchaToken: captchaToken,
           productId: state.productId || undefined,
+          printLocations: state.printLocations || undefined,
         },
       });
       setSubmitted(true);

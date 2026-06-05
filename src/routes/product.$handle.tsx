@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import { fetchLiveInventory, type InventoryItem } from "@/lib/ssactivewear.functions";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
+import { PricingCalculator } from "@/components/PricingCalculator";
 import { APPAREL_STYLES } from "@/lib/apparel";
 import { CheckCircle2, ChevronRight, Shield } from "lucide-react";
 
@@ -33,15 +34,18 @@ function ProductPage() {
       .finally(() => setLoadingInv(false));
   }, [product?.ssStyleId]);
 
-  const startingPrice = useMemo(() => {
+  const lowestBasePrice = useMemo(() => {
     if (!inventory || inventory.length === 0) return null;
     const validPrices = inventory.map(i => i.basePrice).filter(p => p !== undefined && p > 0) as number[];
     if (validPrices.length === 0) return null;
-    const lowestBasePrice = Math.min(...validPrices);
-    
+    return Math.min(...validPrices);
+  }, [inventory]);
+
+  const startingPrice = useMemo(() => {
+    if (lowestBasePrice === null) return null;
     // 50% Profit Margin formula: (Base Cost + $1 Shipping + $2 Print) * 2
     return ((lowestBasePrice + 1.00 + 2.00) * 2).toFixed(2);
-  }, [inventory]);
+  }, [lowestBasePrice]);
 
   if (!product) {
     return (
@@ -227,24 +231,22 @@ function ProductPage() {
                 ) : null}
               </div>
             </div>
-          </div>
 
-          {/* Action Area */}
-          <div className="mt-10 pt-6 border-t sticky bottom-0 bg-background/95 backdrop-blur py-4">
-            <Button asChild size="lg" className="w-full text-lg h-14 shadow-pop border-2 border-ink">
-              <Link to="/quote" search={{ service: "custom-tshirts", productId: product.id }}>Request a Quote for this Item</Link>
-            </Button>
-            <p className="text-center text-xs text-muted-foreground mt-3">
-              No payment required. Get a price & mockup within 24 hours.
-            </p>
-            {product.specSheetUrl && (
-              <div className="mt-4 text-center">
-                <a href={product.specSheetUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-cyan-brand hover:underline">
-                  View Manufacturer Spec Sheet
-                </a>
+            {/* Pricing Calculator */}
+            {lowestBasePrice !== null && (
+              <div className="pt-8">
+                <PricingCalculator baseCost={lowestBasePrice} productId={product.id} />
               </div>
             )}
           </div>
+          
+          {product.specSheetUrl && (
+            <div className="mt-8 pt-6 border-t text-center">
+              <a href={product.specSheetUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-cyan-brand hover:underline">
+                View Manufacturer Spec Sheet
+              </a>
+            </div>
+          )}
         </div>
       </section>
     </SiteLayout>

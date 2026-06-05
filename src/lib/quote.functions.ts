@@ -19,6 +19,7 @@ const quoteSchema = z.object({
   phone: z.string().optional(),
   captchaToken: z.string().min(1),
   productId: z.string().optional(),
+  printLocations: z.number().optional(),
 });
 
 type QuoteData = z.infer<typeof quoteSchema>;
@@ -176,7 +177,8 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
                 if (data.quantity.includes("500")) estQty = 500;
               }
 
-              const unitCost = lowestBasePrice + 1.00 + 2.00;
+              const printCost = (data.printLocations === 2) ? 5.00 : 2.00;
+              const unitCost = lowestBasePrice + 1.00 + printCost;
               const unitRevenue = unitCost * 2; // 50% Profit Margin
               
               const totalCost = unitCost * estQty;
