@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { APPAREL_STYLES } from "@/lib/apparel";
+import { Tag, Layers, Zap, Truck } from "lucide-react";
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
@@ -35,6 +36,42 @@ function ShopPage() {
           </p>
         </div>
       </section>
+
+      {/* Volume Pricing Banner */}
+      <section className="bg-ink text-background py-10 border-b-2 border-background shadow-sm relative overflow-hidden">
+        {/* Subtle decorative background elements */}
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-magenta-brand/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-cyan-brand/10 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="mx-auto max-w-7xl px-4 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+            <div className="max-w-md text-center lg:text-left">
+              <h2 className="font-display text-3xl md:text-4xl text-yellow-brand leading-tight">
+                Unlock Volume Pricing
+              </h2>
+              <p className="mt-3 text-background/80 font-medium">
+                The more you print, the more you save. Our automated bulk discounts are built directly into your quote for maximum transparency.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 w-full lg:w-auto flex-grow">
+              {[
+                { qty: "12+", discount: "5% Off", icon: Tag },
+                { qty: "24+", discount: "10% Off", icon: Layers },
+                { qty: "50+", discount: "15% Off", icon: Zap },
+                { qty: "100+", discount: "20% Off", icon: Truck },
+              ].map((tier, i) => (
+                <div key={i} className="bg-background/5 border border-background/20 rounded-xl p-4 flex flex-col items-center justify-center text-center backdrop-blur-sm transition-transform hover:-translate-y-1 hover:bg-background/10 hover:border-cyan-brand/50 group">
+                  <tier.icon className="h-6 w-6 text-cyan-brand mb-2 group-hover:scale-110 transition-transform" />
+                  <span className="text-xl md:text-2xl font-display text-background leading-none">{tier.discount}</span>
+                  <span className="text-xs font-bold uppercase tracking-wider text-magenta-brand mt-1.5">{tier.qty} Shirts</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="mx-auto max-w-7xl px-4 py-12">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
           {APPAREL_STYLES.map((apparel) => (
