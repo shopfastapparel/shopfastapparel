@@ -15,10 +15,10 @@ export function PricingCalculator({ baseCost, productId }: PricingCalculatorProp
   const { unitPrice, totalPrice, discountPct, printCost } = useMemo(() => {
     // Determine Discount
     let discount = 0;
-    if (quantity >= 100) discount = 0.25;
-    else if (quantity >= 50) discount = 0.20;
-    else if (quantity >= 24) discount = 0.15;
-    else if (quantity >= 12) discount = 0.10;
+    if (quantity >= 100) discount = 0.20;
+    else if (quantity >= 50) discount = 0.15;
+    else if (quantity >= 24) discount = 0.10;
+    else if (quantity >= 12) discount = 0.05;
     else discount = 0;
 
     // Print Cost: $2 base (1 location), $3 extra for second location
