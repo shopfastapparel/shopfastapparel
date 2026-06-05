@@ -208,14 +208,16 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
     if (data.fileNames && data.fileNames.length > 0) {
       for (const jsonStr of data.fileNames) {
         try {
-          const { name, path } = JSON.parse(jsonStr);
+          const parsed = JSON.parse(jsonStr);
+          const { name, path, placement, location } = parsed;
           if (path) {
             const { data: signedUrlData } = await supabaseAdmin.storage
               .from("quote_artwork")
               .createSignedUrl(path, 60 * 60 * 24 * 30); // 30 days valid
               
             if (signedUrlData?.signedUrl) {
-              fileLinksHtmlArray.push(`<a href="${signedUrlData.signedUrl}" target="_blank" style="color: #ff2d8a;">${name}</a>`);
+              const placementLabel = placement && location ? `<strong>${placement} (${location}):</strong> ` : "";
+              fileLinksHtmlArray.push(`${placementLabel}<a href="${signedUrlData.signedUrl}" target="_blank" style="color: #ff2d8a;">${name}</a>`);
             } else {
               fileLinksHtmlArray.push(name);
             }

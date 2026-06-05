@@ -9,11 +9,13 @@ import json
 import requests
 import re
 import subprocess
+import urllib.parse
 from datetime import datetime
 from io import BytesIO
-from PIL import Image, ImageEnhance, ImageStat
+from PIL import Image, ImageEnhance, ImageStat, ImageDraw, ImageFont
 import uuid
 from dotenv import load_dotenv
+from bs4 import BeautifulSoup
 
 # Load env variables from root .env
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
@@ -195,74 +197,111 @@ SUMMARY_TEMPLATE = """
 </html>
 """
 
-def generate_mockup(logo_url, base_shirt_path, company_name, mockups_dir):
+def scrape_logo(website_url):
     try:
-        if not logo_url or "ui-avatars.com" in logo_url.lower():
-            raise ValueError("No logo found. Triggering fallback shirt.")
-            
         headers = {'User-Agent': 'Mozilla/5.0'}
-        response = requests.get(logo_url, headers=headers, timeout=10)
-        response.raise_for_status()
-        logo = Image.open(BytesIO(response.content)).convert("RGBA")
+        res = requests.get(website_url, headers=headers, timeout=10)
+        soup = BeautifulSoup(res.text, 'lxml')
         
-        shirt = Image.open(base_shirt_path).convert("RGBA")
-        
-        # Removed automatic shirt brightness adjustment so the shirt stays white.
-        # If the logo is too bright, we could darken the logo itself, but for now we keep the shirt pure white.
-        
-        target_width = int(shirt.width * 0.4)
-        aspect_ratio = logo.height / logo.width
-        target_height = int(target_width * aspect_ratio)
-        logo = logo.resize((target_width, target_height), Image.Resampling.LANCZOS)
-        
-        x = (shirt.width - target_width) // 2
-        y = int(shirt.height * 0.3)
-        
-        shirt.paste(logo, (x, y), logo)
-        
-        watermark_url = "https://www.shopfastapparel.com/assets/logo-jiaNr5LV.png"
-        wm_res = requests.get(watermark_url, headers=headers, timeout=10)
-        watermark = Image.open(BytesIO(wm_res.content)).convert("RGBA")
-        
-        wm_width = int(shirt.width * 0.25)
-        wm_height = int(wm_width * (watermark.height / watermark.width))
-        watermark = watermark.resize((wm_width, wm_height), Image.Resampling.LANCZOS)
-        
-        alpha = watermark.getchannel('A')
-        watermark.putalpha(alpha.point(lambda p: p * 0.5))
-        
-        wm_x = shirt.width - wm_width - 20
-        wm_y = shirt.height - wm_height - 20
-        shirt.paste(watermark, (wm_x, wm_y), watermark)
-        
-        shirt_rgb = shirt.convert("RGB")
-        
-        # Save to buffer for email
-        buf = BytesIO()
-        shirt_rgb.save(buf, format="JPEG", quality=85)
-        
-        # Save to disk for dashboard
-        slug = re.sub(r'[^a-z0-9]+', '-', company_name.lower()).strip('-')
-        timestamp = int(time.time())
-        filename = f"{slug}-{timestamp}.jpg"
-        filepath = os.path.join(mockups_dir, filename)
-        shirt_rgb.save(filepath, format="JPEG", quality=85)
-        
-        public_url = f"/admin/mockups/{filename}"
-        
-        return buf.getvalue(), public_url
+        imgs = soup.find_all('img')
+        for img in imgs:
+            src = img.get('src', '')
+            alt = img.get('alt', '').lower()
+            class_ = ' '.join(img.get('class', [])).lower()
+            if 'logo' in src.lower() or 'logo' in alt or 'logo' in class_:
+                full_url = urllib.parse.urljoin(website_url, src)
+                if full_url.startswith('http'): return full_url
+                    
+        link = soup.find('link', rel=lambda x: x and ('icon' in x.lower() or 'apple-touch-icon' in x.lower()))
+        if link and link.get('href'):
+            full_url = urllib.parse.urljoin(website_url, link.get('href'))
+            if full_url.startswith('http'): return full_url
+                
+        return None
     except Exception as e:
-        print(f"Mockup generation failed: {e}. Using fallback mockup.")
+        print(f"Scrape failed: {e}")
+        return None
+
+def fetch_logo(logo_url, website_url):
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    try:
+        if logo_url and "ui-avatars.com" not in logo_url.lower():
+            res = requests.get(logo_url, headers=headers, timeout=5)
+            res.raise_for_status()
+            return Image.open(BytesIO(res.content)).convert("RGBA"), False
+    except Exception as e:
+        print(f"Primary logo fetch failed: {e}")
+        
+    print("Trying to scrape website for logo...")
+    scraped_url = scrape_logo(website_url)
+    if scraped_url:
         try:
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(script_dir)
-            fallback_path = os.path.join(project_root, 'public', 'images', 'apparel', 'fallback-mockup.png')
-            with open(fallback_path, 'rb') as f:
-                fallback_bytes = f.read()
-            return fallback_bytes, "/images/apparel/fallback-mockup.png"
-        except Exception as fallback_err:
-            print(f"Fallback mockup also failed: {fallback_err}")
-            return None, None
+            res = requests.get(scraped_url, headers=headers, timeout=5)
+            res.raise_for_status()
+            return Image.open(BytesIO(res.content)).convert("RGBA"), False
+        except Exception as e:
+            print(f"Scraped logo fetch failed: {e}")
+            
+    print("Using Fallback Logo.")
+    try:
+        fallback_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "public", "images", "apparel", "fallback_logo.png")
+        return Image.open(fallback_path).convert("RGBA"), True
+    except:
+        return Image.new('RGBA', (300, 100), (255, 0, 127, 255)), True
+
+def add_fallback_text(logo_img):
+    canvas = Image.new('RGBA', (logo_img.width, logo_img.height + 60), (0,0,0,0))
+    canvas.paste(logo_img, (0,0), logo_img)
+    draw = ImageDraw.Draw(canvas)
+    try:
+        font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", int(logo_img.width * 0.1))
+    except:
+        font = ImageFont.load_default()
+    text = "(Your Logo Here)"
+    bbox = draw.textbbox((0, 0), text, font=font)
+    tw = bbox[2] - bbox[0]
+    x = (canvas.width - tw) // 2
+    draw.text((x, logo_img.height + 10), text, fill=(255, 255, 255, 200), font=font)
+    return canvas
+
+def generate_mockup(logo_url, website_url, company_name, mockups_dir, project_root):
+    try:
+        logo_img, is_fallback = fetch_logo(logo_url, website_url)
+        if is_fallback:
+            logo_img = add_fallback_text(logo_img)
+            
+        base_dir = os.path.join(project_root, "public", "images", "apparel")
+        front = Image.open(os.path.join(base_dir, "blank_black_front.png")).convert("RGBA")
+        back = Image.open(os.path.join(base_dir, "blank_black_back.png")).convert("RGBA")
+        folded = Image.open(os.path.join(base_dir, "blank_black_folded.png")).convert("RGBA")
+        
+        def crop_square(img):
+            size = min(img.width, img.height)
+            left = (img.width - size) // 2
+            top = (img.height - size) // 2
+            return img.crop((left, top, left+size, top+size))
+            
+        aspect_ratio = logo_img.height / logo_img.width
+        
+        # Front Chest (User Calibrated)
+        tw_f = int(front.width * 0.094)
+        th_f = int(tw_f * aspect_ratio)
+        logo_f = logo_img.resize((tw_f, th_f), Image.Resampling.LANCZOS)
+        front.paste(logo_f, (int(front.width * 0.531), int(front.height * 0.370)), logo_f)
+        
+        buf = BytesIO()
+        front_rgb = front.convert("RGB")
+        front_rgb.save(buf, format="JPEG", quality=85)
+        
+        slug = re.sub(r'[^a-z0-9]+', '-', company_name.lower()).strip('-')
+        filename = f"{slug}-{int(time.time())}.jpg"
+        filepath = os.path.join(mockups_dir, filename)
+        front_rgb.save(filepath, format="JPEG", quality=85)
+        
+        return buf.getvalue(), f"/admin/mockups/{filename}"
+    except Exception as e:
+        print(f"Mockup generation completely failed: {e}")
+        return None, None
 
 def send_prospect_email(to_email, company_name, mockup_bytes, lead_id):
     msg = MIMEMultipart('related')
@@ -325,8 +364,9 @@ def send_summary_email(sent_leads_data):
     # Attach all mockups
     for idx, lead in enumerate(sent_leads_data):
         if lead['mockup_bytes']:
+            cid = f"mockup_{idx}"
             img = MIMEImage(lead['mockup_bytes'])
-            img.add_header('Content-ID', f'<{cid}>'.replace(cid, f'mockup_{idx}'))
+            img.add_header('Content-ID', f'<{cid}>')
             img.add_header('Content-Disposition', 'inline', filename=f"mockup_{idx}.jpg")
             msg.attach(img)
             
@@ -343,12 +383,10 @@ def send_summary_email(sent_leads_data):
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(script_dir)
-    leads_file = os.path.join(script_dir, 'leads.csv')
-    contacted_file = os.path.join(script_dir, 'leads_contacted.csv')
-    base_shirt_path = os.path.join(project_root, 'public', 'images', 'apparel', 'white-shirt.png')
+    leads_file = os.path.join(project_root, 'leads.csv')
+    contacted_file = os.path.join(project_root, 'leads_contacted.csv')
     
     mockups_dir = os.path.join(project_root, 'public', 'admin', 'mockups')
-    sales_data_file = os.path.join(project_root, 'public', 'admin', 'sales_data.json')
     
     if not os.path.exists(leads_file):
         print("No leads to process.")
@@ -370,9 +408,9 @@ def main():
                 
             print(f"Sending to {company_name} ({email}) with logo {logo_url}...")
             
-            mockup_bytes, mockup_url = generate_mockup(logo_url, base_shirt_path, company_name, mockups_dir)
+            mockup_bytes, mockup_url = generate_mockup(logo_url, website, company_name, mockups_dir, project_root)
             
-            if not mockup_bytes:
+            if mockup_bytes is None:
                 print(f"Skipping {company_name} due to mockup failure.")
                 continue
                 

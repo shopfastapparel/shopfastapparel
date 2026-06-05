@@ -81,7 +81,10 @@ interface QuoteState {
   deadline: string;
   city: string;
   details: string;
-  files: UploadedFile[];
+  frontFiles: UploadedFile[];
+  frontPlacement: string;
+  backFiles: UploadedFile[];
+  backPlacement: string;
   name: string;
   company: string;
   email: string;
@@ -219,7 +222,10 @@ function QuotePage() {
     deadline: "",
     city: "",
     details: defaultDetails,
-    files: [],
+    frontFiles: [],
+    frontPlacement: "Full Front Center",
+    backFiles: [],
+    backPlacement: "Full Back Center",
     name: "",
     company: "",
     email: "",
@@ -243,10 +249,10 @@ function QuotePage() {
     return true;
   }, [step, state]);
 
-  async function handleFiles(fileList: FileList | null) {
+  async function handleGenericFiles(fileList: FileList | null, currentFiles: UploadedFile[], stateKey: "frontFiles" | "backFiles") {
     if (!fileList) return;
     const incoming = Array.from(fileList);
-    if (state.files.length + incoming.length > MAX_FILES) {
+    if (currentFiles.length + incoming.length > MAX_FILES) {
       toast.error(`Max ${MAX_FILES} files`, {
         description: "Remove some files or send the rest by email.",
       });
@@ -277,17 +283,16 @@ function QuotePage() {
       });
     }
     if (accepted.length) {
-      update("files", [...state.files, ...accepted]);
+      update(stateKey, [...currentFiles, ...accepted]);
       toast.success(`${accepted.length} file${accepted.length > 1 ? "s" : ""} attached`);
     }
   }
 
-  function removeFile(id: string) {
-    update(
-      "files",
-      state.files.filter((f) => f.id !== id),
-    );
-  }
+  const handleFrontFiles = (list: FileList | null) => handleGenericFiles(list, state.frontFiles, "frontFiles");
+  const handleBackFiles = (list: FileList | null) => handleGenericFiles(list, state.backFiles, "backFiles");
+  
+  const removeFrontFile = (id: string) => update("frontFiles", state.frontFiles.filter((f) => f.id !== id));
+  const removeBackFile = (id: string) => update("backFiles", state.backFiles.filter((f) => f.id !== id));
 
   async function handleSubmit() {
     if (!captchaToken) {
@@ -302,7 +307,12 @@ function QuotePage() {
       const filePaths: string[] = [];
 
       // Upload files to Supabase Storage
-      for (const f of state.files) {
+      const allFiles = [
+        ...state.frontFiles.map(f => ({ ...f, placement: "Front", location: state.frontPlacement })),
+        ...state.backFiles.map(f => ({ ...f, placement: "Back", location: state.backPlacement }))
+      ];
+
+      for (const f of allFiles) {
         const filePath = `${Date.now()}-${f.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
         
         // Convert dataUrl to Blob
@@ -319,7 +329,7 @@ function QuotePage() {
         }
         
         // Push object containing original name and the storage path
-        filePaths.push(JSON.stringify({ name: f.name, path: filePath }));
+        filePaths.push(JSON.stringify({ name: f.name, path: filePath, placement: f.placement, location: f.location }));
       }
 
       await submitQuoteRequest({
@@ -616,15 +626,51 @@ function QuotePage() {
                 />
               </div>
 
-              <div className="mt-6">
-                <Label>Artwork files (optional)</Label>
-                <FileDropzone
-                  files={state.files}
-                  onFiles={handleFiles}
-                  onRemove={removeFile}
-                />
+              <div className="mt-6 space-y-8">
+                <div>
+                  <div className="flex justify-between items-end mb-2">
+                    <Label className="text-base font-semibold">Front Placement Artwork (optional)</Label>
+                    <select
+                      className="border rounded px-2 py-1 text-sm bg-background border-background/20"
+                      value={state.frontPlacement}
+                      onChange={(e) => update("frontPlacement", e.target.value)}
+                    >
+                      <option value="Full Front Center">Full Front Center</option>
+                      <option value="Pocket Area">Pocket Area</option>
+                      <option value="Oversize Front">Oversize Front</option>
+                      <option value="Right Sleeve">Right Sleeve</option>
+                      <option value="Left Sleeve">Left Sleeve</option>
+                    </select>
+                  </div>
+                  <FileDropzone
+                    files={state.frontFiles}
+                    onFiles={handleFrontFiles}
+                    onRemove={removeFrontFile}
+                  />
+                </div>
+                
+                <div>
+                  <div className="flex justify-between items-end mb-2">
+                    <Label className="text-base font-semibold">Back Placement Artwork (optional)</Label>
+                    <select
+                      className="border rounded px-2 py-1 text-sm bg-background border-background/20"
+                      value={state.backPlacement}
+                      onChange={(e) => update("backPlacement", e.target.value)}
+                    >
+                      <option value="Full Back Center">Full Back Center</option>
+                      <option value="Back Collar">Back Collar</option>
+                      <option value="Upper Back">Upper Back</option>
+                    </select>
+                  </div>
+                  <FileDropzone
+                    files={state.backFiles}
+                    onFiles={handleBackFiles}
+                    onRemove={removeBackFile}
+                  />
+                </div>
+
                 <p className="text-xs text-muted-foreground mt-2">
-                  PNG, JPG, SVG, PDF, AI, or EPS. Max {MAX_FILES} files, {formatBytes(MAX_FILE_SIZE)} each.
+                  PNG, JPG, SVG, PDF, AI, or EPS. Max {MAX_FILES} files total, {formatBytes(MAX_FILE_SIZE)} each.
                 </p>
               </div>
             </StepWrapper>

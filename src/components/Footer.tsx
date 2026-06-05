@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Logo } from "@/components/Logo";
 import { LOCATIONS, PRIMARY_EMAIL, PRIMARY_PHONE } from "@/lib/locations";
+import logoSrc from "@/assets/fast_logo_contrasted.png";
 
 export function Footer() {
   return (
@@ -8,7 +9,9 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-14 grid gap-10 md:grid-cols-4">
         <div className="md:col-span-1">
           <div className="text-background">
-            <Logo className="text-background [&_*]:text-background" />
+            <Link to="/">
+              <img src={logoSrc} alt="Fast Apparel" className="h-10 md:h-11 w-auto object-contain" />
+            </Link>
           </div>
           <p className="mt-4 text-sm text-background/70 leading-relaxed">
             DTF custom t-shirt printing and promotional products based in Lawrenceville, GA — serving
