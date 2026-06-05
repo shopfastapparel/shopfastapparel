@@ -109,6 +109,21 @@ export function Footer() {
                 FAQ
               </Link>
             </li>
+            <li className="pt-2">
+              <Link to="/returns" className="hover:text-background">
+                Returns Policy
+              </Link>
+            </li>
+            <li>
+              <Link to="/terms" className="hover:text-background">
+                Terms & Conditions
+              </Link>
+            </li>
+            <li>
+              <Link to="/privacy" className="hover:text-background">
+                Privacy Policy
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
