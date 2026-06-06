@@ -69,12 +69,12 @@ export const Route = createRootRoute({
     ],
     scripts: [
       {
-        src: "https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX",
+        src: "https://www.googletagmanager.com/gtag/js?id=G-QG5KZGRR5L",
         async: true,
       },
       {
         type: "text/javascript",
-        children: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-XXXXXXXXXX');`,
+        children: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-QG5KZGRR5L');`,
       },
       {
         type: "text/javascript",
