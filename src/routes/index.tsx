@@ -183,6 +183,21 @@ function HomePage() {
         </motion.div>
       </section>
 
+      {/* TRUSTED BY BANNER */}
+      <section className="bg-background py-10 border-b">
+        <div className="mx-auto max-w-7xl px-4 text-center">
+          <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-6">
+            Trusted by schools and businesses across Metro Atlanta
+          </p>
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+            <div className="flex items-center gap-2 font-display text-xl"><Briefcase className="w-6 h-6" /> Local Tech</div>
+            <div className="flex items-center gap-2 font-display text-xl"><Stethoscope className="w-6 h-6" /> GA Medical</div>
+            <div className="flex items-center gap-2 font-display text-xl"><Users className="w-6 h-6" /> Gwinnett Schools</div>
+            <div className="flex items-center gap-2 font-display text-xl"><ChefHat className="w-6 h-6" /> Atlanta Eats</div>
+          </div>
+        </div>
+      </section>
+
       {/* Volume Pricing Banner */}
       <section className="bg-ink text-background py-10 border-b-2 border-background shadow-sm relative overflow-hidden">
         {/* Subtle decorative background elements */}

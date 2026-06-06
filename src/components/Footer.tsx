@@ -105,6 +105,11 @@ export function Footer() {
               </Link>
             </li>
             <li>
+              <Link to="/reviews" className="hover:text-yellow-brand text-background">
+                Customer Reviews
+              </Link>
+            </li>
+            <li>
               <Link to="/blog" className="hover:text-background">
                 Blog
               </Link>
