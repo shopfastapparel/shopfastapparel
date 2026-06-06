@@ -67,6 +67,12 @@ export const Route = createRootRoute({
         href: "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap",
       },
     ],
+    scripts: [
+      {
+        type: "text/javascript",
+        children: `window.$crisp=[];window.CRISP_WEBSITE_ID="9a96f679-965b-4217-a072-ba5117483d9a";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();`,
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
