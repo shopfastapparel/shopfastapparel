@@ -67,6 +67,11 @@ export function Footer() {
                 Free Quote
               </Link>
             </li>
+            <li>
+              <Link to="/track" className="hover:text-yellow-brand text-background">
+                Track Your Order
+              </Link>
+            </li>
           </ul>
         </div>
 

@@ -16,6 +16,7 @@ const NAV = [
   { label: "Shop", to: "/shop" as const },
   { label: "Locations", to: "/locations" as const },
   { label: "Blog", to: "/blog" as const },
+  { label: "Track Order", to: "/track" as const },
   { label: "FAQ", to: "/faq" as const },
 ];
 
