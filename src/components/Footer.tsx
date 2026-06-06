@@ -43,11 +43,6 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/services/dtf-transfers" className="hover:text-background">
-                DTF Transfers & Gang Sheets
-              </Link>
-            </li>
-            <li>
               <Link to="/services/promotional-products" className="hover:text-background">
                 Promotional Products
               </Link>

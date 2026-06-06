@@ -10,7 +10,6 @@ const NAV = [
   { label: "Custom Printing", to: "/services/custom-tshirts" as const },
   { label: "Bulk & Teams", to: "/services/team-bulk" as const },
   { label: "Family Tees", to: "/services/family-tees" as const },
-  { label: "DTF Transfers", to: "/services/dtf-transfers" as const },
   { label: "Shirt Colors", to: "/shirt-colors" as const },
   { label: "Promo Products", to: "/services/promotional-products" as const },
   { label: "Shop", to: "/shop" as const },
