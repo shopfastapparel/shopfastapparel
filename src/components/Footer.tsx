@@ -43,6 +43,11 @@ export function Footer() {
               </Link>
             </li>
             <li>
+              <Link to="/services/dtf-transfers" className="hover:text-background">
+                DTF Transfers & Gang Sheets
+              </Link>
+            </li>
+            <li>
               <Link to="/services/promotional-products" className="hover:text-background">
                 Promotional Products
               </Link>
@@ -104,7 +109,17 @@ export function Footer() {
                 Blog
               </Link>
             </li>
+            <li className="pt-2">
+              <Link to="/image-placements" className="hover:text-cyan-brand text-background">
+                Logo Placements Guide
+              </Link>
+            </li>
             <li>
+              <Link to="/artwork-guidelines" className="hover:text-magenta-brand text-background">
+                Artwork Prep Guide
+              </Link>
+            </li>
+            <li className="pt-2">
               <Link to="/faq" className="hover:text-background">
                 FAQ
               </Link>
