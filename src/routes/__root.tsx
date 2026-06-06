@@ -69,6 +69,14 @@ export const Route = createRootRoute({
     ],
     scripts: [
       {
+        src: "https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX",
+        async: true,
+      },
+      {
+        type: "text/javascript",
+        children: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-XXXXXXXXXX');`,
+      },
+      {
         type: "text/javascript",
         children: `window.$crisp=[];window.CRISP_WEBSITE_ID="9a96f679-965b-4217-a072-ba5117483d9a";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();`,
       },
