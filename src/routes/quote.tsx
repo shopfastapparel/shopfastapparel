@@ -352,6 +352,12 @@ function QuotePage() {
         },
       });
       setSubmitted(true);
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'generate_lead', {
+          event_category: 'engagement',
+          event_label: 'quote_submitted',
+        });
+      }
       toast.success("Quote request sent!", {
         description: "We'll respond within 24 hours with pricing and a free mockup.",
       });
