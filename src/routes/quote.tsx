@@ -357,6 +357,7 @@ function QuotePage() {
           event_category: 'engagement',
           event_label: 'quote_submitted',
         });
+        (window as any).gtag('event', 'ads_conversion_Request_quote_1', {});
       }
       toast.success("Quote request sent!", {
         description: "We'll respond within 24 hours with pricing and a free mockup.",
