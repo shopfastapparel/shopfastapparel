@@ -73,8 +73,12 @@ export const Route = createRootRoute({
         async: true,
       },
       {
+        src: "https://www.googletagmanager.com/gtag/js?id=AW-18202378841",
+        async: true,
+      },
+      {
         type: "text/javascript",
-        children: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-QG5KZGRR5L');`,
+        children: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-QG5KZGRR5L'); gtag('config', 'AW-18202378841');`,
       },
       {
         type: "text/javascript",
