@@ -1,8 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { APPAREL_STYLES } from "@/lib/apparel";
-import { Tag, Layers, Zap, Truck } from "lucide-react";
+import { Tag, Layers, Zap, Truck, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
