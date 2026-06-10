@@ -20,6 +20,7 @@ import {
   Stethoscope,
   ChefHat,
   Briefcase,
+  CheckCircle2,
 } from "lucide-react";
 import heroShirts from "@/assets/hero-shirts.jpg";
 
