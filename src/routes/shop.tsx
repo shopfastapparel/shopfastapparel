@@ -37,6 +37,27 @@ function ShopPage() {
         </div>
       </section>
 
+      {/* Bundle Deal Banner */}
+      <section className="bg-magenta-brand text-white py-10 border-b-2 border-ink shadow-sm relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent_50%)]" />
+        <div className="mx-auto max-w-7xl px-4 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-brand text-ink text-xs font-bold uppercase tracking-widest mb-3">
+              <Zap className="w-3 h-3" /> Loss-Leader Special
+            </div>
+            <h2 className="font-display text-3xl md:text-4xl leading-tight">
+              24 Custom Gildan Tees for $216
+            </h2>
+            <p className="mt-2 text-white/90 font-medium">
+              Get 24 premium Softstyle shirts with full-color DTF prints for just $9 each. Free shipping included.
+            </p>
+          </div>
+          <Button asChild size="lg" className="shrink-0 bg-yellow-brand text-ink hover:bg-white border-2 border-ink shadow-[4px_4px_0px_0px_#1a1a2e] transition-all hover:-translate-y-1">
+            <Link to="/landing/bundle-deal">Claim Bundle Deal <ArrowRight className="ml-2 w-5 h-5" /></Link>
+          </Button>
+        </div>
+      </section>
+
       {/* Volume Pricing Banner */}
       <section className="bg-ink text-background py-10 border-b-2 border-background shadow-sm relative overflow-hidden">
         {/* Subtle decorative background elements */}
