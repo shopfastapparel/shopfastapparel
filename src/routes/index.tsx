@@ -319,6 +319,54 @@ function HomePage() {
         </motion.div>
       </section>
 
+      {/* FAST DEAL PROMO */}
+      <section className="bg-ink border-y border-ink">
+        <div className="mx-auto max-w-7xl px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeInRight}
+            className="order-2 md:order-1 relative"
+          >
+            <div className="absolute inset-0 bg-yellow-brand/20 blur-3xl rounded-full" />
+            <img 
+              src="/images/apparel/gildan-bundle.png" 
+              alt="The FAST Deal Bundle" 
+              className="relative rounded-xl border-2 border-magenta-brand shadow-pop-lg w-full object-cover z-10"
+            />
+            <div className="absolute -bottom-6 -right-6 bg-yellow-brand text-ink font-display text-4xl p-4 rounded-full border-2 border-ink shadow-sm z-20 rotate-12">
+              $9
+            </div>
+          </motion.div>
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeInLeft}
+            className="order-1 md:order-2"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-brand text-ink text-xs font-bold uppercase tracking-widest mb-4">
+              <Zap className="w-4 h-4" /> Limited Time Offer
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl leading-tight text-white mb-4">
+              Premium Custom Shirts for <span className="text-yellow-brand">$9 Each</span>.
+            </h2>
+            <p className="text-white/80 text-lg mb-6">
+              Lock in our legendary <strong>FAST Deal</strong>. You get 24 incredibly soft Gildan Softstyle t-shirts with vibrant, full-color DTF prints. Perfect for small businesses, events, and brand merch.
+            </p>
+            <ul className="space-y-2 mb-8">
+              <li className="flex items-center gap-2 text-white/90"><CheckCircle2 className="w-5 h-5 text-cyan-brand" /> Full-Color DTF Print Included</li>
+              <li className="flex items-center gap-2 text-white/90"><CheckCircle2 className="w-5 h-5 text-cyan-brand" /> 24 Premium Gildan Softstyle Shirts</li>
+              <li className="flex items-center gap-2 text-white/90"><CheckCircle2 className="w-5 h-5 text-cyan-brand" /> Free Shipping in Metro Atlanta</li>
+            </ul>
+            <Button asChild size="lg" className="shadow-[4px_4px_0px_0px_#1a1a2e] border-2 border-ink bg-yellow-brand text-ink hover:bg-white text-lg h-14 px-8">
+              <Link to="/landing/bundle-deal">Claim The FAST Deal <ArrowRight className="ml-2 w-5 h-5" /></Link>
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
       {/* FAMILY TEES SUBLET */}
       <section className="bg-magenta-brand/10 border-t border-magenta-brand/20">
         <div className="mx-auto max-w-7xl px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
