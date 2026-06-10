@@ -140,15 +140,15 @@ function BundleDealPage() {
             
             <div className="order-2 md:order-1">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-brand/20 text-yellow-brand text-xs font-bold uppercase tracking-widest mb-6 border border-yellow-brand/30">
-                <Zap className="w-4 h-4 fill-current" /> Limited Time Loss-Leader Deal
+                <Zap className="w-4 h-4 fill-current" /> The FAST Deal
               </div>
               
               <h1 className="font-display text-5xl md:text-6xl leading-[1.05] tracking-tight mb-6">
-                24 Custom Premium Shirts for <span className="text-magenta-brand">$216</span>.
+                Premium Custom Shirts for <span className="text-magenta-brand">$9 Each</span>.
               </h1>
               
               <p className="text-lg text-foreground/80 mb-6">
-                Get 24 incredibly soft <strong>Gildan Softstyle (64000)</strong> t-shirts with vibrant, full-color DTF prints for just $9 a shirt. No hidden fees, no setup costs.
+                Lock in our legendary <strong>FAST Deal</strong>: Get 24 incredibly soft <strong>Gildan Softstyle</strong> t-shirts with vibrant, full-color DTF prints for just $9 a shirt ($216 total). No hidden fees, no setup costs.
               </p>
 
               <div className="bg-background border-2 border-ink p-5 rounded-xl shadow-[4px_4px_0px_0px_#1a1a2e] mb-8">

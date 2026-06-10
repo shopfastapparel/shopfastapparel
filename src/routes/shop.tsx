@@ -44,17 +44,17 @@ function ShopPage() {
         <div className="mx-auto max-w-7xl px-4 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-brand text-ink text-xs font-bold uppercase tracking-widest mb-3">
-              <Zap className="w-3 h-3" /> Loss-Leader Special
+              <Zap className="w-3 h-3" /> The FAST Deal
             </div>
             <h2 className="font-display text-3xl md:text-4xl leading-tight">
-              24 Custom Gildan Tees for $216
+              Premium Custom Shirts for $9 Each
             </h2>
             <p className="mt-2 text-white/90 font-medium">
-              Get 24 premium Softstyle shirts with full-color DTF prints for just $9 each. Free shipping included.
+              Get 24 incredibly soft Gildan Softstyle shirts with full-color DTF prints. Free shipping included.
             </p>
           </div>
           <Button asChild size="lg" className="shrink-0 bg-yellow-brand text-ink hover:bg-white border-2 border-ink shadow-[4px_4px_0px_0px_#1a1a2e] transition-all hover:-translate-y-1">
-            <Link to="/landing/bundle-deal">Claim Bundle Deal <ArrowRight className="ml-2 w-5 h-5" /></Link>
+            <Link to="/landing/bundle-deal">Claim FAST Deal <ArrowRight className="ml-2 w-5 h-5" /></Link>
           </Button>
         </div>
       </section>
@@ -96,6 +96,41 @@ function ShopPage() {
 
       <section className="mx-auto max-w-7xl px-4 py-12">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
+          
+          {/* Static Card for FAST Deal */}
+          <Link
+            to="/landing/bundle-deal"
+            className="group block bg-card border-2 border-magenta-brand rounded-xl overflow-hidden shadow-sm hover:shadow-pop hover:-translate-y-1 transition-all relative"
+          >
+            <div className="aspect-square bg-muted overflow-hidden relative">
+              <img
+                src="/images/apparel/gildan-bundle.png"
+                alt="FAST Deal Bundle"
+                loading="lazy"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute top-3 left-3 bg-yellow-brand text-ink font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-ink shadow-sm flex items-center gap-1">
+                <Zap className="w-3 h-3" /> The FAST Deal
+              </div>
+              <div className="absolute top-3 right-3 font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-ink shadow-sm bg-magenta-brand text-background">
+                Special
+              </div>
+            </div>
+            <div className="p-4 flex flex-col flex-grow">
+              <p className="text-xs text-magenta-brand font-semibold mb-1">Bundle of 24 Shirts</p>
+              <h3 className="font-display text-base leading-snug line-clamp-2">Premium Custom Gildan Softstyle Package</h3>
+              <div className="mt-auto pt-3 flex items-center justify-between">
+                <span className="text-xs text-ink font-bold uppercase tracking-wider group-hover:underline">
+                  View Details →
+                </span>
+                <span className="text-xs font-bold text-cyan-brand whitespace-nowrap bg-cyan-brand/10 px-2 py-1 rounded">
+                  $9.00 / shirt
+                </span>
+              </div>
+            </div>
+          </Link>
+
+          {/* Regular Catalog Products */}
           {APPAREL_STYLES.map((apparel) => (
             <ProductCard key={apparel.id} product={apparel} />
           ))}
