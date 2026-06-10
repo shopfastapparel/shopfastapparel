@@ -9,12 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TrackRouteImport } from './routes/track'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ShirtColorsRouteImport } from './routes/shirt-colors'
+import { Route as ReviewsRouteImport } from './routes/reviews'
+import { Route as ReturnsRouteImport } from './routes/returns'
 import { Route as QuoteRouteImport } from './routes/quote'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ImagePlacementsRouteImport } from './routes/image-placements'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ArtworkGuidelinesRouteImport } from './routes/artwork-guidelines'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LocationsIndexRouteImport } from './routes/locations.index'
@@ -22,10 +29,13 @@ import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as ServicesTeamBulkRouteImport } from './routes/services.team-bulk'
 import { Route as ServicesPromotionalProductsRouteImport } from './routes/services.promotional-products'
 import { Route as ServicesFamilyTeesRouteImport } from './routes/services.family-tees'
+import { Route as ServicesDtfTransfersRouteImport } from './routes/services.dtf-transfers'
 import { Route as ServicesCustomTshirtsRouteImport } from './routes/services.custom-tshirts'
 import { Route as ProductHandleRouteImport } from './routes/product.$handle'
 import { Route as MockupIdRouteImport } from './routes/mockup.$id'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
+import { Route as LandingCustomShirtsRouteImport } from './routes/landing.custom-shirts'
+import { Route as LandingBundleDealRouteImport } from './routes/landing.bundle-deal'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
 import { Route as AdminSalesRouteImport } from './routes/admin.sales'
@@ -37,6 +47,16 @@ import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
 import { Route as ApiCronGenerateBlogRouteImport } from './routes/api/cron/generate-blog'
 import { Route as ApiPublicHooksGenerateBlogPostRouteImport } from './routes/api/public/hooks/generate-blog-post'
 
+const TrackRoute = TrackRouteImport.update({
+  id: '/track',
+  path: '/track',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
@@ -47,14 +67,34 @@ const ShirtColorsRoute = ShirtColorsRouteImport.update({
   path: '/shirt-colors',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReviewsRoute = ReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReturnsRoute = ReturnsRouteImport.update({
+  id: '/returns',
+  path: '/returns',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const QuoteRoute = QuoteRouteImport.update({
   id: '/quote',
   path: '/quote',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImagePlacementsRoute = ImagePlacementsRouteImport.update({
+  id: '/image-placements',
+  path: '/image-placements',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -65,6 +105,11 @@ const FaqRoute = FaqRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArtworkGuidelinesRoute = ArtworkGuidelinesRouteImport.update({
+  id: '/artwork-guidelines',
+  path: '/artwork-guidelines',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -103,6 +148,11 @@ const ServicesFamilyTeesRoute = ServicesFamilyTeesRouteImport.update({
   path: '/services/family-tees',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesDtfTransfersRoute = ServicesDtfTransfersRouteImport.update({
+  id: '/services/dtf-transfers',
+  path: '/services/dtf-transfers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesCustomTshirtsRoute = ServicesCustomTshirtsRouteImport.update({
   id: '/services/custom-tshirts',
   path: '/services/custom-tshirts',
@@ -121,6 +171,16 @@ const MockupIdRoute = MockupIdRouteImport.update({
 const LocationsSlugRoute = LocationsSlugRouteImport.update({
   id: '/locations/$slug',
   path: '/locations/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LandingCustomShirtsRoute = LandingCustomShirtsRouteImport.update({
+  id: '/landing/custom-shirts',
+  path: '/landing/custom-shirts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LandingBundleDealRoute = LandingBundleDealRouteImport.update({
+  id: '/landing/bundle-deal',
+  path: '/landing/bundle-deal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
@@ -178,22 +238,32 @@ const ApiPublicHooksGenerateBlogPostRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/artwork-guidelines': typeof ArtworkGuidelinesRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/image-placements': typeof ImagePlacementsRoute
   '/login': typeof LoginRoute
+  '/privacy': typeof PrivacyRoute
   '/quote': typeof QuoteRoute
+  '/returns': typeof ReturnsRoute
+  '/reviews': typeof ReviewsRoute
   '/shirt-colors': typeof ShirtColorsRoute
   '/shop': typeof ShopRoute
+  '/terms': typeof TermsRoute
+  '/track': typeof TrackRoute
   '/admin/announcement': typeof AdminAnnouncementRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/landing/bundle-deal': typeof LandingBundleDealRoute
+  '/landing/custom-shirts': typeof LandingCustomShirtsRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/mockup/$id': typeof MockupIdRoute
   '/product/$handle': typeof ProductHandleRoute
   '/services/custom-tshirts': typeof ServicesCustomTshirtsRoute
+  '/services/dtf-transfers': typeof ServicesDtfTransfersRoute
   '/services/family-tees': typeof ServicesFamilyTeesRoute
   '/services/promotional-products': typeof ServicesPromotionalProductsRoute
   '/services/team-bulk': typeof ServicesTeamBulkRoute
@@ -207,22 +277,32 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/artwork-guidelines': typeof ArtworkGuidelinesRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/image-placements': typeof ImagePlacementsRoute
   '/login': typeof LoginRoute
+  '/privacy': typeof PrivacyRoute
   '/quote': typeof QuoteRoute
+  '/returns': typeof ReturnsRoute
+  '/reviews': typeof ReviewsRoute
   '/shirt-colors': typeof ShirtColorsRoute
   '/shop': typeof ShopRoute
+  '/terms': typeof TermsRoute
+  '/track': typeof TrackRoute
   '/admin/announcement': typeof AdminAnnouncementRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/landing/bundle-deal': typeof LandingBundleDealRoute
+  '/landing/custom-shirts': typeof LandingCustomShirtsRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/mockup/$id': typeof MockupIdRoute
   '/product/$handle': typeof ProductHandleRoute
   '/services/custom-tshirts': typeof ServicesCustomTshirtsRoute
+  '/services/dtf-transfers': typeof ServicesDtfTransfersRoute
   '/services/family-tees': typeof ServicesFamilyTeesRoute
   '/services/promotional-products': typeof ServicesPromotionalProductsRoute
   '/services/team-bulk': typeof ServicesTeamBulkRoute
@@ -237,22 +317,32 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/artwork-guidelines': typeof ArtworkGuidelinesRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/image-placements': typeof ImagePlacementsRoute
   '/login': typeof LoginRoute
+  '/privacy': typeof PrivacyRoute
   '/quote': typeof QuoteRoute
+  '/returns': typeof ReturnsRoute
+  '/reviews': typeof ReviewsRoute
   '/shirt-colors': typeof ShirtColorsRoute
   '/shop': typeof ShopRoute
+  '/terms': typeof TermsRoute
+  '/track': typeof TrackRoute
   '/admin/announcement': typeof AdminAnnouncementRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/landing/bundle-deal': typeof LandingBundleDealRoute
+  '/landing/custom-shirts': typeof LandingCustomShirtsRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/mockup/$id': typeof MockupIdRoute
   '/product/$handle': typeof ProductHandleRoute
   '/services/custom-tshirts': typeof ServicesCustomTshirtsRoute
+  '/services/dtf-transfers': typeof ServicesDtfTransfersRoute
   '/services/family-tees': typeof ServicesFamilyTeesRoute
   '/services/promotional-products': typeof ServicesPromotionalProductsRoute
   '/services/team-bulk': typeof ServicesTeamBulkRoute
@@ -268,22 +358,32 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/artwork-guidelines'
     | '/contact'
     | '/faq'
+    | '/image-placements'
     | '/login'
+    | '/privacy'
     | '/quote'
+    | '/returns'
+    | '/reviews'
     | '/shirt-colors'
     | '/shop'
+    | '/terms'
+    | '/track'
     | '/admin/announcement'
     | '/admin/blog'
     | '/admin/quotes'
     | '/admin/sales'
     | '/admin/subscribers'
     | '/blog/$slug'
+    | '/landing/bundle-deal'
+    | '/landing/custom-shirts'
     | '/locations/$slug'
     | '/mockup/$id'
     | '/product/$handle'
     | '/services/custom-tshirts'
+    | '/services/dtf-transfers'
     | '/services/family-tees'
     | '/services/promotional-products'
     | '/services/team-bulk'
@@ -297,22 +397,32 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/artwork-guidelines'
     | '/contact'
     | '/faq'
+    | '/image-placements'
     | '/login'
+    | '/privacy'
     | '/quote'
+    | '/returns'
+    | '/reviews'
     | '/shirt-colors'
     | '/shop'
+    | '/terms'
+    | '/track'
     | '/admin/announcement'
     | '/admin/blog'
     | '/admin/quotes'
     | '/admin/sales'
     | '/admin/subscribers'
     | '/blog/$slug'
+    | '/landing/bundle-deal'
+    | '/landing/custom-shirts'
     | '/locations/$slug'
     | '/mockup/$id'
     | '/product/$handle'
     | '/services/custom-tshirts'
+    | '/services/dtf-transfers'
     | '/services/family-tees'
     | '/services/promotional-products'
     | '/services/team-bulk'
@@ -326,22 +436,32 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/artwork-guidelines'
     | '/contact'
     | '/faq'
+    | '/image-placements'
     | '/login'
+    | '/privacy'
     | '/quote'
+    | '/returns'
+    | '/reviews'
     | '/shirt-colors'
     | '/shop'
+    | '/terms'
+    | '/track'
     | '/admin/announcement'
     | '/admin/blog'
     | '/admin/quotes'
     | '/admin/sales'
     | '/admin/subscribers'
     | '/blog/$slug'
+    | '/landing/bundle-deal'
+    | '/landing/custom-shirts'
     | '/locations/$slug'
     | '/mockup/$id'
     | '/product/$handle'
     | '/services/custom-tshirts'
+    | '/services/dtf-transfers'
     | '/services/family-tees'
     | '/services/promotional-products'
     | '/services/team-bulk'
@@ -356,22 +476,32 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ArtworkGuidelinesRoute: typeof ArtworkGuidelinesRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
+  ImagePlacementsRoute: typeof ImagePlacementsRoute
   LoginRoute: typeof LoginRoute
+  PrivacyRoute: typeof PrivacyRoute
   QuoteRoute: typeof QuoteRoute
+  ReturnsRoute: typeof ReturnsRoute
+  ReviewsRoute: typeof ReviewsRoute
   ShirtColorsRoute: typeof ShirtColorsRoute
   ShopRoute: typeof ShopRoute
+  TermsRoute: typeof TermsRoute
+  TrackRoute: typeof TrackRoute
   AdminAnnouncementRoute: typeof AdminAnnouncementRoute
   AdminBlogRoute: typeof AdminBlogRoute
   AdminQuotesRoute: typeof AdminQuotesRoute
   AdminSalesRoute: typeof AdminSalesRoute
   AdminSubscribersRoute: typeof AdminSubscribersRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  LandingBundleDealRoute: typeof LandingBundleDealRoute
+  LandingCustomShirtsRoute: typeof LandingCustomShirtsRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   MockupIdRoute: typeof MockupIdRoute
   ProductHandleRoute: typeof ProductHandleRoute
   ServicesCustomTshirtsRoute: typeof ServicesCustomTshirtsRoute
+  ServicesDtfTransfersRoute: typeof ServicesDtfTransfersRoute
   ServicesFamilyTeesRoute: typeof ServicesFamilyTeesRoute
   ServicesPromotionalProductsRoute: typeof ServicesPromotionalProductsRoute
   ServicesTeamBulkRoute: typeof ServicesTeamBulkRoute
@@ -385,6 +515,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/track': {
+      id: '/track'
+      path: '/track'
+      fullPath: '/track'
+      preLoaderRoute: typeof TrackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
@@ -399,6 +543,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShirtColorsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reviews': {
+      id: '/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof ReviewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/returns': {
+      id: '/returns'
+      path: '/returns'
+      fullPath: '/returns'
+      preLoaderRoute: typeof ReturnsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/quote': {
       id: '/quote'
       path: '/quote'
@@ -406,11 +564,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuoteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/image-placements': {
+      id: '/image-placements'
+      path: '/image-placements'
+      fullPath: '/image-placements'
+      preLoaderRoute: typeof ImagePlacementsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -425,6 +597,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/artwork-guidelines': {
+      id: '/artwork-guidelines'
+      path: '/artwork-guidelines'
+      fullPath: '/artwork-guidelines'
+      preLoaderRoute: typeof ArtworkGuidelinesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -476,6 +655,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesFamilyTeesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/dtf-transfers': {
+      id: '/services/dtf-transfers'
+      path: '/services/dtf-transfers'
+      fullPath: '/services/dtf-transfers'
+      preLoaderRoute: typeof ServicesDtfTransfersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services/custom-tshirts': {
       id: '/services/custom-tshirts'
       path: '/services/custom-tshirts'
@@ -502,6 +688,20 @@ declare module '@tanstack/react-router' {
       path: '/locations/$slug'
       fullPath: '/locations/$slug'
       preLoaderRoute: typeof LocationsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/landing/custom-shirts': {
+      id: '/landing/custom-shirts'
+      path: '/landing/custom-shirts'
+      fullPath: '/landing/custom-shirts'
+      preLoaderRoute: typeof LandingCustomShirtsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/landing/bundle-deal': {
+      id: '/landing/bundle-deal'
+      path: '/landing/bundle-deal'
+      fullPath: '/landing/bundle-deal'
+      preLoaderRoute: typeof LandingBundleDealRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/$slug': {
@@ -580,22 +780,32 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ArtworkGuidelinesRoute: ArtworkGuidelinesRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
+  ImagePlacementsRoute: ImagePlacementsRoute,
   LoginRoute: LoginRoute,
+  PrivacyRoute: PrivacyRoute,
   QuoteRoute: QuoteRoute,
+  ReturnsRoute: ReturnsRoute,
+  ReviewsRoute: ReviewsRoute,
   ShirtColorsRoute: ShirtColorsRoute,
   ShopRoute: ShopRoute,
+  TermsRoute: TermsRoute,
+  TrackRoute: TrackRoute,
   AdminAnnouncementRoute: AdminAnnouncementRoute,
   AdminBlogRoute: AdminBlogRoute,
   AdminQuotesRoute: AdminQuotesRoute,
   AdminSalesRoute: AdminSalesRoute,
   AdminSubscribersRoute: AdminSubscribersRoute,
   BlogSlugRoute: BlogSlugRoute,
+  LandingBundleDealRoute: LandingBundleDealRoute,
+  LandingCustomShirtsRoute: LandingCustomShirtsRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   MockupIdRoute: MockupIdRoute,
   ProductHandleRoute: ProductHandleRoute,
   ServicesCustomTshirtsRoute: ServicesCustomTshirtsRoute,
+  ServicesDtfTransfersRoute: ServicesDtfTransfersRoute,
   ServicesFamilyTeesRoute: ServicesFamilyTeesRoute,
   ServicesPromotionalProductsRoute: ServicesPromotionalProductsRoute,
   ServicesTeamBulkRoute: ServicesTeamBulkRoute,
