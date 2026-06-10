@@ -150,19 +150,30 @@ BODY_TEMPLATE = """
           <p>Hi there,</p>
           <p>I'm reaching out because I love what you guys are doing at <strong>{company_name}</strong>!</p>
           <p>I run <strong>Fast Apparel</strong>, a local custom print shop right here in Lawrenceville/Atlanta. We specialize in high-quality DTF (Direct to Film) t-shirts and promotional products with super fast turnaround times.</p>
-          <p>Since you're local, I wanted to see if you had any upcoming needs for team shirts, event merch, or uniforms? We offer free mockups and have <strong>no minimums</strong> on our DTF prints.</p>
           
-          <div class="mockup-container">
+          <div style="background-color: #FDF2F8; border: 2px solid #FF007F; border-radius: 12px; padding: 20px; margin: 30px 0; text-align: center;">
+            <h2 style="color: #FF007F; margin-top: 0; font-size: 24px;">🔥 The FAST Deal</h2>
+            <a href="https://www.shopfastapparel.com/landing/bundle-deal">
+              <img src="https://www.shopfastapparel.com/images/apparel/gildan-bundle.png" alt="FAST Deal Bundle" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; border: 1px solid #FF007F;" />
+            </a>
+            <p style="font-size: 18px; margin-bottom: 10px; color: #111;"><strong>24 Premium Custom Shirts for $9 Each</strong></p>
+            <p style="font-size: 15px; margin-bottom: 20px; color: #444;">Lock in our legendary package: You get 24 incredibly soft Gildan Softstyle tees, your logo in vibrant full-color DTF, and free shipping.</p>
+            <a href="https://www.shopfastapparel.com/landing/bundle-deal" class="cta-button" style="margin-top: 0; display: inline-block;">Claim The FAST Deal</a>
+          </div>
+
+          <p>To show you the quality, my team went ahead and generated a custom mockup with your logo to see how it would look on our premium shirts!</p>
+
+          <div class="mockup-container" style="margin-top: 30px;">
             <p style="margin-top: 0; font-size: 14px; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Custom Mockup Generated For You</p>
             <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}">
               <img src="cid:mockup" alt="Your Custom Shirt Mockup" class="mockup-image" />
             </a>
             <div>
-              <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}" class="cta-button">See Pricing & Details</a>
+              <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}" class="cta-button" style="background-color: #111827;">View Your Custom Mockup</a>
             </div>
           </div>
           
-          <p>Would love to help you out on your next project! Feel free to reply directly to this email or grab a quote on our site.</p>
+          <p>Would love to help you out on your next project! Feel free to reply directly to this email or grab the deal on our site.</p>
         </td>
       </tr>
       <tr>
