@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { PRIMARY_PHONE } from "@/lib/locations";
 import { CheckCircle2, Zap, ShieldCheck, ArrowRight, Upload, Info } from "lucide-react";
 import bundleImage from "../../public/images/apparel/gildan-bundle.png";
+import { SiteLayout } from "@/components/SiteLayout";
 
 export const Route = createFileRoute("/landing/bundle-deal")({
   head: () => ({
@@ -18,23 +19,7 @@ export const Route = createFileRoute("/landing/bundle-deal")({
   component: BundleDealPage,
 });
 
-function MinimalHeader() {
-  return (
-    <header className="bg-background border-b border-ink/10 sticky top-0 z-40 shadow-sm">
-      <div className="mx-auto max-w-5xl px-4 h-20 flex items-center justify-between">
-        <Logo />
-        <div className="flex items-center gap-4">
-          <div className="hidden sm:block text-right">
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Questions?</p>
-            <a href={`tel:${PRIMARY_PHONE}`} className="font-display text-xl text-ink hover:text-cyan-brand transition-colors">
-              {PRIMARY_PHONE}
-            </a>
-          </div>
-        </div>
-      </div>
-    </header>
-  );
-}
+
 
 function BundleDealPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -113,8 +98,7 @@ function BundleDealPage() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-background font-sans text-foreground">
-        <MinimalHeader />
+      <SiteLayout>
         <div className="mx-auto max-w-2xl px-4 py-32 text-center">
           <CheckCircle2 className="h-20 w-20 text-green-500 mx-auto mb-6" />
           <h1 className="font-display text-5xl">You're all set!</h1>
@@ -125,13 +109,12 @@ function BundleDealPage() {
             <Link to="/shop">Browse More Apparel</Link>
           </Button>
         </div>
-      </div>
+      </SiteLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background font-sans text-foreground">
-      <MinimalHeader />
+    <SiteLayout>
 
       <main>
         {/* HERO SECTION */}
@@ -252,6 +235,6 @@ function BundleDealPage() {
           </div>
         </section>
       </main>
-    </div>
+    </SiteLayout>
   );
 }
