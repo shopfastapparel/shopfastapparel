@@ -171,6 +171,9 @@ BODY_TEMPLATE = """
             <div>
               <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}" class="cta-button" style="background-color: #111827;">View Your Custom Mockup</a>
             </div>
+            <p style="font-size: 13px; color: #6B7280; margin-top: 20px; font-style: italic;">
+              Ooops, did your logo not generate? No worries, contact us now with your logo and we will create a free mockup today!
+            </p>
           </div>
           
           <p>Would love to help you out on your next project! Feel free to reply directly to this email or grab the deal on our site.</p>
