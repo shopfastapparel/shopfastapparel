@@ -141,7 +141,7 @@ BODY_TEMPLATE = """
     <table class="main" width="100%" cellpadding="0" cellspacing="0">
       <tr>
         <td class="header">
-          <img src="https://www.shopfastapparel.com/assets/logo-jiaNr5LV.png" alt="Fast Apparel">
+          <img src="https://www.shopfastapparel.com/images/fast_logo_contrasted.png" alt="Fast Apparel">
         </td>
       </tr>
       <tr>
