@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { listRecentProjects } from "@/lib/projects-admin.functions";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/SiteLayout";
@@ -71,6 +74,12 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const products = APPAREL_STYLES.slice(0, 7);
+  const getProjects = useServerFn(listRecentProjects);
+  const [projects, setProjects] = useState<any[]>([]);
+
+  useEffect(() => {
+    getProjects().then(setProjects).catch(console.error);
+  }, [getProjects]);
 
   const staggerContainer: any = {
     hidden: { opacity: 0 },
@@ -512,6 +521,27 @@ function HomePage() {
           ))}
         </motion.div>
       </section>
+
+      {/* RECENT PROJECTS MARQUEE */}
+      {projects.length > 0 && (
+        <section className="border-t overflow-hidden bg-background py-16 border-b">
+          <div className="mx-auto max-w-7xl px-4 text-center mb-10">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-cyan-brand mb-2">
+              Fresh Off The Press
+            </p>
+            <h2 className="font-display text-4xl md:text-5xl">Recent Customer Projects</h2>
+          </div>
+          <div className="relative flex overflow-x-hidden group py-4">
+            <div className="animate-marquee flex whitespace-nowrap gap-4 px-2 w-max">
+              {[...projects, ...projects, ...projects, ...projects, ...projects, ...projects].map((p, i) => (
+                <div key={`${p.id}-${i}`} className="w-64 md:w-80 h-64 md:h-80 shrink-0 border-2 border-ink shadow-pop-sm rounded-xl overflow-hidden bg-muted">
+                  <img src={p.url} alt={p.name} className="w-full h-full object-cover" loading="lazy" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <Testimonials />
 
