@@ -78,7 +78,15 @@ function Avatar({ name, idx }: { name: string; idx: number }) {
   );
 }
 
-export function Testimonials() {
+export function Testimonials({ dynamicProjects = [] }: { dynamicProjects?: any[] }) {
+  const staticProjects = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => ({
+    id: `static-${num}`,
+    url: `/images/projects/project-${num}.jpg`,
+    name: `Customer project ${num}`
+  }));
+
+  const allProjects = [...dynamicProjects, ...staticProjects];
+  
   return (
     <section className="bg-background border-y-2 border-ink">
       <div className="mx-auto max-w-7xl px-4 py-20">
@@ -118,14 +126,14 @@ export function Testimonials() {
             Fresh off the press — Recent Customer Projects
           </div>
           <div className="flex animate-marquee py-8" style={{ width: 'max-content' }}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num, idx) => (
+            {[...allProjects, ...allProjects, ...allProjects, ...allProjects].map((p, idx) => (
               <div 
-                key={idx} 
+                key={`${p.id}-${idx}`} 
                 className="w-64 h-64 md:w-80 md:h-80 flex-shrink-0 mx-4 border-2 border-ink rounded-xl overflow-hidden shadow-pop bg-background transition-transform duration-300 hover:-translate-y-2"
               >
                 <img 
-                  src={`/images/projects/project-${num}.jpg`} 
-                  alt={`Customer project ${num}`}
+                  src={p.url} 
+                  alt={p.name}
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
