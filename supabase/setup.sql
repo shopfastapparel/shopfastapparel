@@ -35,8 +35,8 @@ create policy "Admins manage roles" on public.user_roles
 -- Site owner bypass
 create policy "Site owner manages roles" on public.user_roles
   for all to authenticated
-  using (auth.jwt() ->> 'email' = 'shopfastapparel@gmail.com')
-  with check (auth.jwt() ->> 'email' = 'shopfastapparel@gmail.com');
+  using (auth.jwt() ->> 'email' = 'info@shopfastapparel.com')
+  with check (auth.jwt() ->> 'email' = 'info@shopfastapparel.com');
 
 -- Blog posts
 create type public.blog_status as enum ('draft', 'published', 'rejected');
@@ -77,8 +77,8 @@ create policy "Admins delete" on public.blog_posts
 -- Site owner bypass
 create policy "Site owner manages blog posts" on public.blog_posts
   for all to authenticated
-  using (auth.jwt() ->> 'email' = 'shopfastapparel@gmail.com')
-  with check (auth.jwt() ->> 'email' = 'shopfastapparel@gmail.com');
+  using (auth.jwt() ->> 'email' = 'info@shopfastapparel.com')
+  with check (auth.jwt() ->> 'email' = 'info@shopfastapparel.com');
 
 -- Auto-update timestamps
 create or replace function public.set_updated_at()
@@ -110,5 +110,5 @@ create policy "Admins can view quote artwork" on storage.objects
   for select to authenticated
   using (
     bucket_id = 'quote_artwork' 
-    and (public.has_role(auth.uid(), 'admin') or auth.jwt() ->> 'email' = 'shopfastapparel@gmail.com')
+    and (public.has_role(auth.uid(), 'admin') or auth.jwt() ->> 'email' = 'info@shopfastapparel.com')
   );

@@ -5,11 +5,11 @@
 -- Blog posts: allow site owner full access
 create policy "Site owner manages blog posts" on public.blog_posts
   for all to authenticated
-  using (auth.jwt() ->> 'email' = 'shopfastapparel@gmail.com')
-  with check (auth.jwt() ->> 'email' = 'shopfastapparel@gmail.com');
+  using (auth.jwt() ->> 'email' = 'info@shopfastapparel.com')
+  with check (auth.jwt() ->> 'email' = 'info@shopfastapparel.com');
 
 -- User roles: allow site owner to manage roles
 create policy "Site owner manages roles" on public.user_roles
   for all to authenticated
-  using (auth.jwt() ->> 'email' = 'shopfastapparel@gmail.com')
-  with check (auth.jwt() ->> 'email' = 'shopfastapparel@gmail.com');
+  using (auth.jwt() ->> 'email' = 'info@shopfastapparel.com')
+  with check (auth.jwt() ->> 'email' = 'info@shopfastapparel.com');

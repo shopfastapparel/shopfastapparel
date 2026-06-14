@@ -7,7 +7,7 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
  * Admin emails — add more as needed.
  */
 const ADMIN_EMAILS = [
-  "shopfastapparel@gmail.com",
+  "info@shopfastapparel.com",
 ];
 
 function assertAdmin(email: string | undefined) {

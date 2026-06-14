@@ -267,7 +267,7 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
     const from = process.env.RESEND_FROM_EMAIL || "Fast Apparel Quotes <onboarding@resend.dev>";
 
     // Send email to shop owner
-    const toEmail = process.env.RESEND_TO_EMAIL || "shopfastapparel@gmail.com";
+    const toEmail = process.env.RESEND_TO_EMAIL || "info@shopfastapparel.com";
     const { error: ownerError } = await resend.emails.send({
       from,
       to: [toEmail],

@@ -119,7 +119,7 @@ export const LOCATIONS: LocationInfo[] = [
 ];
 
 export const PRIMARY_PHONE = "678-491-2655";
-export const PRIMARY_EMAIL = "quotes@shopfastapparel.com";
+export const PRIMARY_EMAIL = "info@shopfastapparel.com";
 
 export function getLocation(slug: string) {
   return LOCATIONS.find((l) => l.slug === slug);

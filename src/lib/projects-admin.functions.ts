@@ -4,7 +4,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 const ADMIN_EMAILS = [
-  "shopfastapparel@gmail.com",
+  "info@shopfastapparel.com",
 ];
 
 function assertAdmin(email: string | undefined) {

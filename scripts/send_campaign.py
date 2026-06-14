@@ -23,9 +23,9 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 # --- CONFIGURATION ---
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "shopfastapparel@gmail.com")
+SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "info@shopfastapparel.com")
 SENDER_PASSWORD = os.environ.get("SENDER_PASSWORD", "gutcjhfuvljllxtm")
-ADMIN_EMAIL = "shopfastapparel@gmail.com" # Where to send the daily summary
+ADMIN_EMAIL = "info@shopfastapparel.com" # Where to send the daily summary
 
 SUPABASE_URL = os.environ.get("VITE_SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("VITE_SUPABASE_PUBLISHABLE_KEY")
