@@ -125,8 +125,8 @@ export function Testimonials({ dynamicProjects = [] }: { dynamicProjects?: any[]
           <div className="py-2 text-center uppercase tracking-[0.3em] font-bold text-xs bg-ink text-yellow-brand border-b-2 border-ink">
             Fresh off the press — Recent Customer Projects
           </div>
-          <div className="flex animate-marquee py-8" style={{ width: 'max-content' }}>
-            {[...allProjects, ...allProjects, ...allProjects, ...allProjects].map((p, idx) => (
+          <div className="flex animate-marquee py-8" style={{ width: 'max-content', animationDuration: `${allProjects.length * 8}s` }}>
+            {[...allProjects, ...allProjects].map((p, idx) => (
               <div 
                 key={`${p.id}-${idx}`} 
                 className="w-64 h-64 md:w-80 md:h-80 flex-shrink-0 mx-4 border-2 border-ink rounded-xl overflow-hidden shadow-pop bg-background transition-transform duration-300 hover:-translate-y-2"
