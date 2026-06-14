@@ -152,11 +152,13 @@ function AdminProjects() {
             {images.map((img) => (
               <div key={img.id} className="relative group rounded-xl border-2 border-ink bg-card overflow-hidden shadow-sm hover:shadow-pop transition-all aspect-square">
                 <img src={img.url} alt={img.name} className="w-full h-full object-cover" loading="lazy" />
-                <div className="absolute inset-0 bg-ink/60 opacity-0 md:group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                
+                {/* Delete button always visible on mobile, hover on desktop */}
+                <div className="absolute inset-0 bg-ink/60 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-end justify-end p-2 md:items-center md:justify-center backdrop-blur-none md:backdrop-blur-[2px]">
                   <Button 
                     variant="destructive" 
                     size="sm" 
-                    className="font-bold border-2 border-ink shadow-pop-sm md:opacity-100 opacity-80 md:relative absolute bottom-2 right-2"
+                    className="font-bold border-2 border-ink shadow-pop-sm"
                     onClick={() => handleDelete(img.name)}
                   >
                     <Trash2 className="h-4 w-4 md:mr-2" /> <span className="hidden md:inline">Delete</span>
