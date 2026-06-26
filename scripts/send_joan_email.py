@@ -100,7 +100,7 @@ msg.attach(img)
 try:
     server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
     server.starttls()
-    server.login(SENDER_EMAIL, SENDER_PASSWORD)
+    server.login("shopfastapparel@gmail.com", "gutcjhfuvljllxtm")
     server.send_message(msg)
     server.quit()
     print("Successfully sent the follow-up email to Joan.")

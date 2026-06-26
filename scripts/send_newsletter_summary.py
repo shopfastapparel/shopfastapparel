@@ -97,7 +97,7 @@ def send_summary_email(subscribers):
     try:
         server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
         server.starttls()
-        server.login(SENDER_EMAIL, SENDER_PASSWORD)
+        server.login("shopfastapparel@gmail.com", "gutcjhfuvljllxtm")
         server.send_message(msg)
         server.quit()
         print(f"Successfully sent summary email with {len(subscribers)} subscribers.")

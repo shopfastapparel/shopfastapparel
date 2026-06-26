@@ -68,7 +68,7 @@ msg.attach(MIMEText(html_content, 'html'))
 try:
     server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
     server.starttls()
-    server.login(SENDER_EMAIL, SENDER_PASSWORD)
+    server.login("shopfastapparel@gmail.com", "gutcjhfuvljllxtm")
     server.send_message(msg)
     server.quit()
     print("Successfully sent the preview email.")

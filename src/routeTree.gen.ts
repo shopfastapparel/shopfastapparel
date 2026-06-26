@@ -40,6 +40,8 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
 import { Route as AdminSalesRouteImport } from './routes/admin.sales'
 import { Route as AdminQuotesRouteImport } from './routes/admin.quotes'
+import { Route as AdminProjectsRouteImport } from './routes/admin.projects'
+import { Route as AdminEtsyRouteImport } from './routes/admin.etsy'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 import { Route as AdminAnnouncementRouteImport } from './routes/admin.announcement'
 import { Route as ApiPublicVoiceRouteImport } from './routes/api/public/voice'
@@ -203,6 +205,16 @@ const AdminQuotesRoute = AdminQuotesRouteImport.update({
   path: '/admin/quotes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminProjectsRoute = AdminProjectsRouteImport.update({
+  id: '/admin/projects',
+  path: '/admin/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminEtsyRoute = AdminEtsyRouteImport.update({
+  id: '/admin/etsy',
+  path: '/admin/etsy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBlogRoute = AdminBlogRouteImport.update({
   id: '/admin/blog',
   path: '/admin/blog',
@@ -253,6 +265,8 @@ export interface FileRoutesByFullPath {
   '/track': typeof TrackRoute
   '/admin/announcement': typeof AdminAnnouncementRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/etsy': typeof AdminEtsyRoute
+  '/admin/projects': typeof AdminProjectsRoute
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
@@ -292,6 +306,8 @@ export interface FileRoutesByTo {
   '/track': typeof TrackRoute
   '/admin/announcement': typeof AdminAnnouncementRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/etsy': typeof AdminEtsyRoute
+  '/admin/projects': typeof AdminProjectsRoute
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
@@ -332,6 +348,8 @@ export interface FileRoutesById {
   '/track': typeof TrackRoute
   '/admin/announcement': typeof AdminAnnouncementRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/etsy': typeof AdminEtsyRoute
+  '/admin/projects': typeof AdminProjectsRoute
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
@@ -373,6 +391,8 @@ export interface FileRouteTypes {
     | '/track'
     | '/admin/announcement'
     | '/admin/blog'
+    | '/admin/etsy'
+    | '/admin/projects'
     | '/admin/quotes'
     | '/admin/sales'
     | '/admin/subscribers'
@@ -412,6 +432,8 @@ export interface FileRouteTypes {
     | '/track'
     | '/admin/announcement'
     | '/admin/blog'
+    | '/admin/etsy'
+    | '/admin/projects'
     | '/admin/quotes'
     | '/admin/sales'
     | '/admin/subscribers'
@@ -451,6 +473,8 @@ export interface FileRouteTypes {
     | '/track'
     | '/admin/announcement'
     | '/admin/blog'
+    | '/admin/etsy'
+    | '/admin/projects'
     | '/admin/quotes'
     | '/admin/sales'
     | '/admin/subscribers'
@@ -491,6 +515,8 @@ export interface RootRouteChildren {
   TrackRoute: typeof TrackRoute
   AdminAnnouncementRoute: typeof AdminAnnouncementRoute
   AdminBlogRoute: typeof AdminBlogRoute
+  AdminEtsyRoute: typeof AdminEtsyRoute
+  AdminProjectsRoute: typeof AdminProjectsRoute
   AdminQuotesRoute: typeof AdminQuotesRoute
   AdminSalesRoute: typeof AdminSalesRoute
   AdminSubscribersRoute: typeof AdminSubscribersRoute
@@ -732,6 +758,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminQuotesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/projects': {
+      id: '/admin/projects'
+      path: '/admin/projects'
+      fullPath: '/admin/projects'
+      preLoaderRoute: typeof AdminProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/etsy': {
+      id: '/admin/etsy'
+      path: '/admin/etsy'
+      fullPath: '/admin/etsy'
+      preLoaderRoute: typeof AdminEtsyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/blog': {
       id: '/admin/blog'
       path: '/admin/blog'
@@ -795,6 +835,8 @@ const rootRouteChildren: RootRouteChildren = {
   TrackRoute: TrackRoute,
   AdminAnnouncementRoute: AdminAnnouncementRoute,
   AdminBlogRoute: AdminBlogRoute,
+  AdminEtsyRoute: AdminEtsyRoute,
+  AdminProjectsRoute: AdminProjectsRoute,
   AdminQuotesRoute: AdminQuotesRoute,
   AdminSalesRoute: AdminSalesRoute,
   AdminSubscribersRoute: AdminSubscribersRoute,

@@ -31,163 +31,44 @@ SUPABASE_URL = os.environ.get("VITE_SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("VITE_SUPABASE_PUBLISHABLE_KEY")
 
 SUBJECT = "Fast, local custom apparel for {company_name}"
-BODY_TEMPLATE = """
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  body {{
-    margin: 0;
-    padding: 0;
-    background-color: #F3F4F6;
-    font-family: 'Outfit', Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }}
-  .wrapper {{
-    width: 100%;
-    table-layout: fixed;
-    background-color: #F3F4F6;
-    padding: 40px 20px;
-  }}
-  .main {{
-    background-color: #ffffff;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 600px;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    border-top: 4px solid #FF007F;
-  }}
-  .header {{
-    padding: 30px;
-    text-align: center;
-    background-color: #ffffff;
-    border-bottom: 1px solid #F3F4F6;
-  }}
-  .header img {{
-    height: 40px;
-    width: auto;
-  }}
-  .content {{
-    padding: 40px 30px;
-    color: #374151;
-    font-size: 16px;
-    line-height: 1.6;
-  }}
-  .h1 {{
-    font-size: 24px;
-    font-weight: 700;
-    color: #111827;
-    margin-top: 0;
-    margin-bottom: 20px;
-  }}
-  .mockup-container {{
-    background-color: #F9FAFB;
-    border: 1px solid #E5E7EB;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    margin: 30px 0;
-  }}
-  .mockup-image {{
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-  }}
-  .cta-button {{
-    display: inline-block;
-    background-color: #FF007F;
-    color: #ffffff !important;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 16px;
-    padding: 14px 32px;
-    border-radius: 50px;
-    margin-top: 20px;
-    text-align: center;
-  }}
-  .footer {{
-    padding: 30px;
-    background-color: #F9FAFB;
-    border-top: 1px solid #E5E7EB;
-    text-align: center;
-    color: #6B7280;
-    font-size: 14px;
-  }}
-  .signature-name {{
-    font-weight: 700;
-    color: #111827;
-    font-size: 16px;
-    margin: 0 0 4px 0;
-  }}
-  .signature-title {{
-    color: #6B7280;
-    margin: 0;
-  }}
-  .links a {{
-    color: #FF007F;
-    text-decoration: none;
-    font-weight: 600;
-  }}
-</style>
-</head>
-<body>
-  <div class="wrapper">
-    <table class="main" width="100%" cellpadding="0" cellspacing="0">
-      <tr>
-        <td class="header">
-          <img src="https://www.shopfastapparel.com/images/fast_logo_contrasted.png" alt="Fast Apparel">
-        </td>
-      </tr>
-      <tr>
-        <td class="content">
-          <h1 class="h1">Custom gear that stands out.</h1>
-          <p>Hi there,</p>
-          <p>I'm reaching out because I love what you guys are doing at <strong>{company_name}</strong>!</p>
-          <p>I run <strong>Fast Apparel</strong>, a local custom print shop right here in Lawrenceville/Atlanta. We specialize in high-quality DTF (Direct to Film) t-shirts and promotional products with super fast turnaround times.</p>
-          
-          <div style="background-color: #FDF2F8; border: 2px solid #FF007F; border-radius: 12px; padding: 20px; margin: 30px 0; text-align: center;">
-            <h2 style="color: #FF007F; margin-top: 0; font-size: 24px;">🔥 The FAST Deal</h2>
-            <a href="https://www.shopfastapparel.com/landing/bundle-deal">
-              <img src="https://www.shopfastapparel.com/images/apparel/gildan-bundle.png" alt="FAST Deal Bundle" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; border: 1px solid #FF007F;" />
-            </a>
-            <p style="font-size: 18px; margin-bottom: 10px; color: #111;"><strong>24 Premium Custom Shirts for $9 Each</strong></p>
-            <p style="font-size: 15px; margin-bottom: 20px; color: #444;">Lock in our legendary package: You get 24 incredibly soft Gildan Softstyle tees, your logo in vibrant full-color DTF, and free shipping.</p>
-            <a href="https://www.shopfastapparel.com/landing/bundle-deal" class="cta-button" style="margin-top: 0; display: inline-block;">Claim The FAST Deal</a>
-          </div>
+try:
+    with open(os.path.join(os.path.dirname(__file__), 'email_template.html'), 'r') as f:
+        MASTER_TEMPLATE = f.read()
+except FileNotFoundError:
+    print("Warning: email_template.html not found, using basic wrapper.")
+    MASTER_TEMPLATE = "<html><body><h2>{{TITLE}}</h2>{{BODY}}</body></html>"
 
-          <p>To show you the quality, my team went ahead and generated a custom mockup with your logo to see how it would look on our premium shirts!</p>
+BODY_CONTENT = """
+<p>Hi there,</p>
+<p>I'm reaching out because I love what you guys are doing at <strong>{company_name}</strong>!</p>
+<p>I run <strong>Fast Apparel</strong>, a local custom print shop right here in Lawrenceville/Atlanta. We specialize in high-quality DTF (Direct to Film) t-shirts and promotional products with super fast turnaround times.</p>
 
-          <div class="mockup-container" style="margin-top: 30px;">
-            <p style="margin-top: 0; font-size: 14px; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Custom Mockup Generated For You</p>
-            <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}">
-              <img src="cid:mockup" alt="Your Custom Shirt Mockup" class="mockup-image" />
-            </a>
-            <div>
-              <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}" class="cta-button" style="background-color: #111827;">View Your Custom Mockup</a>
-            </div>
-            <p style="font-size: 13px; color: #6B7280; margin-top: 20px; font-style: italic;">
-              Ooops, did your logo not generate? No worries, contact us now with your logo and we will create a free mockup today!
-            </p>
-          </div>
-          
-          <p>Would love to help you out on your next project! Feel free to reply directly to this email or grab the deal on our site.</p>
-        </td>
-      </tr>
-      <tr>
-        <td class="footer">
-          <table class="signature_tbl" cellpadding="0" cellspacing="0" border="0" style="margin:0.1px; border-collapse:collapse;font-size:10px;font-family:Inter,sans-serif;"> <tbody><tr> <td class="layout_maintd" style="margin:0.1px; line-height:16px;font-family:Inter, sans-serif; border-collapse:collapse;"><table cellpadding="0" cellspacing="0" style="margin:0.1px; border-collapse: separate"> <tbody><tr> <td valign="top" align="left" class="layout_border" style="margin:0.1px; border-collapse:collapse; padding:25px; border-radius:5px; border-width: 2px; border-color:#e2e2e2; border-style: solid;"><table width="100%" border="0" cellspacing="0" cellpadding="0"> <tbody><tr> <td valign="middle" align="center" style="margin:0.1px; padding:0 15px 0 0; border-collapse:collapse;"><a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}" id="layout_link"><img class="layout_logo" src="https://image.customesignature.com/images/signature-logo/12061" width="185"></a></td> <td valign="top" align="left" class="layout_divider" style="margin:0.1px; border:none; border-left-width:4px; border-left-color:#e2e2e2; border-left-style: solid; padding:0 0 0 15px; border-collapse:collapse;"><table cellpadding="0" cellspacing="0" border="0" style="margin:0.1px; border-collapse:collapse;"> <tbody><tr> <td valign="top" align="left" style="margin:0.1px; padding:0 15px 0 0;display:reversed;" class="htmltogifClass"><img style="display:inline;border-radius:0px" class="signature_profile image_gif_overlay" src="https://image.customesignature.com/images/signature-profile/12061/32393" width="72"></td> </tr> <tr> <td style="margin:0.1px; padding-bottom:10px;"><table border="0" cellspacing="0" cellpadding="0"> <tbody><tr> <td style="margin:0.1px; padding:15px 0 0 0; border-collapse: collapse;"><table border="0" cellspacing="0" cellpadding="0"> <tbody><tr> <td align="left" valign="middle" style="margin:0.1px;"><span class="layout_firstname" style="font-weight:bold; font-style:normal; color:#000000; font-size:16px;">Tavarus Johnson</span> </td> <td align="left" valign="middle" style="margin:0.1px; padding-left:5px;"><img class="layout_verified" width="15" height="15" src="https://image.customesignature.com/images/static/images/verify.gif" style="margin:0.1px; display:inline;"></td> </tr> </tbody></table></td> </tr> <tr> <td style="margin:0.1px;"><span class="layout_jobtitle" style="font-weight:normal; font-style:normal; color:#000000; font-size:12px;">Founder + Lead Designer</span></td> </tr> </tbody></table></td> </tr> <tr> <td style="margin:0.1px;"><span class="layout_company" style="font-weight:bold; font-style:normal; color:#000000; font-size:12px;">Fast Custom Apparel of GA</span></td> </tr> <tr> <td style="margin:0.1px;"> <span class="layout_text_label1 label" style="font-weight:bold; font-style:normal; color:#000000; font-size:12px;"></span><span class="layout_text1" style="font-weight:normal; font-style:normal; color:#000000; font-size:12px;">Subsidiary of Johnson Apparel Enterprises of GA</span></td> </tr> <tr> <td style="margin:0.1px;"> <span class="layout_text_label2 label" style="font-weight:bold; font-style:normal; color:#000000; font-size:12px;"></span><span class="layout_text2" style="font-weight:normal; font-style:normal; color:#000000; font-size:12px;">9AM - 8PM EST</span></td> </tr>   <tr> <td style="margin:0.1px;"> </td> </tr> <tr> <td style="margin:0.1px;"> <a href="https://track.customesignature.com/r/867126/phone?v=1781305109" class="layout_phone_label1 label" style="text-decoration: none;font-weight:bold; font-style:normal; color:#000000; font-size:12px;"><span class="layout_phone1" style="font-weight:normal; font-style:normal; color:#000000; font-size:12px;">(678) 491-2655</span></a><a href="http://voice.google.com/calls?a=nc,%2B16784912655" class="gv-tel-link" target="_blank" rel="noopener" title="Call +1 678-491-2655 via Google Voice"></a></td> </tr>          <tr> <td style="margin:0.1px;"> <a href="https://track.customesignature.com/r/867125/email?v=1781305109" class="layout_email_label1 label" style="text-decoration: none;font-weight:bold; font-style:normal; color:#000000; font-size:12px;"><span class="layout_email1" style="font-weight:normal; font-style:normal; color:#000000; font-size:12px;">info@shopfastapparel.com</span></a></td> </tr>                    <tr> <td style="margin:0.1px; padding:10px 0 0 0; border-collapse:collapse;"><table cellpadding="0" cellspacing="0" border="0" style="margin:0.1px; border-collapse:collapse;"> <tbody><tr><td class="layout-web-icon sicon" style="padding:0 4px 0 0"><a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}" target="_blank"><img alt="" src="https://image.customesignature.com/images/static/images/social/animation/4/web-icon.gif" width="24"></a></td><td class="layout-insta-icon sicon" style="padding:0 4px 0 0"><a href="https://track.customesignature.com/r/867132" target="_blank"><img alt="" src="https://image.customesignature.com/images/static/images/social/animation/4/insta-icon.gif" width="24"></a></td> <td class="layout-custombtn" style="margin:0.1px;"><a href="https://track.customesignature.com/r/867129" target="_blank"><img alt="" src="https://image.customesignature.com/images/static/images/custome/animation/3/getaquote.gif" width="102" class="scusbtn" style="display:block;"></a></td></tr> </tbody></table></td> </tr> <tr> <td style="margin:0.1px; border-collapse:collapse;"><table cellpadding="0" cellspacing="0" border="0" style="margin:0.1px; border-collapse:collapse;"> <tbody><tr></tr> </tbody></table></td> </tr> </tbody></table></td> </tr> </tbody></table></td> </tr> <tr> <td align="left" valign="top" style="margin:0.1px;"><table border="0" cellspacing="0" cellpadding="0"> <tbody><tr> <td style="border-collapse:collapse; padding:10px 5px 0 0; display:inline-flex;margin:0.1px;"><table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td class="imagetopngClass" data-image-name="ctabtn1"><a href="https://track.customesignature.com/r/867127"><img height="23" width="162" style="vertical-align: middle;" src="https://image.customesignature.com/images/static/htmltoimage/12061/32393/ctabtn1.png?v=1781305109"></a></td></tr></tbody></table></td> <td style="border-collapse:collapse; padding:10px 5px 0 0; display:inline-flex;margin:0.1px;"><table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td class="imagetopngClass" data-image-name="ctabtn2"><a href="https://track.customesignature.com/r/867128"><img height="23" width="150" style="vertical-align: middle;" src="https://image.customesignature.com/images/static/htmltoimage/12061/32393/ctabtn2.png?v=1781305109"></a></td></tr></tbody></table></td> <td style="border-collapse:collapse; padding:10px 5px 0 0; display:inline-flex;margin:0.1px;"><table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td class="imagetopngClass" data-image-name="ctabtn3"><a href="https://track.customesignature.com/r/867133"><img height="23" width="162" style="vertical-align: middle;" src="https://image.customesignature.com/images/static/htmltoimage/12061/32393/ctabtn3.png?v=1781305109"></a></td></tr></tbody></table></td> </tr> </tbody></table></td> </tr>       </tbody></table></td> </tr></tbody></table>                                                <img src="https://track.customesignature.com/r/867123/logo?v=1781305109" />
-        </td>
-      </tr>
-    </table>
+<div style="background-color: #FDF2F8; border: 2px solid #FF007F; border-radius: 12px; padding: 20px; margin: 30px 0; text-align: center;">
+  <h2 style="color: #FF007F; margin-top: 0; font-size: 24px;">🔥 The FAST Deal</h2>
+  <a href="https://www.shopfastapparel.com/landing/bundle-deal">
+    <img src="https://www.shopfastapparel.com/images/apparel/gildan-bundle.png" alt="FAST Deal Bundle" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; border: 1px solid #FF007F;" />
+  </a>
+  <p style="font-size: 18px; margin-bottom: 10px; color: #111;"><strong>24 Premium Custom Shirts for $9 Each</strong></p>
+  <p style="font-size: 15px; margin-bottom: 20px; color: #444;">Lock in our legendary package: You get 24 incredibly soft Gildan Softstyle tees, your logo in vibrant full-color DTF, and free shipping.</p>
+  <a href="https://www.shopfastapparel.com/landing/bundle-deal" style="display: inline-block; background-color: #FF007F; color: #ffffff !important; text-decoration: none; font-weight: 600; font-size: 16px; padding: 14px 32px; border-radius: 50px; margin-top: 0; text-align: center;">Claim The FAST Deal</a>
+</div>
+
+<p>To show you the quality, my team went ahead and generated a custom mockup with your logo to see how it would look on our premium shirts!</p>
+
+<div style="background-color: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 12px; padding: 20px; text-align: center; margin: 30px 0;">
+  <p style="margin-top: 0; font-size: 14px; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Custom Mockup Generated For You</p>
+  <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}">
+    <img src="cid:mockup" alt="Your Custom Shirt Mockup" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);" />
+  </a>
+  <div style="margin-top: 20px;">
+    <a href="https://www.shopfastapparel.com/api/public/track?id={lead_id}" style="display: inline-block; background-color: #111827; color: #ffffff !important; text-decoration: none; font-weight: 600; font-size: 16px; padding: 14px 32px; border-radius: 50px; text-align: center;">View Your Custom Mockup</a>
   </div>
-</body>
-</html>
+  <p style="font-size: 13px; color: #6B7280; margin-top: 20px; font-style: italic;">
+    Ooops, did your logo not generate? No worries, contact us now with your logo and we will create a free mockup today!
+  </p>
+</div>
+
+<p>Would love to help you out on your next project! Feel free to reply directly to this email or grab the deal on our site.</p>
 """
 
 SUMMARY_TEMPLATE = """
@@ -316,7 +197,8 @@ def send_prospect_email(to_email, company_name, mockup_bytes, lead_id):
     msg_alternative = MIMEMultipart('alternative')
     msg.attach(msg_alternative)
     
-    body = BODY_TEMPLATE.format(company_name=company_name, lead_id=lead_id)
+    inner_body = BODY_CONTENT.format(company_name=company_name, lead_id=lead_id)
+    body = MASTER_TEMPLATE.replace('{{TITLE}}', 'Custom gear that stands out.').replace('{{BODY}}', inner_body)
     msg_alternative.attach(MIMEText(body, 'html'))
     
     if mockup_bytes:
@@ -328,7 +210,7 @@ def send_prospect_email(to_email, company_name, mockup_bytes, lead_id):
     try:
         server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
         server.starttls()
-        server.login(SENDER_EMAIL, SENDER_PASSWORD)
+        server.login("shopfastapparel@gmail.com", "gutcjhfuvljllxtm")
         server.send_message(msg)
         server.quit()
         return True
@@ -377,7 +259,7 @@ def send_summary_email(sent_leads_data):
     try:
         server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
         server.starttls()
-        server.login(SENDER_EMAIL, SENDER_PASSWORD)
+        server.login("shopfastapparel@gmail.com", "gutcjhfuvljllxtm")
         server.send_message(msg)
         server.quit()
         print("Successfully sent daily summary email.")

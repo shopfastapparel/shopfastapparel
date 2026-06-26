@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { submitQuoteRequest } from "@/lib/quote.functions";
 import ReCAPTCHA from "react-google-recaptcha";
 import { supabase } from "@/integrations/supabase/client";
@@ -210,6 +211,7 @@ function QuotePage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const submitQuoteFn = useServerFn(submitQuoteRequest);
   
   const defaultDetails = searchParams.printLocations 
     ? `Required Print Locations: ${searchParams.printLocations}\n\n`
@@ -332,7 +334,7 @@ function QuotePage() {
         filePaths.push(JSON.stringify({ name: f.name, path: filePath, placement: f.placement, location: f.location }));
       }
 
-      await submitQuoteRequest({
+      await submitQuoteFn({
         data: {
           service: serviceLabel,
           quantity: state.quantity,
@@ -348,7 +350,7 @@ function QuotePage() {
           phone: state.phone || undefined,
           captchaToken: captchaToken,
           productId: state.productId || undefined,
-          printLocations: state.printLocations || undefined,
+          printLocations: state.printLocations ? Number(state.printLocations) : undefined,
         },
       });
       setSubmitted(true);
@@ -907,7 +909,7 @@ function Summary({ state }: { state: QuoteState }) {
         <Row label="Quantity" value={state.quantity} />
         <Row label="Turnaround" value={`${turnaround?.label} · ${turnaround?.estimate}`} />
         <Row label="City" value={state.city || "—"} />
-        <Row label="Files" value={`${state.files.length} attached`} />
+        <Row label="Files" value={`${state.frontFiles.length + state.backFiles.length} attached`} />
         <Row label="Deadline" value={state.deadline || "—"} />
       </dl>
     </div>
