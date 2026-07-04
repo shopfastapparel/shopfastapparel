@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { listRecentProjects } from "@/lib/projects-admin.functions";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
@@ -73,13 +73,21 @@ export const Route = createFileRoute("/")({
 });
 
 
-function TiltImage({ src, alt }: { src: string; alt: string }) {
+function TiltImageSlideshow({ images }: { images: {src: string, alt: string}[] }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const mouseXSpring = useSpring(x);
   const mouseYSpring = useSpring(y);
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [images.length]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -101,15 +109,40 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ rotateY, rotateX, transformStyle: "preserve-3d" }}
-      className="relative z-10 perspective-1000"
+      className="relative z-10 perspective-1000 w-full aspect-square md:aspect-[4/3] lg:aspect-square max-w-lg mx-auto"
     >
       <div className="absolute -inset-10 bg-gradient-to-tr from-cyan-brand/40 to-magenta-brand/40 blur-3xl rounded-full mix-blend-multiply animate-pulse" />
-      <motion.img
-        src={src}
-        alt={alt}
-        style={{ transform: "translateZ(50px)" }}
-        className="relative rounded-2xl shadow-2xl border-4 border-white/10"
-      />
+      
+      <div style={{ transform: "translateZ(50px)" }} className="relative w-full h-full rounded-2xl shadow-2xl border-4 border-white/10 overflow-hidden bg-ink">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={currentIndex}
+            src={images[currentIndex].src}
+            alt={images[currentIndex].alt}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </AnimatePresence>
+        
+        {/* Caption Overlay */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="absolute bottom-4 left-4 right-4 bg-ink/80 backdrop-blur-md border border-white/10 rounded-xl p-3 text-center"
+          >
+            <p className="text-white font-bold text-sm tracking-wide uppercase">
+              {images[currentIndex].alt}
+            </p>
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </motion.div>
   );
 }
@@ -214,7 +247,7 @@ function HomePage() {
             </motion.h1>
             
             <motion.p variants={fadeInUp} className="mt-6 text-xl text-background/80 max-w-xl font-light">
-              Elevate your brand with vibrant, full-color DTF printing. No minimums, no setup fees, just premium quality merch delivered in days.
+              From family reunions and youth sports to massive corporate orders, we print vibrant, full-color custom apparel for every occasion. No minimums, no setup fees, just premium quality shirts delivered in days.
             </motion.p>
             
             <motion.div variants={fadeInUp} className="mt-10 flex flex-wrap gap-4">
@@ -248,7 +281,15 @@ function HomePage() {
             transition={{ type: "spring", stiffness: 50, delay: 0.2 }}
             className="hidden lg:block relative perspective-1000"
           >
-            <TiltImage src={heroShirts} alt="Custom DTF T-Shirts" />
+            <TiltImageSlideshow images={[
+              { src: "/images/hero_family.jpg", alt: "Family Reunions" },
+              { src: "/images/hero_company.jpg", alt: "Company Uniforms" },
+              { src: "/images/hero_volunteer.jpg", alt: "Volunteer Teams" },
+              { src: "/images/hero_daycare.jpg", alt: "Daycare & Schools" },
+              { src: "/images/hero_sports.jpg", alt: "Youth & Adult Sports" },
+              { src: "/images/hero_vacations.jpg", alt: "Family Vacations" },
+              { src: "/images/hero_scrubs.jpg", alt: "Medical Scrubs" }
+            ]} />
           </motion.div>
         </div>
       </section>
