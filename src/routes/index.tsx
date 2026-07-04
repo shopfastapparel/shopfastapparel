@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { listRecentProjects } from "@/lib/projects-admin.functions";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
@@ -72,6 +72,82 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
+
+function TiltImage({ src, alt }: { src: string; alt: string }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    x.set(mouseX / width - 0.5);
+    y.set(mouseY / height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateY, rotateX, transformStyle: "preserve-3d" }}
+      className="relative z-10 perspective-1000"
+    >
+      <div className="absolute -inset-10 bg-gradient-to-tr from-cyan-brand/40 to-magenta-brand/40 blur-3xl rounded-full mix-blend-multiply animate-pulse" />
+      <motion.img
+        src={src}
+        alt={alt}
+        style={{ transform: "translateZ(50px)" }}
+        className="relative rounded-2xl shadow-2xl border-4 border-white/10"
+      />
+    </motion.div>
+  );
+}
+
+function InfiniteMarquee() {
+  const services = [
+    "High-Quality DTF Printing", "Custom Apparel", "Wholesale Printing", "Promotional Products", "Fast Turnaround", "Local in Lawrenceville", "No Minimums"
+  ];
+  return (
+    <section className="bg-magenta-brand text-white overflow-hidden py-4 border-y-4 border-ink flex items-center relative z-20">
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          animation: marquee 25s linear infinite;
+          display: flex;
+          white-space: nowrap;
+          width: max-content;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+      <div className="animate-marquee">
+        {/* Double the list to create a seamless loop */}
+        {[...services, ...services].map((service, i) => (
+          <div key={i} className="flex items-center mx-8">
+            <span className="font-display text-2xl uppercase tracking-widest">{service}</span>
+            <span className="mx-8 text-yellow-brand text-2xl">✦</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function HomePage() {
   const products = APPAREL_STYLES.slice(0, 7);
   const getProjects = useServerFn(listRecentProjects);
@@ -106,107 +182,79 @@ function HomePage() {
 
   return (
     <SiteLayout>
-      {/* HERO */}
-      <section className="relative bg-hero overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,oklch(0.88_0.18_95/.35),transparent_60%)]" />
-        <div className="relative mx-auto max-w-7xl px-4 py-16 md:py-24 grid lg:grid-cols-2 gap-10 items-center">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="show"
-          >
-            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ink text-background text-xs font-medium mb-5">
-              <span className="h-1.5 w-1.5 rounded-full bg-yellow-brand" />
-              LAWRENCEVILLE, GA · CUSTOM PRINT SHOP
+      {/* DYNAMIC HERO */}
+      <section className="relative bg-ink overflow-hidden text-background">
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/hero-bg.mp4?v=3" type="video/mp4" />
+        </video>
+        {/* Gradient overlay: Dark on the left behind the text, fading out on the right so the video is highly visible */}
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/50 to-transparent" />
+        
+        <div className="relative mx-auto max-w-7xl px-4 py-20 md:py-32 grid lg:grid-cols-2 gap-16 items-center">
+          <motion.div variants={staggerContainer} initial="hidden" animate="show" className="relative z-10">
+            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-cyan-brand text-xs font-bold uppercase tracking-widest mb-6 border border-white/20">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-magenta-brand opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-magenta-brand"></span>
+              </span>
+              Lawrenceville's Premier Print Shop
             </motion.div>
-            <motion.h1 variants={fadeInUp} className="font-display text-5xl md:text-7xl leading-[0.95] tracking-tight">
-              Custom T-Shirt
-              <br />
-              Printing,{" "}
-              <span className="text-cmyk">done fast.</span>
+            
+            <motion.h1 variants={fadeInUp} className="font-display text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] tracking-tight mb-6">
+              Custom Apparel. <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-brand via-magenta-brand to-yellow-brand animate-pulse">
+                Printed Fast.
+              </span>
             </motion.h1>
-            <motion.p variants={fadeInUp} className="mt-6 text-lg text-foreground/80 max-w-xl">
-              Lawrenceville's go-to custom apparel shop for DTF printing and promotional products.
-              Serving Gwinnett County and all of metro Atlanta. Free mockups. Low minimums. Most orders completed in as little as 7 days
-              turnaround. Free shipping on bulk orders.
+            
+            <motion.p variants={fadeInUp} className="mt-6 text-xl text-background/80 max-w-xl font-light">
+              Elevate your brand with vibrant, full-color DTF printing. No minimums, no setup fees, just premium quality merch delivered in days.
             </motion.p>
-            <motion.div variants={fadeInUp} className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg" className="shadow-pop border-2 border-ink">
+            
+            <motion.div variants={fadeInUp} className="mt-10 flex flex-wrap gap-4">
+              <Button asChild size="xl" className="shadow-[0_0_40px_-10px_rgba(236,72,153,0.5)] border border-magenta-brand bg-magenta-brand hover:bg-magenta-brand/90 text-white text-lg font-bold">
                 <Link to="/quote">
-                  Get Free Mockup <ArrowRight className="ml-2 h-4 w-4" />
+                  Get A Free Mockup <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-2 border-ink">
-                <Link to="/shop">Shop Products</Link>
+              <Button asChild variant="outline" size="xl" className="bg-transparent border-white/20 text-white hover:bg-white/10 text-lg font-bold">
+                <Link to="/shop">Explore Catalog</Link>
               </Button>
             </motion.div>
-            <motion.div variants={fadeInUp} className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium">
-              <span className="flex items-center gap-1.5">
-                <Zap className="h-4 w-4 text-magenta-brand" /> Most orders completed in as little as 7 days turnaround
+            
+            <motion.div variants={fadeInUp} className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm font-medium text-background/60">
+              <span className="flex items-center gap-2">
+                <Zap className="h-5 w-5 text-yellow-brand" /> 3-7 Day Turnaround
               </span>
-              <span className="flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-cyan-brand" /> 100% satisfaction
+              <span className="flex items-center gap-2">
+                <ShieldCheck className="h-5 w-5 text-cyan-brand" /> 100% Satisfaction
               </span>
-              <span className="flex items-center gap-1.5">
-                <Truck className="h-4 w-4 text-foreground" /> Free shipping on bulk orders
+              <span className="flex items-center gap-2">
+                <Star className="h-5 w-5 text-magenta-brand" /> 5-Star Rated
               </span>
             </motion.div>
           </motion.div>
+
+          {/* DYNAMIC 3D IMAGE */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, rotate: -2 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ type: "spring", stiffness: 80, damping: 20, delay: 0.3 }}
-            className="relative"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", stiffness: 50, delay: 0.2 }}
+            className="hidden lg:block relative perspective-1000"
           >
-            <div className="absolute -inset-6 bg-cmyk opacity-20 blur-3xl rounded-full animate-pulse" />
-            <img
-              src={heroShirts}
-              alt="Custom printed t-shirts in cyan, magenta, and yellow"
-              className="relative rounded-2xl shadow-pop-lg border-2 border-ink hover:-translate-y-2 transition-transform duration-500"
-            />
+            <TiltImage src={heroShirts} alt="Custom DTF T-Shirts" />
           </motion.div>
         </div>
       </section>
 
-      {/* TRUST BAR */}
-      <section className="border-y bg-card overflow-hidden">
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
-          className="mx-auto max-w-7xl px-4 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center"
-        >
-          {[
-            { n: "10K+", l: "Shirts printed" },
-            { n: "500+", l: "Atlanta businesses served" },
-            { n: "3-5", l: "Day turnaround" },
-            { n: "5★", l: "Average customer rating" },
-          ].map((s) => (
-            <motion.div key={s.l} variants={fadeInUp}>
-              <div className="font-display text-4xl text-ink">{s.n}</div>
-              <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground mt-1">
-                {s.l}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* TRUSTED BY BANNER */}
-      <section className="bg-background py-10 border-b">
-        <div className="mx-auto max-w-7xl px-4 text-center">
-          <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-6">
-            Trusted by schools and businesses across Metro Atlanta
-          </p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-            <div className="flex items-center gap-2 font-display text-xl"><Briefcase className="w-6 h-6" /> Local Tech</div>
-            <div className="flex items-center gap-2 font-display text-xl"><Stethoscope className="w-6 h-6" /> GA Medical</div>
-            <div className="flex items-center gap-2 font-display text-xl"><Users className="w-6 h-6" /> Gwinnett Schools</div>
-            <div className="flex items-center gap-2 font-display text-xl"><ChefHat className="w-6 h-6" /> Atlanta Eats</div>
-          </div>
-        </div>
-      </section>
+      {/* INFINITE SCROLLING MARQUEE */}
+      <InfiniteMarquee />
 
       {/* Volume Pricing Banner */}
       <section className="bg-ink text-background py-10 border-b-2 border-background shadow-sm relative overflow-hidden">
