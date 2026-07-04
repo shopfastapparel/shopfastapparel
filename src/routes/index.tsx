@@ -279,7 +279,7 @@ function HomePage() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: "spring", stiffness: 50, delay: 0.2 }}
-            className="hidden lg:block relative perspective-1000"
+            className="relative perspective-1000 w-full mt-12 lg:mt-0"
           >
             <TiltImageSlideshow images={[
               { src: "/images/hero_family.jpg", alt: "Family Reunions" },
