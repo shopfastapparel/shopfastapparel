@@ -36,6 +36,7 @@ import { Route as MockupIdRouteImport } from './routes/mockup.$id'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as LandingCustomShirtsRouteImport } from './routes/landing.custom-shirts'
 import { Route as LandingBundleDealRouteImport } from './routes/landing.bundle-deal'
+import { Route as LandingBulkPrintingRouteImport } from './routes/landing.bulk-printing'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
 import { Route as AdminSalesRouteImport } from './routes/admin.sales'
@@ -185,6 +186,11 @@ const LandingBundleDealRoute = LandingBundleDealRouteImport.update({
   path: '/landing/bundle-deal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LandingBulkPrintingRoute = LandingBulkPrintingRouteImport.update({
+  id: '/landing/bulk-printing',
+  path: '/landing/bulk-printing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
@@ -271,6 +277,7 @@ export interface FileRoutesByFullPath {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
   '/locations/$slug': typeof LocationsSlugRoute
@@ -312,6 +319,7 @@ export interface FileRoutesByTo {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
   '/locations/$slug': typeof LocationsSlugRoute
@@ -354,6 +362,7 @@ export interface FileRoutesById {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
   '/locations/$slug': typeof LocationsSlugRoute
@@ -397,6 +406,7 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/blog/$slug'
+    | '/landing/bulk-printing'
     | '/landing/bundle-deal'
     | '/landing/custom-shirts'
     | '/locations/$slug'
@@ -438,6 +448,7 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/blog/$slug'
+    | '/landing/bulk-printing'
     | '/landing/bundle-deal'
     | '/landing/custom-shirts'
     | '/locations/$slug'
@@ -479,6 +490,7 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/blog/$slug'
+    | '/landing/bulk-printing'
     | '/landing/bundle-deal'
     | '/landing/custom-shirts'
     | '/locations/$slug'
@@ -521,6 +533,7 @@ export interface RootRouteChildren {
   AdminSalesRoute: typeof AdminSalesRoute
   AdminSubscribersRoute: typeof AdminSubscribersRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  LandingBulkPrintingRoute: typeof LandingBulkPrintingRoute
   LandingBundleDealRoute: typeof LandingBundleDealRoute
   LandingCustomShirtsRoute: typeof LandingCustomShirtsRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
@@ -730,6 +743,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LandingBundleDealRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/landing/bulk-printing': {
+      id: '/landing/bulk-printing'
+      path: '/landing/bulk-printing'
+      fullPath: '/landing/bulk-printing'
+      preLoaderRoute: typeof LandingBulkPrintingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/blog/$slug'
@@ -841,6 +861,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSalesRoute: AdminSalesRoute,
   AdminSubscribersRoute: AdminSubscribersRoute,
   BlogSlugRoute: BlogSlugRoute,
+  LandingBulkPrintingRoute: LandingBulkPrintingRoute,
   LandingBundleDealRoute: LandingBundleDealRoute,
   LandingCustomShirtsRoute: LandingCustomShirtsRoute,
   LocationsSlugRoute: LocationsSlugRoute,
