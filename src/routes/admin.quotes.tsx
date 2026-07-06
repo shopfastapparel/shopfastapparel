@@ -169,6 +169,7 @@ function AdminQuotes() {
                 <th className="px-6 py-4 font-semibold">Phone</th>
                 <th className="px-6 py-4 font-semibold">Service</th>
                 <th className="px-6 py-4 font-semibold">Artwork</th>
+                <th className="px-6 py-4 font-semibold">Notes</th>
                 <th className="px-6 py-4 font-semibold">Status</th>
                 <th className="px-6 py-4 font-semibold text-right">Action</th>
               </tr>
@@ -176,13 +177,13 @@ function AdminQuotes() {
             <tbody className="divide-y">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-8 text-center text-muted-foreground">
+                  <td colSpan={8} className="px-6 py-8 text-center text-muted-foreground">
                     Loading quotes...
                   </td>
                 </tr>
               ) : quotes.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-8 text-center text-muted-foreground">
+                  <td colSpan={8} className="px-6 py-8 text-center text-muted-foreground">
                     No quote requests yet.
                   </td>
                 </tr>
@@ -242,6 +243,11 @@ function AdminQuotes() {
                             }
                           })
                         )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 align-top">
+                      <div className="text-xs text-muted-foreground max-w-[200px] max-h-24 overflow-y-auto whitespace-pre-wrap bg-muted/30 p-2 rounded border border-border/50">
+                        {q.details || <span className="italic">No notes provided.</span>}
                       </div>
                     </td>
                     <td className="px-6 py-4">
