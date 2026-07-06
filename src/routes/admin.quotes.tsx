@@ -155,6 +155,7 @@ function AdminQuotes() {
               <tr>
                 <th className="px-6 py-4 font-semibold">Date / ID</th>
                 <th className="px-6 py-4 font-semibold">Customer</th>
+                <th className="px-6 py-4 font-semibold">Phone</th>
                 <th className="px-6 py-4 font-semibold">Service</th>
                 <th className="px-6 py-4 font-semibold">Status</th>
                 <th className="px-6 py-4 font-semibold text-right">Action</th>
@@ -163,13 +164,13 @@ function AdminQuotes() {
             <tbody className="divide-y">
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-muted-foreground">
+                  <td colSpan={6} className="px-6 py-8 text-center text-muted-foreground">
                     Loading quotes...
                   </td>
                 </tr>
               ) : quotes.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-muted-foreground">
+                  <td colSpan={6} className="px-6 py-8 text-center text-muted-foreground">
                     No quote requests yet.
                   </td>
                 </tr>
@@ -188,6 +189,15 @@ function AdminQuotes() {
                       <div className="font-medium">{q.name}</div>
                       <div className="text-xs text-muted-foreground">
                         <a href={`mailto:${q.email}`} className="hover:underline">{q.email}</a>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm">
+                        {q.phone ? (
+                          <a href={`tel:${q.phone}`} className="hover:underline text-cyan-brand">{q.phone}</a>
+                        ) : (
+                          <span className="text-muted-foreground text-xs italic">Not provided</span>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
