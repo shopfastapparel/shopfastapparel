@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { sendMockup, updateQuoteStatus } from "@/lib/mockup.functions";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { FileImage } from "lucide-react";
+import { FileImage, Trash2 } from "lucide-react";
 import { Tables } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/admin/quotes")({
