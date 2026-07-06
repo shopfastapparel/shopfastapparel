@@ -55,7 +55,9 @@ function buildMockupEmailHtml(name: string, mockupUrl: string, quoteId: string, 
       
       ${message ? `<p><em>"${message}"</em></p>` : ""}
 
-      <img src="${mockupUrl}" alt="Design Mockup" class="mockup-preview" />
+      <a href="${mockupUrl}" target="_blank" rel="noopener noreferrer" style="display: block; text-decoration: none;">
+        <img src="${mockupUrl}" alt="Design Mockup" class="mockup-preview" style="width: 100%; border-radius: 8px; margin: 16px 0; border: 1px solid #e4e4e7;" />
+      </a>
 
       <a href="https://shopfastapparel.com/mockup/${quoteId}" class="cta">
         Review & Approve Design
