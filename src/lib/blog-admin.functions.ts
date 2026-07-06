@@ -8,6 +8,7 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
  */
 const ADMIN_EMAILS = [
   "info@shopfastapparel.com",
+  "shopfastapparel@gmail.com",
 ];
 
 function assertAdmin(email: string | undefined) {
