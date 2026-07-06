@@ -168,6 +168,7 @@ function AdminQuotes() {
                 <th className="px-6 py-4 font-semibold">Customer</th>
                 <th className="px-6 py-4 font-semibold">Phone</th>
                 <th className="px-6 py-4 font-semibold">Service</th>
+                <th className="px-6 py-4 font-semibold">Artwork</th>
                 <th className="px-6 py-4 font-semibold">Status</th>
                 <th className="px-6 py-4 font-semibold text-right">Action</th>
               </tr>
@@ -175,13 +176,13 @@ function AdminQuotes() {
             <tbody className="divide-y">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-muted-foreground">
+                  <td colSpan={7} className="px-6 py-8 text-center text-muted-foreground">
                     Loading quotes...
                   </td>
                 </tr>
               ) : quotes.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-muted-foreground">
+                  <td colSpan={7} className="px-6 py-8 text-center text-muted-foreground">
                     No quote requests yet.
                   </td>
                 </tr>
@@ -214,6 +215,34 @@ function AdminQuotes() {
                     <td className="px-6 py-4">
                       <div className="font-medium">{q.service}</div>
                       <div className="text-xs text-muted-foreground">Qty: {q.quantity}</div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-col space-y-1">
+                        {(!q.file_names || (q.file_names as string[]).length === 0) ? (
+                          <span className="text-xs text-muted-foreground italic">None attached</span>
+                        ) : (
+                          (q.file_names as string[]).map((fileStr, i) => {
+                            try {
+                              const parsed = JSON.parse(fileStr);
+                              const { data } = supabase.storage.from("quote_artwork").getPublicUrl(parsed.path);
+                              return (
+                                <a 
+                                  key={i} 
+                                  href={data.publicUrl} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-xs text-cyan-brand hover:underline flex items-center"
+                                  title={`${parsed.placement} - ${parsed.location}`}
+                                >
+                                  📄 {parsed.name.length > 15 ? parsed.name.substring(0, 15) + '...' : parsed.name}
+                                </a>
+                              );
+                            } catch (e) {
+                              return <span key={i} className="text-xs text-muted-foreground">{fileStr}</span>;
+                            }
+                          })
+                        )}
+                      </div>
                     </td>
                     <td className="px-6 py-4">
                       <Select value={q.status} onValueChange={(val) => handleStatusChange(q.id, val)}>
