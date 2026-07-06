@@ -22,6 +22,10 @@ const updateStatusSchema = z.object({
   status: z.string(),
 });
 
+const deleteQuoteSchema = z.object({
+  quoteId: z.string().uuid(),
+});
+
 // ----- HTML TEMPLATES -----
 
 function buildMockupEmailHtml(name: string, mockupUrl: string, quoteId: string, message?: string): string {
@@ -182,5 +186,17 @@ export const updateQuoteStatus = createServerFn({ method: "POST" })
       .eq("id", data.quoteId);
       
     if (error) throw new Error("Failed to update status");
+    return { ok: true };
+  });
+
+export const deleteQuoteRequest = createServerFn({ method: "POST" })
+  .inputValidator((d) => deleteQuoteSchema.parse(d))
+  .handler(async ({ data }) => {
+    const { error } = await supabaseAdmin
+      .from("quote_requests")
+      .delete()
+      .eq("id", data.quoteId);
+      
+    if (error) throw new Error("Failed to delete quote");
     return { ok: true };
   });

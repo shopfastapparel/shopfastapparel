@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { sendMockup, updateQuoteStatus } from "@/lib/mockup.functions";
+import { sendMockup, updateQuoteStatus, deleteQuoteRequest } from "@/lib/mockup.functions";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { FileImage, Trash2 } from "lucide-react";
@@ -87,8 +87,7 @@ function AdminQuotes() {
   async function handleDelete(id: string) {
     if (!window.confirm("Are you sure you want to delete this quote request?")) return;
     try {
-      const { error } = await supabase.from("quote_requests").delete().eq("id", id);
-      if (error) throw error;
+      await deleteQuoteRequest({ data: { quoteId: id } });
       toast.success("Quote deleted");
       fetchQuotes();
     } catch (e: any) {
