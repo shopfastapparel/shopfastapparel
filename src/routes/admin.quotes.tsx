@@ -84,6 +84,18 @@ function AdminQuotes() {
     }
   }
 
+  async function handleDelete(id: string) {
+    if (!window.confirm("Are you sure you want to delete this quote request?")) return;
+    try {
+      const { error } = await supabase.from("quote_requests").delete().eq("id", id);
+      if (error) throw error;
+      toast.success("Quote deleted");
+      fetchQuotes();
+    } catch (e: any) {
+      toast.error("Failed to delete quote");
+    }
+  }
+
   async function handleSendMockup(e: React.FormEvent) {
     e.preventDefault();
     if (!selectedQuote || !mockupFile) return;
@@ -221,9 +233,12 @@ function AdminQuotes() {
                         </div>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-right">
+                    <td className="px-6 py-4 text-right space-x-2 whitespace-nowrap">
                       <Button variant="outline" size="sm" onClick={() => setSelectedQuote(q)} className="shadow-sm">
                         <FileImage className="w-4 h-4 mr-2" /> Send Mockup
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => handleDelete(q.id)} className="shadow-sm hover:bg-red-500/10 hover:text-red-600 hover:border-red-500/50">
+                        <Trash2 className="w-4 h-4" />
                       </Button>
                     </td>
                   </tr>
