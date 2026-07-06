@@ -17,6 +17,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
+  const [newQuoteCount, setNewQuoteCount] = useState<number>(0);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -24,10 +25,20 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         navigate({ to: "/login" });
       } else {
         document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+        
+        // Fetch new quote count
+        supabase
+          .from("quote_requests")
+          .select("id", { count: "exact", head: true })
+          .eq("status", "New Request")
+          .then(({ count }) => {
+            setNewQuoteCount(count || 0);
+          });
+          
         setLoading(false);
       }
     });
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   if (loading) {
     return (
@@ -65,6 +76,11 @@ export function AdminLayout({ children }: { children: ReactNode }) {
                   >
                     <Icon className="h-4 w-4" />
                     <span>{tab.label}</span>
+                    {tab.id === "quotes" && newQuoteCount > 0 && (
+                      <span className="ml-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">
+                        {newQuoteCount}
+                      </span>
+                    )}
                   </Link>
                 );
               })}
