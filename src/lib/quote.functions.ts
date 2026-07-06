@@ -264,7 +264,7 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
     const quoteId = dbRecord?.id || "N/A";
 
     // Determine sender — use verified domain if available, otherwise Resend default
-    const from = process.env.RESEND_FROM_EMAIL || "Fast Apparel Quotes <onboarding@resend.dev>";
+    const from = process.env.RESEND_FROM_EMAIL || "Fast Apparel <info@shopfastapparel.com>";
 
     // Send email to shop owner
     const toEmail = process.env.RESEND_TO_EMAIL || "shopfastapparel@gmail.com";
