@@ -29,6 +29,7 @@ ADMIN_EMAIL = "info@shopfastapparel.com" # Where to send the daily summary
 
 SUPABASE_URL = os.environ.get("VITE_SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("VITE_SUPABASE_PUBLISHABLE_KEY")
+SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 
 SUBJECT = "Fast, local custom apparel for {company_name}"
 try:
@@ -107,13 +108,17 @@ def scrape_logo(website_url):
         print(f"Scrape failed: {e}")
         return None
 
-def fetch_logo(logo_url, website_url):
+def fetch_logo(logo_url, website_url, company_name):
     headers = {'User-Agent': 'Mozilla/5.0'}
+    
+    if logo_url and "placeholder.com" in logo_url.lower():
+        logo_url = None
+        
     try:
         if logo_url and "ui-avatars.com" not in logo_url.lower():
             res = requests.get(logo_url, headers=headers, timeout=5)
             res.raise_for_status()
-            return Image.open(BytesIO(res.content)).convert("RGBA"), False
+            return Image.open(BytesIO(res.content)).convert("RGBA"), False, logo_url
     except Exception as e:
         print(f"Primary logo fetch failed: {e}")
         
@@ -123,16 +128,18 @@ def fetch_logo(logo_url, website_url):
         try:
             res = requests.get(scraped_url, headers=headers, timeout=5)
             res.raise_for_status()
-            return Image.open(BytesIO(res.content)).convert("RGBA"), False
+            return Image.open(BytesIO(res.content)).convert("RGBA"), False, scraped_url
         except Exception as e:
             print(f"Scraped logo fetch failed: {e}")
             
     print("Using Fallback Logo.")
+    final_logo_url = f"https://ui-avatars.com/api/?name={urllib.parse.quote(company_name)}&background=FF007F&color=fff&size=256"
     try:
-        fallback_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "public", "images", "apparel", "fallback_logo.png")
-        return Image.open(fallback_path).convert("RGBA"), True
+        res = requests.get(final_logo_url, headers=headers, timeout=5)
+        res.raise_for_status()
+        return Image.open(BytesIO(res.content)).convert("RGBA"), True, final_logo_url
     except:
-        return Image.new('RGBA', (300, 100), (255, 0, 127, 255)), True
+        return Image.new('RGBA', (300, 100), (255, 0, 127, 255)), True, final_logo_url
 
 def add_fallback_text(logo_img):
     canvas = Image.new('RGBA', (logo_img.width, logo_img.height + 60), (0,0,0,0))
@@ -151,7 +158,7 @@ def add_fallback_text(logo_img):
 
 def generate_mockup(logo_url, website_url, company_name, mockups_dir, project_root):
     try:
-        logo_img, is_fallback = fetch_logo(logo_url, website_url)
+        logo_img, is_fallback, final_logo_url = fetch_logo(logo_url, website_url, company_name)
         if is_fallback:
             logo_img = add_fallback_text(logo_img)
             
@@ -180,18 +187,31 @@ def generate_mockup(logo_url, website_url, company_name, mockups_dir, project_ro
         
         slug = re.sub(r'[^a-z0-9]+', '-', company_name.lower()).strip('-')
         filename = f"{slug}-{int(time.time())}.jpg"
-        filepath = os.path.join(mockups_dir, filename)
-        front_rgb.save(filepath, format="JPEG", quality=85)
         
-        return buf.getvalue(), f"/admin/mockups/{filename}"
+        # Upload directly to Supabase via REST
+        upload_url = f"{SUPABASE_URL}/storage/v1/object/quote_artwork/mockups/{filename}"
+        api_key = SUPABASE_SERVICE_KEY or SUPABASE_KEY
+        headers = {
+            "apikey": api_key,
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "image/jpeg"
+        }
+        res = requests.post(upload_url, data=buf.getvalue(), headers=headers)
+        if not res.ok:
+            requests.put(upload_url, data=buf.getvalue(), headers=headers)
+            
+        public_url = f"{SUPABASE_URL}/storage/v1/object/public/quote_artwork/mockups/{filename}"
+        
+        return buf.getvalue(), public_url, final_logo_url
     except Exception as e:
         print(f"Mockup generation completely failed: {e}")
-        return None, None
+        return None, None, None
 
 def send_prospect_email(to_email, company_name, mockup_bytes, lead_id):
     msg = MIMEMultipart('related')
     msg['From'] = SENDER_EMAIL
     msg['To'] = to_email
+    msg['Bcc'] = "shopfastapparel@gmail.com"
     msg['Subject'] = SUBJECT.format(company_name=company_name)
     
     msg_alternative = MIMEMultipart('alternative')
@@ -294,7 +314,7 @@ def main():
                 
             print(f"Sending to {company_name} ({email}) with logo {logo_url}...")
             
-            mockup_bytes, mockup_url = generate_mockup(logo_url, website, company_name, mockups_dir, project_root)
+            mockup_bytes, mockup_url, final_logo_url = generate_mockup(logo_url, website, company_name, mockups_dir, project_root)
             
             if mockup_bytes is None:
                 print(f"Skipping {company_name} due to mockup failure.")
@@ -312,7 +332,7 @@ def main():
                     "email": email,
                     "industry": industry,
                     "website": website,
-                    "logo_url": logo_url,
+                    "logo_url": final_logo_url,
                     "mockup_url": mockup_url
                 }
                 
@@ -362,16 +382,7 @@ def main():
         writer.writerow(["Organization Name", "Contact Email", "Industry", "Website", "Logo URL"])
         
     # Auto-sync to GitHub so live website updates
-    print("Pushing dashboard data to live website via Git...")
-    try:
-        # Commit to Git disabled as data is in Supabase now
-        # subprocess.run(['git', 'add', 'public/admin/sales_data.json', 'public/admin/mockups/'], cwd=project_root)
-        subprocess.run(['git', 'add', 'public/admin/mockups/'], cwd=project_root)
-        subprocess.run(['git', 'commit', '-m', f"chore: add {len(successful_leads)} new mockups"], cwd=project_root)
-        subprocess.run(['git', 'push'], cwd=project_root)
-        print("Successfully synced data to live website.")
-    except Exception as e:
-        print(f"Git auto-sync failed: {e}")
+    print("Skipping Git auto-sync as images are now stored in Supabase.")
 
 if __name__ == "__main__":
     main()

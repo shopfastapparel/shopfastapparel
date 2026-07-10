@@ -94,7 +94,14 @@ function SalesDashboard() {
                       <td className="px-6 py-6 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-full flex items-center justify-center p-1 overflow-hidden border border-gray-200">
-                            <img className="max-h-full max-w-full object-contain" src={lead.logo_url} alt="" />
+                            <img 
+                              className="max-h-full max-w-full object-contain" 
+                              src={lead.logo_url} 
+                              alt="" 
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = '/images/apparel/fallback_logo.png';
+                              }}
+                            />
                           </div>
                           <div className="ml-4">
                             <div className="text-sm font-bold text-gray-900">{lead.company}</div>
@@ -132,7 +139,14 @@ function SalesDashboard() {
                       <td className="px-6 py-6 whitespace-nowrap text-center">
                         {lead.mockup_url ? (
                           <a href={lead.mockup_url} target="_blank" rel="noreferrer" className="inline-block relative group">
-                            <img src={lead.mockup_url} alt="Mockup" className="h-20 w-auto rounded border border-gray-200 shadow-sm transition-transform transform group-hover:scale-105" />
+                            <img 
+                              src={lead.mockup_url} 
+                              alt="Mockup" 
+                              className="h-20 w-auto rounded border border-gray-200 shadow-sm transition-transform transform group-hover:scale-105" 
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display = 'none';
+                              }}
+                            />
                             <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all rounded flex items-center justify-center">
                                <span className="opacity-0 group-hover:opacity-100 text-xs font-bold bg-white px-2 py-1 rounded shadow-sm text-gray-900">View</span>
                             </div>
