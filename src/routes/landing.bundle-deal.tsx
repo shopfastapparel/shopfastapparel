@@ -8,6 +8,9 @@ import { PRIMARY_PHONE } from "@/lib/locations";
 import { CheckCircle2, Zap, ShieldCheck, ArrowRight, Upload, Info } from "lucide-react";
 import bundleImage from "../../public/images/apparel/gildan-bundle.png";
 import { SiteLayout } from "@/components/SiteLayout";
+import { useServerFn } from "@tanstack/react-start";
+import { submitQuoteRequest } from "@/lib/quote.functions";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export const Route = createFileRoute("/landing/bundle-deal")({
   head: () => ({
@@ -32,8 +35,12 @@ function BundleDealPage() {
     company: "",
     shirtColor: "Black",
     sizes: "",
-    details: ""
+    printLocation: "Front Center",
+    notes: ""
   });
+
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const submitQuoteFn = useServerFn(submitQuoteRequest);
 
   const [files, setFiles] = useState<File[]>([]);
 
@@ -49,6 +56,10 @@ function BundleDealPage() {
       toast.error("Please fill out your name, email, and size breakdown.");
       return;
     }
+    if (!captchaToken) {
+      toast.error("Please complete the reCAPTCHA verification.");
+      return;
+    }
     
     setIsSubmitting(true);
     try {
@@ -61,24 +72,24 @@ function BundleDealPage() {
           .upload(filePath, f, { contentType: f.type });
 
         if (uploadError) throw new Error("Failed to upload artwork: " + f.name);
-        filePaths.push(JSON.stringify({ name: f.name, path: filePath, placement: "Front (Default)", location: "Standard" }));
+        filePaths.push(JSON.stringify({ name: f.name, path: filePath, placement: formData.printLocation, location: "Standard" }));
       }
 
-      const { error } = await supabase.from("quote_requests").insert([{
-        service: "24-Pack Bundle Deal: Gildan Softstyle",
-        quantity: 24,
-        turnaround: "Standard",
-        turnaround_estimate: "5-7 Business Days",
-        name: formData.name,
-        company: formData.company,
-        email: formData.email,
-        phone: formData.phone,
-        details: `Shirt Color: ${formData.shirtColor}\nSize Breakdown: ${formData.sizes}\n\nAdditional Details: ${formData.details}`,
-        file_names: filePaths,
-        status: "New"
-      }]);
+      const formattedDetails = `Shirt Color: ${formData.shirtColor}\nSize Breakdown: ${formData.sizes}\nPrint Location: ${formData.printLocation}\n\nNotes: ${formData.notes}`;
 
-      if (error) throw error;
+      await submitQuoteFn({
+        service: "24-Pack Bundle Deal: Gildan Softstyle",
+        quantity: "24",
+        turnaround: "Standard",
+        turnaroundEstimate: "5-7 Business Days",
+        name: formData.name,
+        company: formData.company || undefined,
+        email: formData.email,
+        phone: formData.phone || undefined,
+        details: formattedDetails,
+        fileNames: filePaths,
+        captchaToken,
+      });
       
       setIsSubmitted(true);
       toast.success("Bundle requested successfully!");
@@ -223,8 +234,25 @@ function BundleDealPage() {
               </div>
 
               <div className="mb-8">
-                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Print Location & Notes</label>
-                <textarea value={formData.details} onChange={e => setFormData({...formData, details: e.target.value})} className="w-full p-3 border-2 border-ink rounded-lg bg-background h-24 resize-none" placeholder="e.g., Full front print. Center the logo." />
+                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Print Location *</label>
+                <select value={formData.printLocation} onChange={e => setFormData({...formData, printLocation: e.target.value})} className="w-full p-3 border-2 border-ink rounded-lg bg-background font-medium appearance-none">
+                  <option value="Front Center">Front Center</option>
+                  <option value="Left Chest">Left Chest</option>
+                  <option value="Full Back">Full Back</option>
+                  <option value="Front & Back">Front & Back (+$)</option>
+                </select>
+              </div>
+
+              <div className="mb-8">
+                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Notes & Special Instructions</label>
+                <textarea value={formData.notes} onChange={e => setFormData({...formData, notes: e.target.value})} className="w-full p-3 border-2 border-ink rounded-lg bg-background h-24 resize-none" placeholder="e.g., Please center the logo. I need these by next Friday." />
+              </div>
+
+              <div className="mb-8 flex justify-center">
+                <ReCAPTCHA
+                  sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"}
+                  onChange={(token) => setCaptchaToken(token)}
+                />
               </div>
 
               <Button disabled={isSubmitting} type="submit" size="lg" className="w-full h-16 text-xl shadow-[4px_4px_0px_0px_#1a1a2e] border-2 border-ink hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#1a1a2e] transition-all bg-yellow-brand text-ink hover:bg-yellow-brand/90">
