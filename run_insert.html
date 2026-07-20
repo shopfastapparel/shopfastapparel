@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head><title>Insert Blog</title></head>
+<body>
+  <div id="status">Loading...</div>
+  <script>
+    async function run() {
+      const url = "https://dwtvfrpqizanpnvgkpux.supabase.co/rest/v1/blog_posts";
+      const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3dHZmcnBxaXphbnBudmdrcHV4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTE1MTA5OCwiZXhwIjoyMDk0NzI3MDk4fQ.3-1Lg_mEduZ7Xa_InBjg9OTCiFWmQoy3g8uIxQMOg3A";
+      
+      const post = {
+        slug: "metro-atlanta-dtf-custom-apparel-guide",
+        title: "The Metro Atlanta Guide to DTF Custom Apparel: Why It Beats Screen Printing",
+        description: "Explore why Direct-to-Film (DTF) printing is becoming the standard for custom uniforms, team gear, and corporate apparel across Metro Atlanta. Faster turnarounds and vibrant colors await.",
+        category: "Tips & Trends",
+        city: "Atlanta",
+        read_minutes: 5,
+        author: "SEO Blog Writer",
+        cover_gradient: "from-cyan-brand to-magenta-brand",
+        cover_emoji: "🚀",
+        keywords: ["Atlanta custom apparel", "DTF printing Metro Atlanta", "custom uniforms Lawrenceville", "screen printing alternative", "Direct-to-Film benefits"],
+        body: "When organizations in Metro Atlanta—from local high school sports teams to thriving businesses in Lawrenceville—need custom apparel, they historically turned to traditional screen printing. However, a newer, vastly superior technology has taken the lead: **Direct-to-Film (DTF) printing**.\n\nAt Fast Apparel, we specialize in DTF because it offers unparalleled benefits for both bulk orders and small batches. Here is why you should make the switch.\n\n## 1. Brilliant, Full-Color Designs\nTraditional screen printing charges you per color. Want a vibrant, 6-color logo? That will cost you a hefty setup fee. DTF printing, on the other hand, allows for stunning, photo-realistic, full-color prints at no extra cost. Your team’s gear will pop on the field or in the office.\n\n## 2. Unbeatable Durability\nAtlanta weather can be tough, and sports teams need gear that can take a beating. DTF transfers bond deeply with the fabric, resulting in a print that stretches without cracking and survives countless washes. Your logo will stay intact season after season.\n\n## 3. No Minimum Orders\nWhether you need exactly 12 jerseys for a youth basketball team or 500 promotional shirts for a corporate event in Buckhead, DTF has you covered. By eliminating the grueling setup process of screen printing, DTF allows us to offer low-to-no minimum order quantities.\n\n## 4. Faster Local Turnaround\nBecause there is less manual setup involved, DTF printing is inherently faster. Fast Apparel is located right here in Lawrenceville, which means Metro Atlanta customers skip the shipping delays of out-of-state competitors. Most bulk orders are ready in about a week.\n\n## Conclusion\nFor vibrant, durable, and cost-effective custom apparel, DTF printing is the undisputed champion. \n\nReady to see your logo in brilliant color? [Contact Fast Apparel today for a free mockup and quote!](/quote)",
+        status: "published",
+        cover_image_url: "/images/blog/dtf_shirts_cover.png",
+        cover_image_credit: "Fast Apparel AI Generated"
+      };
+
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'apikey': key,
+            'Authorization': 'Bearer ' + key,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(post)
+        });
+        
+        if (res.ok) {
+          document.getElementById("status").innerText = "SUCCESS";
+        } else {
+          document.getElementById("status").innerText = "ERROR: " + await res.text();
+        }
+      } catch (err) {
+        document.getElementById("status").innerText = "ERROR: " + err.message;
+      }
+    }
+    run();
+  </script>
+</body>
+</html>

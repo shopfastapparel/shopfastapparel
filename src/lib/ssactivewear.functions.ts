@@ -29,7 +29,7 @@ export const fetchLiveInventory = createServerFn({ method: "POST" })
     }
 
     try {
-      const authHeader = "Basic " + Buffer.from(`${accountNo}:${apiKey}`).toString("base64");
+      const authHeader = "Basic " + btoa(`${accountNo}:${apiKey}`);
       
       // We fetch all SKUs for the specific styleID
       const res = await fetch(`https://api.ssactivewear.com/v2/products/?styleID=${styleId}`, {

@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
+    "generate-blog": "node --experimental-strip-types trigger.ts",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "insert": "node insert_new_blog.js"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.0",

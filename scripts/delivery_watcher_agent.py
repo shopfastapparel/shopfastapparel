@@ -1,6 +1,8 @@
 import os
 import time
-import requests
+import urllib.request
+import urllib.parse
+import urllib.error
 import json
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -8,6 +10,40 @@ from email.mime.text import MIMEText
 import re
 
 NOTIFIED_FILE = "DELIVERED_NOTIFIED.json"
+
+def http_request(url, method="GET", headers=None, data=None):
+    if headers is None: headers = {}
+    
+    if data is not None:
+        if isinstance(data, dict):
+            if headers.get("Content-Type") == "application/json":
+                data = json.dumps(data).encode("utf-8")
+            else:
+                data = urllib.parse.urlencode(data).encode("utf-8")
+        elif isinstance(data, str):
+            data = data.encode("utf-8")
+            
+    req = urllib.request.Request(url, data=data, headers=headers, method=method)
+    
+    class Response:
+        pass
+    resp = Response()
+    
+    try:
+        with urllib.request.urlopen(req) as r:
+            resp.status_code = r.getcode()
+            resp.text = r.read().decode('utf-8')
+    except urllib.error.HTTPError as e:
+        resp.status_code = e.code
+        resp.text = e.read().decode('utf-8')
+    except Exception as e:
+        resp.status_code = 500
+        resp.text = str(e)
+        
+    def json_func():
+        return json.loads(resp.text)
+    resp.json = json_func
+    return resp
 
 def load_env():
     env_dict = {}
@@ -100,12 +136,12 @@ def run_watcher():
                 "Authorization": f"Bearer {access_token}"
             }
 
-            res = requests.get(f"https://api.etsy.com/v3/application/shops/{shop_id}/receipts?limit=25", headers=headers)
+            res = http_request(f"https://api.etsy.com/v3/application/shops/{shop_id}/receipts?limit=25", headers=headers)
             
             if res.status_code == 401:
                 print("Token expired, refreshing...")
                 refresh_str = env.get("ETSY_REFRESH_TOKEN")
-                token_res = requests.post("https://api.etsy.com/v3/public/oauth/token", data={
+                token_res = http_request("https://api.etsy.com/v3/public/oauth/token", method="POST", data={
                     "grant_type": "refresh_token",
                     "client_id": api_key,
                     "refresh_token": refresh_str
@@ -116,7 +152,7 @@ def run_watcher():
                     refresh_token = data.get("refresh_token")
                     update_env(access_token, refresh_token)
                     headers["Authorization"] = f"Bearer {access_token}"
-                    res = requests.get(f"https://api.etsy.com/v3/application/shops/{shop_id}/receipts?limit=25", headers=headers)
+                    res = http_request(f"https://api.etsy.com/v3/application/shops/{shop_id}/receipts?limit=25", headers=headers)
                 else:
                     print("Failed to refresh token:", token_res.text)
 
@@ -139,7 +175,7 @@ def run_watcher():
                         carrier = (shipments[0].get("carrier_name") or "").lower()
                         
                         if tracking_code and carrier:
-                            track_res = requests.get(f"https://api.goshippo.com/tracks/{carrier}/{tracking_code}", headers={
+                            track_res = http_request(f"https://api.goshippo.com/tracks/{carrier}/{tracking_code}", headers={
                                 "Authorization": f"ShippoToken {shippo_key}"
                             })
                             if track_res.status_code == 200:
@@ -156,7 +192,7 @@ def run_watcher():
                                         image_id = t.get("listing_image_id")
                                         if listing_id and image_id:
                                             try:
-                                                img_res = requests.get(f"https://api.etsy.com/v3/application/listings/{listing_id}/images/{image_id}", headers=headers)
+                                                img_res = http_request(f"https://api.etsy.com/v3/application/listings/{listing_id}/images/{image_id}", headers=headers)
                                                 if img_res.status_code == 200:
                                                     img_data = img_res.json()
                                                     image_url = img_data.get("url_570xN") or img_data.get("url_170x135") or img_data.get("url_75x75")

@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { createFileRoute, useRouter, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
-import { listRecentProjects, uploadProjectImage, deleteProjectImage } from "@/lib/projects-admin.functions";
+import { listRecentProjects, getProjectImageUploadUrl, deleteProjectImage } from "@/lib/projects-admin.functions";
 import { toast } from "sonner";
 import { Loader2, Trash2, Camera } from "lucide-react";
 import { AdminLayout } from "@/components/AdminLayout";
@@ -19,7 +19,7 @@ function AdminProjects() {
   const router = useRouter();
   const navigate = useNavigate();
   const list = useServerFn(listRecentProjects);
-  const upload = useServerFn(uploadProjectImage);
+  const getUploadUrl = useServerFn(getProjectImageUploadUrl);
   const del = useServerFn(deleteProjectImage);
 
   const [images, setImages] = useState<ProjectImage[] | null>(null);
@@ -61,20 +61,20 @@ function AdminProjects() {
 
     setUploading(true);
     try {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64Data = reader.result as string;
-        await upload({
-          data: {
-            filename: file.name,
-            base64Data,
-            contentType: file.type,
-          }
-        });
-        toast.success("Project image uploaded successfully!");
-        load();
-      };
-      reader.readAsDataURL(file);
+      // 1. Get signed URL from the server securely
+      const { token, path } = await getUploadUrl({
+        data: { filename: file.name }
+      });
+      
+      // 2. Upload directly to Supabase storage (bypassing Vercel payload limits)
+      const { error: uploadError } = await supabase.storage
+        .from('customer_projects')
+        .uploadToSignedUrl(path, token, file);
+        
+      if (uploadError) throw uploadError;
+
+      toast.success("Project image uploaded successfully!");
+      load();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Upload failed");
     } finally {

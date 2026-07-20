@@ -286,6 +286,7 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
       await resend.emails.send({
         from,
         to: [data.email],
+        bcc: [toEmail],
         subject: "We got your quote request! — Fast Apparel",
         html: buildCustomerEmailHtml(data),
       });

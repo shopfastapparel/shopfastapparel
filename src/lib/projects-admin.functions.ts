@@ -45,34 +45,25 @@ export const listRecentProjects = createServerFn({ method: "GET" })
     });
   });
 
-// Protected route to upload
-export const uploadProjectImage = createServerFn({ method: "POST" })
+// Protected route to get a signed upload URL (bypasses server payload limits)
+export const getProjectImageUploadUrl = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
     z.object({
       filename: z.string(),
-      base64Data: z.string(), // expected format: data:image/jpeg;base64,...
-      contentType: z.string(),
     }).parse(d)
   )
   .handler(async ({ data, context }) => {
     assertAdmin(context.claims.email);
     
-    // Parse the base64 string
-    const base64Str = data.base64Data.split(",")[1] || data.base64Data;
-    const buffer = Buffer.from(base64Str, "base64");
-
     const uniqueFilename = `${Date.now()}-${data.filename.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
 
     const { data: uploadData, error } = await supabaseAdmin.storage
       .from("customer_projects")
-      .upload(uniqueFilename, buffer, {
-        contentType: data.contentType,
-        upsert: false,
-      });
+      .createSignedUploadUrl(uniqueFilename);
 
     if (error) throw error;
-    return { ok: true, path: uploadData.path };
+    return { token: uploadData.token, path: uploadData.path };
   });
 
 // Protected route to delete
