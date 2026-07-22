@@ -178,7 +178,7 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
               }
 
               const printCost = (data.printLocations === 2) ? 5.00 : 2.00;
-              const unitCost = lowestBasePrice + 1.00 + printCost;
+              const unitCost = lowestBasePrice + 2.00 + printCost;
               const unitRevenue = unitCost * 2; // 50% Profit Margin
               
               const totalCost = unitCost * estQty;

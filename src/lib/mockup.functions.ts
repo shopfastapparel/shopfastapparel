@@ -123,9 +123,11 @@ export const sendMockup = createServerFn({ method: "POST" })
     const resend = new Resend(apiKey);
     const from = process.env.RESEND_FROM_EMAIL || "Fast Apparel Quotes <onboarding@resend.dev>";
 
+    const adminEmail = process.env.RESEND_TO_EMAIL || "shopfastapparel@gmail.com";
     const { error: emailError } = await resend.emails.send({
       from,
       to: [quote.email],
+      bcc: [adminEmail],
       subject: "Your Design Mockup is Ready! — Fast Apparel",
       html: buildMockupEmailHtml(quote.name, data.mockupUrl, quote.id, data.message),
     });
