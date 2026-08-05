@@ -100,6 +100,7 @@ function NewHeightsYouthCollectionPage() {
   const [submitted, setSubmitted] = useState(false);
   const [deadline, setDeadline] = useState("August 20, 2026");
   const [organizerPhone, setOrganizerPhone] = useState("");
+  const [organizerEmail, setOrganizerEmail] = useState("kaia@newheightslc.org");
   const [selectedMockup, setSelectedMockup] = useState<ShirtOption | null>(null);
   const [optionPrices, setOptionPrices] = useState<Record<string, number>>({
     "option-1": 25.00,
@@ -131,6 +132,17 @@ function NewHeightsYouthCollectionPage() {
 
         if (phoneData && phoneData.length > 0 && phoneData[0].notes) {
           setOrganizerPhone(phoneData[0].notes);
+        }
+
+        const { data: emailData } = await supabase
+          .from("quote_requests")
+          .select("notes")
+          .eq("service", "New Heights Setting: Admin Email")
+          .order("created_at", { ascending: false })
+          .limit(1);
+
+        if (emailData && emailData.length > 0 && emailData[0].notes) {
+          setOrganizerEmail(emailData[0].notes);
         }
 
         const { data: priceData } = await supabase
@@ -241,25 +253,27 @@ ${notes || "None"}
             <img src="/images/fast_logo_contrasted.png" alt="Fast Apparel" className="h-9 w-auto object-contain" />
           </a>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-brand/20 text-cyan-brand text-xs font-bold uppercase tracking-wider border border-cyan-brand/30">
               <Church className="w-3.5 h-3.5 text-yellow-brand" /> Group Portal
             </span>
-            {organizerPhone ? (
+            <div className="text-right text-xs md:text-sm">
+              <span className="font-bold text-yellow-brand block sm:inline">Organizer Kaia: </span>
+              {organizerPhone && (
+                <a
+                  href={`tel:${organizerPhone.replace(/\D/g, "")}`}
+                  className="font-bold text-white hover:underline mr-2"
+                >
+                  {organizerPhone}
+                </a>
+              )}
               <a
-                href={`tel:${organizerPhone.replace(/\D/g, "")}`}
-                className="text-xs md:text-sm font-bold text-yellow-brand hover:underline"
+                href={`mailto:${organizerEmail}`}
+                className="font-semibold text-cyan-brand hover:underline"
               >
-                Organizer Kaia: {organizerPhone}
+                {organizerEmail}
               </a>
-            ) : (
-              <a
-                href="mailto:kaia@newheightslc.org"
-                className="text-xs md:text-sm font-bold text-yellow-brand hover:underline"
-              >
-                Organizer: kaia@newheightslc.org
-              </a>
-            )}
+            </div>
           </div>
         </div>
       </header>
@@ -650,7 +664,7 @@ ${notes || "None"}
           </div>
           <div>
             <p className="text-background/80">
-              Need assistance? {organizerPhone ? <>Call/Text Kaia at <a href={`tel:${organizerPhone.replace(/\D/g, "")}`} className="text-yellow-brand font-bold hover:underline">{organizerPhone}</a> or </> : null}Email <a href="mailto:kaia@newheightslc.org" className="text-cyan-brand font-bold hover:underline">kaia@newheightslc.org</a>
+              Need assistance? {organizerPhone ? <>Call/Text Kaia at <a href={`tel:${organizerPhone.replace(/\D/g, "")}`} className="text-yellow-brand font-bold hover:underline">{organizerPhone}</a> or </> : null}Email <a href={`mailto:${organizerEmail}`} className="text-cyan-brand font-bold hover:underline">{organizerEmail}</a>
             </p>
           </div>
         </div>
