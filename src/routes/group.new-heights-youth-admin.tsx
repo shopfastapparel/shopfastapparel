@@ -508,7 +508,7 @@ function NewHeightsGroupAdminDashboard() {
                   ${estimatedTotalCost}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  ~${unitPriceEstimate.toFixed(2)} / shirt (Includes volume discount)
+                  Calculated from exact option unit prices
                 </p>
               </div>
             </div>
