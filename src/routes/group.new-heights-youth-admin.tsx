@@ -17,6 +17,11 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/group/new-heights-youth-admin")({
+  headers: () => ({
+    "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "0",
+  }),
   head: () => ({
     meta: [
       { title: "New Heights Youth Group Admin Dashboard | Fast Apparel" },
