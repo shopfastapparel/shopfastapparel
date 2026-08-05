@@ -107,23 +107,29 @@ function NewHeightsGroupAdminDashboard() {
   const [editQty, setEditQty] = useState("");
   const [editDetails, setEditDetails] = useState("");
   const [savingEdit, setSavingEdit] = useState(false);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deletingSub, setDeletingSub] = useState<ParsedSubmission | null>(null);
+  const [deletingLoading, setDeletingLoading] = useState(false);
 
-  const handleDeleteSubmission = async (id: string, name: string) => {
-    if (!window.confirm(`Are you sure you want to delete the submission for "${name}"?`)) {
-      return;
-    }
-    setDeletingId(id);
+  const confirmDeleteSubmission = async () => {
+    if (!deletingSub) return;
+    const targetId = deletingSub.id;
+    const targetName = deletingSub.memberName;
+    
+    setDeletingLoading(true);
+    // Optimistically remove from state so size tallies & total cost update INSTANTLY
+    setSubmissions((prev) => prev.filter((s) => s.id !== targetId));
+    setDeletingSub(null);
+
     try {
-      const { error } = await supabase.from("quote_requests").delete().eq("id", id);
+      const { error } = await supabase.from("quote_requests").delete().eq("id", targetId);
       if (error) throw error;
-      toast.success(`Submission for "${name}" deleted.`);
-      fetchSubmissions();
+      toast.success(`Submission for "${targetName}" deleted.`);
     } catch (err) {
       console.error("Delete error:", err);
-      toast.error("Failed to delete submission.");
+      toast.error("Failed to delete submission from database.");
+      fetchSubmissions(); // Re-fetch to sync if failed
     } finally {
-      setDeletingId(null);
+      setDeletingLoading(false);
     }
   };
 
@@ -155,7 +161,7 @@ function NewHeightsGroupAdminDashboard() {
       if (error) throw error;
       toast.success("Order updated successfully!");
       setEditingSub(null);
-      fetchSubmissions();
+      await fetchSubmissions();
     } catch (err) {
       console.error("Edit save error:", err);
       toast.error("Failed to save order updates.");
@@ -854,8 +860,7 @@ function NewHeightsGroupAdminDashboard() {
                                 size="sm"
                                 variant="outline"
                                 className="h-8 px-2.5 text-xs font-semibold border-red-200 text-red-600 hover:bg-red-50 hover:border-red-500"
-                                disabled={deletingId === sub.id}
-                                onClick={() => handleDeleteSubmission(sub.id, sub.memberName)}
+                                onClick={() => setDeletingSub(sub)}
                               >
                                 <Trash2 className="w-3.5 h-3.5 mr-1" /> Delete
                               </Button>
@@ -871,6 +876,55 @@ function NewHeightsGroupAdminDashboard() {
           </div>
         )}
       </div>
+
+      {/* Custom Delete Confirmation Modal */}
+      {deletingSub && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-in fade-in">
+          <div className="bg-card border-2 border-red-500 rounded-2xl max-w-md w-full shadow-2xl overflow-hidden my-8">
+            <div className="bg-red-600 text-white p-5 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Trash2 className="w-5 h-5 text-white" />
+                <h3 className="font-display text-xl font-bold">Delete Submission</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setDeletingSub(null)}
+                className="text-white/80 hover:text-white p-1 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <p className="text-foreground text-base">
+                Are you sure you want to delete the submission for <strong>{deletingSub.memberName}</strong> ({deletingSub.memberEmail})?
+              </p>
+              <div className="bg-red-50 border border-red-200 text-red-800 p-3 rounded-lg text-xs leading-relaxed">
+                ⚠️ <strong>Warning:</strong> Deleting this order will permanently remove its shirt counts from your live size tallies and group total cost estimate.
+              </div>
+
+              <div className="flex justify-end gap-3 pt-3 border-t border-border">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setDeletingSub(null)}
+                  className="font-bold"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  disabled={deletingLoading}
+                  onClick={confirmDeleteSubmission}
+                  className="bg-red-600 hover:bg-red-700 text-white font-bold shadow-sm px-6"
+                >
+                  {deletingLoading ? "Deleting..." : "Yes, Delete Order"}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Edit Order Modal */}
       {editingSub && (
