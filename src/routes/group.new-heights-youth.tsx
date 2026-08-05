@@ -221,13 +221,35 @@ ${notes || "None"}
   };
 
   return (
-    <SiteLayout>
-      {/* Header Banner */}
-      <section className="bg-gradient-to-r from-ink via-slate-900 to-ink text-background border-b-2 border-magenta-brand py-12 md:py-16">
-        <div className="mx-auto max-w-6xl px-4 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-cyan-brand font-bold text-xs uppercase tracking-widest mb-4 border border-white/20">
-            <Church className="w-4 h-4 text-yellow-brand" /> New Heights Youth Group
+    <div className="min-h-screen flex flex-col bg-background">
+      {/* Top Clean Standalone Header */}
+      <header className="bg-ink text-background border-b border-white/10 sticky top-0 z-40">
+        <div className="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between gap-4">
+          <a href="https://www.shopfastapparel.com" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <img src="/images/fast_logo_contrasted.png" alt="Fast Apparel" className="h-9 w-auto object-contain" />
+          </a>
+          
+          <div className="flex items-center gap-4">
+            <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-brand/20 text-cyan-brand text-xs font-bold uppercase tracking-wider border border-cyan-brand/30">
+              <Church className="w-3.5 h-3.5 text-yellow-brand" /> Group Portal
+            </span>
+            <a
+              href="tel:4704501254"
+              className="text-xs md:text-sm font-bold text-yellow-brand hover:underline"
+            >
+              Call/Text: (470) 450-1254
+            </a>
           </div>
+        </div>
+      </header>
+
+      <main className="flex-1">
+        {/* Header Banner */}
+        <section className="bg-gradient-to-r from-ink via-slate-900 to-ink text-background border-b-2 border-magenta-brand py-12 md:py-16">
+          <div className="mx-auto max-w-6xl px-4 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-cyan-brand font-bold text-xs uppercase tracking-widest mb-4 border border-white/20">
+              <Church className="w-4 h-4 text-yellow-brand" /> New Heights Youth Group
+            </div>
           <h1 className="font-display text-4xl md:text-6xl text-white tracking-tight">
             Custom Apparel Collection
           </h1>
@@ -596,6 +618,20 @@ ${notes || "None"}
           </div>
         </div>
       )}
-    </SiteLayout>
+      </main>
+
+      {/* Clean Standalone Group Footer */}
+      <footer className="bg-ink text-background py-8 border-t border-white/10 mt-16 text-center text-xs text-muted-foreground">
+        <div className="mx-auto max-w-7xl px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <p className="font-bold text-foreground">New Heights Youth Custom Apparel Order Portal</p>
+            <p className="mt-0.5 text-background/60">Powered by Fast Apparel LLC · Lawrenceville, GA</p>
+          </div>
+          <div>
+            <p className="text-background/80">Need assistance? Call/Text <a href="tel:4704501254" className="text-yellow-brand font-bold hover:underline">(470) 450-1254</a> or Email <a href="mailto:info@shopfastapparel.com" className="text-cyan-brand font-bold hover:underline">info@shopfastapparel.com</a></p>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
