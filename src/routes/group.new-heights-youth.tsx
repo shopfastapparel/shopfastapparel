@@ -338,13 +338,23 @@ ${notes || "None"}
           <form onSubmit={handleSubmit} className="space-y-12">
             {/* Step 1: Browse Options */}
             <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="h-9 w-9 rounded-full bg-magenta-brand text-white font-bold grid place-items-center font-display">
-                  1
+              <div className="flex items-center justify-between flex-wrap gap-4 mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-full bg-magenta-brand text-white font-bold grid place-items-center font-display">
+                    1
+                  </div>
+                  <h2 className="font-display text-2xl md:text-3xl text-foreground">
+                    Choose Your Shirt Options
+                  </h2>
                 </div>
-                <h2 className="font-display text-2xl md:text-3xl text-foreground">
-                  Choose Your Shirt Options
-                </h2>
+              </div>
+
+              {/* Multiple Sizes Instruction Banner */}
+              <div className="bg-yellow-brand/20 border-2 border-yellow-brand text-foreground p-4 rounded-xl mb-6 flex items-start gap-3 shadow-sm">
+                <Sparkles className="w-5 h-5 text-yellow-brand shrink-0 mt-0.5" />
+                <p className="text-sm font-medium leading-relaxed">
+                  💡 <strong>Ordering Multiple Sizes?</strong> If you want multiple sizes or quantities of a particular design, simply click the <strong>"+ Add Choice"</strong> button on that shirt option again to add additional sizes to your list!
+                </p>
               </div>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -420,6 +430,9 @@ ${notes || "None"}
                 </div>
               ) : (
                 <div className="space-y-4">
+                  <div className="bg-cyan-brand/10 border border-cyan-brand/40 text-foreground p-3 rounded-lg text-xs font-semibold flex items-center justify-between gap-2">
+                    <span>💡 <strong>Tip:</strong> Need another size for one of your options? Just click <strong>"+ Add Choice"</strong> on that shirt design above again to add another size!</span>
+                  </div>
                   {items.map((item, index) => {
                     const opt = SHIRT_OPTIONS.find((o) => o.id === item.optionId);
                     return (
