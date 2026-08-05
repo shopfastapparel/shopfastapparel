@@ -155,8 +155,13 @@ function AdminQuotes() {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="font-display text-3xl">Quote Requests</h1>
-          <p className="text-muted-foreground">Manage quotes and send mockups</p>
+          <p className="text-muted-foreground">Manage quotes, custom orders, and group collections</p>
         </div>
+        <Button asChild variant="outline" className="shadow-sm border-2 border-magenta-brand text-magenta-brand hover:bg-magenta-brand hover:text-white font-bold">
+          <a href="/group/new-heights-youth-admin" target="_blank" rel="noopener noreferrer">
+            ⛪ View New Heights Group Tracker
+          </a>
+        </Button>
       </div>
 
       <div className="bg-card border rounded-xl overflow-hidden shadow-pop">
