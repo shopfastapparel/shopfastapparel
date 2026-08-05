@@ -27,6 +27,17 @@ export const Route = createFileRoute("/group/new-heights-youth-admin")({
     ],
   }),
   component: NewHeightsGroupAdminDashboard,
+  errorComponent: ({ error }) => (
+    <SiteLayout>
+      <div className="p-8 text-center max-w-md mx-auto my-16 bg-red-50 border-2 border-red-200 rounded-xl shadow-pop">
+        <h2 className="font-display text-2xl font-bold text-red-600 mb-2">Dashboard Error</h2>
+        <p className="text-sm text-red-700 font-mono mb-4">{error.message}</p>
+        <Button onClick={() => window.location.reload()} className="bg-red-600 hover:bg-red-700 text-white font-bold">
+          Reload Dashboard
+        </Button>
+      </div>
+    </SiteLayout>
+  ),
 });
 
 interface Submission {
@@ -102,7 +113,14 @@ function NewHeightsGroupAdminDashboard() {
         .limit(1);
 
       if (data && data.length > 0 && data[0].notes) {
-        setOptionPrices(JSON.parse(data[0].notes));
+        try {
+          const parsed = JSON.parse(data[0].notes);
+          if (parsed && typeof parsed === "object") {
+            setOptionPrices((prev) => ({ ...prev, ...parsed }));
+          }
+        } catch (pErr) {
+          console.error("JSON parse option prices error:", pErr);
+        }
       }
     } catch (err) {
       console.error("Error fetching option prices:", err);
@@ -178,11 +196,11 @@ function NewHeightsGroupAdminDashboard() {
 
       const parsed: ParsedSubmission[] = (data || []).map((row: any) => {
         const notesText = row.notes || "";
-        const lines = notesText.split("\n");
+        const lines = typeof notesText === "string" ? notesText.split("\n") : [];
         const items: ParsedItem[] = [];
 
         lines.forEach((line: string) => {
-          if (line.includes("Option") && line.includes("Size:")) {
+          if (line && line.includes("Option") && line.includes("Size:")) {
             try {
               const optNameMatch = line.match(/(Option \d:[^\(]+)/);
               const colorMatch = line.match(/\(([^\)]+)\)/);
@@ -193,7 +211,7 @@ function NewHeightsGroupAdminDashboard() {
                 optionName: optNameMatch ? optNameMatch[1].trim() : "Custom Option",
                 color: colorMatch ? colorMatch[1].trim() : "Standard",
                 size: sizeMatch ? sizeMatch[1].trim() : "Standard",
-                quantity: qtyMatch ? parseInt(qtyMatch[1]) : 1,
+                quantity: qtyMatch ? parseInt(qtyMatch[1]) || 1 : 1,
               });
             } catch (err) {
               console.error("Parse line error:", err);
@@ -201,18 +219,27 @@ function NewHeightsGroupAdminDashboard() {
           }
         });
 
+        let formattedDate = "Recently";
+        try {
+          if (row.created_at) {
+            formattedDate = new Date(row.created_at).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+          }
+        } catch (dErr) {
+          console.error("Date format error:", dErr);
+        }
+
         return {
-          id: row.id,
-          createdAt: new Date(row.created_at).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
+          id: String(row.id || Math.random()),
+          createdAt: formattedDate,
           memberName: row.name || "Anonymous",
           memberEmail: row.email || "",
           memberPhone: row.phone || "",
-          totalGarments: parseInt(row.quantity) || items.reduce((s, i) => s + i.quantity, 0),
+          totalGarments: parseInt(row.quantity) || items.reduce((s, i) => s + (i.quantity || 0), 0),
           rawNotes: notesText,
           items,
         };
@@ -239,23 +266,30 @@ function NewHeightsGroupAdminDashboard() {
   let grandTotalGarments = 0;
   let exactTotalCost = 0;
 
-  submissions.forEach((sub) => {
+  const safeOptionPrices = optionPrices && typeof optionPrices === "object" ? optionPrices : {};
+
+  (submissions || []).forEach((sub) => {
+    if (!sub || !Array.isArray(sub.items)) return;
+
     sub.items.forEach((item) => {
-      const optKey = item.optionName;
+      if (!item) return;
+      const optKey = item.optionName || "Custom Option";
       if (!optionTallies[optKey]) {
         optionTallies[optKey] = {};
       }
-      optionTallies[optKey][item.size] = (optionTallies[optKey][item.size] || 0) + item.quantity;
-      grandTotalGarments += item.quantity;
+      const itemSize = item.size || "Standard";
+      const itemQty = item.quantity || 1;
+      optionTallies[optKey][itemSize] = (optionTallies[optKey][itemSize] || 0) + itemQty;
+      grandTotalGarments += itemQty;
 
       // Calculate cost per item based on option mapping
       let price = 15.00;
-      if (optKey.includes("Option 1")) price = optionPrices["option-1"] || 25.00;
-      else if (optKey.includes("Option 2")) price = optionPrices["option-2"] || 15.00;
-      else if (optKey.includes("Option 3")) price = optionPrices["option-3"] || 16.00;
-      else if (optKey.includes("Option 6")) price = optionPrices["option-6"] || 15.00;
+      if (optKey.includes("Option 1")) price = safeOptionPrices["option-1"] ?? 25.00;
+      else if (optKey.includes("Option 2")) price = safeOptionPrices["option-2"] ?? 15.00;
+      else if (optKey.includes("Option 3")) price = safeOptionPrices["option-3"] ?? 16.00;
+      else if (optKey.includes("Option 6")) price = safeOptionPrices["option-6"] ?? 15.00;
 
-      exactTotalCost += price * item.quantity;
+      exactTotalCost += price * itemQty;
     });
   });
 
