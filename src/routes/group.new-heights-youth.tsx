@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { CheckCircle2, ShoppingBag, Plus, Trash2, Church, Sparkles, Send, Calendar, ZoomIn, X } from "lucide-react";
 
-export const Route = createFileRoute("/new-heights-youth")({
+export const Route = createFileRoute("/group/new-heights-youth")({
   head: () => ({
     meta: [
       { title: "New Heights Youth Custom Apparel Order Form | Fast Apparel" },
