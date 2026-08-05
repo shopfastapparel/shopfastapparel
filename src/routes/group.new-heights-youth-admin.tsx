@@ -287,12 +287,21 @@ function NewHeightsGroupAdminDashboard() {
       optionTallies[optKey][itemSize] = (optionTallies[optKey][itemSize] || 0) + itemQty;
       grandTotalGarments += itemQty;
 
-      // Calculate cost per item based on option mapping
+      // Calculate cost per item based on option mapping and size tier
       let price = 15.00;
-      if (optKey.includes("Option 1")) price = safeOptionPrices["option-1"] ?? 25.00;
-      else if (optKey.includes("Option 2")) price = safeOptionPrices["option-2"] ?? 15.00;
-      else if (optKey.includes("Option 3")) price = safeOptionPrices["option-3"] ?? 16.00;
-      else if (optKey.includes("Option 6")) price = safeOptionPrices["option-6"] ?? 15.00;
+      const isOption1 = optKey.includes("Option 1");
+      const cleanSize = (itemSize || "").trim().toUpperCase();
+
+      if (isOption1) {
+        if (cleanSize.includes("2XL")) price = 27.00;
+        else if (cleanSize.includes("3XL")) price = 30.00;
+        else price = 24.00;
+      } else {
+        // Options 2, 3, 6
+        if (cleanSize.includes("2XL")) price = 17.00;
+        else if (cleanSize.includes("3XL")) price = 19.00;
+        else price = 15.00;
+      }
 
       exactTotalCost += price * itemQty;
     });
@@ -441,36 +450,52 @@ function NewHeightsGroupAdminDashboard() {
                   <span className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
                     Option 1 (Indigo Sweatshirt)
                   </span>
-                  <span className="font-display text-2xl font-bold text-foreground">
-                    ${(optionPrices["option-1"] || 25.00).toFixed(2)} <span className="text-xs font-normal text-muted-foreground">/ ea</span>
+                  <span className="font-display text-xl font-bold text-foreground block mb-1">
+                    $24.00 <span className="text-xs font-normal text-muted-foreground">(YS–XL)</span>
                   </span>
+                  <div className="text-xs text-muted-foreground space-y-0.5 border-t border-border/50 pt-1.5 mt-1.5">
+                    <div>2XL: <strong className="text-foreground">$27.00</strong></div>
+                    <div>3XL: <strong className="text-foreground">$30.00</strong></div>
+                  </div>
                 </div>
 
                 <div className="bg-muted/40 p-4 rounded-xl border border-ink/40">
                   <span className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
                     Option 2 (Sage Green Tee)
                   </span>
-                  <span className="font-display text-2xl font-bold text-foreground">
-                    ${(optionPrices["option-2"] || 15.00).toFixed(2)} <span className="text-xs font-normal text-muted-foreground">/ ea</span>
+                  <span className="font-display text-xl font-bold text-foreground block mb-1">
+                    $15.00 <span className="text-xs font-normal text-muted-foreground">(YS–XL)</span>
                   </span>
+                  <div className="text-xs text-muted-foreground space-y-0.5 border-t border-border/50 pt-1.5 mt-1.5">
+                    <div>2XL: <strong className="text-foreground">$17.00</strong></div>
+                    <div>3XL: <strong className="text-foreground">$19.00</strong></div>
+                  </div>
                 </div>
 
                 <div className="bg-muted/40 p-4 rounded-xl border border-ink/40">
                   <span className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
                     Option 3 (Black Shield Tee)
                   </span>
-                  <span className="font-display text-2xl font-bold text-foreground">
-                    ${(optionPrices["option-3"] || 16.00).toFixed(2)} <span className="text-xs font-normal text-muted-foreground">/ ea</span>
+                  <span className="font-display text-xl font-bold text-foreground block mb-1">
+                    $15.00 <span className="text-xs font-normal text-muted-foreground">(YS–XL)</span>
                   </span>
+                  <div className="text-xs text-muted-foreground space-y-0.5 border-t border-border/50 pt-1.5 mt-1.5">
+                    <div>2XL: <strong className="text-foreground">$17.00</strong></div>
+                    <div>3XL: <strong className="text-foreground">$19.00</strong></div>
+                  </div>
                 </div>
 
                 <div className="bg-muted/40 p-4 rounded-xl border border-ink/40">
                   <span className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
                     Option 6 (Purple Floral Tee)
                   </span>
-                  <span className="font-display text-2xl font-bold text-foreground">
-                    ${(optionPrices["option-6"] || 15.00).toFixed(2)} <span className="text-xs font-normal text-muted-foreground">/ ea</span>
+                  <span className="font-display text-xl font-bold text-foreground block mb-1">
+                    $15.00 <span className="text-xs font-normal text-muted-foreground">(YS–XL)</span>
                   </span>
+                  <div className="text-xs text-muted-foreground space-y-0.5 border-t border-border/50 pt-1.5 mt-1.5">
+                    <div>2XL: <strong className="text-foreground">$17.00</strong></div>
+                    <div>3XL: <strong className="text-foreground">$19.00</strong></div>
+                  </div>
                 </div>
               </div>
             </div>
