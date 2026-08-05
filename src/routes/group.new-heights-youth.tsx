@@ -311,9 +311,6 @@ ${notes || "None"}
                           <span className="absolute top-3 left-3 bg-yellow-brand text-ink text-xs font-bold px-2.5 py-1 rounded border border-ink shadow-sm">
                             {option.badge}
                           </span>
-                          <span className="absolute top-3 right-3 bg-magenta-brand text-white text-xs font-bold px-2 py-1 rounded border border-ink shadow-sm">
-                            ${(optionPrices[option.id] || 15.00).toFixed(2)}
-                          </span>
                           <div className="absolute inset-0 bg-ink/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white gap-1.5 font-bold text-sm backdrop-blur-[2px]">
                             <ZoomIn className="w-5 h-5 text-yellow-brand" /> Click to Enlarge
                           </div>

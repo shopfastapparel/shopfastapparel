@@ -381,112 +381,57 @@ function NewHeightsGroupAdminDashboard() {
               </form>
             </div>
 
-            {/* Option Pricing Control Card */}
+            {/* Option Pricing Summary Card (Read-Only for Admin, set by Shop) */}
             <div className="bg-card border-2 border-ink rounded-xl p-6 shadow-pop">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-border">
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-cyan-brand">
-                    Custom Pricing Configuration
+                    Shop Pricing Breakdown
                   </span>
                   <h3 className="font-display text-2xl font-bold text-foreground mt-1">
-                    Set Price per Shirt Option
+                    Group Shirt Unit Pricing
                   </h3>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Set the exact selling price for each shirt design to calculate running group totals automatically.
+                    Item pricing established by Fast Apparel for New Heights Youth Group collection.
                   </p>
                 </div>
-                <Button
-                  onClick={handleSavePrices}
-                  disabled={savingPrices}
-                  className="bg-magenta-brand text-white font-bold shadow-sm h-12 px-6"
-                >
-                  {savingPrices ? "Saving Prices..." : "Save Option Prices"}
-                </Button>
               </div>
 
               <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-muted/40 p-3.5 rounded-xl border border-ink/40">
-                  <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-1">
+                <div className="bg-muted/40 p-4 rounded-xl border border-ink/40">
+                  <span className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
                     Option 1 (Indigo Sweatshirt)
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-2.5 font-bold text-muted-foreground">$</span>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={optionPrices["option-1"] || 25.00}
-                      onChange={(e) =>
-                        setOptionPrices((prev) => ({
-                          ...prev,
-                          "option-1": parseFloat(e.target.value) || 0,
-                        }))
-                      }
-                      className="pl-7 font-bold text-base border-2 border-ink bg-background"
-                    />
-                  </div>
+                  </span>
+                  <span className="font-display text-2xl font-bold text-foreground">
+                    ${(optionPrices["option-1"] || 25.00).toFixed(2)} <span className="text-xs font-normal text-muted-foreground">/ ea</span>
+                  </span>
                 </div>
 
-                <div className="bg-muted/40 p-3.5 rounded-xl border border-ink/40">
-                  <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-1">
+                <div className="bg-muted/40 p-4 rounded-xl border border-ink/40">
+                  <span className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
                     Option 2 (Sage Green Tee)
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-2.5 font-bold text-muted-foreground">$</span>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={optionPrices["option-2"] || 15.00}
-                      onChange={(e) =>
-                        setOptionPrices((prev) => ({
-                          ...prev,
-                          "option-2": parseFloat(e.target.value) || 0,
-                        }))
-                      }
-                      className="pl-7 font-bold text-base border-2 border-ink bg-background"
-                    />
-                  </div>
+                  </span>
+                  <span className="font-display text-2xl font-bold text-foreground">
+                    ${(optionPrices["option-2"] || 15.00).toFixed(2)} <span className="text-xs font-normal text-muted-foreground">/ ea</span>
+                  </span>
                 </div>
 
-                <div className="bg-muted/40 p-3.5 rounded-xl border border-ink/40">
-                  <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-1">
+                <div className="bg-muted/40 p-4 rounded-xl border border-ink/40">
+                  <span className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
                     Option 3 (Black Shield Tee)
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-2.5 font-bold text-muted-foreground">$</span>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={optionPrices["option-3"] || 16.00}
-                      onChange={(e) =>
-                        setOptionPrices((prev) => ({
-                          ...prev,
-                          "option-3": parseFloat(e.target.value) || 0,
-                        }))
-                      }
-                      className="pl-7 font-bold text-base border-2 border-ink bg-background"
-                    />
-                  </div>
+                  </span>
+                  <span className="font-display text-2xl font-bold text-foreground">
+                    ${(optionPrices["option-3"] || 16.00).toFixed(2)} <span className="text-xs font-normal text-muted-foreground">/ ea</span>
+                  </span>
                 </div>
 
-                <div className="bg-muted/40 p-3.5 rounded-xl border border-ink/40">
-                  <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-1">
+                <div className="bg-muted/40 p-4 rounded-xl border border-ink/40">
+                  <span className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
                     Option 6 (Purple Floral Tee)
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-2.5 font-bold text-muted-foreground">$</span>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={optionPrices["option-6"] || 15.00}
-                      onChange={(e) =>
-                        setOptionPrices((prev) => ({
-                          ...prev,
-                          "option-6": parseFloat(e.target.value) || 0,
-                        }))
-                      }
-                      className="pl-7 font-bold text-base border-2 border-ink bg-background"
-                    />
-                  </div>
+                  </span>
+                  <span className="font-display text-2xl font-bold text-foreground">
+                    ${(optionPrices["option-6"] || 15.00).toFixed(2)} <span className="text-xs font-normal text-muted-foreground">/ ea</span>
+                  </span>
                 </div>
               </div>
             </div>
