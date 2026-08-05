@@ -293,7 +293,7 @@ function NewHeightsGroupAdminDashboard() {
             <form onSubmit={handleLogin} className="space-y-4">
               <Input
                 type="password"
-                placeholder="Enter Passcode (e.g. NEWHEIGHTS2026)"
+                placeholder="Enter Admin Passcode"
                 value={passcodeInput}
                 onChange={(e) => setPasscodeInput(e.target.value)}
                 className="border-2 border-ink h-12 text-center text-lg font-mono uppercase"
@@ -302,9 +302,6 @@ function NewHeightsGroupAdminDashboard() {
                 Unlock Dashboard
               </Button>
             </form>
-            <p className="text-xs text-muted-foreground mt-4">
-              Organizer Passcode: <code className="bg-muted px-2 py-1 rounded font-bold text-ink">NEWHEIGHTS2026</code>
-            </p>
           </div>
         ) : (
           <div className="space-y-10">
