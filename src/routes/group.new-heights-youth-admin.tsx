@@ -99,16 +99,28 @@ function NewHeightsGroupAdminDashboard() {
   });
   const [savingPrices, setSavingPrices] = useState(false);
 
-  // Edit / Delete Modal state
+  // Edit Modal state
   const [editingSub, setEditingSub] = useState<ParsedSubmission | null>(null);
   const [editName, setEditName] = useState("");
   const [editEmail, setEditEmail] = useState("");
   const [editPhone, setEditPhone] = useState("");
-  const [editQty, setEditQty] = useState("");
-  const [editDetails, setEditDetails] = useState("");
+  const [editItems, setEditItems] = useState<ParsedItem[]>([]);
+  const [editNotes, setEditNotes] = useState("");
   const [savingEdit, setSavingEdit] = useState(false);
   const [deletingSub, setDeletingSub] = useState<ParsedSubmission | null>(null);
   const [deletingLoading, setDeletingLoading] = useState(false);
+
+  const GROUP_OPTIONS = [
+    { name: "Option 1: Indigo Sweatshirt", color: "Indigo Blue" },
+    { name: "Option 2: Sage Green Tee", color: "Sage Green" },
+    { name: "Option 3: Black Shield Tee", color: "Black" },
+    { name: "Option 6: Purple Floral Tee", color: "Purple" },
+  ];
+
+  const GROUP_SIZES = [
+    "Youth S", "Youth M", "Youth L", "Youth XL",
+    "Adult S", "Adult M", "Adult L", "Adult XL", "Adult 2XL", "Adult 3XL"
+  ];
 
   const confirmDeleteSubmission = async () => {
     if (!deletingSub) return;
@@ -138,23 +150,75 @@ function NewHeightsGroupAdminDashboard() {
     setEditName(sub.memberName);
     setEditEmail(sub.memberEmail);
     setEditPhone(sub.memberPhone);
-    setEditQty(sub.totalGarments.toString());
-    setEditDetails(sub.rawNotes);
+    setEditItems(
+      sub.items.length > 0
+        ? sub.items.map((it) => ({ ...it }))
+        : [{ optionName: "Option 1: Indigo Sweatshirt", color: "Indigo Blue", size: "Adult M", quantity: 1 }]
+    );
+    setEditNotes("");
   };
+
+  const handleAddEditItemRow = () => {
+    setEditItems((prev) => [
+      ...prev,
+      { optionName: "Option 2: Sage Green Tee", color: "Sage Green", size: "Adult M", quantity: 1 },
+    ]);
+  };
+
+  const handleRemoveEditItemRow = (index: number) => {
+    setEditItems((prev) => prev.filter((_, idx) => idx !== index));
+  };
+
+  const handleUpdateEditItemRow = (index: number, field: keyof ParsedItem, value: any) => {
+    setEditItems((prev) =>
+      prev.map((item, idx) => {
+        if (idx !== index) return item;
+        const updated = { ...item, [field]: value };
+        if (field === "optionName") {
+          const matchOpt = GROUP_OPTIONS.find((g) => g.name === value);
+          if (matchOpt) {
+            updated.color = matchOpt.color;
+          }
+        }
+        return updated;
+      })
+    );
+  };
+
+  const editTotalGarments = editItems.reduce((sum, it) => sum + (Number(it.quantity) || 1), 0);
 
   const handleSaveEdit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingSub) return;
     setSavingEdit(true);
     try {
+      const summaryItems = editItems.map((item) => {
+        return `${item.optionName} (${item.color || "Standard"}) — Size: ${item.size}, Qty: ${item.quantity}`;
+      });
+
+      const formattedDetails = `
+NEW HEIGHTS YOUTH COLLECTION SUBMISSION:
+------------------------------------------
+Name: ${editName}
+Email: ${editEmail}
+Phone: ${editPhone}
+Total Garments: ${editTotalGarments}
+
+SELECTIONS:
+${summaryItems.map((s, idx) => `${idx + 1}. ${s}`).join("\n")}
+
+Additional Notes:
+${editNotes || "None"}
+      `.trim();
+
       const { error } = await supabase
         .from("quote_requests")
         .update({
           name: editName,
           email: editEmail,
           phone: editPhone,
-          quantity: editQty,
-          details: editDetails,
+          quantity: editTotalGarments.toString(),
+          details: formattedDetails,
         })
         .eq("id", editingSub.id);
 
@@ -944,8 +1008,9 @@ function NewHeightsGroupAdminDashboard() {
               </button>
             </div>
 
-            <form onSubmit={handleSaveEdit} className="p-6 space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <form onSubmit={handleSaveEdit} className="p-6 space-y-6">
+              {/* Member Details */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-4 border-b border-border">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
                     Member Name
@@ -955,18 +1020,6 @@ function NewHeightsGroupAdminDashboard() {
                     required
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
-                    className="border-2 border-ink font-semibold"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
-                    Total Garments Count
-                  </label>
-                  <Input
-                    type="text"
-                    required
-                    value={editQty}
-                    onChange={(e) => setEditQty(e.target.value)}
                     className="border-2 border-ink font-semibold"
                   />
                 </div>
@@ -996,18 +1049,114 @@ function NewHeightsGroupAdminDashboard() {
                 </div>
               </div>
 
+              {/* Garment Choices Visual Editor */}
+              <div>
+                <div className="flex items-center justify-between gap-4 mb-3">
+                  <div>
+                    <h4 className="font-bold text-base text-foreground">Ordered Shirts & Garment Sizes</h4>
+                    <p className="text-xs text-muted-foreground">Quickly add, modify, or remove options and sizes for this member.</p>
+                  </div>
+                  <span className="bg-magenta-brand text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">
+                    Total: {editTotalGarments} Garments
+                  </span>
+                </div>
+
+                <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
+                  {editItems.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-muted/40 border-2 border-ink/40 rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm"
+                    >
+                      <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        {/* Option Select */}
+                        <div>
+                          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                            Garment Option
+                          </label>
+                          <select
+                            value={item.optionName}
+                            onChange={(e) => handleUpdateEditItemRow(idx, "optionName", e.target.value)}
+                            className="w-full h-10 px-2.5 rounded-lg border-2 border-ink bg-background text-xs font-bold text-foreground"
+                          >
+                            {GROUP_OPTIONS.map((opt) => (
+                              <option key={opt.name} value={opt.name}>
+                                {opt.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        {/* Size Select */}
+                        <div>
+                          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                            Size
+                          </label>
+                          <select
+                            value={item.size}
+                            onChange={(e) => handleUpdateEditItemRow(idx, "size", e.target.value)}
+                            className="w-full h-10 px-2.5 rounded-lg border-2 border-ink bg-background text-xs font-bold text-foreground"
+                          >
+                            {GROUP_SIZES.map((sz) => (
+                              <option key={sz} value={sz}>
+                                {sz}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        {/* Quantity Input */}
+                        <div>
+                          <label className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                            Quantity
+                          </label>
+                          <Input
+                            type="number"
+                            min="1"
+                            value={item.quantity}
+                            onChange={(e) => handleUpdateEditItemRow(idx, "quantity", parseInt(e.target.value) || 1)}
+                            className="h-10 border-2 border-ink text-xs font-bold"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Remove Button */}
+                      {editItems.length > 1 && (
+                        <Button
+                          type="button"
+                          size="icon"
+                          variant="ghost"
+                          onClick={() => handleRemoveEditItemRow(idx)}
+                          className="h-9 w-9 text-red-500 hover:text-red-700 hover:bg-red-50 self-end sm:self-center shrink-0"
+                          title="Remove item"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleAddEditItemRow}
+                  className="w-full mt-3 font-bold border-dashed border-2 border-ink hover:bg-cyan-brand/10 text-xs py-2 h-10"
+                >
+                  + Add Another Shirt Option To This Order
+                </Button>
+              </div>
+
+              {/* Optional Notes */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
-                  Submission Details & Item Selections
+                  Organizer Admin Notes (Optional)
                 </label>
-                <p className="text-xs text-muted-foreground mb-2">
-                  Each item line should follow: <code className="bg-muted px-1 rounded">1. Option X: Name (Color) — Size: Adult M, Qty: 2</code>
-                </p>
-                <Textarea
-                  rows={8}
-                  value={editDetails}
-                  onChange={(e) => setEditDetails(e.target.value)}
-                  className="border-2 border-ink font-mono text-xs leading-relaxed"
+                <Input
+                  type="text"
+                  placeholder="e.g. Member paid in person or requested special size adjustment"
+                  value={editNotes}
+                  onChange={(e) => setEditNotes(e.target.value)}
+                  className="border-2 border-ink text-xs font-medium"
                 />
               </div>
 
