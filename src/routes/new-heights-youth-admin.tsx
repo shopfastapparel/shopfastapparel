@@ -16,7 +16,7 @@ import {
   PieChart
 } from "lucide-react";
 
-export const Route = createFileRoute("/group-dashboard/new-heights-youth")({
+export const Route = createFileRoute("/new-heights-youth-admin")({
   head: () => ({
     meta: [
       { title: "New Heights Youth Group Admin Dashboard | Fast Apparel" },

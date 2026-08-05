@@ -17,6 +17,8 @@ import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as ReturnsRouteImport } from './routes/returns'
 import { Route as QuoteRouteImport } from './routes/quote'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as NewHeightsYouthAdminRouteImport } from './routes/new-heights-youth-admin'
+import { Route as NewHeightsYouthRouteImport } from './routes/new-heights-youth'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ImagePlacementsRouteImport } from './routes/image-placements'
 import { Route as FaqRouteImport } from './routes/faq'
@@ -37,8 +39,6 @@ import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as LandingCustomShirtsRouteImport } from './routes/landing.custom-shirts'
 import { Route as LandingBundleDealRouteImport } from './routes/landing.bundle-deal'
 import { Route as LandingBulkPrintingRouteImport } from './routes/landing.bulk-printing'
-import { Route as GroupNewHeightsYouthRouteImport } from './routes/group.new-heights-youth'
-import { Route as GroupDashboardNewHeightsYouthRouteImport } from './routes/group-dashboard.new-heights-youth'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
 import { Route as AdminSalesRouteImport } from './routes/admin.sales'
@@ -90,6 +90,16 @@ const QuoteRoute = QuoteRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewHeightsYouthAdminRoute = NewHeightsYouthAdminRouteImport.update({
+  id: '/new-heights-youth-admin',
+  path: '/new-heights-youth-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewHeightsYouthRoute = NewHeightsYouthRouteImport.update({
+  id: '/new-heights-youth',
+  path: '/new-heights-youth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -193,17 +203,6 @@ const LandingBulkPrintingRoute = LandingBulkPrintingRouteImport.update({
   path: '/landing/bulk-printing',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GroupNewHeightsYouthRoute = GroupNewHeightsYouthRouteImport.update({
-  id: '/group/new-heights-youth',
-  path: '/group/new-heights-youth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GroupDashboardNewHeightsYouthRoute =
-  GroupDashboardNewHeightsYouthRouteImport.update({
-    id: '/group-dashboard/new-heights-youth',
-    path: '/group-dashboard/new-heights-youth',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
@@ -274,6 +273,8 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/image-placements': typeof ImagePlacementsRoute
   '/login': typeof LoginRoute
+  '/new-heights-youth': typeof NewHeightsYouthRoute
+  '/new-heights-youth-admin': typeof NewHeightsYouthAdminRoute
   '/privacy': typeof PrivacyRoute
   '/quote': typeof QuoteRoute
   '/returns': typeof ReturnsRoute
@@ -290,8 +291,6 @@ export interface FileRoutesByFullPath {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/group-dashboard/new-heights-youth': typeof GroupDashboardNewHeightsYouthRoute
-  '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
@@ -318,6 +317,8 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/image-placements': typeof ImagePlacementsRoute
   '/login': typeof LoginRoute
+  '/new-heights-youth': typeof NewHeightsYouthRoute
+  '/new-heights-youth-admin': typeof NewHeightsYouthAdminRoute
   '/privacy': typeof PrivacyRoute
   '/quote': typeof QuoteRoute
   '/returns': typeof ReturnsRoute
@@ -334,8 +335,6 @@ export interface FileRoutesByTo {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/group-dashboard/new-heights-youth': typeof GroupDashboardNewHeightsYouthRoute
-  '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
@@ -363,6 +362,8 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/image-placements': typeof ImagePlacementsRoute
   '/login': typeof LoginRoute
+  '/new-heights-youth': typeof NewHeightsYouthRoute
+  '/new-heights-youth-admin': typeof NewHeightsYouthAdminRoute
   '/privacy': typeof PrivacyRoute
   '/quote': typeof QuoteRoute
   '/returns': typeof ReturnsRoute
@@ -379,8 +380,6 @@ export interface FileRoutesById {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/group-dashboard/new-heights-youth': typeof GroupDashboardNewHeightsYouthRoute
-  '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
@@ -409,6 +408,8 @@ export interface FileRouteTypes {
     | '/faq'
     | '/image-placements'
     | '/login'
+    | '/new-heights-youth'
+    | '/new-heights-youth-admin'
     | '/privacy'
     | '/quote'
     | '/returns'
@@ -425,8 +426,6 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/blog/$slug'
-    | '/group-dashboard/new-heights-youth'
-    | '/group/new-heights-youth'
     | '/landing/bulk-printing'
     | '/landing/bundle-deal'
     | '/landing/custom-shirts'
@@ -453,6 +452,8 @@ export interface FileRouteTypes {
     | '/faq'
     | '/image-placements'
     | '/login'
+    | '/new-heights-youth'
+    | '/new-heights-youth-admin'
     | '/privacy'
     | '/quote'
     | '/returns'
@@ -469,8 +470,6 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/blog/$slug'
-    | '/group-dashboard/new-heights-youth'
-    | '/group/new-heights-youth'
     | '/landing/bulk-printing'
     | '/landing/bundle-deal'
     | '/landing/custom-shirts'
@@ -497,6 +496,8 @@ export interface FileRouteTypes {
     | '/faq'
     | '/image-placements'
     | '/login'
+    | '/new-heights-youth'
+    | '/new-heights-youth-admin'
     | '/privacy'
     | '/quote'
     | '/returns'
@@ -513,8 +514,6 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/blog/$slug'
-    | '/group-dashboard/new-heights-youth'
-    | '/group/new-heights-youth'
     | '/landing/bulk-printing'
     | '/landing/bundle-deal'
     | '/landing/custom-shirts'
@@ -542,6 +541,8 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   ImagePlacementsRoute: typeof ImagePlacementsRoute
   LoginRoute: typeof LoginRoute
+  NewHeightsYouthRoute: typeof NewHeightsYouthRoute
+  NewHeightsYouthAdminRoute: typeof NewHeightsYouthAdminRoute
   PrivacyRoute: typeof PrivacyRoute
   QuoteRoute: typeof QuoteRoute
   ReturnsRoute: typeof ReturnsRoute
@@ -558,8 +559,6 @@ export interface RootRouteChildren {
   AdminSalesRoute: typeof AdminSalesRoute
   AdminSubscribersRoute: typeof AdminSubscribersRoute
   BlogSlugRoute: typeof BlogSlugRoute
-  GroupDashboardNewHeightsYouthRoute: typeof GroupDashboardNewHeightsYouthRoute
-  GroupNewHeightsYouthRoute: typeof GroupNewHeightsYouthRoute
   LandingBulkPrintingRoute: typeof LandingBulkPrintingRoute
   LandingBundleDealRoute: typeof LandingBundleDealRoute
   LandingCustomShirtsRoute: typeof LandingCustomShirtsRoute
@@ -635,6 +634,20 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new-heights-youth-admin': {
+      id: '/new-heights-youth-admin'
+      path: '/new-heights-youth-admin'
+      fullPath: '/new-heights-youth-admin'
+      preLoaderRoute: typeof NewHeightsYouthAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new-heights-youth': {
+      id: '/new-heights-youth'
+      path: '/new-heights-youth'
+      fullPath: '/new-heights-youth'
+      preLoaderRoute: typeof NewHeightsYouthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -777,20 +790,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LandingBulkPrintingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/group/new-heights-youth': {
-      id: '/group/new-heights-youth'
-      path: '/group/new-heights-youth'
-      fullPath: '/group/new-heights-youth'
-      preLoaderRoute: typeof GroupNewHeightsYouthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/group-dashboard/new-heights-youth': {
-      id: '/group-dashboard/new-heights-youth'
-      path: '/group-dashboard/new-heights-youth'
-      fullPath: '/group-dashboard/new-heights-youth'
-      preLoaderRoute: typeof GroupDashboardNewHeightsYouthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/blog/$slug'
@@ -886,6 +885,8 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   ImagePlacementsRoute: ImagePlacementsRoute,
   LoginRoute: LoginRoute,
+  NewHeightsYouthRoute: NewHeightsYouthRoute,
+  NewHeightsYouthAdminRoute: NewHeightsYouthAdminRoute,
   PrivacyRoute: PrivacyRoute,
   QuoteRoute: QuoteRoute,
   ReturnsRoute: ReturnsRoute,
@@ -902,8 +903,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSalesRoute: AdminSalesRoute,
   AdminSubscribersRoute: AdminSubscribersRoute,
   BlogSlugRoute: BlogSlugRoute,
-  GroupDashboardNewHeightsYouthRoute: GroupDashboardNewHeightsYouthRoute,
-  GroupNewHeightsYouthRoute: GroupNewHeightsYouthRoute,
   LandingBulkPrintingRoute: LandingBulkPrintingRoute,
   LandingBundleDealRoute: LandingBundleDealRoute,
   LandingCustomShirtsRoute: LandingCustomShirtsRoute,
