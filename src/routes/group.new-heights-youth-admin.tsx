@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { 
@@ -13,7 +14,11 @@ import {
   RefreshCw, 
   Church, 
   Lock, 
-  PieChart
+  PieChart,
+  Edit,
+  Trash2,
+  X,
+  Save
 } from "lucide-react";
 
 export const Route = createFileRoute("/group/new-heights-youth-admin")({
@@ -93,6 +98,71 @@ function NewHeightsGroupAdminDashboard() {
     "option-6": 15.00,
   });
   const [savingPrices, setSavingPrices] = useState(false);
+
+  // Edit / Delete Modal state
+  const [editingSub, setEditingSub] = useState<ParsedSubmission | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editEmail, setEditEmail] = useState("");
+  const [editPhone, setEditPhone] = useState("");
+  const [editQty, setEditQty] = useState("");
+  const [editDetails, setEditDetails] = useState("");
+  const [savingEdit, setSavingEdit] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const handleDeleteSubmission = async (id: string, name: string) => {
+    if (!window.confirm(`Are you sure you want to delete the submission for "${name}"?`)) {
+      return;
+    }
+    setDeletingId(id);
+    try {
+      const { error } = await supabase.from("quote_requests").delete().eq("id", id);
+      if (error) throw error;
+      toast.success(`Submission for "${name}" deleted.`);
+      fetchSubmissions();
+    } catch (err) {
+      console.error("Delete error:", err);
+      toast.error("Failed to delete submission.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const handleOpenEdit = (sub: ParsedSubmission) => {
+    setEditingSub(sub);
+    setEditName(sub.memberName);
+    setEditEmail(sub.memberEmail);
+    setEditPhone(sub.memberPhone);
+    setEditQty(sub.totalGarments.toString());
+    setEditDetails(sub.rawNotes);
+  };
+
+  const handleSaveEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingSub) return;
+    setSavingEdit(true);
+    try {
+      const { error } = await supabase
+        .from("quote_requests")
+        .update({
+          name: editName,
+          email: editEmail,
+          phone: editPhone,
+          quantity: editQty,
+          details: editDetails,
+        })
+        .eq("id", editingSub.id);
+
+      if (error) throw error;
+      toast.success("Order updated successfully!");
+      setEditingSub(null);
+      fetchSubmissions();
+    } catch (err) {
+      console.error("Edit save error:", err);
+      toast.error("Failed to save order updates.");
+    } finally {
+      setSavingEdit(false);
+    }
+  };
 
   const fetchDeadline = async () => {
     try {
@@ -738,6 +808,7 @@ function NewHeightsGroupAdminDashboard() {
                         <th className="p-3 font-bold uppercase tracking-wider text-xs">Contact</th>
                         <th className="p-3 font-bold uppercase tracking-wider text-xs">Shirts Chosen</th>
                         <th className="p-3 font-bold uppercase tracking-wider text-xs text-right">Qty</th>
+                        <th className="p-3 font-bold uppercase tracking-wider text-xs text-center">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
@@ -753,7 +824,7 @@ function NewHeightsGroupAdminDashboard() {
                           </td>
                           <td className="p-3 text-xs">
                             {sub.items.length === 0 ? (
-                              <span className="text-muted-foreground italic">Standard entry</span>
+                              <span className="text-muted-foreground italic">{sub.rawNotes || "Standard entry"}</span>
                             ) : (
                               <div className="space-y-1">
                                 {sub.items.map((it, i) => (
@@ -767,6 +838,29 @@ function NewHeightsGroupAdminDashboard() {
                           <td className="p-3 font-bold text-right text-base text-cyan-brand font-display">
                             {sub.totalGarments}
                           </td>
+                          <td className="p-3 text-center whitespace-nowrap">
+                            <div className="flex items-center justify-center gap-2">
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="outline"
+                                className="h-8 px-2.5 text-xs font-semibold border-ink hover:bg-cyan-brand/10"
+                                onClick={() => handleOpenEdit(sub)}
+                              >
+                                <Edit className="w-3.5 h-3.5 mr-1 text-cyan-brand" /> Edit
+                              </Button>
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="outline"
+                                className="h-8 px-2.5 text-xs font-semibold border-red-200 text-red-600 hover:bg-red-50 hover:border-red-500"
+                                disabled={deletingId === sub.id}
+                                onClick={() => handleDeleteSubmission(sub.id, sub.memberName)}
+                              >
+                                <Trash2 className="w-3.5 h-3.5 mr-1" /> Delete
+                              </Button>
+                            </div>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -777,6 +871,113 @@ function NewHeightsGroupAdminDashboard() {
           </div>
         )}
       </div>
+
+      {/* Edit Order Modal */}
+      {editingSub && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-in fade-in">
+          <div className="bg-card border-2 border-ink rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden my-8">
+            <div className="bg-ink text-background p-5 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Edit className="w-5 h-5 text-yellow-brand" />
+                <h3 className="font-display text-xl font-bold">Edit Member Submission</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEditingSub(null)}
+                className="text-white/70 hover:text-white p-1 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEdit} className="p-6 space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                    Member Name
+                  </label>
+                  <Input
+                    type="text"
+                    required
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    className="border-2 border-ink font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                    Total Garments Count
+                  </label>
+                  <Input
+                    type="text"
+                    required
+                    value={editQty}
+                    onChange={(e) => setEditQty(e.target.value)}
+                    className="border-2 border-ink font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                    Member Email
+                  </label>
+                  <Input
+                    type="email"
+                    required
+                    value={editEmail}
+                    onChange={(e) => setEditEmail(e.target.value)}
+                    className="border-2 border-ink font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                    Member Phone
+                  </label>
+                  <Input
+                    type="text"
+                    required
+                    value={editPhone}
+                    onChange={(e) => setEditPhone(e.target.value)}
+                    className="border-2 border-ink font-semibold"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                  Submission Details & Item Selections
+                </label>
+                <p className="text-xs text-muted-foreground mb-2">
+                  Each item line should follow: <code className="bg-muted px-1 rounded">1. Option X: Name (Color) — Size: Adult M, Qty: 2</code>
+                </p>
+                <Textarea
+                  rows={8}
+                  value={editDetails}
+                  onChange={(e) => setEditDetails(e.target.value)}
+                  className="border-2 border-ink font-mono text-xs leading-relaxed"
+                />
+              </div>
+
+              <div className="flex justify-end gap-3 pt-3 border-t border-border">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setEditingSub(null)}
+                  className="font-bold"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={savingEdit}
+                  className="bg-yellow-brand text-ink hover:bg-yellow-brand/90 font-bold shadow-sm px-6"
+                >
+                  <Save className="w-4 h-4 mr-2" /> {savingEdit ? "Saving..." : "Save Order Changes"}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </SiteLayout>
   );
 }
