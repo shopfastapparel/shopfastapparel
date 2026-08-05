@@ -38,7 +38,7 @@ const SHIRT_OPTIONS: ShirtOption[] = [
     garment: "Heavy Blend Crewneck Sweatshirt",
     color: "Indigo Blue",
     design: "Don't Worry... Instead / Peace of God Guard (White Print)",
-    image: "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/kaia-newheights-official-1-1785906634.png",
+    image: "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/nh-opt1.png",
     badge: "Sweatshirt",
   },
   {
@@ -47,7 +47,7 @@ const SHIRT_OPTIONS: ShirtOption[] = [
     garment: "Softstyle Lightweight Fitted Tee",
     color: "Sage Green",
     design: "Worry / Pray / Trust God / Experience Peace",
-    image: "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/kaia-newheights-official-2-1785906634.png",
+    image: "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/nh-opt2.png",
     badge: "T-Shirt",
   },
   {
@@ -56,7 +56,7 @@ const SHIRT_OPTIONS: ShirtOption[] = [
     garment: "Heavyweight Cotton Tee",
     color: "Black",
     design: "Tell Him / Thank Him Shield Logo & Back Scripture",
-    image: "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/kaia-newheights-official-3-1785906634.png",
+    image: "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/nh-opt3.png",
     badge: "T-Shirt",
   },
   {
@@ -65,7 +65,7 @@ const SHIRT_OPTIONS: ShirtOption[] = [
     garment: "Softstyle Lightweight Fitted Tee",
     color: "Purple",
     design: "Pray About Everything Floral Front & Back Scripture (White Print)",
-    image: "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/kaia-newheights-official-6-1785906634.png",
+    image: "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/nh-opt6.png",
     badge: "T-Shirt",
   },
 ];
