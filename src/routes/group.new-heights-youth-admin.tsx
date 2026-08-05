@@ -67,6 +67,13 @@ function NewHeightsGroupAdminDashboard() {
   const [filterQuery, setFilterQuery] = useState("");
   const [submitByDate, setSubmitByDate] = useState("August 20, 2026");
   const [savingDeadline, setSavingDeadline] = useState(false);
+  const [optionPrices, setOptionPrices] = useState<Record<string, number>>({
+    "option-1": 25.00,
+    "option-2": 15.00,
+    "option-3": 16.00,
+    "option-6": 15.00,
+  });
+  const [savingPrices, setSavingPrices] = useState(false);
 
   const fetchDeadline = async () => {
     try {
@@ -82,6 +89,46 @@ function NewHeightsGroupAdminDashboard() {
       }
     } catch (err) {
       console.error("Error fetching deadline:", err);
+    }
+  };
+
+  const fetchOptionPrices = async () => {
+    try {
+      const { data } = await supabase
+        .from("quote_requests")
+        .select("notes")
+        .eq("service", "New Heights Setting: Option Prices")
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+      if (data && data.length > 0 && data[0].notes) {
+        setOptionPrices(JSON.parse(data[0].notes));
+      }
+    } catch (err) {
+      console.error("Error fetching option prices:", err);
+    }
+  };
+
+  const handleSavePrices = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSavingPrices(true);
+    try {
+      const { error } = await supabase.from("quote_requests").insert([
+        {
+          name: "System Option Prices",
+          email: "system@shopfastapparel.com",
+          service: "New Heights Setting: Option Prices",
+          notes: JSON.stringify(optionPrices),
+          status: "Setting",
+        },
+      ]);
+      if (error) throw error;
+      toast.success("Option prices updated successfully!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to save option prices.");
+    } finally {
+      setSavingPrices(false);
     }
   };
 
@@ -184,11 +231,13 @@ function NewHeightsGroupAdminDashboard() {
     if (authenticated) {
       fetchSubmissions();
       fetchDeadline();
+      fetchOptionPrices();
     }
   }, [authenticated]);
 
   const optionTallies: Record<string, Record<string, number>> = {};
   let grandTotalGarments = 0;
+  let exactTotalCost = 0;
 
   submissions.forEach((sub) => {
     sub.items.forEach((item) => {
@@ -198,19 +247,19 @@ function NewHeightsGroupAdminDashboard() {
       }
       optionTallies[optKey][item.size] = (optionTallies[optKey][item.size] || 0) + item.quantity;
       grandTotalGarments += item.quantity;
+
+      // Calculate cost per item based on option mapping
+      let price = 15.00;
+      if (optKey.includes("Option 1")) price = optionPrices["option-1"] || 25.00;
+      else if (optKey.includes("Option 2")) price = optionPrices["option-2"] || 15.00;
+      else if (optKey.includes("Option 3")) price = optionPrices["option-3"] || 16.00;
+      else if (optKey.includes("Option 6")) price = optionPrices["option-6"] || 15.00;
+
+      exactTotalCost += price * item.quantity;
     });
   });
 
-  let unitPriceEstimate = 18.00;
-  if (grandTotalGarments >= 50) {
-    unitPriceEstimate = 14.00;
-  } else if (grandTotalGarments >= 24) {
-    unitPriceEstimate = 16.00;
-  } else if (grandTotalGarments >= 12) {
-    unitPriceEstimate = 17.50;
-  }
-
-  const estimatedTotalCost = (grandTotalGarments * unitPriceEstimate).toFixed(2);
+  const estimatedTotalCost = exactTotalCost > 0 ? exactTotalCost.toFixed(2) : "0.00";
 
   const handleExportCSV = () => {
     let csvContent = "data:text/csv;charset=utf-8,";
@@ -330,6 +379,116 @@ function NewHeightsGroupAdminDashboard() {
                   {savingDeadline ? "Saving..." : "Update Deadline"}
                 </Button>
               </form>
+            </div>
+
+            {/* Option Pricing Control Card */}
+            <div className="bg-card border-2 border-ink rounded-xl p-6 shadow-pop">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-border">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-cyan-brand">
+                    Custom Pricing Configuration
+                  </span>
+                  <h3 className="font-display text-2xl font-bold text-foreground mt-1">
+                    Set Price per Shirt Option
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Set the exact selling price for each shirt design to calculate running group totals automatically.
+                  </p>
+                </div>
+                <Button
+                  onClick={handleSavePrices}
+                  disabled={savingPrices}
+                  className="bg-magenta-brand text-white font-bold shadow-sm h-12 px-6"
+                >
+                  {savingPrices ? "Saving Prices..." : "Save Option Prices"}
+                </Button>
+              </div>
+
+              <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-muted/40 p-3.5 rounded-xl border border-ink/40">
+                  <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-1">
+                    Option 1 (Indigo Sweatshirt)
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-2.5 font-bold text-muted-foreground">$</span>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={optionPrices["option-1"] || 25.00}
+                      onChange={(e) =>
+                        setOptionPrices((prev) => ({
+                          ...prev,
+                          "option-1": parseFloat(e.target.value) || 0,
+                        }))
+                      }
+                      className="pl-7 font-bold text-base border-2 border-ink bg-background"
+                    />
+                  </div>
+                </div>
+
+                <div className="bg-muted/40 p-3.5 rounded-xl border border-ink/40">
+                  <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-1">
+                    Option 2 (Sage Green Tee)
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-2.5 font-bold text-muted-foreground">$</span>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={optionPrices["option-2"] || 15.00}
+                      onChange={(e) =>
+                        setOptionPrices((prev) => ({
+                          ...prev,
+                          "option-2": parseFloat(e.target.value) || 0,
+                        }))
+                      }
+                      className="pl-7 font-bold text-base border-2 border-ink bg-background"
+                    />
+                  </div>
+                </div>
+
+                <div className="bg-muted/40 p-3.5 rounded-xl border border-ink/40">
+                  <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-1">
+                    Option 3 (Black Shield Tee)
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-2.5 font-bold text-muted-foreground">$</span>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={optionPrices["option-3"] || 16.00}
+                      onChange={(e) =>
+                        setOptionPrices((prev) => ({
+                          ...prev,
+                          "option-3": parseFloat(e.target.value) || 0,
+                        }))
+                      }
+                      className="pl-7 font-bold text-base border-2 border-ink bg-background"
+                    />
+                  </div>
+                </div>
+
+                <div className="bg-muted/40 p-3.5 rounded-xl border border-ink/40">
+                  <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-1">
+                    Option 6 (Purple Floral Tee)
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-2.5 font-bold text-muted-foreground">$</span>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={optionPrices["option-6"] || 15.00}
+                      onChange={(e) =>
+                        setOptionPrices((prev) => ({
+                          ...prev,
+                          "option-6": parseFloat(e.target.value) || 0,
+                        }))
+                      }
+                      className="pl-7 font-bold text-base border-2 border-ink bg-background"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="grid sm:grid-cols-3 gap-6">

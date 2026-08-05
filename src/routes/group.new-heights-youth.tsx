@@ -100,25 +100,42 @@ function NewHeightsYouthCollectionPage() {
   const [submitted, setSubmitted] = useState(false);
   const [deadline, setDeadline] = useState("August 20, 2026");
   const [selectedMockup, setSelectedMockup] = useState<ShirtOption | null>(null);
+  const [optionPrices, setOptionPrices] = useState<Record<string, number>>({
+    "option-1": 25.00,
+    "option-2": 15.00,
+    "option-3": 16.00,
+    "option-6": 15.00,
+  });
 
   useEffect(() => {
-    async function loadDeadline() {
+    async function loadSettings() {
       try {
-        const { data } = await supabase
+        const { data: deadlineData } = await supabase
           .from("quote_requests")
           .select("notes")
           .eq("service", "New Heights Setting: Submit By Date")
           .order("created_at", { ascending: false })
           .limit(1);
 
-        if (data && data.length > 0 && data[0].notes) {
-          setDeadline(data[0].notes);
+        if (deadlineData && deadlineData.length > 0 && deadlineData[0].notes) {
+          setDeadline(deadlineData[0].notes);
+        }
+
+        const { data: priceData } = await supabase
+          .from("quote_requests")
+          .select("notes")
+          .eq("service", "New Heights Setting: Option Prices")
+          .order("created_at", { ascending: false })
+          .limit(1);
+
+        if (priceData && priceData.length > 0 && priceData[0].notes) {
+          setOptionPrices(JSON.parse(priceData[0].notes));
         }
       } catch (err) {
-        console.error("Failed to load deadline:", err);
+        console.error("Failed to load group settings:", err);
       }
     }
-    loadDeadline();
+    loadSettings();
   }, []);
 
   const handleAddItem = (optionId: string) => {
@@ -293,6 +310,9 @@ ${notes || "None"}
                           />
                           <span className="absolute top-3 left-3 bg-yellow-brand text-ink text-xs font-bold px-2.5 py-1 rounded border border-ink shadow-sm">
                             {option.badge}
+                          </span>
+                          <span className="absolute top-3 right-3 bg-magenta-brand text-white text-xs font-bold px-2 py-1 rounded border border-ink shadow-sm">
+                            ${(optionPrices[option.id] || 15.00).toFixed(2)}
                           </span>
                           <div className="absolute inset-0 bg-ink/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white gap-1.5 font-bold text-sm backdrop-blur-[2px]">
                             <ZoomIn className="w-5 h-5 text-yellow-brand" /> Click to Enlarge
