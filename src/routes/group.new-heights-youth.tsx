@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { CheckCircle2, ShoppingBag, Plus, Trash2, Church, Sparkles, Send, Calendar, Clock } from "lucide-react";
+import { CheckCircle2, ShoppingBag, Plus, Trash2, Church, Sparkles, Send, Calendar, Clock, ZoomIn, X } from "lucide-react";
 
 export const Route = createFileRoute("/group/new-heights-youth")({
   head: () => ({
@@ -99,6 +99,7 @@ function NewHeightsYouthCollectionPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [deadline, setDeadline] = useState("August 20, 2026");
+  const [selectedMockup, setSelectedMockup] = useState<ShirtOption | null>(null);
 
   useEffect(() => {
     async function loadDeadline() {
@@ -278,18 +279,24 @@ ${notes || "None"}
                   return (
                     <div
                       key={option.id}
-                      className="bg-card border-2 border-ink rounded-xl overflow-hidden shadow-pop hover:-translate-y-1 transition-transform flex flex-col justify-between"
+                      className="bg-card border-2 border-ink rounded-xl overflow-hidden shadow-pop hover:-translate-y-1 transition-transform flex flex-col justify-between group"
                     >
                       <div>
-                        <div className="relative aspect-square bg-muted border-b border-ink">
+                        <div 
+                          className="relative aspect-square bg-muted border-b border-ink cursor-pointer overflow-hidden"
+                          onClick={() => setSelectedMockup(option)}
+                        >
                           <img
                             src={option.image}
                             alt={option.name}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                           <span className="absolute top-3 left-3 bg-yellow-brand text-ink text-xs font-bold px-2.5 py-1 rounded border border-ink shadow-sm">
                             {option.badge}
                           </span>
+                          <div className="absolute inset-0 bg-ink/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white gap-1.5 font-bold text-sm backdrop-blur-[2px]">
+                            <ZoomIn className="w-5 h-5 text-yellow-brand" /> Click to Enlarge
+                          </div>
                         </div>
                         <div className="p-4">
                           <h3 className="font-bold text-lg leading-tight text-foreground">
@@ -505,6 +512,73 @@ ${notes || "None"}
           </form>
         )}
       </div>
+
+      {/* Image Enlargement Modal Dialog */}
+      {selectedMockup && (
+        <div 
+          className="fixed inset-0 z-50 bg-ink/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in"
+          onClick={() => setSelectedMockup(null)}
+        >
+          <div 
+            className="bg-card border-2 border-ink rounded-2xl max-w-3xl w-full overflow-hidden shadow-pop relative animate-in zoom-in-95 max-h-[90vh] flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 md:p-6 border-b border-ink bg-muted/40">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-magenta-brand">
+                  {selectedMockup.badge} Mockup Proof
+                </span>
+                <h3 className="font-display text-xl md:text-2xl font-bold text-foreground">
+                  {selectedMockup.name}
+                </h3>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full h-10 w-10 border border-ink hover:bg-red-50 hover:text-red-600"
+                onClick={() => setSelectedMockup(null)}
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+
+            {/* Modal Image Body */}
+            <div className="p-4 md:p-6 overflow-y-auto flex-1 text-center bg-muted/20">
+              <img
+                src={selectedMockup.image}
+                alt={selectedMockup.name}
+                className="max-w-full max-h-[60vh] mx-auto rounded-xl border-2 border-ink shadow-md object-contain"
+              />
+              <div className="mt-4 text-left bg-background p-4 rounded-xl border border-ink">
+                <p className="font-bold text-foreground text-sm">
+                  Garment Specs: <span className="font-normal text-muted-foreground">{selectedMockup.garment} ({selectedMockup.color})</span>
+                </p>
+                <p className="font-bold text-foreground text-sm mt-1">
+                  Design Specifications: <span className="font-normal text-muted-foreground">{selectedMockup.design}</span>
+                </p>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-ink bg-muted/40 flex justify-between items-center">
+              <span className="text-xs text-muted-foreground font-medium">
+                Click outside or press X to close
+              </span>
+              <Button
+                type="button"
+                className="font-bold shadow-sm px-6"
+                onClick={() => {
+                  handleAddItem(selectedMockup.id);
+                  setSelectedMockup(null);
+                }}
+              >
+                <Plus className="w-4 h-4 mr-1" /> Choose This Shirt Option
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </SiteLayout>
   );
 }
