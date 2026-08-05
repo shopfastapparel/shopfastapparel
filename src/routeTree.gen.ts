@@ -46,6 +46,7 @@ import { Route as AdminProjectsRouteImport } from './routes/admin.projects'
 import { Route as AdminEtsyRouteImport } from './routes/admin.etsy'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 import { Route as AdminAnnouncementRouteImport } from './routes/admin.announcement'
+import { Route as GroupNewHeightsYouthDashboardRouteImport } from './routes/group.new-heights-youth.dashboard'
 import { Route as ApiPublicVoiceRouteImport } from './routes/api/public/voice'
 import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
 import { Route as ApiCronGenerateBlogRouteImport } from './routes/api/cron/generate-blog'
@@ -237,6 +238,12 @@ const AdminAnnouncementRoute = AdminAnnouncementRouteImport.update({
   path: '/admin/announcement',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GroupNewHeightsYouthDashboardRoute =
+  GroupNewHeightsYouthDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => GroupNewHeightsYouthRoute,
+  } as any)
 const ApiPublicVoiceRoute = ApiPublicVoiceRouteImport.update({
   id: '/api/public/voice',
   path: '/api/public/voice',
@@ -283,7 +290,7 @@ export interface FileRoutesByFullPath {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
+  '/group/new-heights-youth': typeof GroupNewHeightsYouthRouteWithChildren
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
@@ -300,6 +307,7 @@ export interface FileRoutesByFullPath {
   '/api/cron/generate-blog': typeof ApiCronGenerateBlogRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/voice': typeof ApiPublicVoiceRoute
+  '/group/new-heights-youth/dashboard': typeof GroupNewHeightsYouthDashboardRoute
   '/api/public/hooks/generate-blog-post': typeof ApiPublicHooksGenerateBlogPostRoute
 }
 export interface FileRoutesByTo {
@@ -326,7 +334,7 @@ export interface FileRoutesByTo {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
+  '/group/new-heights-youth': typeof GroupNewHeightsYouthRouteWithChildren
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
@@ -343,6 +351,7 @@ export interface FileRoutesByTo {
   '/api/cron/generate-blog': typeof ApiCronGenerateBlogRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/voice': typeof ApiPublicVoiceRoute
+  '/group/new-heights-youth/dashboard': typeof GroupNewHeightsYouthDashboardRoute
   '/api/public/hooks/generate-blog-post': typeof ApiPublicHooksGenerateBlogPostRoute
 }
 export interface FileRoutesById {
@@ -370,7 +379,7 @@ export interface FileRoutesById {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
+  '/group/new-heights-youth': typeof GroupNewHeightsYouthRouteWithChildren
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
@@ -387,6 +396,7 @@ export interface FileRoutesById {
   '/api/cron/generate-blog': typeof ApiCronGenerateBlogRoute
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/voice': typeof ApiPublicVoiceRoute
+  '/group/new-heights-youth/dashboard': typeof GroupNewHeightsYouthDashboardRoute
   '/api/public/hooks/generate-blog-post': typeof ApiPublicHooksGenerateBlogPostRoute
 }
 export interface FileRouteTypes {
@@ -432,6 +442,7 @@ export interface FileRouteTypes {
     | '/api/cron/generate-blog'
     | '/api/public/track'
     | '/api/public/voice'
+    | '/group/new-heights-youth/dashboard'
     | '/api/public/hooks/generate-blog-post'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -475,6 +486,7 @@ export interface FileRouteTypes {
     | '/api/cron/generate-blog'
     | '/api/public/track'
     | '/api/public/voice'
+    | '/group/new-heights-youth/dashboard'
     | '/api/public/hooks/generate-blog-post'
   id:
     | '__root__'
@@ -518,6 +530,7 @@ export interface FileRouteTypes {
     | '/api/cron/generate-blog'
     | '/api/public/track'
     | '/api/public/voice'
+    | '/group/new-heights-youth/dashboard'
     | '/api/public/hooks/generate-blog-post'
   fileRoutesById: FileRoutesById
 }
@@ -545,7 +558,7 @@ export interface RootRouteChildren {
   AdminSalesRoute: typeof AdminSalesRoute
   AdminSubscribersRoute: typeof AdminSubscribersRoute
   BlogSlugRoute: typeof BlogSlugRoute
-  GroupNewHeightsYouthRoute: typeof GroupNewHeightsYouthRoute
+  GroupNewHeightsYouthRoute: typeof GroupNewHeightsYouthRouteWithChildren
   LandingBulkPrintingRoute: typeof LandingBulkPrintingRoute
   LandingBundleDealRoute: typeof LandingBundleDealRoute
   LandingCustomShirtsRoute: typeof LandingCustomShirtsRoute
@@ -826,6 +839,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAnnouncementRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/group/new-heights-youth/dashboard': {
+      id: '/group/new-heights-youth/dashboard'
+      path: '/dashboard'
+      fullPath: '/group/new-heights-youth/dashboard'
+      preLoaderRoute: typeof GroupNewHeightsYouthDashboardRouteImport
+      parentRoute: typeof GroupNewHeightsYouthRoute
+    }
     '/api/public/voice': {
       id: '/api/public/voice'
       path: '/api/public/voice'
@@ -857,6 +877,17 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface GroupNewHeightsYouthRouteChildren {
+  GroupNewHeightsYouthDashboardRoute: typeof GroupNewHeightsYouthDashboardRoute
+}
+
+const GroupNewHeightsYouthRouteChildren: GroupNewHeightsYouthRouteChildren = {
+  GroupNewHeightsYouthDashboardRoute: GroupNewHeightsYouthDashboardRoute,
+}
+
+const GroupNewHeightsYouthRouteWithChildren =
+  GroupNewHeightsYouthRoute._addFileChildren(GroupNewHeightsYouthRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -881,7 +912,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSalesRoute: AdminSalesRoute,
   AdminSubscribersRoute: AdminSubscribersRoute,
   BlogSlugRoute: BlogSlugRoute,
-  GroupNewHeightsYouthRoute: GroupNewHeightsYouthRoute,
+  GroupNewHeightsYouthRoute: GroupNewHeightsYouthRouteWithChildren,
   LandingBulkPrintingRoute: LandingBulkPrintingRoute,
   LandingBundleDealRoute: LandingBundleDealRoute,
   LandingCustomShirtsRoute: LandingCustomShirtsRoute,
