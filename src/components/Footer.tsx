@@ -38,8 +38,18 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/services/team-bulk" className="hover:text-background">
-                Team & Bulk Orders
+              <Link to="/services/family-tees" className="hover:text-background">
+                Family Tees & Groups
+              </Link>
+            </li>
+            <li>
+              <Link to="/group/new-heights-youth" className="hover:text-yellow-brand text-background">
+                New Heights Youth Order
+              </Link>
+            </li>
+            <li>
+              <Link to="/group/new-heights-youth-admin" className="hover:text-yellow-brand text-background">
+                New Heights Group Admin
               </Link>
             </li>
             <li>
