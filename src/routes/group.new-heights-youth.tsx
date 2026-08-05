@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { CheckCircle2, ShoppingBag, Plus, Trash2, Church, Sparkles, Send } from "lucide-react";
+import { CheckCircle2, ShoppingBag, Plus, Trash2, Church, Sparkles, Send, Calendar, Clock } from "lucide-react";
 
 export const Route = createFileRoute("/group/new-heights-youth")({
   head: () => ({
@@ -98,6 +98,27 @@ function NewHeightsYouthCollectionPage() {
   const [items, setItems] = useState<SelectedItem[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [deadline, setDeadline] = useState("August 20, 2026");
+
+  useEffect(() => {
+    async function loadDeadline() {
+      try {
+        const { data } = await supabase
+          .from("quote_requests")
+          .select("notes")
+          .eq("service", "New Heights Setting: Submit By Date")
+          .order("created_at", { ascending: false })
+          .limit(1);
+
+        if (data && data.length > 0 && data[0].notes) {
+          setDeadline(data[0].notes);
+        }
+      } catch (err) {
+        console.error("Failed to load deadline:", err);
+      }
+    }
+    loadDeadline();
+  }, []);
 
   const handleAddItem = (optionId: string) => {
     setItems((prev) => [
@@ -192,6 +213,13 @@ ${notes || "None"}
           <h1 className="font-display text-4xl md:text-6xl text-white tracking-tight">
             Custom Apparel Collection
           </h1>
+
+          {/* Submit By Date Banner */}
+          <div className="inline-flex items-center gap-3 bg-yellow-brand text-ink px-6 py-2.5 rounded-full font-bold text-sm md:text-base border-2 border-ink shadow-pop mt-6 animate-pulse">
+            <Calendar className="w-5 h-5 text-magenta-brand" />
+            <span>Submit By Date: <strong>{deadline}</strong></span>
+          </div>
+
           <p className="mt-4 text-lg text-background/80 max-w-2xl mx-auto font-light">
             Select your favorite apparel designs, specify your sizes, and submit your group order choices below. You can order as many options and quantities as you'd like!
           </p>

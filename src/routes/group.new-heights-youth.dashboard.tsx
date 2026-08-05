@@ -68,6 +68,48 @@ function NewHeightsGroupAdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [submissions, setSubmissions] = useState<ParsedSubmission[]>([]);
   const [filterQuery, setFilterQuery] = useState("");
+  const [submitByDate, setSubmitByDate] = useState("August 20, 2026");
+  const [savingDeadline, setSavingDeadline] = useState(false);
+
+  const fetchDeadline = async () => {
+    try {
+      const { data } = await supabase
+        .from("quote_requests")
+        .select("notes")
+        .eq("service", "New Heights Setting: Submit By Date")
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+      if (data && data.length > 0 && data[0].notes) {
+        setSubmitByDate(data[0].notes);
+      }
+    } catch (err) {
+      console.error("Error fetching deadline:", err);
+    }
+  };
+
+  const handleSaveDeadline = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSavingDeadline(true);
+    try {
+      const { error } = await supabase.from("quote_requests").insert([
+        {
+          name: "System Deadline",
+          email: "system@shopfastapparel.com",
+          service: "New Heights Setting: Submit By Date",
+          notes: submitByDate,
+          status: "Setting",
+        },
+      ]);
+      if (error) throw error;
+      toast.success(`Deadline updated to: ${submitByDate}`);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update deadline.");
+    } finally {
+      setSavingDeadline(false);
+    }
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -146,6 +188,7 @@ function NewHeightsGroupAdminDashboard() {
   useEffect(() => {
     if (authenticated) {
       fetchSubmissions();
+      fetchDeadline();
     }
   }, [authenticated]);
 
@@ -274,6 +317,34 @@ function NewHeightsGroupAdminDashboard() {
           </div>
         ) : (
           <div className="space-y-10">
+            {/* Deadline Control Card */}
+            <div className="bg-card border-2 border-ink rounded-xl p-6 shadow-pop flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-magenta-brand">
+                  Group Order Settings
+                </span>
+                <h3 className="font-display text-2xl font-bold text-foreground mt-1">
+                  Submit By Date (Order Deadline)
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  This deadline is prominently displayed at the top of the group order page for all church members.
+                </p>
+              </div>
+
+              <form onSubmit={handleSaveDeadline} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <Input
+                  type="text"
+                  placeholder="e.g. August 25, 2026"
+                  value={submitByDate}
+                  onChange={(e) => setSubmitByDate(e.target.value)}
+                  className="border-2 border-ink h-12 w-full sm:w-60 font-semibold"
+                />
+                <Button type="submit" disabled={savingDeadline} className="h-12 font-bold shadow-sm px-6">
+                  {savingDeadline ? "Saving..." : "Update Deadline"}
+                </Button>
+              </form>
+            </div>
+
             {/* Top Metrics Cards */}
             <div className="grid sm:grid-cols-3 gap-6">
               <div className="bg-card border-2 border-ink rounded-xl p-6 shadow-pop">
