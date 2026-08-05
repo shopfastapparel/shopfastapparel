@@ -37,6 +37,7 @@ import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as LandingCustomShirtsRouteImport } from './routes/landing.custom-shirts'
 import { Route as LandingBundleDealRouteImport } from './routes/landing.bundle-deal'
 import { Route as LandingBulkPrintingRouteImport } from './routes/landing.bulk-printing'
+import { Route as GroupNewHeightsYouthRouteImport } from './routes/group.new-heights-youth'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
 import { Route as AdminSalesRouteImport } from './routes/admin.sales'
@@ -191,6 +192,11 @@ const LandingBulkPrintingRoute = LandingBulkPrintingRouteImport.update({
   path: '/landing/bulk-printing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GroupNewHeightsYouthRoute = GroupNewHeightsYouthRouteImport.update({
+  id: '/group/new-heights-youth',
+  path: '/group/new-heights-youth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
@@ -277,6 +283,7 @@ export interface FileRoutesByFullPath {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
@@ -319,6 +326,7 @@ export interface FileRoutesByTo {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
@@ -362,6 +370,7 @@ export interface FileRoutesById {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
@@ -406,6 +415,7 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/blog/$slug'
+    | '/group/new-heights-youth'
     | '/landing/bulk-printing'
     | '/landing/bundle-deal'
     | '/landing/custom-shirts'
@@ -448,6 +458,7 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/blog/$slug'
+    | '/group/new-heights-youth'
     | '/landing/bulk-printing'
     | '/landing/bundle-deal'
     | '/landing/custom-shirts'
@@ -490,6 +501,7 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/blog/$slug'
+    | '/group/new-heights-youth'
     | '/landing/bulk-printing'
     | '/landing/bundle-deal'
     | '/landing/custom-shirts'
@@ -533,6 +545,7 @@ export interface RootRouteChildren {
   AdminSalesRoute: typeof AdminSalesRoute
   AdminSubscribersRoute: typeof AdminSubscribersRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  GroupNewHeightsYouthRoute: typeof GroupNewHeightsYouthRoute
   LandingBulkPrintingRoute: typeof LandingBulkPrintingRoute
   LandingBundleDealRoute: typeof LandingBundleDealRoute
   LandingCustomShirtsRoute: typeof LandingCustomShirtsRoute
@@ -750,6 +763,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LandingBulkPrintingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/group/new-heights-youth': {
+      id: '/group/new-heights-youth'
+      path: '/group/new-heights-youth'
+      fullPath: '/group/new-heights-youth'
+      preLoaderRoute: typeof GroupNewHeightsYouthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/blog/$slug'
@@ -861,6 +881,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSalesRoute: AdminSalesRoute,
   AdminSubscribersRoute: AdminSubscribersRoute,
   BlogSlugRoute: BlogSlugRoute,
+  GroupNewHeightsYouthRoute: GroupNewHeightsYouthRoute,
   LandingBulkPrintingRoute: LandingBulkPrintingRoute,
   LandingBundleDealRoute: LandingBundleDealRoute,
   LandingCustomShirtsRoute: LandingCustomShirtsRoute,
