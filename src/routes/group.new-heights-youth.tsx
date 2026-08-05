@@ -114,46 +114,46 @@ function NewHeightsYouthCollectionPage() {
       try {
         const { data: deadlineData } = await supabase
           .from("quote_requests")
-          .select("notes")
+          .select("details")
           .eq("service", "New Heights Setting: Submit By Date")
           .order("created_at", { ascending: false })
           .limit(1);
 
-        if (deadlineData && deadlineData.length > 0 && deadlineData[0].notes) {
-          setDeadline(deadlineData[0].notes);
+        if (deadlineData && deadlineData.length > 0 && deadlineData[0].details) {
+          setDeadline(deadlineData[0].details);
         }
 
         const { data: phoneData } = await supabase
           .from("quote_requests")
-          .select("notes")
+          .select("details")
           .eq("service", "New Heights Setting: Admin Phone")
           .order("created_at", { ascending: false })
           .limit(1);
 
-        if (phoneData && phoneData.length > 0 && phoneData[0].notes) {
-          setOrganizerPhone(phoneData[0].notes);
+        if (phoneData && phoneData.length > 0 && phoneData[0].details) {
+          setOrganizerPhone(phoneData[0].details);
         }
 
         const { data: emailData } = await supabase
           .from("quote_requests")
-          .select("notes")
+          .select("details")
           .eq("service", "New Heights Setting: Admin Email")
           .order("created_at", { ascending: false })
           .limit(1);
 
-        if (emailData && emailData.length > 0 && emailData[0].notes) {
-          setOrganizerEmail(emailData[0].notes);
+        if (emailData && emailData.length > 0 && emailData[0].details) {
+          setOrganizerEmail(emailData[0].details);
         }
 
         const { data: priceData } = await supabase
           .from("quote_requests")
-          .select("notes")
+          .select("details")
           .eq("service", "New Heights Setting: Option Prices")
           .order("created_at", { ascending: false })
           .limit(1);
 
-        if (priceData && priceData.length > 0 && priceData[0].notes) {
-          setOptionPrices(JSON.parse(priceData[0].notes));
+        if (priceData && priceData.length > 0 && priceData[0].details) {
+          setOptionPrices(JSON.parse(priceData[0].details));
         }
       } catch (err) {
         console.error("Failed to load group settings:", err);
@@ -227,7 +227,7 @@ ${notes || "None"}
           phone,
           service: "New Heights Youth Group Collection",
           quantity: totalGarments.toString(),
-          notes: formattedNotes,
+          details: formattedNotes,
           status: "New Submission",
         },
       ]);

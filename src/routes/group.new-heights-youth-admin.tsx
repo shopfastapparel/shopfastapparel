@@ -98,13 +98,13 @@ function NewHeightsGroupAdminDashboard() {
     try {
       const { data } = await supabase
         .from("quote_requests")
-        .select("notes")
+        .select("details")
         .eq("service", "New Heights Setting: Submit By Date")
         .order("created_at", { ascending: false })
         .limit(1);
 
-      if (data && data.length > 0 && data[0].notes) {
-        setSubmitByDate(data[0].notes);
+      if (data && data.length > 0 && (data[0].details || (data[0] as any).notes)) {
+        setSubmitByDate(data[0].details || (data[0] as any).notes);
       }
     } catch (err) {
       console.error("Error fetching deadline:", err);
@@ -115,24 +115,24 @@ function NewHeightsGroupAdminDashboard() {
     try {
       const { data: phoneData } = await supabase
         .from("quote_requests")
-        .select("notes")
+        .select("details")
         .eq("service", "New Heights Setting: Admin Phone")
         .order("created_at", { ascending: false })
         .limit(1);
 
-      if (phoneData && phoneData.length > 0 && phoneData[0].notes) {
-        setAdminPhone(phoneData[0].notes);
+      if (phoneData && phoneData.length > 0 && (phoneData[0].details || (phoneData[0] as any).notes)) {
+        setAdminPhone(phoneData[0].details || (phoneData[0] as any).notes);
       }
 
       const { data: emailData } = await supabase
         .from("quote_requests")
-        .select("notes")
+        .select("details")
         .eq("service", "New Heights Setting: Admin Email")
         .order("created_at", { ascending: false })
         .limit(1);
 
-      if (emailData && emailData.length > 0 && emailData[0].notes) {
-        setAdminEmail(emailData[0].notes);
+      if (emailData && emailData.length > 0 && (emailData[0].details || (emailData[0] as any).notes)) {
+        setAdminEmail(emailData[0].details || (emailData[0] as any).notes);
       }
     } catch (err) {
       console.error("Error fetching admin contact:", err);
@@ -148,14 +148,14 @@ function NewHeightsGroupAdminDashboard() {
           name: "System Admin Phone",
           email: "system@shopfastapparel.com",
           service: "New Heights Setting: Admin Phone",
-          notes: adminPhone,
+          details: adminPhone,
           status: "Setting",
         },
         {
           name: "System Admin Email",
           email: "system@shopfastapparel.com",
           service: "New Heights Setting: Admin Email",
-          notes: adminEmail,
+          details: adminEmail,
           status: "Setting",
         },
       ]);
@@ -172,14 +172,15 @@ function NewHeightsGroupAdminDashboard() {
     try {
       const { data } = await supabase
         .from("quote_requests")
-        .select("notes")
+        .select("details")
         .eq("service", "New Heights Setting: Option Prices")
         .order("created_at", { ascending: false })
         .limit(1);
 
-      if (data && data.length > 0 && data[0].notes) {
+      const rawVal = data && data.length > 0 ? (data[0].details || (data[0] as any).notes) : null;
+      if (rawVal) {
         try {
-          const parsed = JSON.parse(data[0].notes);
+          const parsed = JSON.parse(rawVal);
           if (parsed && typeof parsed === "object") {
             setOptionPrices((prev) => ({ ...prev, ...parsed }));
           }
@@ -201,7 +202,7 @@ function NewHeightsGroupAdminDashboard() {
           name: "System Option Prices",
           email: "system@shopfastapparel.com",
           service: "New Heights Setting: Option Prices",
-          notes: JSON.stringify(optionPrices),
+          details: JSON.stringify(optionPrices),
           status: "Setting",
         },
       ]);
@@ -224,7 +225,7 @@ function NewHeightsGroupAdminDashboard() {
           name: "System Deadline",
           email: "system@shopfastapparel.com",
           service: "New Heights Setting: Submit By Date",
-          notes: submitByDate,
+          details: submitByDate,
           status: "Setting",
         },
       ]);
@@ -260,7 +261,7 @@ function NewHeightsGroupAdminDashboard() {
       if (error) throw error;
 
       const parsed: ParsedSubmission[] = (data || []).map((row: any) => {
-        const notesText = row.notes || "";
+        const notesText = row.details || row.notes || "";
         const lines = typeof notesText === "string" ? notesText.split("\n") : [];
         const items: ParsedItem[] = [];
 
