@@ -99,6 +99,7 @@ function NewHeightsYouthCollectionPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [deadline, setDeadline] = useState("August 20, 2026");
+  const [organizerPhone, setOrganizerPhone] = useState("");
   const [selectedMockup, setSelectedMockup] = useState<ShirtOption | null>(null);
   const [optionPrices, setOptionPrices] = useState<Record<string, number>>({
     "option-1": 25.00,
@@ -119,6 +120,17 @@ function NewHeightsYouthCollectionPage() {
 
         if (deadlineData && deadlineData.length > 0 && deadlineData[0].notes) {
           setDeadline(deadlineData[0].notes);
+        }
+
+        const { data: phoneData } = await supabase
+          .from("quote_requests")
+          .select("notes")
+          .eq("service", "New Heights Setting: Admin Phone")
+          .order("created_at", { ascending: false })
+          .limit(1);
+
+        if (phoneData && phoneData.length > 0 && phoneData[0].notes) {
+          setOrganizerPhone(phoneData[0].notes);
         }
 
         const { data: priceData } = await supabase
@@ -233,12 +245,21 @@ ${notes || "None"}
             <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-brand/20 text-cyan-brand text-xs font-bold uppercase tracking-wider border border-cyan-brand/30">
               <Church className="w-3.5 h-3.5 text-yellow-brand" /> Group Portal
             </span>
-            <a
-              href="tel:4704501254"
-              className="text-xs md:text-sm font-bold text-yellow-brand hover:underline"
-            >
-              Call/Text: (470) 450-1254
-            </a>
+            {organizerPhone ? (
+              <a
+                href={`tel:${organizerPhone.replace(/\D/g, "")}`}
+                className="text-xs md:text-sm font-bold text-yellow-brand hover:underline"
+              >
+                Organizer Kaia: {organizerPhone}
+              </a>
+            ) : (
+              <a
+                href="mailto:kaia@newheightslc.org"
+                className="text-xs md:text-sm font-bold text-yellow-brand hover:underline"
+              >
+                Organizer: kaia@newheightslc.org
+              </a>
+            )}
           </div>
         </div>
       </header>
@@ -628,7 +649,9 @@ ${notes || "None"}
             <p className="mt-0.5 text-background/60">Powered by Fast Apparel LLC · Lawrenceville, GA</p>
           </div>
           <div>
-            <p className="text-background/80">Need assistance? Call/Text <a href="tel:4704501254" className="text-yellow-brand font-bold hover:underline">(470) 450-1254</a> or Email <a href="mailto:info@shopfastapparel.com" className="text-cyan-brand font-bold hover:underline">info@shopfastapparel.com</a></p>
+            <p className="text-background/80">
+              Need assistance? {organizerPhone ? <>Call/Text Kaia at <a href={`tel:${organizerPhone.replace(/\D/g, "")}`} className="text-yellow-brand font-bold hover:underline">{organizerPhone}</a> or </> : null}Email <a href="mailto:kaia@newheightslc.org" className="text-cyan-brand font-bold hover:underline">kaia@newheightslc.org</a>
+            </p>
           </div>
         </div>
       </footer>

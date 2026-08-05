@@ -83,6 +83,8 @@ function NewHeightsGroupAdminDashboard() {
   const [filterQuery, setFilterQuery] = useState("");
   const [submitByDate, setSubmitByDate] = useState("August 20, 2026");
   const [savingDeadline, setSavingDeadline] = useState(false);
+  const [adminPhone, setAdminPhone] = useState("");
+  const [savingPhone, setSavingPhone] = useState(false);
   const [optionPrices, setOptionPrices] = useState<Record<string, number>>({
     "option-1": 25.00,
     "option-2": 15.00,
@@ -105,6 +107,46 @@ function NewHeightsGroupAdminDashboard() {
       }
     } catch (err) {
       console.error("Error fetching deadline:", err);
+    }
+  };
+
+  const fetchAdminPhone = async () => {
+    try {
+      const { data } = await supabase
+        .from("quote_requests")
+        .select("notes")
+        .eq("service", "New Heights Setting: Admin Phone")
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+      if (data && data.length > 0 && data[0].notes) {
+        setAdminPhone(data[0].notes);
+      }
+    } catch (err) {
+      console.error("Error fetching admin phone:", err);
+    }
+  };
+
+  const handleSavePhone = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSavingPhone(true);
+    try {
+      const { error } = await supabase.from("quote_requests").insert([
+        {
+          name: "System Admin Phone",
+          email: "system@shopfastapparel.com",
+          service: "New Heights Setting: Admin Phone",
+          notes: adminPhone,
+          status: "Setting",
+        },
+      ]);
+      if (error) throw error;
+      toast.success(`Organizer phone updated to: ${adminPhone}`);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update phone number.");
+    } finally {
+      setSavingPhone(false);
     }
   };
 
@@ -263,6 +305,7 @@ function NewHeightsGroupAdminDashboard() {
     if (authenticated) {
       fetchSubmissions();
       fetchDeadline();
+      fetchAdminPhone();
       fetchOptionPrices();
     }
   }, [authenticated]);
@@ -425,6 +468,34 @@ function NewHeightsGroupAdminDashboard() {
                 />
                 <Button type="submit" disabled={savingDeadline} className="h-12 font-bold shadow-sm px-6">
                   {savingDeadline ? "Saving..." : "Update Deadline"}
+                </Button>
+              </form>
+            </div>
+
+            {/* Organizer Phone Number Settings Card */}
+            <div className="bg-card border-2 border-ink rounded-xl p-6 shadow-pop flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-cyan-brand">
+                  Group Organizer Contact
+                </span>
+                <h3 className="font-display text-2xl font-bold text-foreground mt-1">
+                  Organizer Contact Phone Number
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  This phone number is displayed at the top and bottom of the group order page for members to reach Kaia/organizer with questions.
+                </p>
+              </div>
+
+              <form onSubmit={handleSavePhone} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <Input
+                  type="text"
+                  placeholder="e.g. (470) 555-0199"
+                  value={adminPhone}
+                  onChange={(e) => setAdminPhone(e.target.value)}
+                  className="border-2 border-ink h-12 w-full sm:w-60 font-semibold"
+                />
+                <Button type="submit" disabled={savingPhone} className="bg-cyan-brand hover:bg-cyan-brand/90 text-ink h-12 font-bold shadow-sm px-6">
+                  {savingPhone ? "Saving..." : "Update Phone"}
                 </Button>
               </form>
             </div>
