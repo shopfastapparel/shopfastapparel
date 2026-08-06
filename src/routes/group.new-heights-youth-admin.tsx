@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
-import { deleteGroupOrder, updateGroupOrder } from "@/lib/group-admin.functions";
 import { toast } from "sonner";
 import { 
   Users, 
@@ -134,8 +133,14 @@ function NewHeightsGroupAdminDashboard() {
     setDeletingSub(null);
 
     try {
-      // Use server function (service role key) to bypass Supabase RLS
-      await deleteGroupOrder({ data: { orderId: targetId } });
+      // POST to API route which uses service role key server-side (bypasses Supabase RLS)
+      const res = await fetch("/api/group-admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "delete", orderId: targetId }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Delete failed");
       toast.success(`Submission for "${targetName}" deleted.`);
     } catch (err) {
       console.error("Delete error:", err);
@@ -212,17 +217,22 @@ Additional Notes:
 ${editNotes || "None"}
       `.trim();
 
-      // Use server function (service role key) to bypass Supabase RLS
-      await updateGroupOrder({
-        data: {
+      // POST to API route which uses service role key server-side (bypasses Supabase RLS)
+      const res = await fetch("/api/group-admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "update",
           orderId: editingSub.id,
           name: editName,
           email: editEmail,
           phone: editPhone,
           quantity: editTotalGarments.toString(),
           details: formattedDetails,
-        },
+        }),
       });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error ?? "Update failed");
       toast.success("Order updated successfully!");
       setEditingSub(null);
       await fetchSubmissions();

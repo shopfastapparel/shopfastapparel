@@ -40,6 +40,7 @@ import { Route as LandingBulkPrintingRouteImport } from './routes/landing.bulk-p
 import { Route as GroupNewHeightsYouthAdminRouteImport } from './routes/group.new-heights-youth-admin'
 import { Route as GroupNewHeightsYouthRouteImport } from './routes/group.new-heights-youth'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as ApiGroupAdminRouteImport } from './routes/api.group-admin'
 import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
 import { Route as AdminSalesRouteImport } from './routes/admin.sales'
 import { Route as AdminQuotesRouteImport } from './routes/admin.quotes'
@@ -209,6 +210,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiGroupAdminRoute = ApiGroupAdminRouteImport.update({
+  id: '/api/group-admin',
+  path: '/api/group-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminSubscribersRoute = AdminSubscribersRouteImport.update({
   id: '/admin/subscribers',
   path: '/admin/subscribers',
@@ -289,6 +295,7 @@ export interface FileRoutesByFullPath {
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
+  '/api/group-admin': typeof ApiGroupAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/group/new-heights-youth-admin': typeof GroupNewHeightsYouthAdminRoute
@@ -333,6 +340,7 @@ export interface FileRoutesByTo {
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
+  '/api/group-admin': typeof ApiGroupAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/group/new-heights-youth-admin': typeof GroupNewHeightsYouthAdminRoute
@@ -378,6 +386,7 @@ export interface FileRoutesById {
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
+  '/api/group-admin': typeof ApiGroupAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/group/new-heights-youth-admin': typeof GroupNewHeightsYouthAdminRoute
@@ -424,6 +433,7 @@ export interface FileRouteTypes {
     | '/admin/quotes'
     | '/admin/sales'
     | '/admin/subscribers'
+    | '/api/group-admin'
     | '/blog/$slug'
     | '/group/new-heights-youth'
     | '/group/new-heights-youth-admin'
@@ -468,6 +478,7 @@ export interface FileRouteTypes {
     | '/admin/quotes'
     | '/admin/sales'
     | '/admin/subscribers'
+    | '/api/group-admin'
     | '/blog/$slug'
     | '/group/new-heights-youth'
     | '/group/new-heights-youth-admin'
@@ -512,6 +523,7 @@ export interface FileRouteTypes {
     | '/admin/quotes'
     | '/admin/sales'
     | '/admin/subscribers'
+    | '/api/group-admin'
     | '/blog/$slug'
     | '/group/new-heights-youth'
     | '/group/new-heights-youth-admin'
@@ -557,6 +569,7 @@ export interface RootRouteChildren {
   AdminQuotesRoute: typeof AdminQuotesRoute
   AdminSalesRoute: typeof AdminSalesRoute
   AdminSubscribersRoute: typeof AdminSubscribersRoute
+  ApiGroupAdminRoute: typeof ApiGroupAdminRoute
   BlogSlugRoute: typeof BlogSlugRoute
   GroupNewHeightsYouthRoute: typeof GroupNewHeightsYouthRoute
   GroupNewHeightsYouthAdminRoute: typeof GroupNewHeightsYouthAdminRoute
@@ -798,6 +811,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/group-admin': {
+      id: '/api/group-admin'
+      path: '/api/group-admin'
+      fullPath: '/api/group-admin'
+      preLoaderRoute: typeof ApiGroupAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/subscribers': {
       id: '/admin/subscribers'
       path: '/admin/subscribers'
@@ -901,6 +921,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminQuotesRoute: AdminQuotesRoute,
   AdminSalesRoute: AdminSalesRoute,
   AdminSubscribersRoute: AdminSubscribersRoute,
+  ApiGroupAdminRoute: ApiGroupAdminRoute,
   BlogSlugRoute: BlogSlugRoute,
   GroupNewHeightsYouthRoute: GroupNewHeightsYouthRoute,
   GroupNewHeightsYouthAdminRoute: GroupNewHeightsYouthAdminRoute,
