@@ -285,6 +285,17 @@ ${notes || "None"}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-cyan-brand font-bold text-xs uppercase tracking-widest mb-4 border border-white/20">
               <Church className="w-4 h-4 text-yellow-brand" /> New Heights Youth Group
             </div>
+
+            {/* Church Logo */}
+            <div className="flex justify-center mb-4">
+              <img
+                src="https://cdn.prod.website-files.com/5f521ea11abd90743d0cfe25/60f99ed8711cd23a47e867f2_NewHeightsLogo_main_circle%20(2)-p-1080.png"
+                alt="New Heights Church Logo"
+                className="w-32 h-32 md:w-40 md:h-40 object-contain"
+                style={{ filter: "brightness(0) invert(1)" }}
+              />
+            </div>
+
           <h1 className="font-display text-4xl md:text-6xl text-white tracking-tight">
             Custom Apparel Collection
           </h1>
