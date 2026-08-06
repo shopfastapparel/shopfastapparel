@@ -60,8 +60,8 @@ const SHIRT_OPTIONS: ShirtOption[] = [
     badge: "T-Shirt",
   },
   {
-    id: "option-6",
-    name: "Option 6: Purple Floral Tee",
+    id: "option-4",
+    name: "Option 4: Purple Floral Tee",
     garment: "Softstyle Lightweight Fitted Tee",
     color: "Purple",
     design: "Pray About Everything Floral Front & Back Scripture (White Print)",
@@ -105,8 +105,8 @@ function NewHeightsYouthCollectionPage() {
   const [optionPrices, setOptionPrices] = useState<Record<string, number>>({
     "option-1": 25.00,
     "option-2": 15.00,
-    "option-3": 16.00,
-    "option-6": 15.00,
+    "option-3": 15.00,
+    "option-4": 15.00,
   });
 
   const [paymentMethod, setPaymentMethod] = useState("Venmo (@newheightsLC)");

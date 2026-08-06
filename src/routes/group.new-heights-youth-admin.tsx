@@ -96,8 +96,8 @@ function NewHeightsGroupAdminDashboard() {
   const [optionPrices, setOptionPrices] = useState<Record<string, number>>({
     "option-1": 25.00,
     "option-2": 15.00,
-    "option-3": 16.00,
-    "option-6": 15.00,
+    "option-3": 15.00,
+    "option-4": 15.00,
   });
   const [savingPrices, setSavingPrices] = useState(false);
 
@@ -116,7 +116,7 @@ function NewHeightsGroupAdminDashboard() {
     { name: "Option 1: Indigo Sweatshirt", color: "Indigo Blue" },
     { name: "Option 2: Sage Green Tee", color: "Sage Green" },
     { name: "Option 3: Black Shield Tee", color: "Black" },
-    { name: "Option 6: Purple Floral Tee", color: "Purple" },
+    { name: "Option 4: Purple Floral Tee", color: "Purple" },
   ];
 
   const GROUP_SIZES = [
@@ -528,16 +528,14 @@ ${editNotes || "None"}
       // Calculate cost per item based on option mapping and size tier
       let price = 15.00;
       const isOption1 = optKey.includes("Option 1");
-      const cleanSize = (itemSize || "").trim().toUpperCase();
-
-      if (isOption1) {
+      const cleanSize = (itemSize || "").trim().toUpperCase();      if (isOption1) {
         if (cleanSize.includes("2XL")) price = 27.00;
         else if (cleanSize.includes("3XL")) price = 30.00;
-        else price = 24.00;
+        else price = 25.00;
       } else {
-        // Options 2, 3, 6
+        // Options 2, 3, 4
         if (cleanSize.includes("2XL")) price = 17.00;
-        else if (cleanSize.includes("3XL")) price = 19.00;
+        else if (cleanSize.includes("3XL")) price = 18.00;
         else price = 15.00;
       }
 
@@ -576,14 +574,20 @@ ${editNotes || "None"}
 
   const handleExportCSV = () => {
     let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Submission Date,Member Name,Email,Phone,Item Option,Size,Quantity\n";
+    csvContent += "Submission Date,Member Name,Email,Phone,Item Option,Size,Quantity,Unit Price,Total Line Price,Payment Method,Total Order Price\n";
 
     submissions.forEach((sub) => {
       if (sub.items.length === 0) {
-        csvContent += `"${sub.createdAt}","${sub.memberName}","${sub.memberEmail}","${sub.memberPhone}","General Submission","N/A",${sub.totalGarments}\n`;
+        csvContent += `"${sub.createdAt}","${sub.memberName}","${sub.memberEmail}","${sub.memberPhone}","General Submission","N/A",${sub.totalGarments},"$0.00","$0.00","${sub.paymentMethod}","$${sub.totalPrice.toFixed(2)}"\n`;
       } else {
         sub.items.forEach((item) => {
-          csvContent += `"${sub.createdAt}","${sub.memberName}","${sub.memberEmail}","${sub.memberPhone}","${item.optionName} (${item.color})","${item.size}",${item.quantity}\n`;
+          const isOpt1 = item.optionName.includes("Option 1");
+          const cleanSz = (item.size || "").trim().toUpperCase();
+          let unitP = isOpt1 ? 25 : 15;
+          if (cleanSz.includes("2XL")) unitP += 2;
+          if (cleanSz.includes("3XL")) unitP += 3;
+          const lineP = unitP * item.quantity;
+          csvContent += `"${sub.createdAt}","${sub.memberName}","${sub.memberEmail}","${sub.memberPhone}","${item.optionName} (${item.color})","${item.size}",${item.quantity},"$${unitP.toFixed(2)}","$${lineP.toFixed(2)}","${sub.paymentMethod}","$${sub.totalPrice.toFixed(2)}"\n`;
         });
       }
     });
@@ -602,34 +606,33 @@ ${editNotes || "None"}
     (s) =>
       s.memberName.toLowerCase().includes(filterQuery.toLowerCase()) ||
       s.memberEmail.toLowerCase().includes(filterQuery.toLowerCase()) ||
-      s.rawNotes.toLowerCase().includes(filterQuery.toLowerCase())
+      s.memberPhone.toLowerCase().includes(filterQuery.toLowerCase())
   );
 
   return (
     <SiteLayout>
-      <section className="bg-gradient-to-r from-ink via-slate-900 to-ink text-background border-b-2 border-magenta-brand py-12">
+      <section className="bg-gradient-to-r from-ink via-slate-900 to-ink text-background border-b-2 border-magenta-brand py-10 md:py-14">
         <div className="mx-auto max-w-7xl px-4 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-yellow-brand font-bold text-xs uppercase tracking-widest mb-3 border border-white/20">
-              <Church className="w-4 h-4 text-magenta-brand" /> New Heights Youth Group Admin
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-cyan-brand font-bold text-xs uppercase tracking-widest mb-3 border border-white/20">
+              <Lock className="w-3.5 h-3.5 text-yellow-brand" /> Organizer Admin Dashboard
             </div>
             <h1 className="font-display text-3xl md:text-5xl text-white tracking-tight">
-              Live Order & Size Tally Dashboard
+              New Heights Youth Group Orders
             </h1>
-            <p className="mt-2 text-background/80 text-sm md:text-base">
-              Real-time size aggregation, total garment counts, and pricing estimate for Kaia & organizers.
+            <p className="mt-2 text-sm md:text-base text-background/80 max-w-2xl font-light">
+              Live submission management, size tallies, price calculations, and CSV export for Kaia & group organizers.
             </p>
           </div>
 
           {authenticated && (
-            <div className="flex gap-3">
+            <div className="flex items-center gap-3">
               <Button
                 variant="outline"
                 onClick={fetchSubmissions}
-                disabled={loading}
-                className="bg-transparent border-white/20 text-white hover:bg-white/10"
+                className="border-2 border-white/30 text-white hover:bg-white/10 font-bold"
               >
-                <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} /> Refresh
+                <RefreshCw className="w-4 h-4 mr-2" /> Refresh Data
               </Button>
               <Button
                 onClick={handleExportCSV}
@@ -715,10 +718,10 @@ ${editNotes || "None"}
                   </label>
                   <Input
                     type="text"
-                    placeholder="e.g. (470) 555-0199"
+                    placeholder="e.g. (404) 555-0199"
                     value={adminPhone}
                     onChange={(e) => setAdminPhone(e.target.value)}
-                    className="border-2 border-ink h-12 w-full font-semibold"
+                    className="border-2 border-ink font-semibold"
                   />
                 </div>
                 <div>
@@ -727,15 +730,15 @@ ${editNotes || "None"}
                   </label>
                   <Input
                     type="email"
-                    placeholder="e.g. kaia@newheightslc.org"
+                    placeholder="kaia@newheightslc.org"
                     value={adminEmail}
                     onChange={(e) => setAdminEmail(e.target.value)}
-                    className="border-2 border-ink h-12 w-full font-semibold"
+                    className="border-2 border-ink font-semibold"
                   />
                 </div>
-                <div className="sm:col-span-2 flex justify-end mt-2">
-                  <Button type="submit" disabled={savingContact} className="bg-cyan-brand hover:bg-cyan-brand/90 text-ink h-12 font-bold shadow-sm px-8">
-                    {savingContact ? "Saving Details..." : "Save Contact Details"}
+                <div className="sm:col-span-2 flex justify-end pt-2">
+                  <Button type="submit" disabled={savingContact} className="font-bold shadow-sm px-6">
+                    {savingContact ? "Saving..." : "Save Contact Info"}
                   </Button>
                 </div>
               </form>
@@ -763,7 +766,7 @@ ${editNotes || "None"}
                     Option 1 (Indigo Sweatshirt)
                   </span>
                   <span className="font-display text-xl font-bold text-foreground block mb-1">
-                    $24.00 <span className="text-xs font-normal text-muted-foreground">(YS–XL)</span>
+                    $25.00 <span className="text-xs font-normal text-muted-foreground">(YS–XL)</span>
                   </span>
                   <div className="text-xs text-muted-foreground space-y-0.5 border-t border-border/50 pt-1.5 mt-1.5">
                     <div>2XL: <strong className="text-foreground">$27.00</strong></div>
@@ -780,7 +783,7 @@ ${editNotes || "None"}
                   </span>
                   <div className="text-xs text-muted-foreground space-y-0.5 border-t border-border/50 pt-1.5 mt-1.5">
                     <div>2XL: <strong className="text-foreground">$17.00</strong></div>
-                    <div>3XL: <strong className="text-foreground">$19.00</strong></div>
+                    <div>3XL: <strong className="text-foreground">$18.00</strong></div>
                   </div>
                 </div>
 
@@ -793,20 +796,20 @@ ${editNotes || "None"}
                   </span>
                   <div className="text-xs text-muted-foreground space-y-0.5 border-t border-border/50 pt-1.5 mt-1.5">
                     <div>2XL: <strong className="text-foreground">$17.00</strong></div>
-                    <div>3XL: <strong className="text-foreground">$19.00</strong></div>
+                    <div>3XL: <strong className="text-foreground">$18.00</strong></div>
                   </div>
                 </div>
 
                 <div className="bg-muted/40 p-4 rounded-xl border border-ink/40">
                   <span className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
-                    Option 6 (Purple Floral Tee)
+                    Option 4 (Purple Floral Tee)
                   </span>
                   <span className="font-display text-xl font-bold text-foreground block mb-1">
                     $15.00 <span className="text-xs font-normal text-muted-foreground">(YS–XL)</span>
                   </span>
                   <div className="text-xs text-muted-foreground space-y-0.5 border-t border-border/50 pt-1.5 mt-1.5">
                     <div>2XL: <strong className="text-foreground">$17.00</strong></div>
-                    <div>3XL: <strong className="text-foreground">$19.00</strong></div>
+                    <div>3XL: <strong className="text-foreground">$18.00</strong></div>
                   </div>
                 </div>
               </div>
