@@ -444,11 +444,7 @@ ${editNotes || "None"}
         }
 
         let parsedTotalPrice = 0;
-        const priceMatch = notesText.match(/Total Order Price:\s*\$([\d\.]+)/i) || notesText.match(/Total Amount Due:\s*\$([\d\.]+)/i);
-        if (priceMatch) {
-          parsedTotalPrice = parseFloat(priceMatch[1]) || 0;
-        } else {
-          // Calculate from items if missing in legacy rows
+        if (items.length > 0) {
           items.forEach((it) => {
             const isOpt1 = it.optionName.includes("Option 1");
             const cleanSz = (it.size || "").trim().toUpperCase();
@@ -457,6 +453,11 @@ ${editNotes || "None"}
             if (cleanSz.includes("3XL")) unitP += 3;
             parsedTotalPrice += unitP * (it.quantity || 1);
           });
+        } else {
+          const priceMatch = notesText.match(/Total Order Price:\s*\$([\d\.]+)/i) || notesText.match(/Total Amount Due:\s*\$([\d\.]+)/i);
+          if (priceMatch) {
+            parsedTotalPrice = parseFloat(priceMatch[1]) || 0;
+          }
         }
 
         let formattedDate = "Recently";
