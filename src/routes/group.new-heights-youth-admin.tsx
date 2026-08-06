@@ -519,6 +519,33 @@ ${editNotes || "None"}
     });
   });
 
+  // Calculate Running Tallies for Payment Methods
+  let venmoTotal = 0;
+  let venmoCount = 0;
+  let cashTotal = 0;
+  let cashCount = 0;
+  let checkTotal = 0;
+  let checkCount = 0;
+
+  (submissions || []).forEach((sub) => {
+    const method = sub.paymentMethod || "";
+    const price = sub.totalPrice || 0;
+
+    if (method.includes("Venmo")) {
+      venmoTotal += price;
+      venmoCount += 1;
+    } else if (method.includes("Cash")) {
+      cashTotal += price;
+      cashCount += 1;
+    } else if (method.includes("Check")) {
+      checkTotal += price;
+      checkCount += 1;
+    } else {
+      venmoTotal += price;
+      venmoCount += 1;
+    }
+  });
+
   const estimatedTotalCost = exactTotalCost > 0 ? exactTotalCost.toFixed(2) : "0.00";
 
   const handleExportCSV = () => {
@@ -799,6 +826,96 @@ ${editNotes || "None"}
                 <p className="text-xs text-muted-foreground mt-1">
                   Calculated from exact option unit prices
                 </p>
+              </div>
+            </div>
+
+            {/* Running Tallies of Expected Payments */}
+            <div className="bg-card border-2 border-ink rounded-xl p-6 shadow-pop">
+              <div className="flex items-center justify-between mb-4 border-b border-border pb-3">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-cyan-brand">
+                    Payment Breakdown
+                  </span>
+                  <h3 className="font-display text-2xl font-bold text-foreground mt-0.5">
+                    Running Payment Tallies by Method
+                  </h3>
+                </div>
+                <span className="bg-ink text-yellow-brand font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">
+                  Live Collection Status
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* Venmo Tally */}
+                <div className="bg-cyan-500/10 border-2 border-cyan-500/40 rounded-xl p-4 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-extrabold uppercase tracking-wider text-cyan-700 dark:text-cyan-300">
+                        ⚡ Venmo (@newheightsLC)
+                      </span>
+                      <span className="bg-cyan-500 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-full uppercase">
+                        Instant
+                      </span>
+                    </div>
+                    <p className="font-display text-3xl font-bold text-cyan-600 dark:text-cyan-300 mt-2">
+                      ${venmoTotal.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-cyan-500/20 text-xs font-semibold text-cyan-800 dark:text-cyan-200">
+                    {venmoCount} Member Order{venmoCount !== 1 && "s"} paying via Venmo
+                  </div>
+                </div>
+
+                {/* Cash Tally */}
+                <div className="bg-emerald-500/10 border-2 border-emerald-500/40 rounded-xl p-4 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-300">
+                        💵 Cash (In-Person)
+                      </span>
+                    </div>
+                    <p className="font-display text-3xl font-bold text-emerald-600 dark:text-emerald-300 mt-2">
+                      ${cashTotal.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-emerald-500/20 text-xs font-semibold text-emerald-800 dark:text-emerald-200">
+                    {cashCount} Member Order{cashCount !== 1 && "s"} paying Cash
+                  </div>
+                </div>
+
+                {/* Check Tally */}
+                <div className="bg-amber-500/10 border-2 border-amber-500/40 rounded-xl p-4 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-300">
+                        📝 In-Person Check
+                      </span>
+                    </div>
+                    <p className="font-display text-3xl font-bold text-amber-600 dark:text-amber-300 mt-2">
+                      ${checkTotal.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-amber-500/20 text-xs font-semibold text-amber-800 dark:text-amber-200">
+                    {checkCount} Member Order{checkCount !== 1 && "s"} paying Check
+                  </div>
+                </div>
+
+                {/* Combined Total */}
+                <div className="bg-ink text-background border-2 border-ink rounded-xl p-4 flex flex-col justify-between shadow-md">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-extrabold uppercase tracking-wider text-yellow-brand">
+                        💰 Grand Revenue Total
+                      </span>
+                    </div>
+                    <p className="font-display text-3xl font-bold text-white mt-2">
+                      ${estimatedTotalCost}
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-white/20 text-xs font-semibold text-background/80">
+                    {grandTotalGarments} Garment{grandTotalGarments !== 1 && "s"} total ordered
+                  </div>
+                </div>
               </div>
             </div>
 
