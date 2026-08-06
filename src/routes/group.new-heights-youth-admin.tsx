@@ -74,6 +74,8 @@ interface ParsedSubmission {
   memberEmail: string;
   memberPhone: string;
   totalGarments: number;
+  paymentMethod: string;
+  totalPrice: number;
   rawNotes: string;
   items: ParsedItem[];
 }
@@ -435,6 +437,28 @@ ${editNotes || "None"}
           }
         });
 
+        let parsedPaymentMethod = "Venmo (@newheightsLC)";
+        const payMatch = notesText.match(/Payment Method:\s*(.*)/i);
+        if (payMatch) {
+          parsedPaymentMethod = payMatch[1].trim();
+        }
+
+        let parsedTotalPrice = 0;
+        const priceMatch = notesText.match(/Total Order Price:\s*\$([\d\.]+)/i) || notesText.match(/Total Amount Due:\s*\$([\d\.]+)/i);
+        if (priceMatch) {
+          parsedTotalPrice = parseFloat(priceMatch[1]) || 0;
+        } else {
+          // Calculate from items if missing in legacy rows
+          items.forEach((it) => {
+            const isOpt1 = it.optionName.includes("Option 1");
+            const cleanSz = (it.size || "").trim().toUpperCase();
+            let unitP = isOpt1 ? 25 : 15;
+            if (cleanSz.includes("2XL")) unitP += 2;
+            if (cleanSz.includes("3XL")) unitP += 3;
+            parsedTotalPrice += unitP * (it.quantity || 1);
+          });
+        }
+
         let formattedDate = "Recently";
         try {
           if (row.created_at) {
@@ -456,6 +480,8 @@ ${editNotes || "None"}
           memberEmail: row.email || "",
           memberPhone: row.phone || "",
           totalGarments: parseInt(row.quantity) || items.reduce((s, i) => s + (i.quantity || 0), 0),
+          paymentMethod: parsedPaymentMethod,
+          totalPrice: parsedTotalPrice,
           rawNotes: notesText,
           items,
         };
@@ -1005,6 +1031,8 @@ ${editNotes || "None"}
                         <th className="p-3 font-bold uppercase tracking-wider text-xs">Contact</th>
                         <th className="p-3 font-bold uppercase tracking-wider text-xs">Shirts Chosen</th>
                         <th className="p-3 font-bold uppercase tracking-wider text-xs text-right">Qty</th>
+                        <th className="p-3 font-bold uppercase tracking-wider text-xs text-right">Total Cost</th>
+                        <th className="p-3 font-bold uppercase tracking-wider text-xs text-center">Payment Selected</th>
                         <th className="p-3 font-bold uppercase tracking-wider text-xs text-center">Actions</th>
                       </tr>
                     </thead>
@@ -1014,7 +1042,24 @@ ${editNotes || "None"}
                           <td className="p-3 text-xs text-muted-foreground font-mono whitespace-nowrap">
                             {sub.createdAt}
                           </td>
-                          <td className="p-3 font-bold text-foreground">{sub.memberName}</td>
+                          <td className="p-3 font-bold text-foreground">
+                            {sub.memberName}
+                            <div className="mt-1">
+                              {sub.paymentMethod?.includes("Venmo") ? (
+                                <span className="inline-flex items-center gap-1 bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border border-cyan-500/40 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
+                                  ⚡ Venmo (@newheightsLC)
+                                </span>
+                              ) : sub.paymentMethod?.includes("Cash") ? (
+                                <span className="inline-flex items-center gap-1 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
+                                  💵 Cash (In-Person)
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/40 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
+                                  📝 In-Person Check
+                                </span>
+                              )}
+                            </div>
+                          </td>
                           <td className="p-3 text-xs">
                             <div className="text-foreground">{sub.memberEmail}</div>
                             <div className="text-muted-foreground">{sub.memberPhone}</div>
@@ -1034,6 +1079,24 @@ ${editNotes || "None"}
                           </td>
                           <td className="p-3 font-bold text-right text-base text-cyan-brand font-display">
                             {sub.totalGarments}
+                          </td>
+                          <td className="p-3 font-bold text-right text-base text-foreground font-display whitespace-nowrap">
+                            ${(sub.totalPrice || 0).toFixed(2)}
+                          </td>
+                          <td className="p-3 text-center whitespace-nowrap">
+                            {sub.paymentMethod?.includes("Venmo") ? (
+                              <span className="inline-flex items-center gap-1 bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border border-cyan-500/40 px-2.5 py-1 rounded-full text-xs font-bold shadow-2xs">
+                                ⚡ Venmo (@newheightsLC)
+                              </span>
+                            ) : sub.paymentMethod?.includes("Cash") ? (
+                              <span className="inline-flex items-center gap-1 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-full text-xs font-bold shadow-2xs">
+                                💵 Cash (In-Person)
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-full text-xs font-bold shadow-2xs">
+                                📝 Check
+                              </span>
+                            )}
                           </td>
                           <td className="p-3 text-center whitespace-nowrap">
                             <div className="flex items-center justify-center gap-2">
