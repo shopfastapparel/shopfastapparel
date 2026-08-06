@@ -109,6 +109,10 @@ function NewHeightsYouthCollectionPage() {
     "option-6": 15.00,
   });
 
+  const [paymentMethod, setPaymentMethod] = useState("Venmo (@newheightsLC)");
+  const [submittedPaymentMethod, setSubmittedPaymentMethod] = useState("");
+  const [submittedTotalPrice, setSubmittedTotalPrice] = useState(0);
+
   useEffect(() => {
     async function loadSettings() {
       try {
@@ -162,6 +166,20 @@ function NewHeightsYouthCollectionPage() {
     loadSettings();
   }, []);
 
+  const getItemUnitPrice = (optionId: string, size: string) => {
+    const basePrice = optionPrices[optionId] || (optionId === "option-1" ? 25 : 15);
+    const cleanSize = (size || "").trim().toUpperCase();
+    if (cleanSize.includes("2XL")) return basePrice + 2;
+    if (cleanSize.includes("3XL")) return basePrice + 3;
+    return basePrice;
+  };
+
+  const getItemTotalPrice = (item: SelectedItem) => {
+    return getItemUnitPrice(item.optionId, item.size) * item.quantity;
+  };
+
+  const orderTotalPrice = items.reduce((sum, item) => sum + getItemTotalPrice(item), 0);
+
   const handleAddItem = (optionId: string) => {
     setItems((prev) => [
       ...prev,
@@ -197,12 +215,18 @@ function NewHeightsYouthCollectionPage() {
       toast.error("Please add at least one shirt option to your selection.");
       return;
     }
+    if (!paymentMethod) {
+      toast.error("Please select a payment method for your order.");
+      return;
+    }
 
     setSubmitting(true);
     try {
       const summaryItems = items.map((item) => {
         const opt = SHIRT_OPTIONS.find((o) => o.id === item.optionId);
-        return `${opt?.name} (${opt?.color}) — Size: ${item.size}, Qty: ${item.quantity}`;
+        const unitP = getItemUnitPrice(item.optionId, item.size);
+        const lineP = getItemTotalPrice(item);
+        return `${opt?.name} (${opt?.color}) — Size: ${item.size}, Qty: ${item.quantity} ($${unitP.toFixed(2)} ea = $${lineP.toFixed(2)})`;
       });
 
       const formattedNotes = `
@@ -212,6 +236,8 @@ Name: ${name}
 Email: ${email}
 Phone: ${phone}
 Total Garments: ${totalGarments}
+Total Order Price: $${orderTotalPrice.toFixed(2)}
+Payment Method: ${paymentMethod}
 
 SELECTIONS:
 ${summaryItems.map((s, idx) => `${idx + 1}. ${s}`).join("\n")}
@@ -234,6 +260,8 @@ ${notes || "None"}
 
       if (error) throw error;
 
+      setSubmittedPaymentMethod(paymentMethod);
+      setSubmittedTotalPrice(orderTotalPrice);
       setSubmitted(true);
       toast.success("Order submission received! Thank you!");
     } catch (err: any) {
@@ -320,17 +348,47 @@ ${notes || "None"}
             <p className="text-muted-foreground mt-3 text-lg">
               Thank you, <strong>{name}</strong>! Your shirt choices have been recorded for New Heights Youth Group.
             </p>
-            <div className="bg-muted/50 p-6 rounded-xl border border-border mt-6 text-left text-sm space-y-2">
-              <p className="font-bold text-foreground mb-2 border-b pb-2">Submission Summary ({totalGarments} Total Garments):</p>
+
+            <div className="bg-muted/50 p-6 rounded-xl border border-border mt-6 text-left text-sm space-y-3">
+              <div className="flex items-center justify-between border-b pb-3 flex-wrap gap-2">
+                <span className="font-bold text-foreground text-base">Submission Summary ({totalGarments} Total Garment{totalGarments !== 1 && "s"}):</span>
+                <span className="font-display text-xl font-bold text-magenta-brand">${submittedTotalPrice.toFixed(2)} Total</span>
+              </div>
               {items.map((item, idx) => {
                 const opt = SHIRT_OPTIONS.find((o) => o.id === item.optionId);
+                const unitP = getItemUnitPrice(item.optionId, item.size);
+                const lineP = getItemTotalPrice(item);
                 return (
-                  <p key={idx} className="text-foreground/90">
-                    • <strong>{opt?.name}</strong> ({opt?.color}) — Size: <strong>{item.size}</strong>, Qty: <strong>{item.quantity}</strong>
+                  <p key={idx} className="text-foreground/90 text-sm">
+                    • <strong>{opt?.name}</strong> ({opt?.color}) — Size: <strong>{item.size}</strong>, Qty: <strong>{item.quantity}</strong> <span className="text-muted-foreground font-mono">(${unitP.toFixed(2)} ea = ${lineP.toFixed(2)})</span>
                   </p>
                 );
               })}
+
+              <div className="mt-4 pt-3 border-t border-border">
+                <p className="font-bold text-foreground text-xs uppercase tracking-wider mb-1">Selected Payment Method:</p>
+                <div className="bg-background border-2 border-ink p-3 rounded-lg flex items-center gap-3">
+                  {submittedPaymentMethod.includes("Venmo") ? (
+                    <span className="text-xl">⚡</span>
+                  ) : submittedPaymentMethod.includes("Cash") ? (
+                    <span className="text-xl">💵</span>
+                  ) : (
+                    <span className="text-xl">📝</span>
+                  )}
+                  <div>
+                    <span className="font-bold text-sm text-foreground block">{submittedPaymentMethod}</span>
+                    {submittedPaymentMethod.includes("Venmo") ? (
+                      <span className="text-xs text-cyan-600 dark:text-cyan-400 font-medium">Please send <strong>${submittedTotalPrice.toFixed(2)}</strong> to <strong>@newheightsLC</strong> on Venmo. Include your full name in the note!</span>
+                    ) : submittedPaymentMethod.includes("Cash") ? (
+                      <span className="text-xs text-muted-foreground">Please hand cash payment of <strong>${submittedTotalPrice.toFixed(2)}</strong> to Kaia on or before {deadline}.</span>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">Please make check payable to <strong>New Heights Church</strong> for <strong>${submittedTotalPrice.toFixed(2)}</strong> and hand to Kaia on or before {deadline}.</span>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
+
             <Button
               className="mt-8 shadow-sm border-2 border-ink text-base px-8 h-12"
               onClick={() => {
@@ -371,10 +429,11 @@ ${notes || "None"}
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {SHIRT_OPTIONS.map((option) => {
                   const itemCount = items.filter((i) => i.optionId === option.id).length;
+                  const baseP = optionPrices[option.id] || (option.id === "option-1" ? 25 : 15);
                   return (
                     <div
                       key={option.id}
-                      className="bg-card border-2 border-ink rounded-xl overflow-hidden shadow-pop hover:-translate-y-1 transition-transform flex flex-col justify-between group"
+                      className="bg-card border-2 border-ink rounded-xl overflow-hidden shadow-pop hover:-translate-y-1 transition-transform flex flex-col justify-between group relative"
                     >
                       <div>
                         <div 
@@ -386,19 +445,26 @@ ${notes || "None"}
                             alt={option.name}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
-                          <span className="absolute top-3 left-3 bg-yellow-brand text-ink text-xs font-bold px-2.5 py-1 rounded border border-ink shadow-sm">
-                            {option.badge}
-                          </span>
+                          <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start">
+                            <span className="bg-yellow-brand text-ink text-xs font-bold px-2.5 py-1 rounded border border-ink shadow-sm">
+                              {option.badge}
+                            </span>
+                            <span className="bg-ink text-yellow-brand text-sm font-display font-bold px-2.5 py-1 rounded border border-white/20 shadow-md">
+                              ${baseP.toFixed(2)}
+                            </span>
+                          </div>
                           <div className="absolute inset-0 bg-ink/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white gap-1.5 font-bold text-sm backdrop-blur-[2px]">
                             <ZoomIn className="w-5 h-5 text-yellow-brand" /> Click to Enlarge
                           </div>
                         </div>
                         <div className="p-4">
-                          <h3 className="font-bold text-lg leading-tight text-foreground">
-                            {option.name}
-                          </h3>
+                          <div className="flex items-baseline justify-between gap-2">
+                            <h3 className="font-bold text-lg leading-tight text-foreground">
+                              {option.name}
+                            </h3>
+                          </div>
                           <p className="text-xs text-magenta-brand font-semibold mt-1">
-                            Color: {option.color}
+                            Color: {option.color} · <span className="text-muted-foreground font-normal">${baseP.toFixed(2)} (2XL +$2, 3XL +$3)</span>
                           </p>
                           <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
                             {option.design}
@@ -446,6 +512,8 @@ ${notes || "None"}
                   </div>
                   {items.map((item, index) => {
                     const opt = SHIRT_OPTIONS.find((o) => o.id === item.optionId);
+                    const unitPrice = getItemUnitPrice(item.optionId, item.size);
+                    const linePrice = getItemTotalPrice(item);
                     return (
                       <div
                         key={item.id}
@@ -463,6 +531,7 @@ ${notes || "None"}
                             </span>
                             <h4 className="font-bold text-lg leading-snug">{opt?.name}</h4>
                             <p className="text-xs text-muted-foreground">{opt?.color} — {opt?.garment}</p>
+                            <p className="text-xs font-bold text-foreground mt-0.5">${unitPrice.toFixed(2)} ea</p>
                           </div>
                         </div>
 
@@ -500,6 +569,11 @@ ${notes || "None"}
                             />
                           </div>
 
+                          <div className="text-right font-mono min-w-[70px]">
+                            <span className="text-xs text-muted-foreground block">Line Total</span>
+                            <span className="font-bold text-base text-foreground">${linePrice.toFixed(2)}</span>
+                          </div>
+
                           <Button
                             type="button"
                             variant="ghost"
@@ -514,9 +588,15 @@ ${notes || "None"}
                     );
                   })}
 
-                  <div className="bg-yellow-brand/20 border border-yellow-brand p-4 rounded-xl flex items-center justify-between text-ink">
-                    <span className="font-bold text-sm">Total Selected Shirts:</span>
-                    <span className="font-display text-2xl font-bold">{totalGarments} Garment{totalGarments !== 1 && "s"}</span>
+                  <div className="bg-yellow-brand/20 border-2 border-yellow-brand p-5 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4 text-ink shadow-sm">
+                    <div>
+                      <span className="font-bold text-sm block">Order Total Summary</span>
+                      <span className="text-xs text-muted-foreground">{totalGarments} Garment{totalGarments !== 1 && "s"} Selected</span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">Total Amount Due</span>
+                      <span className="font-display text-3xl font-bold text-magenta-brand">${orderTotalPrice.toFixed(2)}</span>
+                    </div>
                   </div>
                 </div>
               )}
@@ -590,19 +670,115 @@ ${notes || "None"}
               </div>
             </div>
 
+            {/* Step 4: Choose Payment Method */}
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-9 w-9 rounded-full bg-magenta-brand text-white font-bold grid place-items-center font-display">
+                  4
+                </div>
+                <div>
+                  <h2 className="font-display text-2xl md:text-3xl text-foreground">
+                    Choose Payment Option
+                  </h2>
+                  <p className="text-xs text-muted-foreground">Select how you will submit payment to New Heights Church for your order.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Venmo Option (Highlighted Preferred) */}
+                <div
+                  onClick={() => setPaymentMethod("Venmo (@newheightsLC)")}
+                  className={`relative cursor-pointer rounded-2xl p-6 border-3 transition-all ${
+                    paymentMethod === "Venmo (@newheightsLC)"
+                      ? "border-cyan-500 bg-cyan-500/10 shadow-pop ring-2 ring-cyan-400"
+                      : "border-ink/30 bg-card hover:border-ink/60"
+                  }`}
+                >
+                  <div className="absolute -top-3 left-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-[11px] font-extrabold px-3 py-0.5 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1">
+                    ⚡ Instant & Preferred
+                  </div>
+                  <div className="flex items-center justify-between mb-3 mt-1">
+                    <span className="font-display text-xl font-bold text-cyan-600 dark:text-cyan-300">Venmo</span>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      checked={paymentMethod === "Venmo (@newheightsLC)"}
+                      onChange={() => setPaymentMethod("Venmo (@newheightsLC)")}
+                      className="w-5 h-5 accent-cyan-500"
+                    />
+                  </div>
+                  <div className="bg-background border border-cyan-500/30 p-3 rounded-xl mb-3">
+                    <span className="block text-xs text-muted-foreground font-medium">Venmo Handle:</span>
+                    <span className="font-mono text-base font-extrabold text-cyan-600 dark:text-cyan-300">@newheightsLC</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Fast & instant payment! Please send your order total (<strong>${orderTotalPrice.toFixed(2)}</strong>) to <strong>@newheightsLC</strong> on Venmo and include your full name in the Venmo note.
+                  </p>
+                </div>
+
+                {/* Cash Option */}
+                <div
+                  onClick={() => setPaymentMethod("Cash (In-Person)")}
+                  className={`cursor-pointer rounded-2xl p-6 border-3 transition-all ${
+                    paymentMethod === "Cash (In-Person)"
+                      ? "border-emerald-500 bg-emerald-500/10 shadow-pop ring-2 ring-emerald-400"
+                      : "border-ink/30 bg-card hover:border-ink/60"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-display text-xl font-bold text-emerald-600 dark:text-emerald-300">💵 Cash</span>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      checked={paymentMethod === "Cash (In-Person)"}
+                      onChange={() => setPaymentMethod("Cash (In-Person)")}
+                      className="w-5 h-5 accent-emerald-500"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed mt-4">
+                    In-person cash payment. Hand exact cash amount (<strong>${orderTotalPrice.toFixed(2)}</strong>) directly to Kaia or the church office on or before <strong>{deadline}</strong>.
+                  </p>
+                </div>
+
+                {/* Check Option */}
+                <div
+                  onClick={() => setPaymentMethod("In-Person Check")}
+                  className={`cursor-pointer rounded-2xl p-6 border-3 transition-all ${
+                    paymentMethod === "In-Person Check"
+                      ? "border-amber-500 bg-amber-500/10 shadow-pop ring-2 ring-amber-400"
+                      : "border-ink/30 bg-card hover:border-ink/60"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-display text-xl font-bold text-amber-600 dark:text-amber-300">📝 In-Person Check</span>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      checked={paymentMethod === "In-Person Check"}
+                      onChange={() => setPaymentMethod("In-Person Check")}
+                      className="w-5 h-5 accent-amber-500"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed mt-4">
+                    Make check payable to <strong>"New Heights Church"</strong> for <strong>${orderTotalPrice.toFixed(2)}</strong> and hand to Kaia on or before <strong>{deadline}</strong>.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Submit CTA */}
             <div className="pt-4 text-center">
               <Button
                 type="submit"
                 size="lg"
-                disabled={submitting}
+                disabled={submitting || items.length === 0}
                 className="shadow-pop border-2 border-ink text-lg font-bold h-16 px-12 bg-magenta-brand hover:bg-magenta-brand/90 text-white w-full sm:w-auto"
               >
                 {submitting ? (
                   "Submitting Choice..."
                 ) : (
                   <>
-                    <Send className="w-5 h-5 mr-2" /> Submit Order Choice ({totalGarments} Shirts)
+                    <Send className="w-5 h-5 mr-2" /> Submit Order Choice ({totalGarments} Shirts · ${orderTotalPrice.toFixed(2)})
                   </>
                 )}
               </Button>
