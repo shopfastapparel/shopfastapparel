@@ -260,6 +260,35 @@ ${notes || "None"}
 
       if (error) throw error;
 
+      // Dispatch background email notification to shop owner
+      fetch("/api/group-admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "notify_new_order",
+          name,
+          email,
+          phone,
+          totalGarments,
+          totalPrice: orderTotalPrice,
+          paymentMethod,
+          notes,
+          items: items.map((it) => {
+            const opt = SHIRT_OPTIONS.find((o) => o.id === it.optionId);
+            const unitP = getItemUnitPrice(it.optionId, it.size);
+            const lineP = getItemTotalPrice(it);
+            return {
+              optionName: opt?.name,
+              color: opt?.color,
+              size: it.size,
+              quantity: it.quantity,
+              unitPrice: unitP,
+              linePrice: lineP,
+            };
+          }),
+        }),
+      }).catch((nErr) => console.error("Notification trigger error:", nErr));
+
       setSubmittedPaymentMethod(paymentMethod);
       setSubmittedTotalPrice(orderTotalPrice);
       setSubmitted(true);
