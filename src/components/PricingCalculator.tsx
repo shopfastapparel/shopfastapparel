@@ -2,15 +2,24 @@ import { useState, useMemo } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { HelpCircle } from "lucide-react";
+import { APPAREL_STYLES } from "@/lib/apparel";
 
 interface PricingCalculatorProps {
   baseCost: number;
   productId: string;
+  allowProductSelect?: boolean;
 }
 
-export function PricingCalculator({ baseCost, productId }: PricingCalculatorProps) {
+export function PricingCalculator({ baseCost: initialBaseCost, productId: initialProductId, allowProductSelect }: PricingCalculatorProps) {
+  const [selectedProductId, setSelectedProductId] = useState(initialProductId);
   const [quantity, setQuantity] = useState<number>(50);
   const [locations, setLocations] = useState<1 | 2>(1);
+
+  const currentProduct = useMemo(() => {
+    if (!allowProductSelect) return { baseCost: initialBaseCost, id: initialProductId };
+    const p = APPAREL_STYLES.find(style => style.id === selectedProductId);
+    return { baseCost: p?.baseCost || initialBaseCost, id: selectedProductId };
+  }, [allowProductSelect, selectedProductId, initialBaseCost, initialProductId]);
 
   const { unitPrice, totalPrice, discountPct, printCost } = useMemo(() => {
     // Determine Discount
@@ -25,7 +34,7 @@ export function PricingCalculator({ baseCost, productId }: PricingCalculatorProp
     const print = locations === 1 ? 2.00 : 5.00;
 
     // 50% Profit Margin formula: (Base Cost + $1 Shipping + Print Cost) * 2
-    const baseRetail = (baseCost + 1.00 + print) * 2;
+    const baseRetail = (currentProduct.baseCost + 1.00 + print) * 2;
     const discountedRetail = baseRetail * (1 - discount);
     
     return {
@@ -34,7 +43,7 @@ export function PricingCalculator({ baseCost, productId }: PricingCalculatorProp
       discountPct: discount,
       printCost: print
     };
-  }, [baseCost, quantity, locations]);
+  }, [currentProduct.baseCost, quantity, locations]);
 
   // Determine which bucket the quantity falls into for the Quote form
   const getQuantityBucket = (qty: number) => {
@@ -58,6 +67,31 @@ export function PricingCalculator({ baseCost, productId }: PricingCalculatorProp
       </h3>
 
       <div className="space-y-6">
+        {/* Product Select (Optional) */}
+        {allowProductSelect && (
+          <div>
+            <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider mb-2">
+              Select Apparel Style
+            </label>
+            <div className="relative">
+              <select
+                value={selectedProductId}
+                onChange={(e) => setSelectedProductId(e.target.value)}
+                className="w-full text-base font-medium px-4 py-3 border-2 border-ink rounded-lg focus:ring-2 focus:ring-yellow-brand focus:border-ink outline-none transition-all bg-background appearance-none"
+              >
+                {APPAREL_STYLES.map(style => (
+                  <option key={style.id} value={style.id}>
+                    {style.name} ({style.brand})
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-ink">
+                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Quantity Input */}
         <div>
           <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider mb-2">
@@ -130,7 +164,7 @@ export function PricingCalculator({ baseCost, productId }: PricingCalculatorProp
             to="/quote" 
             search={{ 
               service: "custom-tshirts", 
-              productId: productId,
+              productId: currentProduct.id,
               quantity: getQuantityBucket(quantity),
               printLocations: locations
             }}

@@ -570,7 +570,7 @@ function HomePage() {
             </div>
             
             <div className="lg:col-span-1">
-              <PricingCalculator baseCost={3.50} productId="gildan-64000" />
+              <PricingCalculator baseCost={3.50} productId="gildan-64000" allowProductSelect={true} />
             </div>
           </div>
         </div>
