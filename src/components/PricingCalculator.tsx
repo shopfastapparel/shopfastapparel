@@ -120,6 +120,9 @@ export function PricingCalculator({ baseCost, productId }: PricingCalculatorProp
             <span className="text-base font-bold text-ink">Estimated Total</span>
             <span className="font-display text-3xl text-ink">${totalPrice.toFixed(2)}</span>
           </div>
+          <p className="text-[11px] text-muted-foreground mt-3 italic leading-snug">
+            *Pricing shown applies to standard Youth and Adult tees sized Small - XL. Oversized shirts (2XL, 3XL, 4XL) are subject to increased pricing.
+          </p>
         </div>
 
         <Button asChild size="lg" className="w-full text-lg h-14 shadow-pop border-2 border-ink">
