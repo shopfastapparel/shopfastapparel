@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { Testimonials } from "@/components/Testimonials";
+import { PricingCalculator } from "@/components/PricingCalculator";
 import { APPAREL_STYLES } from "@/lib/apparel";
 import { LOCATIONS } from "@/lib/locations";
 import {
@@ -526,43 +527,51 @@ function HomePage() {
               <Link to="/shop">View all</Link>
             </Button>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            {/* Static Card for FAST Deal */}
-            <Link
-              to="/landing/bundle-deal"
-              className="group block bg-card border-2 border-magenta-brand rounded-xl overflow-hidden shadow-sm hover:shadow-pop hover:-translate-y-1 transition-all relative"
-            >
-              <div className="aspect-square bg-muted overflow-hidden relative">
-                <img
-                  src="/images/apparel/gildan-bundle.png"
-                  alt="FAST Deal Bundle"
-                  loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute top-3 left-3 bg-yellow-brand text-ink font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-ink shadow-sm flex items-center gap-1">
-                  <Zap className="w-3 h-3" /> The FAST Deal
-                </div>
-                <div className="absolute top-3 right-3 font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-ink shadow-sm bg-magenta-brand text-background">
-                  Special
-                </div>
-              </div>
-              <div className="p-4 flex flex-col flex-grow">
-                <p className="text-xs text-magenta-brand font-semibold mb-1">Bundle of 24 Shirts</p>
-                <h3 className="font-display text-base leading-snug line-clamp-2">Premium Custom Gildan Softstyle Package</h3>
-                <div className="mt-auto pt-3 flex items-center justify-between">
-                  <span className="text-xs text-ink font-bold uppercase tracking-wider group-hover:underline">
-                    View Details →
-                  </span>
-                  <span className="text-xs font-bold text-cyan-brand whitespace-nowrap bg-cyan-brand/10 px-2 py-1 rounded">
-                    $9.00 / shirt
-                  </span>
-                </div>
-              </div>
-            </Link>
+          <div className="grid lg:grid-cols-4 gap-8">
+            <div className="lg:col-span-3">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+                {/* Static Card for FAST Deal */}
+                <Link
+                  to="/landing/bundle-deal"
+                  className="group block bg-card border-2 border-magenta-brand rounded-xl overflow-hidden shadow-sm hover:shadow-pop hover:-translate-y-1 transition-all relative"
+                >
+                  <div className="aspect-square bg-muted overflow-hidden relative">
+                    <img
+                      src="/images/apparel/gildan-bundle.png"
+                      alt="FAST Deal Bundle"
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 left-3 bg-yellow-brand text-ink font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-ink shadow-sm flex items-center gap-1">
+                      <Zap className="w-3 h-3" /> The FAST Deal
+                    </div>
+                    <div className="absolute top-3 right-3 font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-ink shadow-sm bg-magenta-brand text-background">
+                      Special
+                    </div>
+                  </div>
+                  <div className="p-4 flex flex-col flex-grow">
+                    <p className="text-xs text-magenta-brand font-semibold mb-1">Bundle of 24 Shirts</p>
+                    <h3 className="font-display text-base leading-snug line-clamp-2">Premium Custom Gildan Softstyle Package</h3>
+                    <div className="mt-auto pt-3 flex items-center justify-between">
+                      <span className="text-xs text-ink font-bold uppercase tracking-wider group-hover:underline">
+                        View Details →
+                      </span>
+                      <span className="text-xs font-bold text-cyan-brand whitespace-nowrap bg-cyan-brand/10 px-2 py-1 rounded">
+                        $9.00 / shirt
+                      </span>
+                    </div>
+                  </div>
+                </Link>
 
-            {products.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
+                {products.slice(0, 5).map((p) => (
+                  <ProductCard key={p.id} product={p} />
+                ))}
+              </div>
+            </div>
+            
+            <div className="lg:col-span-1">
+              <PricingCalculator baseCost={3.50} productId="gildan-64000" />
+            </div>
           </div>
         </div>
       </section>
