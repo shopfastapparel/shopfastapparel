@@ -1,8 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, Loader2 } from "lucide-react";
 import { APPAREL_STYLES } from "@/lib/apparel";
+import { fetchLiveInventory, type InventoryItem } from "@/lib/ssactivewear.functions";
 
 interface PricingCalculatorProps {
   baseCost: number;
@@ -14,12 +15,36 @@ export function PricingCalculator({ baseCost: initialBaseCost, productId: initia
   const [selectedProductId, setSelectedProductId] = useState(initialProductId);
   const [quantity, setQuantity] = useState<number>(50);
   const [locations, setLocations] = useState<1 | 2>(1);
+  const [liveBaseCost, setLiveBaseCost] = useState<number | null>(null);
+  const [loadingPrice, setLoadingPrice] = useState(false);
+
+  useEffect(() => {
+    if (!allowProductSelect) return;
+    
+    const p = APPAREL_STYLES.find(style => style.id === selectedProductId);
+    if (!p?.ssStyleId) return;
+
+    setLoadingPrice(true);
+    fetchLiveInventory({ data: { styleId: p.ssStyleId } })
+      .then((res: InventoryItem[]) => {
+        if (res && res.length > 0) {
+          const validPrices = res.map(i => i.basePrice).filter(price => price !== undefined && price > 0) as number[];
+          if (validPrices.length > 0) {
+            setLiveBaseCost(Math.min(...validPrices));
+          } else {
+            setLiveBaseCost(null);
+          }
+        }
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setLoadingPrice(false));
+  }, [allowProductSelect, selectedProductId]);
 
   const currentProduct = useMemo(() => {
     if (!allowProductSelect) return { baseCost: initialBaseCost, id: initialProductId };
     const p = APPAREL_STYLES.find(style => style.id === selectedProductId);
-    return { baseCost: p?.baseCost || initialBaseCost, id: selectedProductId };
-  }, [allowProductSelect, selectedProductId, initialBaseCost, initialProductId]);
+    return { baseCost: liveBaseCost ?? p?.baseCost ?? initialBaseCost, id: selectedProductId };
+  }, [allowProductSelect, selectedProductId, initialBaseCost, initialProductId, liveBaseCost]);
 
   const { unitPrice, totalPrice, discountPct, printCost } = useMemo(() => {
     // Determine Discount
@@ -148,11 +173,19 @@ export function PricingCalculator({ baseCost: initialBaseCost, productId: initia
         <div className="bg-muted/50 p-4 rounded-xl border border-border">
           <div className="flex justify-between items-end mb-1">
             <span className="text-sm font-semibold text-muted-foreground">Price per Shirt</span>
-            <span className="font-display text-2xl text-cyan-brand">${unitPrice.toFixed(2)}</span>
+            {loadingPrice ? (
+               <Loader2 className="h-6 w-6 animate-spin text-cyan-brand" />
+            ) : (
+               <span className="font-display text-2xl text-cyan-brand">${unitPrice.toFixed(2)}</span>
+            )}
           </div>
           <div className="flex justify-between items-end pt-3 border-t border-border mt-3">
             <span className="text-base font-bold text-ink">Estimated Total</span>
-            <span className="font-display text-3xl text-ink">${totalPrice.toFixed(2)}</span>
+            {loadingPrice ? (
+               <Loader2 className="h-6 w-6 animate-spin text-ink" />
+            ) : (
+               <span className="font-display text-3xl text-ink">${totalPrice.toFixed(2)}</span>
+            )}
           </div>
           <p className="text-[11px] text-muted-foreground mt-3 italic leading-snug">
             *Pricing shown applies to standard Youth and Adult tees sized Small - XL. Oversized shirts (2XL, 3XL, 4XL) are subject to increased pricing.
