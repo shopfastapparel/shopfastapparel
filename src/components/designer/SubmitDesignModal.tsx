@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ApparelStyle } from "@/lib/apparel";
 import { GarmentColor } from "./designerTypes";
 import { Button } from "@/components/ui/button";
-import { Check, Loader2, Sparkles, X } from "lucide-react";
+import { Check, Loader2, Sparkles, X, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface SubmitDesignModalProps {
@@ -45,6 +45,19 @@ export function SubmitDesignModal({
 
   if (!isOpen) return null;
 
+  // Helper to convert base64 dataUrl to blob
+  const dataUrlToBlob = (dataUrl: string) => {
+    const arr = dataUrl.split(",");
+    const mime = arr[0].match(/:(.*?);/)![1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim()) {
@@ -56,6 +69,48 @@ export function SubmitDesignModal({
     setErrorMsg("");
 
     try {
+      const fileNames: string[] = [];
+
+      // Upload Front Proof to Supabase Storage if available
+      if (frontProofUrl) {
+        const frontBlob = dataUrlToBlob(frontProofUrl);
+        const frontFileName = `studio_${Date.now()}_front.png`;
+        const { data: uploadData, error: uploadErr } = await supabase.storage
+          .from("quote_artwork")
+          .upload(frontFileName, frontBlob, { contentType: "image/png" });
+
+        if (!uploadErr && uploadData?.path) {
+          fileNames.push(
+            JSON.stringify({
+              name: "Studio_Front_Proof.png",
+              path: uploadData.path,
+              placement: "Front",
+              location: "Full Front Center",
+            })
+          );
+        }
+      }
+
+      // Upload Back Proof to Supabase Storage if available
+      if (backProofUrl) {
+        const backBlob = dataUrlToBlob(backProofUrl);
+        const backFileName = `studio_${Date.now()}_back.png`;
+        const { data: uploadData, error: uploadErr } = await supabase.storage
+          .from("quote_artwork")
+          .upload(backFileName, backBlob, { contentType: "image/png" });
+
+        if (!uploadErr && uploadData?.path) {
+          fileNames.push(
+            JSON.stringify({
+              name: "Studio_Back_Proof.png",
+              path: uploadData.path,
+              placement: "Back",
+              location: "Full Back Center",
+            })
+          );
+        }
+      }
+
       // Build size string
       const sizeList = Object.entries(sizes)
         .filter(([_, qty]) => qty && parseInt(qty) > 0)
@@ -63,10 +118,10 @@ export function SubmitDesignModal({
         .join(", ");
 
       const quoteDetails = [
-        `Apparel: ${style.name} (${style.brand})`,
+        `Apparel Blank: ${style.name} (${style.brand})`,
         `Garment Color: ${color.name}`,
-        sizeList ? `Sizes: ${sizeList}` : `Total Qty: ${quantity}`,
-        notes ? `Notes: ${notes}` : "",
+        sizeList ? `Requested Sizes: ${sizeList}` : `Estimated Quantity: ${quantity}`,
+        notes ? `Special Notes: ${notes}` : "",
       ]
         .filter(Boolean)
         .join("\n");
@@ -84,22 +139,8 @@ export function SubmitDesignModal({
           turnaround_estimate: "7–10 business days",
           deadline: deadline || null,
           details: quoteDetails,
-          file_names: [
-            frontProofUrl
-              ? JSON.stringify({
-                  name: "Studio_Front_Design.png",
-                  placement: "Front",
-                  location: "Full Front Center",
-                })
-              : null,
-            backProofUrl
-              ? JSON.stringify({
-                  name: "Studio_Back_Design.png",
-                  placement: "Back",
-                  location: "Full Back Center",
-                })
-              : null,
-          ].filter(Boolean),
+          file_names: fileNames.length > 0 ? fileNames : null,
+          status: "New Request",
         },
       ]);
 
@@ -141,7 +182,7 @@ export function SubmitDesignModal({
               <span className="font-bold text-ink">{color.name}</span>.
             </p>
             <p className="text-xs text-muted-foreground">
-              Our team is reviewing your design and will email an official quote
+              Our team is reviewing your safe-zones and will email an official quote
               and digital proof to <span className="font-bold text-ink">{email}</span> within 24 hours.
             </p>
 
@@ -315,7 +356,7 @@ export function SubmitDesignModal({
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Sending Proofs...
+                    Uploading Proofs & Submitting...
                   </>
                 ) : (
                   "Submit Design"
