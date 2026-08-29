@@ -8,7 +8,7 @@ export type ApparelStyle = {
   fabricWeight: string;
   features: string[];
   description: string;
-  specSheetUrl: string;
+  specSheetUrl?: string;
   badge?: "Best Seller" | "Premium";
   ssStyleId: number;
   baseCost?: number;
@@ -55,63 +55,6 @@ export const APPAREL_STYLES: ApparelStyle[] = [
     baseCost: 3.20
   },
   {
-    id: "gildan-18500",
-    name: "Gildan Heavy Blend Hoodie",
-    brand: "Gildan",
-    model: "18500",
-    image: "/images/apparel/gildan-18500.jpg",
-    fabricComposition: "50% cotton, 50% polyester",
-    fabricWeight: "8.0 oz/yd²",
-    features: [
-      "Tear-away label",
-      "Air-jet spun yarn for reduced pilling",
-      "Double-lined hood with drawcord",
-      "Front pouch pocket"
-    ],
-    description: "Stay cozy and warm with this classic, midweight hooded sweatshirt. Featuring a soft, pill-resistant fleece interior and a spacious front pocket, it's the ultimate go-to layer for chilly days.",
-    specSheetUrl: "/specs/gildan-18500.pdf",
-    ssStyleId: 395,
-    baseCost: 10.50
-  },
-  {
-    id: "gildan-18000",
-    name: "Gildan Heavy Blend Crewneck",
-    brand: "Gildan",
-    model: "18000",
-    image: "/images/apparel/gildan-18000.jpg",
-    fabricComposition: "50% cotton, 50% polyester",
-    fabricWeight: "8.0 oz/yd²",
-    features: [
-      "Tear-away label",
-      "Air-jet spun yarn for reduced pilling",
-      "1x1 rib with spandex cuffs and waistband",
-      "Double-needle stitching"
-    ],
-    description: "This essential crewneck sweatshirt delivers the perfect balance of warmth and comfort without the bulk. Its durable, pill-resistant fabric ensures long-lasting wear and a smooth printing surface.",
-    specSheetUrl: "/specs/gildan-18000.pdf",
-    ssStyleId: 372,
-    baseCost: 8.25
-  },
-  {
-    id: "c2-sport-5100",
-    name: "C2 Sport Performance T-Shirt",
-    brand: "C2 Sport",
-    model: "5100",
-    image: "/images/apparel/c2-sport-5100.jpg",
-    fabricComposition: "100% polyester",
-    fabricWeight: "3.5 oz/yd²",
-    features: [
-      "Tear-away label",
-      "Moisture-management properties",
-      "Antimicrobial properties",
-      "Double-needle stitched hem"
-    ],
-    description: "Engineered for active lifestyles, this performance tee wicks away sweat and controls odor to keep you cool and dry. Its ultra-lightweight fabric makes it a top choice for workouts and sports teams.",
-    specSheetUrl: "/specs/c2-sport-5100.pdf",
-    ssStyleId: 2281,
-    baseCost: 4.10
-  },
-  {
     id: "comfort-colors-1717",
     name: "Comfort Colors Heavyweight T-Shirt",
     brand: "Comfort Colors",
@@ -130,6 +73,44 @@ export const APPAREL_STYLES: ApparelStyle[] = [
     badge: "Premium",
     ssStyleId: 1822,
     baseCost: 5.75
+  },
+  {
+    id: "comfort-colors-6014",
+    name: "Comfort Colors Heavyweight Long Sleeve Tee",
+    brand: "Comfort Colors",
+    model: "6014",
+    image: "/images/apparel/comfort-colors-6014.jpg",
+    fabricComposition: "100% ring-spun US cotton, 20 singles",
+    fabricWeight: "6.1 oz/yd²",
+    features: [
+      "Garment-dyed lived-in vintage feel",
+      "Relaxed classic fit with rib cuffs",
+      "Topstitched classic collar",
+      "Shoulder-to-shoulder twill tape",
+      "Signature twill label"
+    ],
+    description: "The premier heavyweight long sleeve tee for retail brands and merchandise. Garment-dyed for that authentic, lived-in vintage aesthetic with ultra-soft ring-spun cotton and durable rib knit cuffs.",
+    badge: "Premium",
+    ssStyleId: 2217,
+    baseCost: 10.92
+  },
+  {
+    id: "gildan-5400",
+    name: "Gildan Heavy Cotton Long Sleeve T-Shirt",
+    brand: "Gildan",
+    model: "5400",
+    image: "/images/apparel/gildan-5400.jpg",
+    fabricComposition: "100% US cotton (Sport Grey 90/10, Dark Heather 50/50)",
+    fabricWeight: "5.3 oz/yd²",
+    features: [
+      "Classic fit with ribbed cuffs",
+      "Taped neck and shoulders",
+      "Tear-away label",
+      "Durable heavyweight cotton"
+    ],
+    description: "A dependable, rugged long sleeve favorite built for workwear, sports teams, and fall/winter events. Offers a classic fit and rib cuffs for long-lasting comfort and shape retention.",
+    ssStyleId: 94,
+    baseCost: 5.98
   },
   {
     id: "bella-canvas-3001",
@@ -169,5 +150,62 @@ export const APPAREL_STYLES: ApparelStyle[] = [
     specSheetUrl: "/specs/next-level-6210.pdf",
     ssStyleId: 3227,
     baseCost: 4.95
+  },
+  {
+    id: "c2-sport-5100",
+    name: "C2 Sport Performance T-Shirt",
+    brand: "C2 Sport",
+    model: "5100",
+    image: "/images/apparel/c2-sport-5100.jpg",
+    fabricComposition: "100% polyester",
+    fabricWeight: "3.5 oz/yd²",
+    features: [
+      "Tear-away label",
+      "Moisture-management properties",
+      "Antimicrobial properties",
+      "Double-needle stitched hem"
+    ],
+    description: "Engineered for active lifestyles, this performance tee wicks away sweat and controls odor to keep you cool and dry. Its ultra-lightweight fabric makes it a top choice for workouts and sports teams.",
+    specSheetUrl: "/specs/c2-sport-5100.pdf",
+    ssStyleId: 2281,
+    baseCost: 4.10
+  },
+  {
+    id: "gildan-18500",
+    name: "Gildan Heavy Blend Hoodie",
+    brand: "Gildan",
+    model: "18500",
+    image: "/images/apparel/gildan-18500.jpg",
+    fabricComposition: "50% cotton, 50% polyester",
+    fabricWeight: "8.0 oz/yd²",
+    features: [
+      "Tear-away label",
+      "Air-jet spun yarn for reduced pilling",
+      "Double-lined hood with drawcord",
+      "Front pouch pocket"
+    ],
+    description: "Stay cozy and warm with this classic, midweight hooded sweatshirt. Featuring a soft, pill-resistant fleece interior and a spacious front pocket, it's the ultimate go-to layer for chilly days.",
+    specSheetUrl: "/specs/gildan-18500.pdf",
+    ssStyleId: 395,
+    baseCost: 10.50
+  },
+  {
+    id: "gildan-18000",
+    name: "Gildan Heavy Blend Crewneck",
+    brand: "Gildan",
+    model: "18000",
+    image: "/images/apparel/gildan-18000.jpg",
+    fabricComposition: "50% cotton, 50% polyester",
+    fabricWeight: "8.0 oz/yd²",
+    features: [
+      "Tear-away label",
+      "Air-jet spun yarn for reduced pilling",
+      "1x1 rib with spandex cuffs and waistband",
+      "Double-needle stitching"
+    ],
+    description: "This essential crewneck sweatshirt delivers the perfect balance of warmth and comfort without the bulk. Its durable, pill-resistant fabric ensures long-lasting wear and a smooth printing surface.",
+    specSheetUrl: "/specs/gildan-18000.pdf",
+    ssStyleId: 372,
+    baseCost: 8.25
   }
 ];
