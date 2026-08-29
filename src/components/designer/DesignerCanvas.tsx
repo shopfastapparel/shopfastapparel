@@ -33,8 +33,9 @@ interface DesignerCanvasProps {
 
 export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasProps>(
   ({ style, color, activeSide, onSideChange, onSelectionChange, onLayersChange }, ref) => {
-    const canvasElRef = useRef<HTMLHTMLCanvasElement | null>(null);
-    const containerRef = useRef<HTMLDivElement | null>(null);
+    const canvasElRef = useRef<HTMLCanvasElement | null>(null);
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
+    const stageRef = useRef<HTMLDivElement | null>(null);
     const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
 
     // Stored JSON states for both sides
@@ -45,9 +46,26 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
 
     const [zoom, setZoom] = useState(1);
     const [showBounds, setShowBounds] = useState(true);
+    const [responsiveScale, setResponsiveScale] = useState(1);
 
     const isHoodie = style.id.includes("18500") || style.id.includes("hoodie");
     const bounds = isHoodie ? PRINT_BOUNDS.hoodie[activeSide] : PRINT_BOUNDS.default[activeSide];
+
+    // Responsive scaling observer for mobile / tablet screens
+    useEffect(() => {
+      const updateScale = () => {
+        if (!wrapperRef.current) return;
+        const width = wrapperRef.current.clientWidth;
+        if (width > 0) {
+          const s = Math.min(1, (width - 16) / 500);
+          setResponsiveScale(s);
+        }
+      };
+
+      updateScale();
+      window.addEventListener("resize", updateScale);
+      return () => window.removeEventListener("resize", updateScale);
+    }, []);
 
     // Helper to update layers list
     const syncLayers = (c: fabric.Canvas) => {
@@ -342,7 +360,7 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
         ctx.fillRect(0, 0, 1000, 1000);
 
         // Convert garment SVG to image
-        const svgContainer = containerRef.current?.querySelector("svg");
+        const svgContainer = stageRef.current?.querySelector("svg");
         if (svgContainer) {
           const svgData = new XMLSerializer().serializeToString(svgContainer);
           const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
@@ -389,8 +407,10 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
       },
     }));
 
+    const finalScale = responsiveScale * zoom;
+
     return (
-      <div className="relative flex flex-col items-center justify-center select-none">
+      <div className="w-full flex flex-col items-center justify-center select-none">
         {/* Top Controls: View Toggle (Front/Back) & Zoom */}
         <div className="w-full max-w-lg flex items-center justify-between gap-2 mb-3 px-2">
           {/* Front / Back Toggle */}
@@ -459,40 +479,52 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
           </div>
         </div>
 
-        {/* Garment Stage Area */}
+        {/* Responsive Stage Wrapper */}
         <div
-          ref={containerRef}
-          className="relative w-[340px] h-[340px] sm:w-[460px] sm:h-[460px] md:w-[500px] md:h-[500px] flex items-center justify-center transition-transform duration-200"
-          style={{ transform: `scale(${zoom})` }}
+          ref={wrapperRef}
+          className="w-full flex items-center justify-center overflow-hidden py-1"
+          style={{ height: `${500 * finalScale}px` }}
         >
-          {/* Realistic Garment Vector Backdrop */}
-          <GarmentVectorBackground
-            styleId={style.id}
-            side={activeSide}
-            colorHex={color.hex}
-            isDark={color.isDark}
-          />
-
-          {/* Printable Area Boundary & Fabric Canvas */}
+          {/* Fixed 500x500 Master Coordinate Stage scaled uniformly */}
           <div
-            className={`absolute transition-all ${
-              showBounds
-                ? "border-2 border-dashed border-cyan-brand/80 shadow-[0_0_15px_rgba(0,240,255,0.15)]"
-                : "border-0"
-            }`}
+            ref={stageRef}
             style={{
-              width: `${bounds.width}px`,
-              height: `${bounds.height}px`,
-              top: `${bounds.top}px`,
-              left: `${bounds.left}px`,
+              width: "500px",
+              height: "500px",
+              transform: `scale(${finalScale})`,
+              transformOrigin: "top center",
             }}
+            className="relative shrink-0 flex items-center justify-center transition-transform duration-100"
           >
-            {showBounds && (
-              <span className="absolute -top-5 left-0 text-[10px] font-mono font-bold tracking-wider uppercase text-cyan-brand bg-ink/80 px-1.5 py-0.5 rounded shadow">
-                {activeSide === "front" ? "Front Print Safe-Zone (11\" x 13\")" : "Back Print Safe-Zone"}
-              </span>
-            )}
-            <canvas ref={canvasElRef} />
+            {/* Realistic Garment Vector Backdrop (Fixed 500x500) */}
+            <GarmentVectorBackground
+              styleId={style.id}
+              side={activeSide}
+              colorHex={color.hex}
+              isDark={color.isDark}
+            />
+
+            {/* Printable Area Boundary & Fabric Canvas (Fixed 230x290 at Top: 120, Left: 135) */}
+            <div
+              className={`absolute transition-all ${
+                showBounds
+                  ? "border-2 border-dashed border-cyan-brand shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+                  : "border-0"
+              }`}
+              style={{
+                width: `${bounds.width}px`,
+                height: `${bounds.height}px`,
+                top: `${bounds.top}px`,
+                left: `${bounds.left}px`,
+              }}
+            >
+              {showBounds && (
+                <span className="absolute -top-5 left-0 text-[10px] font-mono font-bold tracking-wider uppercase text-cyan-brand bg-ink/90 px-1.5 py-0.5 rounded shadow whitespace-nowrap">
+                  {activeSide === "front" ? "Front Print Safe-Zone (11\" x 13\")" : "Back Print Safe-Zone"}
+                </span>
+              )}
+              <canvas ref={canvasElRef} />
+            </div>
           </div>
         </div>
 

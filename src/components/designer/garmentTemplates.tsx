@@ -10,12 +10,12 @@ interface GarmentTemplateProps {
 
 export const PRINT_BOUNDS: Record<string, Record<ViewSide, PrintAreaBounds>> = {
   default: {
-    front: { width: 230, height: 290, top: 125, left: 135 },
+    front: { width: 230, height: 290, top: 120, left: 135 },
     back: { width: 230, height: 290, top: 110, left: 135 }
   },
   hoodie: {
-    front: { width: 200, height: 200, top: 170, left: 150 },
-    back: { width: 220, height: 280, top: 120, left: 140 }
+    front: { width: 200, height: 200, top: 175, left: 150 },
+    back: { width: 230, height: 280, top: 125, left: 135 }
   }
 };
 
@@ -25,7 +25,7 @@ export function GarmentVectorBackground({ styleId, side, colorHex, isDark }: Gar
   if (isHoodie) {
     if (side === "front") {
       return (
-        <svg viewBox="0 0 500 500" className="w-full h-full drop-shadow-md select-none pointer-events-none">
+        <svg viewBox="0 0 500 500" width="500" height="500" className="w-[500px] h-[500px] drop-shadow-md select-none pointer-events-none absolute inset-0">
           <defs>
             <linearGradient id="hoodie-front-shading" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#000" stopOpacity="0.18" />
@@ -72,7 +72,7 @@ export function GarmentVectorBackground({ styleId, side, colorHex, isDark }: Gar
 
     // Hoodie Back
     return (
-      <svg viewBox="0 0 500 500" className="w-full h-full drop-shadow-md select-none pointer-events-none">
+      <svg viewBox="0 0 500 500" width="500" height="500" className="w-[500px] h-[500px] drop-shadow-md select-none pointer-events-none absolute inset-0">
         <defs>
           <linearGradient id="hoodie-back-shading" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#000" stopOpacity="0.2" />
@@ -105,7 +105,7 @@ export function GarmentVectorBackground({ styleId, side, colorHex, isDark }: Gar
   // Standard T-Shirt (Front)
   if (side === "front") {
     return (
-      <svg viewBox="0 0 500 500" className="w-full h-full drop-shadow-md select-none pointer-events-none">
+      <svg viewBox="0 0 500 500" width="500" height="500" className="w-[500px] h-[500px] drop-shadow-md select-none pointer-events-none absolute inset-0">
         <defs>
           <linearGradient id="tee-front-shading" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#000" stopOpacity="0.18" />
@@ -157,7 +157,7 @@ export function GarmentVectorBackground({ styleId, side, colorHex, isDark }: Gar
 
   // Standard T-Shirt (Back)
   return (
-    <svg viewBox="0 0 500 500" className="w-full h-full drop-shadow-md select-none pointer-events-none">
+    <svg viewBox="0 0 500 500" width="500" height="500" className="w-[500px] h-[500px] drop-shadow-md select-none pointer-events-none absolute inset-0">
       <defs>
         <linearGradient id="tee-back-shading" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#000" stopOpacity="0.2" />
