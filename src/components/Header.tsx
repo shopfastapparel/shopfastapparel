@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Logo";
 
 import { PRIMARY_PHONE } from "@/lib/locations";
 
 const NAV = [
+  { label: "Design Studio", to: "/designer" as const, isNew: true },
   { label: "Custom Printing", to: "/services/custom-tshirts" as const },
   { label: "Bulk & Teams", to: "/services/team-bulk" as const },
   { label: "Family Tees", to: "/services/family-tees" as const },
@@ -49,20 +50,35 @@ export function Header() {
       >
         <div className="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between gap-4">
           <Logo />
-          <nav className="hidden lg:flex items-center gap-7 text-sm font-medium">
+          <nav className="hidden lg:flex items-center gap-6 text-sm font-medium">
             {NAV.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
-                className="text-foreground/80 hover:text-foreground transition-colors"
-                activeProps={{ className: "text-foreground" }}
+                className={`relative flex items-center gap-1 transition-colors ${
+                  item.isNew
+                    ? "font-bold text-ink hover:text-magenta-brand"
+                    : "text-foreground/80 hover:text-foreground"
+                }`}
+                activeProps={{ className: "text-foreground font-bold" }}
               >
                 {item.label}
+                {item.isNew && (
+                  <span className="text-[9px] bg-magenta-brand text-background px-1.5 py-0.2 rounded-full uppercase font-extrabold tracking-wider animate-pulse">
+                    NEW
+                  </span>
+                )}
               </Link>
             ))}
           </nav>
           <div className="flex items-center gap-2">
-            <Button asChild variant="default" size="sm" className="hidden md:inline-flex">
+            <Button asChild variant="outline" size="sm" className="hidden xl:inline-flex border-2 border-ink font-bold shadow-sm">
+              <Link to="/designer">
+                <Sparkles className="w-3.5 h-3.5 mr-1 text-cyan-brand" />
+                Design Online
+              </Link>
+            </Button>
+            <Button asChild variant="default" size="sm" className="hidden md:inline-flex shadow-pop border-2 border-ink">
               <Link to="/quote">Get Free Quote</Link>
             </Button>
 
@@ -83,16 +99,30 @@ export function Header() {
                   key={item.to}
                   to={item.to}
                   onClick={() => setOpen(false)}
-                  className="py-2 text-sm font-medium"
+                  className={`py-2 text-sm font-medium flex items-center justify-between ${
+                    item.isNew ? "font-bold text-ink" : ""
+                  }`}
                 >
-                  {item.label}
+                  <span>{item.label}</span>
+                  {item.isNew && (
+                    <span className="text-[10px] bg-magenta-brand text-background px-2 py-0.5 rounded-full uppercase font-bold">
+                      NEW
+                    </span>
+                  )}
                 </Link>
               ))}
-              <Button asChild className="mt-2">
-                <Link to="/quote" onClick={() => setOpen(false)}>
-                  Get Free Quote
-                </Link>
-              </Button>
+              <div className="grid grid-cols-2 gap-2 mt-2">
+                <Button asChild variant="outline" className="border-2 border-ink font-bold">
+                  <Link to="/designer" onClick={() => setOpen(false)}>
+                    Design Studio
+                  </Link>
+                </Button>
+                <Button asChild className="shadow-pop border-2 border-ink font-bold">
+                  <Link to="/quote" onClick={() => setOpen(false)}>
+                    Get Free Quote
+                  </Link>
+                </Button>
+              </div>
             </nav>
           </div>
         )}

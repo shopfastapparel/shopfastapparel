@@ -1,0 +1,39 @@
+{
+  "grants": [
+    {
+      "name": "Founders First CDC Job Creators Quest Grant",
+      "amount": "Up to $10,000",
+      "deadline": "Varies/Seasonal",
+      "eligibility": "Diverse-led businesses (minority, women, LGBTQ+, veteran) in eligible regions including the South.",
+      "link": "https://foundersfirstcdc.org"
+    },
+    {
+      "name": "SheaMoisture Community Impact Grant",
+      "amount": "$10,000",
+      "deadline": "Annual",
+      "eligibility": "Black-owned and minority women-owned businesses.",
+      "link": "https://www.sheamoisture.com"
+    },
+    {
+      "name": "Bizee Fresh Start Business Grant",
+      "amount": "$2,500",
+      "deadline": "Rolling",
+      "eligibility": "New entrepreneurs looking to start and grow a business.",
+      "link": "https://www.bizee.com/entrepreneur-grant"
+    },
+    {
+      "name": "FedEx Small Business Grant Contest",
+      "amount": "Up to $30,000",
+      "deadline": "Annual",
+      "eligibility": "U.S.-based for-profit small businesses, including e-commerce, active for at least 6 months.",
+      "link": "https://www.fedex.com/en-us/small-business/grants.html"
+    },
+    {
+      "name": "Skip Monthly Grants",
+      "amount": "$1,000",
+      "deadline": "Monthly",
+      "eligibility": "U.S.-based small businesses; active support for minority and diverse founders.",
+      "link": "https://www.helloskip.com"
+    }
+  ]
+}

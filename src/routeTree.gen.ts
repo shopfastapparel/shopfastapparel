@@ -20,6 +20,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ImagePlacementsRouteImport } from './routes/image-placements'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as DesignerRouteImport } from './routes/designer'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ArtworkGuidelinesRouteImport } from './routes/artwork-guidelines'
 import { Route as AboutRouteImport } from './routes/about'
@@ -106,6 +107,11 @@ const ImagePlacementsRoute = ImagePlacementsRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesignerRoute = DesignerRouteImport.update({
+  id: '/designer',
+  path: '/designer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -277,6 +283,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/artwork-guidelines': typeof ArtworkGuidelinesRoute
   '/contact': typeof ContactRoute
+  '/designer': typeof DesignerRoute
   '/faq': typeof FaqRoute
   '/image-placements': typeof ImagePlacementsRoute
   '/login': typeof LoginRoute
@@ -322,6 +329,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/artwork-guidelines': typeof ArtworkGuidelinesRoute
   '/contact': typeof ContactRoute
+  '/designer': typeof DesignerRoute
   '/faq': typeof FaqRoute
   '/image-placements': typeof ImagePlacementsRoute
   '/login': typeof LoginRoute
@@ -368,6 +376,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/artwork-guidelines': typeof ArtworkGuidelinesRoute
   '/contact': typeof ContactRoute
+  '/designer': typeof DesignerRoute
   '/faq': typeof FaqRoute
   '/image-placements': typeof ImagePlacementsRoute
   '/login': typeof LoginRoute
@@ -415,6 +424,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/artwork-guidelines'
     | '/contact'
+    | '/designer'
     | '/faq'
     | '/image-placements'
     | '/login'
@@ -460,6 +470,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/artwork-guidelines'
     | '/contact'
+    | '/designer'
     | '/faq'
     | '/image-placements'
     | '/login'
@@ -505,6 +516,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/artwork-guidelines'
     | '/contact'
+    | '/designer'
     | '/faq'
     | '/image-placements'
     | '/login'
@@ -551,6 +563,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ArtworkGuidelinesRoute: typeof ArtworkGuidelinesRoute
   ContactRoute: typeof ContactRoute
+  DesignerRoute: typeof DesignerRoute
   FaqRoute: typeof FaqRoute
   ImagePlacementsRoute: typeof ImagePlacementsRoute
   LoginRoute: typeof LoginRoute
@@ -669,6 +682,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/designer': {
+      id: '/designer'
+      path: '/designer'
+      fullPath: '/designer'
+      preLoaderRoute: typeof DesignerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -903,6 +923,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ArtworkGuidelinesRoute: ArtworkGuidelinesRoute,
   ContactRoute: ContactRoute,
+  DesignerRoute: DesignerRoute,
   FaqRoute: FaqRoute,
   ImagePlacementsRoute: ImagePlacementsRoute,
   LoginRoute: LoginRoute,
