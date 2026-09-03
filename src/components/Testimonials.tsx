@@ -5,9 +5,29 @@ export type Review = {
   location?: string;
   text: string;
   rating?: number;
+  product?: string;
+  instagramUrl?: string;
 };
 
 export const REVIEWS: Review[] = [
+  {
+    name: "Tara Armstrong",
+    location: "Verified Buyer",
+    product: "Custom Mission Trip Tees — Ark Church",
+    text: "Amazing company to work with. Went back and forth with design ideas and they got right back and made an amazing t-shirt. Shirt is soft and quality is great. Will def use them again and recommend them as well!",
+  },
+  {
+    name: "Raymond",
+    location: "Verified Buyer",
+    product: "Custom Family Reunion Shirts",
+    text: "All around A+, shipping, communication, quality, and customer service! Highly recommend!!!!",
+  },
+  {
+    name: "i_am_be_auti_ful",
+    location: "Merch Booth",
+    instagramUrl: "https://www.instagram.com/reel/Db6iUDUxKvw/?igsh=YnBueG8xNzYxMmNi",
+    text: "LOVED!!! It was perfect for our merch booth!! Check out the item on my instagram: @i_am_be_auti_ful",
+  },
   {
     name: "Tina",
     location: "Atlanta, GA",
@@ -106,7 +126,7 @@ export function Testimonials({ dynamicProjects = [] }: { dynamicProjects?: any[]
               </div>
               <span className="font-semibold">5.0</span>
               <span className="text-muted-foreground text-sm">
-                · Based on 42+ Google reviews
+                · Based on 45+ Verified reviews
               </span>
             </div>
           </div>
@@ -148,7 +168,7 @@ export function Testimonials({ dynamicProjects = [] }: { dynamicProjects?: any[]
               key={`${r.name}-${i}`}
               className="bg-card border-2 border-ink rounded-xl p-6 shadow-pop flex flex-col"
             >
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-3">
                 <div className="flex">
                   {Array.from({ length: 5 }).map((_, j) => (
                     <Star
@@ -161,9 +181,28 @@ export function Testimonials({ dynamicProjects = [] }: { dynamicProjects?: any[]
                   <BadgeCheck className="h-4 w-4 text-cyan-brand" /> Verified
                 </span>
               </div>
+              {r.product && (
+                <div className="mb-2">
+                  <span className="inline-block text-[11px] font-bold px-2 py-0.5 rounded bg-muted text-muted-foreground border border-border">
+                    {r.product}
+                  </span>
+                </div>
+              )}
               <blockquote className="text-foreground/90 leading-relaxed flex-1">
                 "{r.text}"
               </blockquote>
+              {r.instagramUrl && (
+                <div className="mt-2">
+                  <a
+                    href={r.instagramUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-magenta-brand hover:underline"
+                  >
+                    Watch on Instagram <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              )}
               <figcaption className="mt-5 flex items-center gap-3 pt-5 border-t border-border">
                 <Avatar name={r.name} idx={i} />
                 <div>
