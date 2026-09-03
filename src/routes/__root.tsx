@@ -1,5 +1,6 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts, ScrollRestoration } from "@tanstack/react-router";
 import { DiscountPopup } from "@/components/DiscountPopup";
+import { LaborDayPopup } from "@/components/LaborDayPopup";
 import { FomoPopup } from "@/components/FomoPopup";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -100,6 +101,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <LaborDayPopup />
         <DiscountPopup />
         <FomoPopup />
         <Toaster position="top-center" />
