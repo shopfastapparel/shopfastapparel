@@ -20,7 +20,7 @@ export const listRecentProjects = createServerFn({ method: "GET" })
     const { data, error } = await supabaseAdmin.storage
       .from("customer_projects")
       .list("", {
-        limit: 25,
+        limit: 100,
         offset: 0,
         sortBy: { column: "created_at", order: "desc" },
       });

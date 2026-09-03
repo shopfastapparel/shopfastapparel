@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { listRecentProjects } from "@/lib/projects-admin.functions";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Testimonials } from "@/components/Testimonials";
 
@@ -19,6 +22,13 @@ export const Route = createFileRoute("/reviews")({
 });
 
 function ReviewsPage() {
+  const getProjects = useServerFn(listRecentProjects);
+  const [projects, setProjects] = useState<any[]>([]);
+
+  useEffect(() => {
+    getProjects().then(setProjects).catch(console.error);
+  }, [getProjects]);
+
   return (
     <SiteLayout>
       <section className="bg-hero border-b">
@@ -36,7 +46,7 @@ function ReviewsPage() {
       </section>
 
       <section className="py-12 bg-background">
-        <Testimonials />
+        <Testimonials dynamicProjects={projects} />
       </section>
     </SiteLayout>
   );
