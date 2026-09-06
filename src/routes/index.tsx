@@ -245,7 +245,7 @@ function HomePage() {
             <motion.h1 variants={fadeInUp} className="font-display text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] tracking-tight mb-6">
               Custom Apparel. <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-brand via-magenta-brand to-yellow-brand animate-pulse">
-                Printed Fast.
+                Created Fast.
               </span>
             </motion.h1>
             
