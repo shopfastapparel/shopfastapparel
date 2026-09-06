@@ -40,6 +40,7 @@ import { Route as LandingBundleDealRouteImport } from './routes/landing.bundle-d
 import { Route as LandingBulkPrintingRouteImport } from './routes/landing.bulk-printing'
 import { Route as GroupNewHeightsYouthAdminRouteImport } from './routes/group.new-heights-youth-admin'
 import { Route as GroupNewHeightsYouthRouteImport } from './routes/group.new-heights-youth'
+import { Route as GroupDemoRouteImport } from './routes/group.demo'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiGroupAdminRouteImport } from './routes/api.group-admin'
 import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
@@ -211,6 +212,11 @@ const GroupNewHeightsYouthRoute = GroupNewHeightsYouthRouteImport.update({
   path: '/group/new-heights-youth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GroupDemoRoute = GroupDemoRouteImport.update({
+  id: '/group/demo',
+  path: '/group/demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
@@ -304,6 +310,7 @@ export interface FileRoutesByFullPath {
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/api/group-admin': typeof ApiGroupAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/group/demo': typeof GroupDemoRoute
   '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/group/new-heights-youth-admin': typeof GroupNewHeightsYouthAdminRoute
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
@@ -350,6 +357,7 @@ export interface FileRoutesByTo {
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/api/group-admin': typeof ApiGroupAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/group/demo': typeof GroupDemoRoute
   '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/group/new-heights-youth-admin': typeof GroupNewHeightsYouthAdminRoute
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
@@ -397,6 +405,7 @@ export interface FileRoutesById {
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/api/group-admin': typeof ApiGroupAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/group/demo': typeof GroupDemoRoute
   '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/group/new-heights-youth-admin': typeof GroupNewHeightsYouthAdminRoute
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
@@ -445,6 +454,7 @@ export interface FileRouteTypes {
     | '/admin/subscribers'
     | '/api/group-admin'
     | '/blog/$slug'
+    | '/group/demo'
     | '/group/new-heights-youth'
     | '/group/new-heights-youth-admin'
     | '/landing/bulk-printing'
@@ -491,6 +501,7 @@ export interface FileRouteTypes {
     | '/admin/subscribers'
     | '/api/group-admin'
     | '/blog/$slug'
+    | '/group/demo'
     | '/group/new-heights-youth'
     | '/group/new-heights-youth-admin'
     | '/landing/bulk-printing'
@@ -537,6 +548,7 @@ export interface FileRouteTypes {
     | '/admin/subscribers'
     | '/api/group-admin'
     | '/blog/$slug'
+    | '/group/demo'
     | '/group/new-heights-youth'
     | '/group/new-heights-youth-admin'
     | '/landing/bulk-printing'
@@ -584,6 +596,7 @@ export interface RootRouteChildren {
   AdminSubscribersRoute: typeof AdminSubscribersRoute
   ApiGroupAdminRoute: typeof ApiGroupAdminRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  GroupDemoRoute: typeof GroupDemoRoute
   GroupNewHeightsYouthRoute: typeof GroupNewHeightsYouthRoute
   GroupNewHeightsYouthAdminRoute: typeof GroupNewHeightsYouthAdminRoute
   LandingBulkPrintingRoute: typeof LandingBulkPrintingRoute
@@ -824,6 +837,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GroupNewHeightsYouthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/group/demo': {
+      id: '/group/demo'
+      path: '/group/demo'
+      fullPath: '/group/demo'
+      preLoaderRoute: typeof GroupDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/blog/$slug'
@@ -944,6 +964,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSubscribersRoute: AdminSubscribersRoute,
   ApiGroupAdminRoute: ApiGroupAdminRoute,
   BlogSlugRoute: BlogSlugRoute,
+  GroupDemoRoute: GroupDemoRoute,
   GroupNewHeightsYouthRoute: GroupNewHeightsYouthRoute,
   GroupNewHeightsYouthAdminRoute: GroupNewHeightsYouthAdminRoute,
   LandingBulkPrintingRoute: LandingBulkPrintingRoute,

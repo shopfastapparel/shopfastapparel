@@ -128,7 +128,7 @@ function FamilyTeesPage() {
               <Link to="/quote">Get Started & Free Collector Setup</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="bg-transparent border-white/30 text-white hover:bg-white hover:text-ink">
-              <Link to="/group/new-heights-youth">Preview Sample Group Tool ➔</Link>
+              <Link to="/group/demo">Preview Sample Group Tool ➔</Link>
             </Button>
           </div>
         </div>
