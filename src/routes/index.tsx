@@ -26,6 +26,7 @@ import {
   ChefHat,
   Briefcase,
   CheckCircle2,
+  Smartphone,
 } from "lucide-react";
 import heroShirts from "@/assets/hero-shirts.jpg";
 
@@ -468,49 +469,104 @@ function HomePage() {
         </div>
       </section>
 
-      {/* FAMILY TEES SUBLET */}
-      <section className="bg-magenta-brand/10 border-t border-magenta-brand/20">
-        <div className="mx-auto max-w-7xl px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            variants={fadeInLeft}
-          >
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-magenta-brand mb-2">
-              Family & Events
-            </p>
-            <h2 className="font-display text-3xl md:text-4xl leading-tight text-ink">
-              Matching tees for reunions, vacations & milestones.
-            </h2>
-            <p className="mt-4 text-foreground/80 text-lg">
-              Bring the family together in style. We offer premium custom apparel for family reunions, beach vacations, and milestone birthdays. 
-              Plus, use our <strong>Free Bulk Size Collection Tool</strong> to easily gather everyone's sizes without messy group texts.
-            </p>
-            <div className="mt-6">
-              <Button asChild variant="default" className="shadow-pop border-2 border-ink">
-                <Link to="/services/family-tees">Explore Family Tees</Link>
-              </Button>
-            </div>
-          </motion.div>
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            variants={fadeInRight}
-            className="grid grid-cols-2 gap-4"
-          >
-            <img 
-              src="/images/family-tees/reunion.png" 
-              alt="Family Reunion" 
-              className="rounded-xl border-2 border-ink shadow-sm w-full h-48 object-cover translate-y-4"
-            />
-            <img 
-              src="/images/family-tees/vacation.png" 
-              alt="Family Vacation" 
-              className="rounded-xl border-2 border-ink shadow-sm w-full h-48 object-cover -translate-y-4"
-            />
-          </motion.div>
+      {/* FAMILY TEES & GROUP COLLECTOR TOOL SUBLET */}
+      <section className="bg-gradient-to-b from-magenta-brand/10 via-background to-cyan-brand/5 border-t border-magenta-brand/20 py-20">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            {/* Left Column: Family Matching Tees & Group Tool Hook */}
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={fadeInLeft}
+              className="lg:col-span-6"
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-magenta-brand/15 text-magenta-brand text-xs font-bold uppercase tracking-wider mb-4 border border-magenta-brand/20">
+                <Users className="w-3.5 h-3.5" /> Family & Group Events
+              </div>
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl leading-tight text-ink">
+                Matching tees for reunions, vacations & milestones.
+              </h2>
+              <p className="mt-4 text-foreground/80 text-base md:text-lg leading-relaxed">
+                Bring the family together in style. We craft vibrant custom apparel for family reunions, cruise trips, and milestone birthdays—printed with ultra-soft DTF and zero color limits.
+              </p>
+
+              {/* Group Size Collector Feature Highlight Box */}
+              <div className="mt-6 bg-card border-2 border-ink rounded-2xl p-5 shadow-pop relative overflow-hidden">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-yellow-brand text-ink flex items-center justify-center flex-shrink-0 border-2 border-ink shadow-sm">
+                    <Smartphone className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="inline-block text-[11px] font-extrabold uppercase tracking-wider text-magenta-brand bg-magenta-brand/10 px-2 py-0.5 rounded-full mb-1">
+                      Free With Your Order
+                    </span>
+                    <h3 className="font-display font-bold text-lg text-foreground leading-snug">
+                      Exclusive Family & Group Size Collector Tool
+                    </h3>
+                    <p className="text-xs md:text-sm text-muted-foreground mt-1 leading-relaxed">
+                      Stop chasing sizes in messy group chats! We give you a private link to text your members. Everyone picks their own shirt style, size (2T to 4XL), and custom back name—auto-tallied in your live dashboard.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-ink/10 flex flex-wrap items-center gap-3">
+                  <Button asChild size="sm" className="bg-yellow-brand hover:bg-yellow-brand/90 text-ink font-bold border-2 border-ink shadow-sm text-xs h-10 px-4">
+                    <Link to="/group/demo">
+                      Try Interactive Demo ➔
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="sm" className="border-2 border-ink text-xs h-10 px-4">
+                    <Link to="/services/family-tees">Explore Family Tees</Link>
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right Column: Visual Showcase & Snapshot */}
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={fadeInRight}
+              className="lg:col-span-6 space-y-4"
+            >
+              {/* Infographic Snapshot Card */}
+              <div className="relative rounded-2xl border-2 border-ink overflow-hidden shadow-pop bg-ink group">
+                <Link to="/group/demo" className="block relative">
+                  <img 
+                    src="/images/family-tees/family-collector-tool.jpg" 
+                    alt="Fast Apparel Family & Group Size Collector Tool with feature callouts" 
+                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-ink/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-xs">
+                    <span className="bg-yellow-brand text-ink font-bold px-4 py-2 rounded-xl border-2 border-ink shadow-pop text-sm inline-flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-magenta-brand" /> Click to Test Live Demo
+                    </span>
+                  </div>
+                </Link>
+              </div>
+
+              {/* Matching Photos Preview */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="rounded-xl border-2 border-ink overflow-hidden shadow-sm aspect-video bg-card">
+                  <img 
+                    src="/images/family-tees/reunion.png" 
+                    alt="Family Reunion Shirts" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="rounded-xl border-2 border-ink overflow-hidden shadow-sm aspect-video bg-card">
+                  <img 
+                    src="/images/family-tees/vacation.png" 
+                    alt="Family Vacation Matching Shirts" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
