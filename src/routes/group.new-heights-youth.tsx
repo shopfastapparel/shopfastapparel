@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { CheckCircle2, ShoppingBag, Plus, Trash2, Church, Sparkles, Send, Calendar, ZoomIn, X, Info, ArrowRight, ShieldAlert } from "lucide-react";
+import { CheckCircle2, ShoppingBag, Plus, Trash2, Church, Sparkles, Send, Calendar, ZoomIn, X } from "lucide-react";
 
 export const Route = createFileRoute("/group/new-heights-youth")({
   head: () => ({
@@ -112,7 +112,6 @@ function NewHeightsYouthCollectionPage() {
   const [paymentMethod, setPaymentMethod] = useState("Venmo (@newheightsLC)");
   const [submittedPaymentMethod, setSubmittedPaymentMethod] = useState("");
   const [submittedTotalPrice, setSubmittedTotalPrice] = useState(0);
-  const [showDemoModal, setShowDemoModal] = useState(false);
 
   useEffect(() => {
     async function loadSettings() {
@@ -221,12 +220,85 @@ function NewHeightsYouthCollectionPage() {
       return;
     }
 
-    // PREVIEW DEMO MODE: Prevent live submissions, Supabase writes, and notifications
     setSubmitting(true);
-    setTimeout(() => {
+    try {
+      const summaryItems = items.map((item) => {
+        const opt = SHIRT_OPTIONS.find((o) => o.id === item.optionId);
+        const unitP = getItemUnitPrice(item.optionId, item.size);
+        const lineP = getItemTotalPrice(item);
+        return `${opt?.name} (${opt?.color}) — Size: ${item.size}, Qty: ${item.quantity} ($${unitP.toFixed(2)} ea = $${lineP.toFixed(2)})`;
+      });
+
+      const formattedNotes = `
+NEW HEIGHTS YOUTH COLLECTION SUBMISSION:
+------------------------------------------
+Name: ${name}
+Email: ${email}
+Phone: ${phone}
+Total Garments: ${totalGarments}
+Total Order Price: $${orderTotalPrice.toFixed(2)}
+Payment Method: ${paymentMethod}
+
+SELECTIONS:
+${summaryItems.map((s, idx) => `${idx + 1}. ${s}`).join("\n")}
+
+Additional Notes:
+${notes || "None"}
+      `.trim();
+
+      const { error } = await supabase.from("quote_requests").insert([
+        {
+          name,
+          email,
+          phone,
+          service: "New Heights Youth Group Collection",
+          quantity: totalGarments.toString(),
+          details: formattedNotes,
+          status: "New Submission",
+        },
+      ]);
+
+      if (error) throw error;
+
+      // Dispatch background email notification to shop owner
+      fetch("/api/group-admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "notify_new_order",
+          name,
+          email,
+          phone,
+          totalGarments,
+          totalPrice: orderTotalPrice,
+          paymentMethod,
+          notes,
+          items: items.map((it) => {
+            const opt = SHIRT_OPTIONS.find((o) => o.id === it.optionId);
+            const unitP = getItemUnitPrice(it.optionId, it.size);
+            const lineP = getItemTotalPrice(it);
+            return {
+              optionName: opt?.name,
+              color: opt?.color,
+              size: it.size,
+              quantity: it.quantity,
+              unitPrice: unitP,
+              linePrice: lineP,
+            };
+          }),
+        }),
+      }).catch((nErr) => console.error("Notification trigger error:", nErr));
+
+      setSubmittedPaymentMethod(paymentMethod);
+      setSubmittedTotalPrice(orderTotalPrice);
+      setSubmitted(true);
+      toast.success("Order submission received! Thank you!");
+    } catch (err: any) {
+      console.error(err);
+      toast.error("Failed to submit your choices. Please try again.");
+    } finally {
       setSubmitting(false);
-      setShowDemoModal(true);
-    }, 400);
+    }
   };
 
   return (
@@ -262,26 +334,6 @@ function NewHeightsYouthCollectionPage() {
           </div>
         </div>
       </header>
-
-      {/* Interactive Preview Mode Banner */}
-      <div className="bg-amber-500/15 border-b border-amber-500/30 text-amber-950 px-4 py-3 text-center text-sm font-medium">
-        <div className="mx-auto max-w-5xl flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
-          <div className="inline-flex items-center gap-2 text-amber-700 font-bold">
-            <ShieldAlert className="w-4 h-4 text-amber-600 flex-shrink-0" />
-            <span>Interactive Demo Preview</span>
-          </div>
-          <span className="hidden sm:inline text-amber-400">|</span>
-          <span className="text-foreground/80 text-xs sm:text-sm">
-            You're testing a live sample of our Group Size & Choice Collector. Real order submissions are disabled.
-          </span>
-          <a
-            href="/quote"
-            className="inline-flex items-center gap-1 font-bold text-xs uppercase tracking-wider text-magenta-brand hover:underline mt-1 sm:mt-0"
-          >
-            Create your own group form <ArrowRight className="w-3.5 h-3.5" />
-          </a>
-        </div>
-      </div>
 
       <main className="flex-1">
         {/* Header Banner */}
@@ -752,88 +804,17 @@ function NewHeightsYouthCollectionPage() {
                 className="shadow-pop border-2 border-ink text-lg font-bold h-16 px-12 bg-magenta-brand hover:bg-magenta-brand/90 text-white w-full sm:w-auto"
               >
                 {submitting ? (
-                  "Testing Submission..."
+                  "Submitting Choice..."
                 ) : (
                   <>
-                    <Send className="w-5 h-5 mr-2" /> Submit Order Choice (Demo Preview · ${orderTotalPrice.toFixed(2)})
+                    <Send className="w-5 h-5 mr-2" /> Submit Order Choice ({totalGarments} Shirts · ${orderTotalPrice.toFixed(2)})
                   </>
                 )}
               </Button>
-              <p className="text-xs text-muted-foreground mt-2">
-                Sample preview mode: Clicking submit lets you test the workflow without placing a real order.
-              </p>
             </div>
           </form>
         )}
       </div>
-
-      {/* Demo Mode Notice Modal */}
-      {showDemoModal && (
-        <div 
-          className="fixed inset-0 z-50 bg-ink/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in"
-          onClick={() => setShowDemoModal(false)}
-        >
-          <div 
-            className="bg-card border-2 border-ink rounded-2xl max-w-lg w-full overflow-hidden shadow-pop relative animate-in zoom-in-95 p-6 md:p-8 text-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="mx-auto w-16 h-16 rounded-full bg-cyan-brand/20 border-2 border-cyan-brand flex items-center justify-center mb-4 text-cyan-brand">
-              <Sparkles className="w-8 h-8 text-magenta-brand" />
-            </div>
-
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 text-xs font-bold uppercase tracking-wider border border-amber-500/20 mb-2">
-              <ShieldAlert className="w-3.5 h-3.5" /> Demo Preview Completed
-            </span>
-
-            <h3 className="font-display text-2xl md:text-3xl font-bold text-foreground">
-              Sample Order Tested!
-            </h3>
-
-            <p className="text-muted-foreground text-sm leading-relaxed mt-3">
-              This is an interactive demonstration of our <strong>Group Size & Choice Collector Tool</strong>. Real order submissions are disabled on this sample page, so no charges or actual orders were processed.
-            </p>
-
-            <div className="bg-muted/50 rounded-xl p-4 my-6 text-left border border-ink/10">
-              <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Your Tested Selection:</p>
-              <div className="flex justify-between items-center text-sm font-semibold">
-                <span>Total Items:</span>
-                <span className="text-foreground">{totalGarments} garments</span>
-              </div>
-              <div className="flex justify-between items-center text-sm font-semibold mt-1">
-                <span>Calculated Total:</span>
-                <span className="text-magenta-brand">${orderTotalPrice.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between items-center text-sm font-semibold mt-1">
-                <span>Payment Preference:</span>
-                <span className="text-foreground">{paymentMethod}</span>
-              </div>
-            </div>
-
-            <p className="text-xs text-foreground/80 mb-6">
-              Want a custom size & choice collection portal like this built for your family reunion, church group, school, or corporate team?
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button
-                type="button"
-                variant="outline"
-                className="font-bold border-2 border-ink"
-                onClick={() => setShowDemoModal(false)}
-              >
-                Close Preview
-              </Button>
-              <a href="/quote" className="w-full sm:w-auto">
-                <Button
-                  type="button"
-                  className="font-bold bg-magenta-brand hover:bg-magenta-brand/90 text-white border-2 border-ink shadow-pop w-full"
-                >
-                  Request a Free Quote <ArrowRight className="w-4 h-4 ml-1.5" />
-                </Button>
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Image Enlargement Modal Dialog */}
       {selectedMockup && (
