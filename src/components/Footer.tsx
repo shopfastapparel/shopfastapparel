@@ -43,16 +43,6 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/group/new-heights-youth" className="hover:text-yellow-brand text-background">
-                New Heights Youth Order
-              </Link>
-            </li>
-            <li>
-              <Link to="/group/new-heights-youth-admin" className="hover:text-yellow-brand text-background">
-                New Heights Group Admin
-              </Link>
-            </li>
-            <li>
               <Link to="/services/promotional-products" className="hover:text-background">
                 Promotional Products
               </Link>
