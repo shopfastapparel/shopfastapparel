@@ -36,6 +36,31 @@ function rowToPost(r: Row): BlogPost {
   };
 }
 
+function normalizePost(p: any): BlogPost {
+  const publishedAt = p.publishedAt || p.published_at || new Date().toISOString();
+  const readMinutes = p.readMinutes || p.read_minutes || 4;
+  const gradient =
+    (p.cover && p.cover.gradient) ||
+    p.coverGradient ||
+    p.cover_gradient ||
+    "from-cyan-brand to-magenta-brand";
+  const emoji = (p.cover && p.cover.emoji) || p.coverEmoji || p.cover_emoji || "👕";
+  const coverImageUrl = p.coverImageUrl || p.cover_image_url || undefined;
+  const coverImageCredit = p.coverImageCredit || p.cover_image_credit || undefined;
+
+  return {
+    ...p,
+    publishedAt,
+    readMinutes,
+    cover: {
+      gradient,
+      emoji,
+    },
+    coverImageUrl,
+    coverImageCredit,
+  };
+}
+
 export async function fetchAllPosts(): Promise<BlogPost[]> {
   const { data, error } = await supabase
     .from("blog_posts")
@@ -46,18 +71,19 @@ export async function fetchAllPosts(): Promise<BlogPost[]> {
     .order("published_at", { ascending: false });
   if (error) {
     console.warn("[blog] failed to load DB posts:", error.message);
-    return BLOG_POSTS;
+    return BLOG_POSTS.map(normalizePost);
   }
   const dbPosts = (data ?? []).map((r) => rowToPost(r as Row));
   // DB posts first (newer AI content), then static, dedupe by slug
   const seen = new Set<string>();
   const merged: BlogPost[] = [];
-  for (const p of [...dbPosts, ...BLOG_POSTS]) {
+  for (const raw of [...dbPosts, ...BLOG_POSTS]) {
+    const p = normalizePost(raw);
     if (seen.has(p.slug)) continue;
     seen.add(p.slug);
     merged.push(p);
   }
-  merged.sort((a, b) => +new Date(b.publishedAt) - +new Date(a.publishedAt));
+  merged.sort((a, b) => +new Date(b.publishedAt || 0) - +new Date(a.publishedAt || 0));
   return merged;
 }
 

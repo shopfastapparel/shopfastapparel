@@ -57,6 +57,7 @@ const CATEGORIES = [
   "All",
   "Custom T-Shirts",
   "Team & Bulk",
+  "Custom Workwear",
   "Promotional Products",
   "Local Guides",
   "Tips & Trends",
@@ -152,9 +153,9 @@ function BlogIndex() {
                     </div>
                   ) : (
                     <div
-                      className={`aspect-[4/3] md:aspect-auto bg-gradient-to-br ${featured.cover.gradient} flex items-center justify-center text-8xl`}
+                      className={`aspect-[4/3] md:aspect-auto bg-gradient-to-br ${featured.cover?.gradient ?? "from-cyan-brand to-magenta-brand"} flex items-center justify-center text-8xl`}
                     >
-                      <span aria-hidden>{featured.cover.emoji}</span>
+                      <span aria-hidden>{featured.cover?.emoji ?? "👕"}</span>
                     </div>
                   )}
                   <div className="p-6 md:p-8 flex flex-col justify-center">
@@ -176,15 +177,17 @@ function BlogIndex() {
                     <div className="mt-5 flex items-center gap-4 text-xs text-muted-foreground">
                       <span className="inline-flex items-center gap-1">
                         <Calendar className="h-3.5 w-3.5" />
-                        {new Date(featured.publishedAt).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
+                        {featured.publishedAt && !isNaN(new Date(featured.publishedAt).getTime())
+                          ? new Date(featured.publishedAt).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            })
+                          : "Recent"}
                       </span>
                       <span className="inline-flex items-center gap-1">
                         <Clock className="h-3.5 w-3.5" />
-                        {featured.readMinutes} min read
+                        {featured.readMinutes || 4} min read
                       </span>
                     </div>
                   </div>
@@ -211,9 +214,9 @@ function BlogIndex() {
                     </div>
                   ) : (
                     <div
-                      className={`aspect-[16/10] bg-gradient-to-br ${p.cover.gradient} flex items-center justify-center text-6xl`}
+                      className={`aspect-[16/10] bg-gradient-to-br ${p.cover?.gradient ?? "from-cyan-brand to-magenta-brand"} flex items-center justify-center text-6xl`}
                     >
-                      <span aria-hidden>{p.cover.emoji}</span>
+                      <span aria-hidden>{p.cover?.emoji ?? "👕"}</span>
                     </div>
                   )}
                   <div className="p-5">
@@ -233,12 +236,14 @@ function BlogIndex() {
                     </p>
                     <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
                       <span>
-                        {new Date(p.publishedAt).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                        })}
+                        {p.publishedAt && !isNaN(new Date(p.publishedAt).getTime())
+                          ? new Date(p.publishedAt).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                            })
+                          : "Recent"}
                       </span>
-                      <span>· {p.readMinutes} min read</span>
+                      <span>· {p.readMinutes || 4} min read</span>
                     </div>
                   </div>
                 </Link>

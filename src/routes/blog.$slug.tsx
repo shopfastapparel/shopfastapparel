@@ -111,15 +111,17 @@ function BlogPostPage() {
               <div className="mt-6 flex items-center gap-5 text-sm opacity-80">
                 <span className="inline-flex items-center gap-1.5">
                   <Calendar className="h-4 w-4" />
-                  {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
+                  {post.publishedAt && !isNaN(new Date(post.publishedAt).getTime())
+                    ? new Date(post.publishedAt).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })
+                    : "Recent"}
                 </span>
                 <span className="inline-flex items-center gap-1.5">
                   <Clock className="h-4 w-4" />
-                  {post.readMinutes} min read
+                  {post.readMinutes || 4} min read
                 </span>
               </div>
               {post.coverImageCredit && (
@@ -129,7 +131,7 @@ function BlogPostPage() {
           </header>
         ) : (
           <header
-            className={`bg-gradient-to-br ${post.cover.gradient} text-background border-b-2 border-ink`}
+            className={`bg-gradient-to-br ${post.cover?.gradient ?? "from-cyan-brand to-magenta-brand"} text-background border-b-2 border-ink`}
           >
             <div className="mx-auto max-w-3xl px-4 py-14 md:py-20">
               <Link
@@ -155,15 +157,17 @@ function BlogPostPage() {
               <div className="mt-6 flex items-center gap-5 text-sm opacity-80">
                 <span className="inline-flex items-center gap-1.5">
                   <Calendar className="h-4 w-4" />
-                  {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
+                  {post.publishedAt && !isNaN(new Date(post.publishedAt).getTime())
+                    ? new Date(post.publishedAt).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })
+                    : "Recent"}
                 </span>
                 <span className="inline-flex items-center gap-1.5">
                   <Clock className="h-4 w-4" />
-                  {post.readMinutes} min read
+                  {post.readMinutes || 4} min read
                 </span>
               </div>
             </div>
