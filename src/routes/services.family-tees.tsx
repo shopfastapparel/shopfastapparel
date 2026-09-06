@@ -69,14 +69,66 @@ function FamilyTeesPage() {
       {/* The Easy Size Collector Feature */}
       <section className="py-20 bg-ink text-background">
         <div className="mx-auto max-w-7xl px-4 text-center">
-          <Smartphone className="w-12 h-12 text-yellow-brand mx-auto mb-6" />
-          <h2 className="font-display text-3xl md:text-4xl">The hardest part of family shirts? <br className="hidden md:block"/> Collecting everyone's sizes.</h2>
-          <p className="mt-4 text-lg text-background/80 max-w-2xl mx-auto">
-            Forget messy group texts and confusing spreadsheets. When you start an order with us, we provide a <strong>Free Bulk Size Collection Tool</strong>. Just text the private link to your family group chat, and they can enter their own sizes directly into your order dashboard!
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-brand/20 text-yellow-brand text-xs font-bold uppercase tracking-wider mb-4 border border-yellow-brand/30">
+            <Smartphone className="w-4 h-4" /> Exclusive Free Feature
+          </div>
+          <h2 className="font-display text-3xl md:text-5xl">The hardest part of family shirts? <br className="hidden md:block"/> Collecting everyone's sizes.</h2>
+          <p className="mt-4 text-lg text-background/80 max-w-3xl mx-auto">
+            Forget messy group texts, duplicate requests, and confusing spreadsheets. When you start an order with Fast Apparel, we provide your family with a <strong>custom Group Size Collector Tool</strong>. Just text the private link to your family group chat, and each member selects their own styles and sizes directly into your live organizer dashboard!
           </p>
-          <div className="mt-8">
-            <Button asChild variant="outline" size="lg" className="bg-transparent border-background/20 text-background hover:bg-background hover:text-ink">
-              <Link to="/quote">Start Your Order Now</Link>
+
+          {/* Interactive Feature Snapshot Graphic with Arrows */}
+          <div className="mt-12 relative max-w-5xl mx-auto">
+            <div className="absolute -inset-1.5 bg-gradient-to-r from-magenta-brand via-yellow-brand to-cyan-brand rounded-3xl blur-md opacity-30"></div>
+            <div className="relative rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl bg-black">
+              <img
+                src="/images/family-tees/family-collector-tool.jpg"
+                alt="Fast Apparel Family Size Collector Tool with feature callout arrows pointing to the shareable group chat link, live size picker, and organizer dashboard with size tallies"
+                className="w-full h-auto object-cover"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          {/* 3 Value Pillars */}
+          <div className="mt-12 grid sm:grid-cols-3 gap-6 text-left max-w-5xl mx-auto">
+            <div className="bg-white/5 border border-white/10 rounded-xl p-5 backdrop-blur-sm">
+              <div className="w-10 h-10 rounded-lg bg-cyan-brand/20 text-cyan-brand flex items-center justify-center font-bold text-lg mb-3">
+                1
+              </div>
+              <h3 className="font-display text-lg font-bold text-white mb-1">Text 1 Private Link</h3>
+              <p className="text-sm text-background/70">
+                Drop your private order link into your family WhatsApp or iMessage thread. No app downloads required.
+              </p>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-xl p-5 backdrop-blur-sm">
+              <div className="w-10 h-10 rounded-lg bg-magenta-brand/20 text-magenta-brand flex items-center justify-center font-bold text-lg mb-3">
+                2
+              </div>
+              <h3 className="font-display text-lg font-bold text-white mb-1">Self-Service Sizes</h3>
+              <p className="text-sm text-background/70">
+                Each family member picks their own garment, exact size (Youth XS to Adult 5XL), and optional back name.
+              </p>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-xl p-5 backdrop-blur-sm">
+              <div className="w-10 h-10 rounded-lg bg-yellow-brand/20 text-yellow-brand flex items-center justify-center font-bold text-lg mb-3">
+                3
+              </div>
+              <h3 className="font-display text-lg font-bold text-white mb-1">Auto-Tallied Dashboard</h3>
+              <p className="text-sm text-background/70">
+                Your live organizer dashboard tallies counts by size and style automatically. One click exports to Excel.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <Button asChild size="lg" className="bg-yellow-brand hover:bg-yellow-brand/90 text-ink font-bold shadow-pop border-2 border-ink text-base h-13 px-8">
+              <Link to="/quote">Get Started & Free Collector Setup</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="bg-transparent border-white/30 text-white hover:bg-white hover:text-ink">
+              <Link to="/group/new-heights-youth">Preview Sample Group Tool ➔</Link>
             </Button>
           </div>
         </div>
