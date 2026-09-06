@@ -225,9 +225,10 @@ function HomePage() {
           loop 
           muted 
           playsInline 
+          poster="/images/hero-poster.png"
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/hero-bg.mp4?v=3" type="video/mp4" />
+          <source src="/hero-bg.mp4?v=4" type="video/mp4" />
         </video>
         {/* Gradient overlay: Dark on the left behind the text, fading out on the right so the video is highly visible */}
         <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/50 to-transparent" />
