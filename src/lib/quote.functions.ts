@@ -11,6 +11,7 @@ const quoteSchema = z.object({
   turnaroundEstimate: z.string(),
   deadline: z.string().optional(),
   city: z.string().optional(),
+  zipCode: z.string().optional(),
   details: z.string().min(1),
   fileNames: z.array(z.string()),
   name: z.string().min(1),
@@ -58,6 +59,7 @@ function buildOwnerEmailHtml(data: QuoteData, fileLinksHtml: string): string {
         <tr><td>Email</td><td><a href="mailto:${data.email}">${data.email}</a></td></tr>
         ${data.phone ? `<tr><td>Phone</td><td><a href="tel:${data.phone}">${data.phone}</a></td></tr>` : ""}
         ${data.city ? `<tr><td>City</td><td>${data.city}</td></tr>` : ""}
+        ${data.zipCode ? `<tr><td>Shipping Zip</td><td><strong style="color: #ff2d8a;">${data.zipCode}</strong></td></tr>` : ""}
         <tr><td>Service</td><td>${data.service}</td></tr>
         <tr><td>Quantity</td><td>${data.quantity}</td></tr>
         <tr><td>Turnaround</td><td>${data.turnaround} · ${data.turnaroundEstimate}</td></tr>
@@ -111,6 +113,7 @@ function buildCustomerEmailHtml(data: QuoteData): string {
         Quantity: ${data.quantity}<br>
         Turnaround: ${data.turnaround} · ${data.turnaroundEstimate}<br>
         ${data.city ? `City: ${data.city}<br>` : ""}
+        ${data.zipCode ? `Shipping Zip: ${data.zipCode}<br>` : ""}
         ${data.deadline ? `Deadline: ${data.deadline}<br>` : ""}
       </div>
 
@@ -242,8 +245,8 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
           turnaround: data.turnaround,
           turnaround_estimate: data.turnaroundEstimate,
           deadline: data.deadline,
-          city: data.city,
-          details: detailsString,
+          city: data.city ? (data.zipCode ? `${data.city} (Zip: ${data.zipCode})` : data.city) : (data.zipCode ? `Zip: ${data.zipCode}` : undefined),
+          details: data.zipCode ? `${detailsString}\n\nShipping Zip: ${data.zipCode}` : detailsString,
           file_names: data.fileNames,
           name: data.name,
           company: data.company,

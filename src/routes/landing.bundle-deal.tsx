@@ -32,6 +32,7 @@ function BundleDealPage() {
     name: "",
     email: "",
     phone: "",
+    zipCode: "",
     company: "",
     shirtColor: "Black",
     sizes: "",
@@ -86,6 +87,7 @@ function BundleDealPage() {
         company: formData.company || undefined,
         email: formData.email,
         phone: formData.phone || undefined,
+        zipCode: formData.zipCode || undefined,
         details: formattedDetails,
         fileNames: filePaths,
         captchaToken,
@@ -192,7 +194,7 @@ function BundleDealPage() {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
+              <div className="grid md:grid-cols-3 gap-6 mb-8">
                 <div>
                   <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Email *</label>
                   <input required value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} type="email" className="w-full p-3 border-2 border-ink rounded-lg bg-background" placeholder="jane@example.com" />
@@ -200,6 +202,10 @@ function BundleDealPage() {
                 <div>
                   <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Phone</label>
                   <input value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} type="tel" className="w-full p-3 border-2 border-ink rounded-lg bg-background" placeholder="(555) 123-4567" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Shipping Zip Code</label>
+                  <input value={formData.zipCode} onChange={e => setFormData({...formData, zipCode: e.target.value})} type="text" maxLength={10} className="w-full p-3 border-2 border-ink rounded-lg bg-background" placeholder="e.g. 30045" />
                 </div>
               </div>
 

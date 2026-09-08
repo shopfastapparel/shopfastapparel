@@ -81,6 +81,7 @@ interface QuoteState {
   turnaround: TurnaroundKey | "";
   deadline: string;
   city: string;
+  zipCode: string;
   details: string;
   frontFiles: UploadedFile[];
   frontPlacement: string;
@@ -223,6 +224,7 @@ function QuotePage() {
     turnaround: "",
     deadline: "",
     city: "",
+    zipCode: "",
     details: defaultDetails,
     frontFiles: [],
     frontPlacement: "Full Front Center",
@@ -342,6 +344,7 @@ function QuotePage() {
           turnaroundEstimate: turnaroundInfo?.estimate ?? "",
           deadline: state.deadline || undefined,
           city: state.city || undefined,
+          zipCode: state.zipCode || undefined,
           details: state.details,
           fileNames: filePaths,
           name: state.name,
@@ -573,7 +576,7 @@ function QuotePage() {
                 })}
               </div>
 
-              <div className="mt-6 grid sm:grid-cols-2 gap-4">
+              <div className="mt-6 grid sm:grid-cols-3 gap-4">
                 <div>
                   <Label htmlFor="deadline">Hard deadline (optional)</Label>
                   <Input
@@ -585,7 +588,7 @@ function QuotePage() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="city">Service city</Label>
+                  <Label htmlFor="city">Service city (optional)</Label>
                   <select
                     id="city"
                     value={state.city}
@@ -600,6 +603,17 @@ function QuotePage() {
                     ))}
                     <option value="other">Other / outside metro Atlanta</option>
                   </select>
+                </div>
+                <div>
+                  <Label htmlFor="zipCode">Shipping Zip Code</Label>
+                  <Input
+                    id="zipCode"
+                    value={state.zipCode}
+                    onChange={(e) => update("zipCode", e.target.value)}
+                    placeholder="e.g. 30045"
+                    maxLength={10}
+                    className="mt-1.5"
+                  />
                 </div>
               </div>
 
@@ -728,6 +742,17 @@ function QuotePage() {
                     type="tel"
                     value={state.phone}
                     onChange={(e) => update("phone", e.target.value)}
+                    className="mt-1.5"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="contact-zip">Shipping Zip Code</Label>
+                  <Input
+                    id="contact-zip"
+                    value={state.zipCode}
+                    onChange={(e) => update("zipCode", e.target.value)}
+                    placeholder="e.g. 30045"
+                    maxLength={10}
                     className="mt-1.5"
                   />
                 </div>
@@ -909,6 +934,7 @@ function Summary({ state }: { state: QuoteState }) {
         <Row label="Quantity" value={state.quantity} />
         <Row label="Turnaround" value={`${turnaround?.label} · ${turnaround?.estimate}`} />
         <Row label="City" value={state.city || "—"} />
+        <Row label="Shipping Zip" value={state.zipCode || "—"} />
         <Row label="Files" value={`${state.frontFiles.length + state.backFiles.length} attached`} />
         <Row label="Deadline" value={state.deadline || "—"} />
       </dl>
