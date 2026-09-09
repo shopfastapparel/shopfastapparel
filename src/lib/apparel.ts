@@ -16,6 +16,46 @@ export type ApparelStyle = {
 
 export const APPAREL_STYLES: ApparelStyle[] = [
   {
+    id: "gildan-5000",
+    name: "Gildan Heavy Cotton T-Shirt",
+    brand: "Gildan",
+    model: "5000",
+    image: "/images/apparel/gildan-5000.jpg",
+    fabricComposition: "100% U.S. cotton (Heathers/Neons 50/50, Antique/Sport Grey 90/10, Ash Grey 99/1)",
+    fabricWeight: "5.3 oz/yd²",
+    features: [
+      "Classic fit",
+      "Tear-away label",
+      "Taped neck and shoulders",
+      "Heavyweight durable cotton",
+      "Seamless rib collar"
+    ],
+    description: "The gold standard of custom heavyweight tees. Made with 100% U.S. cotton, the Gildan 5000 delivers dependable durability, a classic fit, and a smooth printing surface engineered for brilliant, long-lasting DTF prints.",
+    badge: "Best Seller",
+    ssStyleId: 16,
+    baseCost: 2.74
+  },
+  {
+    id: "gildan-5000l",
+    name: "Gildan Women's Heavy Cotton T-Shirt",
+    brand: "Gildan",
+    model: "5000L",
+    image: "/images/apparel/gildan-5000l.jpg",
+    fabricComposition: "100% U.S. cotton (Heathers/Neons 50/50, Sport Grey 90/10)",
+    fabricWeight: "5.3 oz/yd²",
+    features: [
+      "Classic feminine tapered fit",
+      "Feminine 1/2\" rib mid-scoop neck",
+      "Cap sleeves",
+      "Side-seamed construction",
+      "Tear-away label"
+    ],
+    description: "Designed specifically for women, this 5.3 oz heavyweight tee features a flattering feminine silhouette with a mid-scoop collar and cap sleeves. Built with 100% U.S. cotton for dependable durability and vibrant DTF printing.",
+    badge: "Best Seller",
+    ssStyleId: 2115,
+    baseCost: 3.37
+  },
+  {
     id: "gildan-64000",
     name: "Gildan Softstyle T-Shirt",
     brand: "Gildan",

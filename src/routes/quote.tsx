@@ -27,6 +27,7 @@ import {
   Gift,
 } from "lucide-react";
 import { LOCATIONS, PRIMARY_EMAIL, PRIMARY_PHONE } from "@/lib/locations";
+import { APPAREL_STYLES } from "@/lib/apparel";
 
 type ServiceKey = "custom-tshirts" | "team-bulk" | "family-tees" | "promo" | "other";
 type TurnaroundKey = "rush" | "standard" | "flexible";
@@ -525,6 +526,60 @@ function QuotePage() {
                   );
                 })}
               </RadioGroup>
+
+              <div className="mt-8 pt-6 border-t border-border">
+                <Label htmlFor="apparel-style" className="text-base font-semibold block mb-1">
+                  Preferred Garment Style (Optional)
+                </Label>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Select your preferred apparel blank, or choose "Help me choose" if you'd like our recommendation.
+                </p>
+                <div className="relative">
+                  <select
+                    id="apparel-style"
+                    value={state.productId}
+                    onChange={(e) => update("productId", e.target.value)}
+                    className="w-full text-base font-medium px-4 py-3 border-2 border-ink rounded-lg focus:ring-2 focus:ring-yellow-brand focus:border-ink outline-none transition-all bg-background appearance-none cursor-pointer"
+                  >
+                    <option value="">Help me choose / Standard recommendation</option>
+                    {APPAREL_STYLES.map((style) => (
+                      <option key={style.id} value={style.id}>
+                        {style.name} ({style.brand} {style.model}) — {style.fabricWeight}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-ink">
+                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
+                </div>
+
+                {state.productId && (() => {
+                  const currentStyle = APPAREL_STYLES.find((s) => s.id === state.productId);
+                  if (!currentStyle) return null;
+                  return (
+                    <div className="mt-3 flex items-center gap-3 bg-muted/40 p-3 rounded-lg border border-border">
+                      <img
+                        src={currentStyle.image}
+                        alt={currentStyle.name}
+                        className="w-12 h-12 rounded object-cover border border-ink/20 shrink-0"
+                      />
+                      <div className="min-w-0 flex-1 text-sm">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-ink">{currentStyle.name}</span>
+                          {currentStyle.badge && (
+                            <span className="text-[10px] bg-magenta-brand text-background px-1.5 py-0.5 rounded font-bold uppercase">
+                              {currentStyle.badge}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+                          {currentStyle.fabricComposition}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
             </StepWrapper>
           )}
 
@@ -924,6 +979,7 @@ function FileDropzone({
 function Summary({ state }: { state: QuoteState }) {
   const service = SERVICES.find((s) => s.key === state.service);
   const turnaround = TURNAROUNDS.find((t) => t.key === state.turnaround);
+  const apparel = APPAREL_STYLES.find((s) => s.id === state.productId);
   return (
     <div className="mt-8 rounded-lg bg-muted border-2 border-ink p-5">
       <div className="font-bold uppercase text-xs tracking-wider text-magenta-brand mb-3">
@@ -931,6 +987,9 @@ function Summary({ state }: { state: QuoteState }) {
       </div>
       <dl className="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
         <Row label="Service" value={service?.label} />
+        {apparel && (
+          <Row label="Apparel Style" value={`${apparel.name} (${apparel.brand} ${apparel.model})`} />
+        )}
         <Row label="Quantity" value={state.quantity} />
         <Row label="Turnaround" value={`${turnaround?.label} · ${turnaround?.estimate}`} />
         <Row label="City" value={state.city || "—"} />

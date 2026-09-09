@@ -25,7 +25,7 @@ const quoteSchema = z.object({
 
 type QuoteData = z.infer<typeof quoteSchema>;
 
-function buildOwnerEmailHtml(data: QuoteData, fileLinksHtml: string): string {
+function buildOwnerEmailHtml(data: QuoteData, fileLinksHtml: string, productLabel?: string): string {
   return `
 <!DOCTYPE html>
 <html>
@@ -61,6 +61,7 @@ function buildOwnerEmailHtml(data: QuoteData, fileLinksHtml: string): string {
         ${data.city ? `<tr><td>City</td><td>${data.city}</td></tr>` : ""}
         ${data.zipCode ? `<tr><td>Shipping Zip</td><td><strong style="color: #ff2d8a;">${data.zipCode}</strong></td></tr>` : ""}
         <tr><td>Service</td><td>${data.service}</td></tr>
+        ${productLabel ? `<tr><td>Apparel Style</td><td><strong style="color: #ff2d8a;">${productLabel}</strong></td></tr>` : ""}
         <tr><td>Quantity</td><td>${data.quantity}</td></tr>
         <tr><td>Turnaround</td><td>${data.turnaround} · ${data.turnaroundEstimate}</td></tr>
         ${data.deadline ? `<tr><td>Deadline</td><td>${data.deadline}</td></tr>` : ""}
@@ -82,7 +83,7 @@ function buildOwnerEmailHtml(data: QuoteData, fileLinksHtml: string): string {
 </html>`;
 }
 
-function buildCustomerEmailHtml(data: QuoteData): string {
+function buildCustomerEmailHtml(data: QuoteData, productLabel?: string): string {
   return `
 <!DOCTYPE html>
 <html>
@@ -110,6 +111,7 @@ function buildCustomerEmailHtml(data: QuoteData): string {
       <div class="summary">
         <strong>Your request summary:</strong>
         Service: ${data.service}<br>
+        ${productLabel ? `Apparel Style: <strong>${productLabel}</strong><br>` : ""}
         Quantity: ${data.quantity}<br>
         Turnaround: ${data.turnaround} · ${data.turnaroundEstimate}<br>
         ${data.city ? `City: ${data.city}<br>` : ""}
@@ -156,11 +158,15 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
     // Calculate auto margins if productId is provided
     let calculatedQuote = null;
     let detailsString = data.details;
+    let productLabel: string | undefined = undefined;
 
     if (data.productId) {
       try {
         const { APPAREL_STYLES } = await import("@/lib/apparel");
         const product = APPAREL_STYLES.find(p => p.id === data.productId);
+        if (product) {
+          productLabel = `${product.name} (${product.brand} ${product.model})`;
+        }
         
         if (product && product.ssStyleId) {
           const { fetchLiveInventory } = await import("@/lib/ssactivewear.functions");
@@ -275,7 +281,7 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
       from,
       to: [toEmail],
       subject: `Quote Request [${quoteId.substring(0, 8)}] — ${data.service} — ${data.name}`,
-      html: buildOwnerEmailHtml(data, fileLinksHtml),
+      html: buildOwnerEmailHtml(data, fileLinksHtml, productLabel),
       replyTo: data.email,
     });
 
@@ -291,7 +297,7 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
         to: [data.email],
         bcc: [toEmail],
         subject: "We got your quote request! — Fast Apparel",
-        html: buildCustomerEmailHtml(data),
+        html: buildCustomerEmailHtml(data, productLabel),
       });
     } catch (e) {
       // Don't fail the whole request if confirmation email fails
