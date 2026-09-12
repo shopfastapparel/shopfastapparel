@@ -14,8 +14,8 @@ import {
   Truck, 
   Layers
 } from "lucide-react";
-import hoodieHangers from "../../public/images/deals/hoodie_deal_var1_hangers.png";
-import hoodieStack from "../../public/images/deals/hoodie_deal_var2_stack.png";
+import hoodieCrewHangers from "../../public/images/deals/hoodie_crew_var1_hangers.png";
+import hoodieCrewFlatlay from "../../public/images/deals/hoodie_crew_var2_flatlay.png";
 import { SiteLayout } from "@/components/SiteLayout";
 import { useServerFn } from "@tanstack/react-start";
 import { submitQuoteRequest } from "@/lib/quote.functions";
@@ -282,8 +282,8 @@ function HoodieDealPage() {
             <div className="lg:col-span-5">
               <div className="relative">
                 <img
-                  src={activeImage === "hangers" ? hoodieHangers : hoodieStack}
-                  alt="Custom fleece hoodies and crewnecks in black, grey, navy, and forest green"
+                  src={activeImage === "hangers" ? hoodieCrewHangers : hoodieCrewFlatlay}
+                  alt="Custom fleece hoodies and crewneck sweatshirts in black, grey, navy, and forest green"
                   className="w-full rounded-2xl border-2 border-ink shadow-pop object-cover aspect-square transition-all duration-300"
                 />
                 
@@ -298,7 +298,7 @@ function HoodieDealPage() {
                         : "bg-background text-muted-foreground border-ink/20 hover:border-ink"
                     }`}
                   >
-                    Boutique Hangers
+                    Hangers Display
                   </button>
                   <button
                     type="button"
@@ -309,7 +309,7 @@ function HoodieDealPage() {
                         : "bg-background text-muted-foreground border-ink/20 hover:border-ink"
                     }`}
                   >
-                    Plush Folded Stack
+                    Side-by-Side Flatlay
                   </button>
                 </div>
               </div>
