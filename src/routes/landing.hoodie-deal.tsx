@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -12,7 +12,10 @@ import {
   Sparkles, 
   Clock, 
   Truck, 
-  Layers
+  Layers,
+  Plus,
+  Minus,
+  AlertCircle
 } from "lucide-react";
 import hoodieCrewHangers from "../../public/images/deals/hoodie_crew_var1_hangers.png";
 import hoodieCrewFlatlay from "../../public/images/deals/hoodie_crew_var2_flatlay.png";
@@ -62,6 +65,9 @@ const GARMENT_STYLES = [
   },
 ];
 
+const STANDARD_SIZES = ["S", "M", "L", "XL", "2XL"] as const;
+type SizeKey = typeof STANDARD_SIZES[number];
+
 function HoodieDealPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -76,11 +82,19 @@ function HoodieDealPage() {
     phone: "",
     zipCode: "",
     company: "",
-    garmentStyle: "Pullover Hoodies",
+    garmentStyle: "Mix & Match Both",
     hoodieColor: "Black",
-    sizes: "",
     printLocation: "Center Chest",
     notes: ""
+  });
+
+  // Interactive Size Quantities
+  const [hoodieSizes, setHoodieSizes] = useState<Record<SizeKey, number>>({
+    S: 0, M: 0, L: 0, XL: 0, "2XL": 0
+  });
+
+  const [crewSizes, setCrewSizes] = useState<Record<SizeKey, number>>({
+    S: 0, M: 0, L: 0, XL: 0, "2XL": 0
   });
 
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
@@ -93,16 +107,125 @@ function HoodieDealPage() {
     }
   };
 
+  const targetQuantity = selectedTier === "12" ? 12 : 24;
   const currentPrice = selectedTier === "12" ? 299 : 499;
   const currentPerPiece = selectedTier === "12" ? "$24.91" : "$20.79";
-  const currentQuantity = selectedTier;
+
+  // Calculate totals
+  const totalHoodies = useMemo(() => {
+    return Object.values(hoodieSizes).reduce((sum, n) => sum + (Number(n) || 0), 0);
+  }, [hoodieSizes]);
+
+  const totalCrewnecks = useMemo(() => {
+    return Object.values(crewSizes).reduce((sum, n) => sum + (Number(n) || 0), 0);
+  }, [crewSizes]);
+
+  const totalSelected = useMemo(() => {
+    if (formData.garmentStyle === "Pullover Hoodies") return totalHoodies;
+    if (formData.garmentStyle === "Crewneck Sweatshirts") return totalCrewnecks;
+    return totalHoodies + totalCrewnecks;
+  }, [formData.garmentStyle, totalHoodies, totalCrewnecks]);
+
+  const remainingNeeded = targetQuantity - totalSelected;
+
+  // Helper stepper functions
+  const updateHoodieSize = (size: SizeKey, delta: number) => {
+    setHoodieSizes(prev => ({
+      ...prev,
+      [size]: Math.max(0, (prev[size] || 0) + delta)
+    }));
+  };
+
+  const updateCrewSize = (size: SizeKey, delta: number) => {
+    setCrewSizes(prev => ({
+      ...prev,
+      [size]: Math.max(0, (prev[size] || 0) + delta)
+    }));
+  };
+
+  const setHoodieSizeDirect = (size: SizeKey, val: number) => {
+    setHoodieSizes(prev => ({
+      ...prev,
+      [size]: Math.max(0, isNaN(val) ? 0 : val)
+    }));
+  };
+
+  const setCrewSizeDirect = (size: SizeKey, val: number) => {
+    setCrewSizes(prev => ({
+      ...prev,
+      [size]: Math.max(0, isNaN(val) ? 0 : val)
+    }));
+  };
+
+  // Quick preset autofill
+  const handleAutoSplit = () => {
+    if (formData.garmentStyle === "Mix & Match Both") {
+      if (targetQuantity === 12) {
+        // 6 Hoodies (2M, 2L, 2XL) + 6 Crews (2M, 2L, 2XL)
+        setHoodieSizes({ S: 0, M: 2, L: 2, XL: 2, "2XL": 0 });
+        setCrewSizes({ S: 0, M: 2, L: 2, XL: 2, "2XL": 0 });
+      } else {
+        // 12 Hoodies (4M, 4L, 4XL) + 12 Crews (4M, 4L, 4XL)
+        setHoodieSizes({ S: 2, M: 4, L: 4, XL: 2, "2XL": 0 });
+        setCrewSizes({ S: 2, M: 4, L: 4, XL: 2, "2XL": 0 });
+      }
+    } else if (formData.garmentStyle === "Pullover Hoodies") {
+      if (targetQuantity === 12) {
+        setHoodieSizes({ S: 2, M: 4, L: 4, XL: 2, "2XL": 0 });
+      } else {
+        setHoodieSizes({ S: 4, M: 8, L: 8, XL: 4, "2XL": 0 });
+      }
+    } else {
+      if (targetQuantity === 12) {
+        setCrewSizes({ S: 2, M: 4, L: 4, XL: 2, "2XL": 0 });
+      } else {
+        setCrewSizes({ S: 4, M: 8, L: 8, XL: 4, "2XL": 0 });
+      }
+    }
+    toast.success("Applied popular size distribution preset!");
+  };
+
+  const handleResetSizes = () => {
+    setHoodieSizes({ S: 0, M: 0, L: 0, XL: 0, "2XL": 0 });
+    setCrewSizes({ S: 0, M: 0, L: 0, XL: 0, "2XL": 0 });
+  };
+
+  // Build formatted summary string for quote submission
+  const formatSizesSummary = () => {
+    const parts: string[] = [];
+    if (formData.garmentStyle === "Pullover Hoodies" || formData.garmentStyle === "Mix & Match Both") {
+      const hItems = Object.entries(hoodieSizes)
+        .filter(([_, q]) => q > 0)
+        .map(([sz, q]) => `${q}x ${sz}`);
+      if (hItems.length > 0) {
+        parts.push(`Hoodies (${totalHoodies} total): ${hItems.join(", ")}`);
+      }
+    }
+    if (formData.garmentStyle === "Crewneck Sweatshirts" || formData.garmentStyle === "Mix & Match Both") {
+      const cItems = Object.entries(crewSizes)
+        .filter(([_, q]) => q > 0)
+        .map(([sz, q]) => `${q}x ${sz}`);
+      if (cItems.length > 0) {
+        parts.push(`Crewnecks (${totalCrewnecks} total): ${cItems.join(", ")}`);
+      }
+    }
+    return parts.join(" | ");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.sizes) {
-      toast.error("Please fill out your name, email, and size breakdown.");
+    if (!formData.name || !formData.email) {
+      toast.error("Please fill out your name and email address.");
       return;
     }
+
+    if (totalSelected !== targetQuantity) {
+      toast.error(
+        `Please select exactly ${targetQuantity} items. You currently have ${totalSelected} selected (${remainingNeeded > 0 ? `${remainingNeeded} more needed` : `${Math.abs(remainingNeeded)} too many`}).`
+      );
+      return;
+    }
+
     if (!captchaToken) {
       toast.error("Please complete the reCAPTCHA verification.");
       return;
@@ -122,11 +245,12 @@ function HoodieDealPage() {
         filePaths.push(JSON.stringify({ name: f.name, path: filePath, placement: formData.printLocation, location: "Standard" }));
       }
 
-      const formattedDetails = `Selected Bundle: ${currentQuantity} Pack for $${currentPrice} (${currentPerPiece}/each)\nGarment Style: ${formData.garmentStyle}\nColor: ${formData.hoodieColor}\nSize Breakdown: ${formData.sizes}\nPrint Location: ${formData.printLocation}\n\nNotes: ${formData.notes}`;
+      const sizesSummary = formatSizesSummary();
+      const formattedDetails = `Selected Bundle: ${targetQuantity} Pack for $${currentPrice} (${currentPerPiece}/each)\nGarment Style: ${formData.garmentStyle}\nColor: ${formData.hoodieColor}\nBreakdown: ${sizesSummary}\nPrint Location: ${formData.printLocation}\n\nNotes: ${formData.notes}`;
 
       await submitQuoteFn({
-        service: `Fall Fleece Deal (${formData.garmentStyle}): ${currentQuantity} Pack ($${currentPrice})`,
-        quantity: currentQuantity,
+        service: `Fall Fleece Deal (${formData.garmentStyle}): ${targetQuantity} Pack ($${currentPrice})`,
+        quantity: String(targetQuantity),
         turnaround: "Standard",
         turnaroundEstimate: "5-7 Business Days",
         name: formData.name,
@@ -154,7 +278,7 @@ function HoodieDealPage() {
       // Meta Pixel Lead Event
       if (typeof window !== "undefined" && (window as any).fbq) {
         (window as any).fbq("track", "Lead", {
-          content_name: `Fall Fleece Bundle Deal (${currentQuantity}-Pack - ${formData.garmentStyle})`,
+          content_name: `Fall Fleece Bundle Deal (${targetQuantity}-Pack - ${formData.garmentStyle})`,
           value: currentPrice,
           currency: "USD",
         });
@@ -173,8 +297,13 @@ function HoodieDealPage() {
           <CheckCircle2 className="h-20 w-20 text-emerald-500 mx-auto mb-6" />
           <h1 className="font-display text-4xl md:text-5xl text-ink">You're on the Production Schedule!</h1>
           <p className="mt-4 text-xl text-muted-foreground">
-            We've received your Fall Fleece Bundle request for <strong>{currentQuantity} custom {formData.garmentStyle.toLowerCase()} (${currentPrice} total)</strong>.
+            We've received your Fall Fleece Bundle request for <strong>{targetQuantity} custom items (${currentPrice} total)</strong>.
           </p>
+
+          <div className="mt-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 max-w-md mx-auto text-sm text-foreground/90 font-medium">
+            {formatSizesSummary()}
+          </div>
+
           <div className="mt-6 p-6 rounded-2xl bg-muted/40 border-2 border-ink max-w-md mx-auto text-left space-y-3">
             <h4 className="font-bold text-ink uppercase text-xs tracking-wider">What happens next:</h4>
             <div className="flex items-start gap-3 text-sm text-foreground/80">
@@ -318,68 +447,27 @@ function HoodieDealPage() {
           </div>
         </section>
 
-        {/* GARMENT HIGHLIGHTS BAR */}
-        <section className="py-12 bg-background border-b border-ink/10">
-          <div className="mx-auto max-w-6xl px-4">
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="flex gap-4">
-                <div className="w-12 h-12 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center flex-shrink-0">
-                  <Layers className="w-6 h-6 text-amber-600" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-ink text-lg mb-1">Hoodies or Crewneck Sweatshirts</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Heavyweight 8.0 oz pill-resistant air-jet fleece (50/50 cotton/poly). Choose cozy hooded pullovers, sleek crewneck sweatshirts, or split your bundle between both.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="w-12 h-12 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-6 h-6 text-cyan-600" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-ink text-lg mb-1">Commercial Full-Color DTF</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Printed with high-definition Direct-to-Film transfer technology. Photographic detail, unlimited colors, and extreme wash durability with zero ink cracking.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center flex-shrink-0">
-                  <ShieldCheck className="w-6 h-6 text-emerald-600" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-ink text-lg mb-1">100% Mockup Approval Guarantee</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    You never pay blindly. We produce an authentic digital mockup of your custom fleece within 24 hours and only print once you've given 100% approval.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* ORDER / INTAKE FORM */}
         <section className="py-20 bg-muted/20" id="claim-deal">
-          <div className="mx-auto max-w-3xl px-4">
+          <div className="mx-auto max-w-4xl px-4">
             
             <div className="text-center mb-10">
-              <div className="inline-block px-3 py-1 rounded-full bg-yellow-brand text-ink font-bold text-xs uppercase tracking-widest mb-3">
-                Step 1 of 2: Reserve Your Batch
+              <div className="inline-block px-3.5 py-1.5 rounded-full bg-yellow-brand text-ink font-bold text-xs uppercase tracking-widest mb-3 border-2 border-ink shadow-sm">
+                Step 1 of 2: Configure Your Batch
               </div>
-              <h2 className="font-display text-4xl text-ink">Claim Your Fall Fleece Bundle</h2>
-              <p className="mt-2 text-muted-foreground">
-                Lock in your <strong>{selectedTier}-Pack Deal (${currentPrice} total)</strong>. Fill out the details below and upload your logo—we'll email your proof within 24 hours.
+              <h2 className="font-display text-3xl sm:text-4xl text-ink">Configure Your Fall Fleece Bundle</h2>
+              <p className="mt-2 text-muted-foreground max-w-xl mx-auto">
+                Lock in your <strong>{selectedTier}-Pack Deal (${currentPrice} total)</strong>. Choose your style, adjust your quantities, and upload your logo—we'll email your proof within 24 hours.
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="bg-background border-2 border-ink p-6 md:p-10 rounded-2xl shadow-pop">
               
-              {/* TIER TOGGLE INSIDE FORM */}
+              {/* STEP 1: TIER TOGGLE */}
               <div className="mb-8">
-                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-3">1. Select Your Bundle Size *</label>
+                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-3">
+                  1. Select Bundle Pack Size *
+                </label>
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     type="button"
@@ -412,9 +500,11 @@ function HoodieDealPage() {
                 </div>
               </div>
 
-              {/* GARMENT STYLE SELECTION */}
+              {/* STEP 2: GARMENT STYLE SELECTION */}
               <div className="mb-8">
-                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-3">2. Choose Your Garment Style *</label>
+                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-3">
+                  2. Choose Your Garment Style *
+                </label>
                 <div className="grid sm:grid-cols-3 gap-3">
                   {GARMENT_STYLES.map(style => (
                     <button
@@ -429,77 +519,205 @@ function HoodieDealPage() {
                     >
                       <div className="font-bold text-sm text-ink mb-1">{style.label}</div>
                       <div className="text-[11px] font-semibold text-amber-600 mb-1">{style.model}</div>
-                      <div className="text-xs text-muted-foreground">{style.desc}</div>
+                      <div className="text-xs text-muted-foreground leading-relaxed">{style.desc}</div>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* CONTACT INFO */}
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Full Name *</label>
-                  <input 
-                    required 
-                    value={formData.name} 
-                    onChange={e => setFormData({...formData, name: e.target.value})} 
-                    type="text" 
-                    className="w-full p-3 border-2 border-ink rounded-lg bg-background" 
-                    placeholder="Coach Taylor / Sarah Smith" 
-                  />
+              {/* STEP 3: INTERACTIVE SIZE & QUANTITY BREAKDOWN */}
+              <div className="mb-8 p-6 rounded-2xl bg-muted/30 border-2 border-ink">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                  <div>
+                    <label className="block text-sm font-bold text-ink uppercase tracking-wider">
+                      3. Quantity & Size Breakdown *
+                    </label>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Use the steppers below to allocate your {targetQuantity} items.
+                    </p>
+                  </div>
+
+                  {/* Preset Buttons */}
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleAutoSplit}
+                      className="text-xs font-bold px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-800 hover:bg-amber-500/30 border border-amber-500/40 transition-colors"
+                    >
+                      ⚡ Quick Fill Preset
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleResetSizes}
+                      className="text-xs text-muted-foreground hover:text-ink underline px-2 py-1"
+                    >
+                      Reset
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Team, Group or Business</label>
-                  <input 
-                    value={formData.company} 
-                    onChange={e => setFormData({...formData, company: e.target.value})} 
-                    type="text" 
-                    className="w-full p-3 border-2 border-ink rounded-lg bg-background" 
-                    placeholder="e.g. Roswell Cheer Booster, Iron Gym" 
-                  />
+
+                {/* LIVE COUNT MONITOR BAR */}
+                <div className="mb-6 p-4 rounded-xl bg-background border-2 border-ink">
+                  <div className="flex items-center justify-between text-sm font-bold mb-2">
+                    <span>
+                      Selected: <strong className={totalSelected === targetQuantity ? "text-emerald-600 font-extrabold" : "text-amber-600"}>{totalSelected}</strong> of {targetQuantity} items
+                    </span>
+                    {totalSelected === targetQuantity ? (
+                      <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-300">
+                        <CheckCircle2 className="w-3.5 h-3.5" /> Bundle Complete!
+                      </span>
+                    ) : remainingNeeded > 0 ? (
+                      <span className="text-xs text-amber-600 font-semibold">
+                        Need {remainingNeeded} more
+                      </span>
+                    ) : (
+                      <span className="text-xs text-rose-600 font-bold flex items-center gap-1">
+                        <AlertCircle className="w-3.5 h-3.5" /> {Math.abs(remainingNeeded)} too many
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Visual Progress Bar */}
+                  <div className="w-full bg-muted rounded-full h-3 overflow-hidden border border-ink/20">
+                    <div 
+                      className={`h-full transition-all duration-300 ${
+                        totalSelected === targetQuantity 
+                          ? "bg-emerald-500" 
+                          : totalSelected > targetQuantity 
+                          ? "bg-rose-500" 
+                          : "bg-amber-500"
+                      }`}
+                      style={{ width: `${Math.min(100, (totalSelected / targetQuantity) * 100)}%` }}
+                    />
+                  </div>
                 </div>
+
+                {/* SECTION A: HOODIES SIZES (Shown if Hoodies or Mix Both) */}
+                {(formData.garmentStyle === "Pullover Hoodies" || formData.garmentStyle === "Mix & Match Both") && (
+                  <div className="mb-6 bg-background p-4 rounded-xl border-2 border-ink">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">🧥</span>
+                        <span className="font-bold text-sm text-ink uppercase tracking-wider">
+                          Pullover Hoodies (Gildan 18500)
+                        </span>
+                      </div>
+                      <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-yellow-brand text-ink border border-ink/20">
+                        Subtotal: {totalHoodies}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                      {STANDARD_SIZES.map(sz => (
+                        <div 
+                          key={`hoodie-${sz}`}
+                          className={`p-2.5 rounded-xl border-2 text-center transition-all ${
+                            (hoodieSizes[sz] || 0) > 0 
+                              ? "border-amber-600 bg-amber-500/10 shadow-sm" 
+                              : "border-ink/20 bg-background"
+                          }`}
+                        >
+                          <div className="text-xs font-extrabold text-ink mb-1.5">{sz}</div>
+                          <div className="flex items-center justify-center gap-1">
+                            <button
+                              type="button"
+                              onClick={() => updateHoodieSize(sz, -1)}
+                              disabled={(hoodieSizes[sz] || 0) === 0}
+                              className="w-7 h-7 rounded-lg border border-ink/30 bg-muted hover:bg-muted/80 disabled:opacity-30 flex items-center justify-center text-ink"
+                            >
+                              <Minus className="w-3 h-3" />
+                            </button>
+                            <input
+                              type="number"
+                              min="0"
+                              value={hoodieSizes[sz] || 0}
+                              onChange={e => setHoodieSizeDirect(sz, parseInt(e.target.value) || 0)}
+                              className="w-10 text-center font-bold text-sm bg-transparent border-0 focus:ring-0 p-0"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => updateHoodieSize(sz, 1)}
+                              className="w-7 h-7 rounded-lg border border-ink/30 bg-muted hover:bg-muted/80 flex items-center justify-center text-ink"
+                            >
+                              <Plus className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* SECTION B: CREWNECKS SIZES (Shown if Crewnecks or Mix Both) */}
+                {(formData.garmentStyle === "Crewneck Sweatshirts" || formData.garmentStyle === "Mix & Match Both") && (
+                  <div className="bg-background p-4 rounded-xl border-2 border-ink">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">👕</span>
+                        <span className="font-bold text-sm text-ink uppercase tracking-wider">
+                          Crewneck Sweatshirts (Gildan 18000)
+                        </span>
+                      </div>
+                      <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-cyan-brand/20 text-ink border border-ink/20">
+                        Subtotal: {totalCrewnecks}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                      {STANDARD_SIZES.map(sz => (
+                        <div 
+                          key={`crew-${sz}`}
+                          className={`p-2.5 rounded-xl border-2 text-center transition-all ${
+                            (crewSizes[sz] || 0) > 0 
+                              ? "border-cyan-600 bg-cyan-500/10 shadow-sm" 
+                              : "border-ink/20 bg-background"
+                          }`}
+                        >
+                          <div className="text-xs font-extrabold text-ink mb-1.5">{sz}</div>
+                          <div className="flex items-center justify-center gap-1">
+                            <button
+                              type="button"
+                              onClick={() => updateCrewSize(sz, -1)}
+                              disabled={(crewSizes[sz] || 0) === 0}
+                              className="w-7 h-7 rounded-lg border border-ink/30 bg-muted hover:bg-muted/80 disabled:opacity-30 flex items-center justify-center text-ink"
+                            >
+                              <Minus className="w-3 h-3" />
+                            </button>
+                            <input
+                              type="number"
+                              min="0"
+                              value={crewSizes[sz] || 0}
+                              onChange={e => setCrewSizeDirect(sz, parseInt(e.target.value) || 0)}
+                              className="w-10 text-center font-bold text-sm bg-transparent border-0 focus:ring-0 p-0"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => updateCrewSize(sz, 1)}
+                              className="w-7 h-7 rounded-lg border border-ink/30 bg-muted hover:bg-muted/80 flex items-center justify-center text-ink"
+                            >
+                              <Plus className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Selected Summary String Display */}
+                {totalSelected > 0 && (
+                  <div className="mt-4 text-xs font-semibold text-foreground/80 bg-background/80 p-3 rounded-lg border border-ink/20">
+                    <span className="text-muted-foreground uppercase text-[10px] block font-bold mb-0.5">Current Order Configuration:</span>
+                    {formatSizesSummary()}
+                  </div>
+                )}
               </div>
 
-              <div className="grid md:grid-cols-3 gap-6 mb-8">
-                <div>
-                  <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Email *</label>
-                  <input 
-                    required 
-                    value={formData.email} 
-                    onChange={e => setFormData({...formData, email: e.target.value})} 
-                    type="email" 
-                    className="w-full p-3 border-2 border-ink rounded-lg bg-background" 
-                    placeholder="you@example.com" 
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Phone</label>
-                  <input 
-                    value={formData.phone} 
-                    onChange={e => setFormData({...formData, phone: e.target.value})} 
-                    type="tel" 
-                    className="w-full p-3 border-2 border-ink rounded-lg bg-background" 
-                    placeholder="(404) 555-0199" 
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Shipping Zip Code</label>
-                  <input 
-                    value={formData.zipCode} 
-                    onChange={e => setFormData({...formData, zipCode: e.target.value})} 
-                    type="text" 
-                    maxLength={10} 
-                    className="w-full p-3 border-2 border-ink rounded-lg bg-background" 
-                    placeholder="e.g. 30045" 
-                  />
-                </div>
-              </div>
-
-              <hr className="border-ink/10 mb-8" />
-
-              {/* FLEECE COLOR SELECTION */}
+              {/* STEP 4: COLOR SELECTION */}
               <div className="mb-8">
-                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-3">Garment Color *</label>
+                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-3">
+                  4. Garment Color *
+                </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {HOODIE_COLORS.map(color => (
                     <button
@@ -520,44 +738,34 @@ function HoodieDealPage() {
                     </button>
                   ))}
                 </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Want different colors for hoodies vs crewnecks? Note it in the special instructions box below!
+                </p>
               </div>
 
-              {/* SIZES & PRINT LOCATION */}
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div>
-                  <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Size Breakdown *</label>
-                  <input 
-                    required 
-                    value={formData.sizes} 
-                    onChange={e => setFormData({...formData, sizes: e.target.value})} 
-                    type="text" 
-                    className="w-full p-3 border-2 border-ink rounded-lg bg-background" 
-                    placeholder={selectedTier === "12" ? "e.g. 2S, 4M, 4L, 2XL (or 6 Hoodies: 3M, 3L + 6 Crews: 3M, 3L)" : "e.g. 4S, 8M, 8L, 4XL"} 
-                  />
-                  <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
-                    <Info className="w-3 h-3 text-amber-600" /> Must equal exactly <strong>{selectedTier} items total</strong> (S–XL included; 2XL+ available upon request).
-                  </p>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Print Location *</label>
-                  <select 
-                    value={formData.printLocation} 
-                    onChange={e => setFormData({...formData, printLocation: e.target.value})} 
-                    className="w-full p-3 border-2 border-ink rounded-lg bg-background font-medium"
-                  >
-                    <option value="Center Chest">Center Chest (Standard)</option>
-                    <option value="Left Chest">Left Chest (Pocket Area)</option>
-                    <option value="Full Front">Large Full Front</option>
-                    <option value="Full Back">Large Full Back</option>
-                    <option value="Front & Back">Front & Back (+$)</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* ARTWORK UPLOAD */}
+              {/* STEP 5: PRINT LOCATION */}
               <div className="mb-8">
-                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Upload Your Logo / Graphic Artwork</label>
+                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">
+                  5. Print Location *
+                </label>
+                <select 
+                  value={formData.printLocation} 
+                  onChange={e => setFormData({...formData, printLocation: e.target.value})} 
+                  className="w-full p-3 border-2 border-ink rounded-lg bg-background font-medium"
+                >
+                  <option value="Center Chest">Center Chest (Standard)</option>
+                  <option value="Left Chest">Left Chest (Pocket Area)</option>
+                  <option value="Full Front">Large Full Front</option>
+                  <option value="Full Back">Large Full Back</option>
+                  <option value="Front & Back">Front & Back (+$)</option>
+                </select>
+              </div>
+
+              {/* STEP 6: ARTWORK UPLOAD */}
+              <div className="mb-8">
+                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">
+                  6. Upload Your Logo / Graphic Artwork
+                </label>
                 <div className="border-2 border-dashed border-ink/40 p-6 rounded-lg text-center bg-muted/20 hover:bg-muted/40 transition-colors">
                   <input 
                     type="file" 
@@ -580,14 +788,81 @@ function HoodieDealPage() {
                 </p>
               </div>
 
-              {/* NOTES */}
+              {/* STEP 7: CONTACT INFO */}
               <div className="mb-8">
-                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Special Instructions or Needed-By Date</label>
+                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-3">
+                  7. Contact & Shipping Details *
+                </label>
+                <div className="grid md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-xs font-bold text-ink uppercase mb-1">Full Name *</label>
+                    <input 
+                      required 
+                      value={formData.name} 
+                      onChange={e => setFormData({...formData, name: e.target.value})} 
+                      type="text" 
+                      className="w-full p-3 border-2 border-ink rounded-lg bg-background" 
+                      placeholder="Coach Taylor / Sarah Smith" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-ink uppercase mb-1">Team, Group or Business</label>
+                    <input 
+                      value={formData.company} 
+                      onChange={e => setFormData({...formData, company: e.target.value})} 
+                      type="text" 
+                      className="w-full p-3 border-2 border-ink rounded-lg bg-background" 
+                      placeholder="e.g. Roswell Cheer Booster, Iron Gym" 
+                    />
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-ink uppercase mb-1">Email *</label>
+                    <input 
+                      required 
+                      value={formData.email} 
+                      onChange={e => setFormData({...formData, email: e.target.value})} 
+                      type="email" 
+                      className="w-full p-3 border-2 border-ink rounded-lg bg-background" 
+                      placeholder="you@example.com" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-ink uppercase mb-1">Phone</label>
+                    <input 
+                      value={formData.phone} 
+                      onChange={e => setFormData({...formData, phone: e.target.value})} 
+                      type="tel" 
+                      className="w-full p-3 border-2 border-ink rounded-lg bg-background" 
+                      placeholder="(404) 555-0199" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-ink uppercase mb-1">Shipping Zip Code</label>
+                    <input 
+                      value={formData.zipCode} 
+                      onChange={e => setFormData({...formData, zipCode: e.target.value})} 
+                      type="text" 
+                      maxLength={10} 
+                      className="w-full p-3 border-2 border-ink rounded-lg bg-background" 
+                      placeholder="e.g. 30045" 
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* STEP 8: NOTES */}
+              <div className="mb-8">
+                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">
+                  Special Instructions or Needed-By Date
+                </label>
                 <textarea 
                   value={formData.notes} 
                   onChange={e => setFormData({...formData, notes: e.target.value})} 
                   className="w-full p-3 border-2 border-ink rounded-lg bg-background h-24 resize-none" 
-                  placeholder="e.g., If mixing: 6 Hoodies (Navy) & 6 Crewnecks (Grey). Need in hands by Oct 20." 
+                  placeholder="e.g., If mixing colors: Black for Hoodies, Heather Grey for Crewnecks. Need in hands by Oct 24." 
                 />
               </div>
 
@@ -604,9 +879,18 @@ function HoodieDealPage() {
                 disabled={isSubmitting} 
                 type="submit" 
                 size="lg" 
-                className="w-full h-16 text-xl shadow-[4px_4px_0px_0px_#1a1a2e] border-2 border-ink hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#1a1a2e] transition-all bg-yellow-brand text-ink hover:bg-yellow-brand/90 font-bold"
+                className={`w-full h-16 text-xl shadow-[4px_4px_0px_0px_#1a1a2e] border-2 border-ink hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#1a1a2e] transition-all font-bold ${
+                  totalSelected === targetQuantity
+                    ? "bg-yellow-brand text-ink hover:bg-yellow-brand/90"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
               >
-                {isSubmitting ? "Locking in Your Bundle..." : `Claim ${currentQuantity} Custom Fleece Items for $${currentPrice} →`}
+                {isSubmitting 
+                  ? "Locking in Your Bundle..." 
+                  : totalSelected === targetQuantity
+                  ? `Claim ${targetQuantity} Custom Items for $${currentPrice} →`
+                  : `Select ${remainingNeeded > 0 ? `${remainingNeeded} More` : `${Math.abs(remainingNeeded)} Fewer`} Items (${totalSelected}/${targetQuantity})`
+                }
               </Button>
               <p className="text-center text-xs text-muted-foreground mt-3">
                 Zero commitment today. You will receive a full digital mockup and payment invoice to review before production starts.
@@ -635,7 +919,7 @@ function HoodieDealPage() {
               <div className="p-6 rounded-2xl border-2 border-ink bg-card">
                 <h4 className="font-bold text-ink text-base mb-2">Can I mix and match sizes?</h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Yes, absolutely! You can choose any combination of adult sizes (Small through XL) to reach your 12 or 24 total count. Extended sizes (2XL, 3XL, 4XL) are available for a small +$3/garment surcharge.
+                  Yes, absolutely! You can choose any combination of adult sizes (Small through 2XL) with our interactive steppers. Extended sizes (3XL, 4XL) are available upon request.
                 </p>
               </div>
 
