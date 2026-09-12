@@ -365,6 +365,12 @@ function QuotePage() {
         });
         (window as any).gtag('event', 'ads_conversion_Request_quote_1', {});
       }
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'Lead', {
+          content_name: serviceLabel,
+          content_category: state.quantity
+        });
+      }
       toast.success("Quote request sent!", {
         description: "We'll respond within 24 hours with pricing and a free mockup.",
       });

@@ -102,6 +102,13 @@ function BundleDealPage() {
         });
         (window as any).gtag('event', 'ads_conversion_Request_quote_1', {});
       }
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'Lead', {
+          content_name: '24-Pack Bundle Deal: Gildan Softstyle',
+          value: 216.00,
+          currency: 'USD'
+        });
+      }
     } catch (err: any) {
       toast.error(err.message || "Something went wrong.");
     } finally {
