@@ -27,6 +27,7 @@ import {
   Briefcase,
   CheckCircle2,
   Smartphone,
+  Flame,
 } from "lucide-react";
 import heroShirts from "@/assets/hero-shirts.jpg";
 
@@ -422,51 +423,136 @@ function HomePage() {
         </motion.div>
       </section>
 
-      {/* FAST DEAL PROMO */}
-      <section className="bg-ink border-y border-ink">
-        <div className="mx-auto max-w-7xl px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            variants={fadeInRight}
-            className="order-2 md:order-1 relative"
-          >
-            <div className="absolute inset-0 bg-yellow-brand/20 blur-3xl rounded-full" />
-            <img 
-              src="/images/apparel/gildan-bundle.png" 
-              alt="The FAST Deal Bundle" 
-              className="relative rounded-xl border-2 border-magenta-brand shadow-pop-lg w-full object-cover z-10"
-            />
-            <div className="absolute -bottom-6 -right-6 bg-yellow-brand text-ink font-display text-4xl p-4 rounded-full border-2 border-ink shadow-sm z-20 rotate-12">
-              $9
+      {/* FEATURED BUNDLE DEALS (T-SHIRTS & FLEECE) */}
+      <section className="bg-ink border-y border-ink py-16">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-yellow-brand text-ink text-xs font-bold uppercase tracking-widest mb-3 border border-yellow-brand/40 shadow-sm">
+              <Zap className="w-4 h-4 fill-ink" /> Limited-Time Bundle Specials
             </div>
-          </motion.div>
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            variants={fadeInLeft}
-            className="order-1 md:order-2"
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-brand text-ink text-xs font-bold uppercase tracking-widest mb-4">
-              <Zap className="w-4 h-4" /> Limited Time Offer
-            </div>
-            <h2 className="font-display text-4xl md:text-5xl leading-tight text-white mb-4">
-              Premium Custom Shirts for <span className="text-yellow-brand">$9 Each</span>.
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-white tracking-tight">
+              Unbeatable Custom Bundles. <span className="text-yellow-brand">Zero Setup Fees.</span>
             </h2>
-            <p className="text-white/80 text-lg mb-6">
-              Lock in our legendary <strong>FAST Deal</strong>. You get 24 incredibly soft Gildan Softstyle t-shirts with vibrant, full-color DTF prints. Perfect for small businesses, events, and brand merch.
+            <p className="text-white/75 text-base md:text-lg mt-3">
+              Lock in wholesale bundle pricing with high-definition DTF prints, free shipping, and zero hidden costs.
             </p>
-            <ul className="space-y-2 mb-8">
-              <li className="flex items-center gap-2 text-white/90"><CheckCircle2 className="w-5 h-5 text-cyan-brand" /> Full-Color DTF Print Included</li>
-              <li className="flex items-center gap-2 text-white/90"><CheckCircle2 className="w-5 h-5 text-cyan-brand" /> 24 Premium Gildan Softstyle Shirts</li>
-              <li className="flex items-center gap-2 text-white/90"><CheckCircle2 className="w-5 h-5 text-cyan-brand" /> Free Shipping in Metro Atlanta</li>
-            </ul>
-            <Button asChild size="lg" className="shadow-[4px_4px_0px_0px_#1a1a2e] border-2 border-ink bg-yellow-brand text-ink hover:bg-white text-lg h-14 px-8">
-              <Link to="/landing/bundle-deal">Claim The FAST Deal <ArrowRight className="ml-2 w-5 h-5" /></Link>
-            </Button>
-          </motion.div>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+            {/* DEAL 1: $9 TEE DEAL */}
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={fadeInRight}
+              className="bg-card/10 backdrop-blur-sm border-2 border-white/15 rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-yellow-brand/60 transition-all relative overflow-hidden group shadow-2xl"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-brand/20 text-yellow-brand text-xs font-bold uppercase tracking-wider border border-yellow-brand/30">
+                    <Zap className="w-3.5 h-3.5" /> The FAST Deal
+                  </span>
+                  <span className="text-xs font-semibold text-white/60">24 Shirts for $216</span>
+                </div>
+
+                <div className="relative mb-6 rounded-xl overflow-hidden border-2 border-white/10">
+                  <img 
+                    src="/images/deals/fast_deal_variation1_stack.png" 
+                    alt="The $9 FAST Deal - 24 Custom Shirts" 
+                    className="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute top-3 right-3 bg-yellow-brand text-ink font-display text-2xl px-3 py-1 rounded-full border-2 border-ink shadow-md">
+                    $9/ea
+                  </div>
+                </div>
+
+                <h3 className="font-display text-2xl sm:text-3xl text-white mb-2">
+                  Gildan Softstyle <span className="text-yellow-brand">$9 Custom Tees</span>
+                </h3>
+                <p className="text-white/80 text-sm sm:text-base mb-6 leading-relaxed">
+                  24 ultra-soft ring-spun cotton t-shirts in Black, White, or Heather Grey with your full-color DTF print. Perfect for small businesses, events, and brand merch.
+                </p>
+
+                <ul className="space-y-2.5 mb-8 text-sm text-white/90">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-cyan-brand flex-shrink-0" />
+                    <span><strong>24 Premium Softstyle Tees</strong> (Sizes S–XL)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-cyan-brand flex-shrink-0" />
+                    <span><strong>Full-Color DTF Print</strong> Included (Front or Back)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-cyan-brand flex-shrink-0" />
+                    <span><strong>Zero Setup Fees</strong> & Free US / Atlanta Shipping</span>
+                  </li>
+                </ul>
+              </div>
+
+              <Button asChild size="lg" className="w-full shadow-[4px_4px_0px_0px_#1a1a2e] border-2 border-ink bg-yellow-brand text-ink hover:bg-white text-base font-bold h-13">
+                <Link to="/landing/bundle-deal">
+                  Claim $9 Tee Deal <ArrowRight className="ml-2 w-5 h-5" />
+                </Link>
+              </Button>
+            </motion.div>
+
+            {/* DEAL 2: FALL FLEECE DEAL (HOODIES & CREWNECKS) */}
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={fadeInLeft}
+              className="bg-card/10 backdrop-blur-sm border-2 border-amber-500/30 rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-amber-500/70 transition-all relative overflow-hidden group shadow-2xl"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-wider border border-amber-500/30">
+                    <Flame className="w-3.5 h-3.5 fill-amber-400" /> Fall Fleece Special
+                  </span>
+                  <span className="text-xs font-semibold text-amber-300">12 for $299 • 24 for $499</span>
+                </div>
+
+                <div className="relative mb-6 rounded-xl overflow-hidden border-2 border-amber-500/20">
+                  <img 
+                    src="/images/deals/hoodie_crew_var1_hangers.png" 
+                    alt="Fall Fleece Deal - Custom Hoodies & Crewnecks" 
+                    className="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute top-3 right-3 bg-amber-500 text-white font-display text-xl sm:text-2xl px-3 py-1 rounded-full border-2 border-ink shadow-md">
+                    From $20.79
+                  </div>
+                </div>
+
+                <h3 className="font-display text-2xl sm:text-3xl text-white mb-2">
+                  Custom Hoodies & <span className="text-amber-400">Crewneck Sweatshirts</span>
+                </h3>
+                <p className="text-white/80 text-sm sm:text-base mb-6 leading-relaxed">
+                  Heavyweight 8.0 oz pill-resistant fleece. Choose pullover hoodies (Gildan 18500), classic crewnecks (18000), or mix and match both in your pack!
+                </p>
+
+                <ul className="space-y-2.5 mb-8 text-sm text-white/90">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                    <span><strong>Hoodies, Crewnecks, or Mix Both</strong> in 1 Pack</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                    <span><strong>Full-Color DTF Print</strong> with Zero Setup Fees</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                    <span><strong>Free 24hr Digital Proof</strong> & Free US Shipping</span>
+                  </li>
+                </ul>
+              </div>
+
+              <Button asChild size="lg" className="w-full shadow-[4px_4px_0px_0px_#1a1a2e] border-2 border-ink bg-amber-500 text-ink hover:bg-white text-base font-bold h-13">
+                <Link to="/landing/hoodie-deal">
+                  Claim Fall Fleece Deal <ArrowRight className="ml-2 w-5 h-5" />
+                </Link>
+              </Button>
+            </motion.div>
+          </div>
         </div>
       </section>
 
