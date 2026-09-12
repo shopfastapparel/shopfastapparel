@@ -25,6 +25,8 @@ import {
   Users,
   Zap,
   Gift,
+  Plus,
+  Minus,
 } from "lucide-react";
 import { LOCATIONS, PRIMARY_EMAIL, PRIMARY_PHONE } from "@/lib/locations";
 import { APPAREL_STYLES } from "@/lib/apparel";
@@ -32,6 +34,7 @@ import { APPAREL_STYLES } from "@/lib/apparel";
 type ServiceKey = "custom-tshirts" | "team-bulk" | "family-tees" | "promo" | "other";
 type TurnaroundKey = "rush" | "standard" | "flexible";
 type QuantityKey = "1-23" | "24-47" | "48-99" | "100-249" | "250-499" | "500+";
+type SizeKey = "S" | "M" | "L" | "XL" | "2XL" | "3XL";
 
 type QuoteSearch = {
   service?: ServiceKey;
@@ -239,6 +242,90 @@ function QuotePage() {
     printLocations: searchParams.printLocations,
   });
 
+  // Interactive Size Breakdown State
+  const [sizes, setSizes] = useState<Record<SizeKey, number>>({
+    S: 0,
+    M: 0,
+    L: 0,
+    XL: 0,
+    "2XL": 0,
+    "3XL": 0,
+  });
+
+  const totalSizesSelected = useMemo(() => {
+    return Object.values(sizes).reduce((sum, n) => sum + (Number(n) || 0), 0);
+  }, [sizes]);
+
+  const updateSize = (size: SizeKey, delta: number) => {
+    setSizes(prev => {
+      const updated = {
+        ...prev,
+        [size]: Math.max(0, (prev[size] || 0) + delta)
+      };
+      // Auto sync quantity range if total fits into bucket
+      const newTotal = Object.values(updated).reduce((sum, n) => sum + (Number(n) || 0), 0);
+      if (newTotal > 0) {
+        if (newTotal < 24) update("quantity", "1-23");
+        else if (newTotal < 48) update("quantity", "24-47");
+        else if (newTotal < 100) update("quantity", "48-99");
+        else if (newTotal < 250) update("quantity", "100-249");
+        else if (newTotal < 500) update("quantity", "250-499");
+        else update("quantity", "500+");
+      }
+      return updated;
+    });
+  };
+
+  const handleDirectSizeChange = (size: SizeKey, val: number) => {
+    setSizes(prev => {
+      const updated = {
+        ...prev,
+        [size]: Math.max(0, isNaN(val) ? 0 : val)
+      };
+      const newTotal = Object.values(updated).reduce((sum, n) => sum + (Number(n) || 0), 0);
+      if (newTotal > 0) {
+        if (newTotal < 24) update("quantity", "1-23");
+        else if (newTotal < 48) update("quantity", "24-47");
+        else if (newTotal < 100) update("quantity", "48-99");
+        else if (newTotal < 250) update("quantity", "100-249");
+        else if (newTotal < 500) update("quantity", "250-499");
+        else update("quantity", "500+");
+      }
+      return updated;
+    });
+  };
+
+  const handleApplyPreset = (preset: "12" | "24" | "50" | "100") => {
+    if (preset === "12") {
+      setSizes({ S: 2, M: 4, L: 4, XL: 2, "2XL": 0, "3XL": 0 });
+      update("quantity", "1-23");
+      toast.success("Applied 12-Piece Quick Preset (2S, 4M, 4L, 2XL)!");
+    } else if (preset === "24") {
+      setSizes({ S: 4, M: 8, L: 8, XL: 4, "2XL": 0, "3XL": 0 });
+      update("quantity", "24-47");
+      toast.success("Applied 24-Piece Quick Preset (4S, 8M, 8L, 4XL)!");
+    } else if (preset === "50") {
+      setSizes({ S: 8, M: 16, L: 16, XL: 8, "2XL": 2, "3XL": 0 });
+      update("quantity", "48-99");
+      toast.success("Applied 50-Piece Quick Preset (8S, 16M, 16L, 8XL, 2 2XL)!");
+    } else if (preset === "100") {
+      setSizes({ S: 15, M: 35, L: 35, XL: 12, "2XL": 3, "3XL": 0 });
+      update("quantity", "100-249");
+      toast.success("Applied 100-Piece Bulk Preset (15S, 35M, 35L, 12XL, 3 2XL)!");
+    }
+  };
+
+  const handleResetSizes = () => {
+    setSizes({ S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0 });
+  };
+
+  const formatSizesSummary = () => {
+    const items = (Object.entries(sizes) as [SizeKey, number][])
+      .filter(([_, q]) => q > 0)
+      .map(([sz, q]) => `${q}x ${sz}`);
+    return items.join(", ");
+  };
+
   const update = <K extends keyof QuoteState>(key: K, value: QuoteState[K]) =>
     setState((s) => ({ ...s, [key]: value }));
 
@@ -337,6 +424,11 @@ function QuotePage() {
         filePaths.push(JSON.stringify({ name: f.name, path: filePath, placement: f.placement, location: f.location }));
       }
 
+      const sizesSummary = formatSizesSummary();
+      const submissionDetails = sizesSummary
+        ? `${state.details ? `${state.details}\n\n` : ""}Specific Size Breakdown (${totalSizesSelected} total):\n${sizesSummary}`
+        : state.details;
+
       await submitQuoteFn({
         data: {
           service: serviceLabel,
@@ -346,7 +438,7 @@ function QuotePage() {
           deadline: state.deadline || undefined,
           city: state.city || undefined,
           zipCode: state.zipCode || undefined,
-          details: state.details,
+          details: submissionDetails,
           fileNames: filePaths,
           name: state.name,
           company: state.company || undefined,
@@ -585,6 +677,130 @@ function QuotePage() {
                     </div>
                   );
                 })()}
+              </div>
+
+              {/* INTERACTIVE SIZE BREAKDOWN & QUICK FILL PRESETS */}
+              <div className="mt-8 pt-6 border-t border-border">
+                <div className="p-5 md:p-6 rounded-2xl bg-muted/30 border-2 border-ink">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Label className="text-base font-bold text-ink uppercase tracking-wider">
+                          Exact Size Breakdown (Optional)
+                        </Label>
+                        <span className="text-[11px] font-bold bg-yellow-brand text-ink px-2 py-0.5 rounded-full border border-ink/30">
+                          ⚡ Stepper Matrix
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Know your sizes already? Allocate them below and we'll pre-calculate your exact count.
+                      </p>
+                    </div>
+
+                    {/* Quick Fill & Reset Buttons */}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <div className="flex items-center gap-1.5 bg-background border border-ink/20 p-1 rounded-lg">
+                        <span className="text-[11px] font-bold text-muted-foreground pl-1.5 pr-0.5">Presets:</span>
+                        <button
+                          type="button"
+                          onClick={() => handleApplyPreset("12")}
+                          className="text-xs font-bold px-2 py-1 rounded bg-yellow-brand/20 hover:bg-yellow-brand text-ink border border-yellow-brand/40 transition-colors"
+                        >
+                          12-Pack
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleApplyPreset("24")}
+                          className="text-xs font-bold px-2 py-1 rounded bg-yellow-brand/20 hover:bg-yellow-brand text-ink border border-yellow-brand/40 transition-colors"
+                        >
+                          24-Pack
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleApplyPreset("50")}
+                          className="text-xs font-bold px-2 py-1 rounded bg-yellow-brand/20 hover:bg-yellow-brand text-ink border border-yellow-brand/40 transition-colors"
+                        >
+                          50-Pack
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleApplyPreset("100")}
+                          className="text-xs font-bold px-2 py-1 rounded bg-yellow-brand/20 hover:bg-yellow-brand text-ink border border-yellow-brand/40 transition-colors hidden md:inline-block"
+                        >
+                          100-Pack
+                        </button>
+                      </div>
+
+                      {totalSizesSelected > 0 && (
+                        <button
+                          type="button"
+                          onClick={handleResetSizes}
+                          className="text-xs text-muted-foreground hover:text-ink underline px-2 py-1"
+                        >
+                          Clear
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* LIVE SELECTION MONITOR */}
+                  {totalSizesSelected > 0 && (
+                    <div className="mb-5 p-3.5 rounded-xl bg-background border-2 border-ink flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                        <span className="text-sm font-semibold text-foreground">
+                          Total Allocated: <strong className="text-magenta-brand text-base font-extrabold">{totalSizesSelected} garments</strong>
+                        </span>
+                      </div>
+                      <div className="text-xs font-medium text-muted-foreground hidden sm:block">
+                        Summary: <span className="font-mono text-ink font-semibold">{formatSizesSummary()}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* STEPPER GRID */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
+                    {(["S", "M", "L", "XL", "2XL", "3XL"] as SizeKey[]).map((sz) => (
+                      <div
+                        key={sz}
+                        className={`p-3 rounded-xl border-2 transition-all text-center ${
+                          sizes[sz] > 0
+                            ? "border-magenta-brand bg-background shadow-sm"
+                            : "border-ink/20 bg-background/50 hover:border-ink/40"
+                        }`}
+                      >
+                        <span className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
+                          {sz}
+                        </span>
+                        <div className="flex items-center justify-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => updateSize(sz, -1)}
+                            disabled={sizes[sz] === 0}
+                            className="w-7 h-7 rounded bg-muted hover:bg-ink hover:text-white border border-ink/20 flex items-center justify-center disabled:opacity-40 disabled:hover:bg-muted disabled:hover:text-inherit transition-colors"
+                          >
+                            <Minus className="w-3.5 h-3.5" />
+                          </button>
+                          <input
+                            type="number"
+                            min="0"
+                            value={sizes[sz] === 0 ? "" : sizes[sz]}
+                            placeholder="0"
+                            onChange={(e) => handleDirectSizeChange(sz, parseInt(e.target.value) || 0)}
+                            className="w-10 text-center font-bold text-base bg-transparent border-b border-ink/30 focus:border-magenta-brand focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => updateSize(sz, 1)}
+                            className="w-7 h-7 rounded bg-muted hover:bg-ink hover:text-white border border-ink/20 flex items-center justify-center transition-colors"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </StepWrapper>
           )}
