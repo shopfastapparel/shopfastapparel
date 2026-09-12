@@ -24,10 +24,10 @@ import ReCAPTCHA from "react-google-recaptcha";
 export const Route = createFileRoute("/landing/hoodie-deal")({
   head: () => ({
     meta: [
-      { title: "Fall Hoodie Bundle: Custom Fleece Hoodies Starting at $20.79 | Fast Apparel" },
-      { name: "description", content: "Get 12 or 24 custom heavyweight Gildan 18500 fleece hoodies with vibrant full-color DTF prints. Zero setup fees, free digital proof, and free shipping." },
-      { property: "og:title", content: "Fall Custom Hoodie Bundle — 12 for $299 | Fast Apparel" },
-      { property: "og:description", content: "Ultra-soft 8.0 oz fleece hoodies with your custom artwork. Zero setup fees and free shipping." },
+      { title: "Fall Fleece Deal: Custom Hoodies or Crewneck Sweatshirts from $20.79 | Fast Apparel" },
+      { name: "description", content: "Get 12 or 24 custom heavyweight Gildan fleece hoodies or crewneck sweatshirts with vibrant full-color DTF prints. Zero setup fees, free proof, and free shipping." },
+      { property: "og:title", content: "Fall Fleece Deal: Custom Hoodies or Crewnecks — 12 for $299 | Fast Apparel" },
+      { property: "og:description", content: "Ultra-soft 8.0 oz fleece hoodies & crewnecks with your custom artwork. Zero setup fees and free shipping." },
     ],
   }),
   component: HoodieDealPage,
@@ -39,6 +39,27 @@ const HOODIE_COLORS = [
   { name: "Navy Blue", hex: "#1E3A8A", label: "Deep Navy" },
   { name: "Forest Green", hex: "#14532D", label: "Forest Green" },
   { name: "Sand", hex: "#D6C7A1", label: "Sand / Oatmeal" },
+];
+
+const GARMENT_STYLES = [
+  { 
+    id: "Hoodies", 
+    label: "Pullover Hoodies", 
+    model: "Gildan 18500 Heavy Blend™", 
+    desc: "Plush 8.0 oz fleece with front pouch pocket & matching drawcord." 
+  },
+  { 
+    id: "Crewnecks", 
+    label: "Crewneck Sweatshirts", 
+    model: "Gildan 18000 Heavy Blend™", 
+    desc: "Classic collarless 8.0 oz fleece crew with ribbed cuffs & waistband." 
+  },
+  { 
+    id: "Mix Both", 
+    label: "Mix & Match Both", 
+    model: "Split Between Hoodies & Crewnecks", 
+    desc: "Get both styles in your pack (e.g. 6 Hoodies + 6 Crewnecks)!" 
+  },
 ];
 
 function HoodieDealPage() {
@@ -55,6 +76,7 @@ function HoodieDealPage() {
     phone: "",
     zipCode: "",
     company: "",
+    garmentStyle: "Pullover Hoodies",
     hoodieColor: "Black",
     sizes: "",
     printLocation: "Center Chest",
@@ -100,10 +122,10 @@ function HoodieDealPage() {
         filePaths.push(JSON.stringify({ name: f.name, path: filePath, placement: formData.printLocation, location: "Standard" }));
       }
 
-      const formattedDetails = `Selected Bundle: ${currentQuantity} Hoodies for $${currentPrice} (${currentPerPiece}/each)\nHoodie Color: ${formData.hoodieColor}\nSize Breakdown: ${formData.sizes}\nPrint Location: ${formData.printLocation}\n\nNotes: ${formData.notes}`;
+      const formattedDetails = `Selected Bundle: ${currentQuantity} Pack for $${currentPrice} (${currentPerPiece}/each)\nGarment Style: ${formData.garmentStyle}\nColor: ${formData.hoodieColor}\nSize Breakdown: ${formData.sizes}\nPrint Location: ${formData.printLocation}\n\nNotes: ${formData.notes}`;
 
       await submitQuoteFn({
-        service: `Fall Hoodie Bundle Deal: ${currentQuantity} Pack ($${currentPrice})`,
+        service: `Fall Fleece Deal (${formData.garmentStyle}): ${currentQuantity} Pack ($${currentPrice})`,
         quantity: currentQuantity,
         turnaround: "Standard",
         turnaroundEstimate: "5-7 Business Days",
@@ -118,13 +140,13 @@ function HoodieDealPage() {
       });
       
       setIsSubmitted(true);
-      toast.success("Fall Hoodie Bundle requested successfully!");
+      toast.success("Fall Fleece Bundle requested successfully!");
 
       // Google Analytics lead event
       if (typeof window !== "undefined" && (window as any).gtag) {
         (window as any).gtag("event", "generate_lead", {
           event_category: "engagement",
-          event_label: `hoodie_bundle_${selectedTier}`,
+          event_label: `fleece_bundle_${selectedTier}`,
           value: currentPrice,
         });
       }
@@ -132,7 +154,7 @@ function HoodieDealPage() {
       // Meta Pixel Lead Event
       if (typeof window !== "undefined" && (window as any).fbq) {
         (window as any).fbq("track", "Lead", {
-          content_name: `Fall Hoodie Bundle Deal (${currentQuantity}-Pack)`,
+          content_name: `Fall Fleece Bundle Deal (${currentQuantity}-Pack - ${formData.garmentStyle})`,
           value: currentPrice,
           currency: "USD",
         });
@@ -151,7 +173,7 @@ function HoodieDealPage() {
           <CheckCircle2 className="h-20 w-20 text-emerald-500 mx-auto mb-6" />
           <h1 className="font-display text-4xl md:text-5xl text-ink">You're on the Production Schedule!</h1>
           <p className="mt-4 text-xl text-muted-foreground">
-            We've received your Fall Hoodie Bundle request for <strong>{currentQuantity} custom hoodies (${currentPrice} total)</strong>.
+            We've received your Fall Fleece Bundle request for <strong>{currentQuantity} custom {formData.garmentStyle.toLowerCase()} (${currentPrice} total)</strong>.
           </p>
           <div className="mt-6 p-6 rounded-2xl bg-muted/40 border-2 border-ink max-w-md mx-auto text-left space-y-3">
             <h4 className="font-bold text-ink uppercase text-xs tracking-wider">What happens next:</h4>
@@ -165,7 +187,7 @@ function HoodieDealPage() {
             </div>
             <div className="flex items-start gap-3 text-sm text-foreground/80">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-brand text-ink font-bold flex items-center justify-center text-xs">3</span>
-              <span>We print and ship your custom hoodies directly to your door!</span>
+              <span>We print and ship your custom fleece directly to your door!</span>
             </div>
           </div>
           <Button asChild size="lg" className="mt-8 bg-yellow-brand text-ink font-bold hover:bg-yellow-brand/90 border-2 border-ink shadow-pop">
@@ -189,11 +211,11 @@ function HoodieDealPage() {
               </div>
               
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl leading-[1.08] tracking-tight mb-5 text-ink">
-                Custom Heavyweight Hoodies as Low as <span className="text-amber-600 underline decoration-yellow-brand decoration-wavy">$20.79 Each</span>.
+                Custom Hoodies or Crewneck Sweatshirts as Low as <span className="text-amber-600 underline decoration-yellow-brand decoration-wavy">$20.79 Each</span>.
               </h1>
               
               <p className="text-lg text-foreground/85 mb-8 leading-relaxed">
-                Gear up your sports team, gym, booster club, or crew for the chill. Premium <strong>Gildan 18500 8.0 oz fleece</strong> hoodies customized with your logo in ultra-vibrant, durable full-color DTF print. Zero screen setup fees, zero color limits, and free nationwide shipping.
+                Your choice: <strong>Gildan 18500 Pullover Hoodies</strong>, <strong>Gildan 18000 Classic Crewnecks</strong>, or <strong>mix & match both</strong> in your pack! Heavyweight 8.0 oz pill-resistant fleece customized with your full-color artwork. Zero screen setup fees, zero color limits, and free shipping.
               </p>
 
               {/* TIER SELECTOR CARDS */}
@@ -210,9 +232,9 @@ function HoodieDealPage() {
                   <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">Starter Pack</div>
                   <div className="flex items-baseline gap-2 mb-2">
                     <span className="font-display text-3xl text-ink">$299</span>
-                    <span className="text-sm font-semibold text-muted-foreground">($24.91 / hoodie)</span>
+                    <span className="text-sm font-semibold text-muted-foreground">($24.91 / item)</span>
                   </div>
-                  <div className="text-sm font-bold text-ink">12 Custom Hoodies</div>
+                  <div className="text-sm font-bold text-ink">12 Hoodies or Crewnecks</div>
                   <div className="text-xs text-muted-foreground mt-1">Perfect for small clubs, personal trainers, & merch drops.</div>
                 </div>
 
@@ -231,9 +253,9 @@ function HoodieDealPage() {
                   <div className="text-xs font-bold uppercase tracking-wider text-amber-600 mb-1">Squad Pack</div>
                   <div className="flex items-baseline gap-2 mb-2">
                     <span className="font-display text-3xl text-ink">$499</span>
-                    <span className="text-sm font-semibold text-muted-foreground">($20.79 / hoodie)</span>
+                    <span className="text-sm font-semibold text-muted-foreground">($20.79 / item)</span>
                   </div>
-                  <div className="text-sm font-bold text-ink">24 Custom Hoodies</div>
+                  <div className="text-sm font-bold text-ink">24 Hoodies or Crewnecks</div>
                   <div className="text-xs text-muted-foreground mt-1">Best value for booster clubs, cheer/gyms & team spirit wear.</div>
                 </div>
               </div>
@@ -261,7 +283,7 @@ function HoodieDealPage() {
               <div className="relative">
                 <img
                   src={activeImage === "hangers" ? hoodieHangers : hoodieStack}
-                  alt="Custom fleece hoodies in black, grey, navy, and forest green"
+                  alt="Custom fleece hoodies and crewnecks in black, grey, navy, and forest green"
                   className="w-full rounded-2xl border-2 border-ink shadow-pop object-cover aspect-square transition-all duration-300"
                 />
                 
@@ -305,9 +327,9 @@ function HoodieDealPage() {
                   <Layers className="w-6 h-6 text-amber-600" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-ink text-lg mb-1">Gildan 18500 Heavyweight Fleece</h3>
+                  <h3 className="font-bold text-ink text-lg mb-1">Hoodies or Crewneck Sweatshirts</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    8.0 oz pill-resistant air-jet spun fleece (50% cotton / 50% polyester) for plush warmth, a double-lined hood with matching drawcord, and a spacious front pouch pocket.
+                    Heavyweight 8.0 oz pill-resistant air-jet fleece (50/50 cotton/poly). Choose cozy hooded pullovers, sleek crewneck sweatshirts, or split your bundle between both.
                   </p>
                 </div>
               </div>
@@ -331,7 +353,7 @@ function HoodieDealPage() {
                 <div>
                   <h3 className="font-bold text-ink text-lg mb-1">100% Mockup Approval Guarantee</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    You never pay blindly. We produce an authentic digital mockup of your custom hoodies within 24 hours and only print once you've given 100% approval.
+                    You never pay blindly. We produce an authentic digital mockup of your custom fleece within 24 hours and only print once you've given 100% approval.
                   </p>
                 </div>
               </div>
@@ -347,7 +369,7 @@ function HoodieDealPage() {
               <div className="inline-block px-3 py-1 rounded-full bg-yellow-brand text-ink font-bold text-xs uppercase tracking-widest mb-3">
                 Step 1 of 2: Reserve Your Batch
               </div>
-              <h2 className="font-display text-4xl text-ink">Claim Your Fall Hoodie Bundle</h2>
+              <h2 className="font-display text-4xl text-ink">Claim Your Fall Fleece Bundle</h2>
               <p className="mt-2 text-muted-foreground">
                 Lock in your <strong>{selectedTier}-Pack Deal (${currentPrice} total)</strong>. Fill out the details below and upload your logo—we'll email your proof within 24 hours.
               </p>
@@ -357,7 +379,7 @@ function HoodieDealPage() {
               
               {/* TIER TOGGLE INSIDE FORM */}
               <div className="mb-8">
-                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-3">Select Your Bundle Size *</label>
+                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-3">1. Select Your Bundle Size *</label>
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     type="button"
@@ -368,7 +390,7 @@ function HoodieDealPage() {
                         : "border-ink/20 text-muted-foreground hover:border-ink/40"
                     }`}
                   >
-                    <div className="text-lg">12 Hoodies</div>
+                    <div className="text-lg">12 Fleece Items</div>
                     <div className="text-amber-600 text-sm">$299 Total ($24.91/ea)</div>
                   </button>
 
@@ -382,11 +404,34 @@ function HoodieDealPage() {
                     }`}
                   >
                     <div className="text-lg flex items-center justify-between">
-                      24 Hoodies
+                      24 Fleece Items
                       <span className="text-[10px] bg-amber-600 text-white px-2 py-0.5 rounded-full font-bold">Best Value</span>
                     </div>
                     <div className="text-amber-600 text-sm">$499 Total ($20.79/ea)</div>
                   </button>
+                </div>
+              </div>
+
+              {/* GARMENT STYLE SELECTION */}
+              <div className="mb-8">
+                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-3">2. Choose Your Garment Style *</label>
+                <div className="grid sm:grid-cols-3 gap-3">
+                  {GARMENT_STYLES.map(style => (
+                    <button
+                      key={style.id}
+                      type="button"
+                      onClick={() => setFormData({...formData, garmentStyle: style.label})}
+                      className={`p-4 rounded-xl border-2 text-left transition-all ${
+                        formData.garmentStyle === style.label
+                          ? "border-amber-600 bg-amber-500/10 text-ink shadow-sm"
+                          : "border-ink/20 bg-background text-foreground/80 hover:border-ink/40"
+                      }`}
+                    >
+                      <div className="font-bold text-sm text-ink mb-1">{style.label}</div>
+                      <div className="text-[11px] font-semibold text-amber-600 mb-1">{style.model}</div>
+                      <div className="text-xs text-muted-foreground">{style.desc}</div>
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -452,9 +497,9 @@ function HoodieDealPage() {
 
               <hr className="border-ink/10 mb-8" />
 
-              {/* HOODIE COLOR SELECTION */}
+              {/* FLEECE COLOR SELECTION */}
               <div className="mb-8">
-                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-3">Hoodie Garment Color *</label>
+                <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-3">Garment Color *</label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {HOODIE_COLORS.map(color => (
                     <button
@@ -487,10 +532,10 @@ function HoodieDealPage() {
                     onChange={e => setFormData({...formData, sizes: e.target.value})} 
                     type="text" 
                     className="w-full p-3 border-2 border-ink rounded-lg bg-background" 
-                    placeholder={selectedTier === "12" ? "e.g. 2S, 4M, 4L, 2XL" : "e.g. 4S, 8M, 8L, 4XL"} 
+                    placeholder={selectedTier === "12" ? "e.g. 2S, 4M, 4L, 2XL (or 6 Hoodies: 3M, 3L + 6 Crews: 3M, 3L)" : "e.g. 4S, 8M, 8L, 4XL"} 
                   />
                   <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
-                    <Info className="w-3 h-3 text-amber-600" /> Must equal exactly <strong>{selectedTier} hoodies</strong> (S–XL included; 2XL+ available upon request).
+                    <Info className="w-3 h-3 text-amber-600" /> Must equal exactly <strong>{selectedTier} items total</strong> (S–XL included; 2XL+ available upon request).
                   </p>
                 </div>
 
@@ -542,7 +587,7 @@ function HoodieDealPage() {
                   value={formData.notes} 
                   onChange={e => setFormData({...formData, notes: e.target.value})} 
                   className="w-full p-3 border-2 border-ink rounded-lg bg-background h-24 resize-none" 
-                  placeholder="e.g., We need these in hand by October 18 for our first home game. Please make the yellow lettering pop!" 
+                  placeholder="e.g., If mixing: 6 Hoodies (Navy) & 6 Crewnecks (Grey). Need in hands by Oct 20." 
                 />
               </div>
 
@@ -561,7 +606,7 @@ function HoodieDealPage() {
                 size="lg" 
                 className="w-full h-16 text-xl shadow-[4px_4px_0px_0px_#1a1a2e] border-2 border-ink hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#1a1a2e] transition-all bg-yellow-brand text-ink hover:bg-yellow-brand/90 font-bold"
               >
-                {isSubmitting ? "Locking in Your Bundle..." : `Claim ${currentQuantity} Hoodies for $${currentPrice} →`}
+                {isSubmitting ? "Locking in Your Bundle..." : `Claim ${currentQuantity} Custom Fleece Items for $${currentPrice} →`}
               </Button>
               <p className="text-center text-xs text-muted-foreground mt-3">
                 Zero commitment today. You will receive a full digital mockup and payment invoice to review before production starts.
@@ -576,12 +621,19 @@ function HoodieDealPage() {
           <div className="mx-auto max-w-4xl px-4">
             <div className="text-center mb-12">
               <h2 className="font-display text-3xl md:text-4xl text-ink">Frequently Asked Questions</h2>
-              <p className="text-muted-foreground mt-2">Everything you need to know about our Fall Hoodie Bundle.</p>
+              <p className="text-muted-foreground mt-2">Everything you need to know about our Fall Fleece Bundle.</p>
             </div>
 
             <div className="space-y-4">
               <div className="p-6 rounded-2xl border-2 border-ink bg-card">
-                <h4 className="font-bold text-ink text-base mb-2">Can I mix and match hoodie sizes?</h4>
+                <h4 className="font-bold text-ink text-base mb-2">Can I choose crewneck sweatshirts instead of hoodies?</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Yes! The deal applies equally to <strong>Gildan 18500 Pullover Hoodies</strong> and <strong>Gildan 18000 Crewneck Sweatshirts</strong>. You can choose all hoodies, all crewnecks, or even split your order (e.g., 6 hoodies and 6 crewnecks) for the exact same $299 price!
+                </p>
+              </div>
+
+              <div className="p-6 rounded-2xl border-2 border-ink bg-card">
+                <h4 className="font-bold text-ink text-base mb-2">Can I mix and match sizes?</h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   Yes, absolutely! You can choose any combination of adult sizes (Small through XL) to reach your 12 or 24 total count. Extended sizes (2XL, 3XL, 4XL) are available for a small +$3/garment surcharge.
                 </p>
@@ -604,7 +656,7 @@ function HoodieDealPage() {
               <div className="p-6 rounded-2xl border-2 border-ink bg-card">
                 <h4 className="font-bold text-ink text-base mb-2">Can I do both Front and Back prints?</h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Your bundle price includes one full-color print location (Front Chest or Full Back). If you would like a dual print (e.g., small left chest logo + huge back graphic), we can add it for just $5 per hoodie on your invoice.
+                  Your bundle price includes one full-color print location (Front Chest or Full Back). If you would like a dual print (e.g., small left chest logo + huge back graphic), we can add it for just $5 per hoodie/crewneck on your invoice.
                 </p>
               </div>
             </div>
