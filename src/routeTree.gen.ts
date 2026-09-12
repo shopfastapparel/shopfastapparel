@@ -35,6 +35,7 @@ import { Route as ServicesCustomTshirtsRouteImport } from './routes/services.cus
 import { Route as ProductHandleRouteImport } from './routes/product.$handle'
 import { Route as MockupIdRouteImport } from './routes/mockup.$id'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
+import { Route as LandingHoodieDealRouteImport } from './routes/landing.hoodie-deal'
 import { Route as LandingCustomShirtsRouteImport } from './routes/landing.custom-shirts'
 import { Route as LandingBundleDealRouteImport } from './routes/landing.bundle-deal'
 import { Route as LandingBulkPrintingRouteImport } from './routes/landing.bulk-printing'
@@ -186,6 +187,11 @@ const LocationsSlugRoute = LocationsSlugRouteImport.update({
   path: '/locations/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LandingHoodieDealRoute = LandingHoodieDealRouteImport.update({
+  id: '/landing/hoodie-deal',
+  path: '/landing/hoodie-deal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LandingCustomShirtsRoute = LandingCustomShirtsRouteImport.update({
   id: '/landing/custom-shirts',
   path: '/landing/custom-shirts',
@@ -316,6 +322,7 @@ export interface FileRoutesByFullPath {
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
+  '/landing/hoodie-deal': typeof LandingHoodieDealRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/mockup/$id': typeof MockupIdRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -363,6 +370,7 @@ export interface FileRoutesByTo {
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
+  '/landing/hoodie-deal': typeof LandingHoodieDealRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/mockup/$id': typeof MockupIdRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -411,6 +419,7 @@ export interface FileRoutesById {
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
   '/landing/bundle-deal': typeof LandingBundleDealRoute
   '/landing/custom-shirts': typeof LandingCustomShirtsRoute
+  '/landing/hoodie-deal': typeof LandingHoodieDealRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/mockup/$id': typeof MockupIdRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -460,6 +469,7 @@ export interface FileRouteTypes {
     | '/landing/bulk-printing'
     | '/landing/bundle-deal'
     | '/landing/custom-shirts'
+    | '/landing/hoodie-deal'
     | '/locations/$slug'
     | '/mockup/$id'
     | '/product/$handle'
@@ -507,6 +517,7 @@ export interface FileRouteTypes {
     | '/landing/bulk-printing'
     | '/landing/bundle-deal'
     | '/landing/custom-shirts'
+    | '/landing/hoodie-deal'
     | '/locations/$slug'
     | '/mockup/$id'
     | '/product/$handle'
@@ -554,6 +565,7 @@ export interface FileRouteTypes {
     | '/landing/bulk-printing'
     | '/landing/bundle-deal'
     | '/landing/custom-shirts'
+    | '/landing/hoodie-deal'
     | '/locations/$slug'
     | '/mockup/$id'
     | '/product/$handle'
@@ -602,6 +614,7 @@ export interface RootRouteChildren {
   LandingBulkPrintingRoute: typeof LandingBulkPrintingRoute
   LandingBundleDealRoute: typeof LandingBundleDealRoute
   LandingCustomShirtsRoute: typeof LandingCustomShirtsRoute
+  LandingHoodieDealRoute: typeof LandingHoodieDealRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   MockupIdRoute: typeof MockupIdRoute
   ProductHandleRoute: typeof ProductHandleRoute
@@ -802,6 +815,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocationsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/landing/hoodie-deal': {
+      id: '/landing/hoodie-deal'
+      path: '/landing/hoodie-deal'
+      fullPath: '/landing/hoodie-deal'
+      preLoaderRoute: typeof LandingHoodieDealRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/landing/custom-shirts': {
       id: '/landing/custom-shirts'
       path: '/landing/custom-shirts'
@@ -970,6 +990,7 @@ const rootRouteChildren: RootRouteChildren = {
   LandingBulkPrintingRoute: LandingBulkPrintingRoute,
   LandingBundleDealRoute: LandingBundleDealRoute,
   LandingCustomShirtsRoute: LandingCustomShirtsRoute,
+  LandingHoodieDealRoute: LandingHoodieDealRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   MockupIdRoute: MockupIdRoute,
   ProductHandleRoute: ProductHandleRoute,
