@@ -17,6 +17,21 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "custom-youth-soccer-jerseys-shirts-atlanta-2026",
+    title: "Custom T-Shirts, Warmups & Team Merch for Metro Atlanta Youth Soccer Clubs (2026 Guide)",
+    description: "Custom moisture-wicking soccer tees, coach polos, and parent sideline hoodies for Metro Atlanta youth soccer clubs. Durable DTF printing, zero setup fees.",
+    category: "Team & Bulk",
+    city: "Atlanta",
+    read_minutes: 5,
+    author: "Fast Apparel Team",
+    cover_gradient: "from-emerald-600 to-slate-950",
+    cover_emoji: "⚽",
+    keywords: ["custom soccer shirts atlanta", "youth soccer team jerseys georgia", "soccer tournament t-shirts gwinnett", "dtf moisture wicking shirts atlanta", "soccer club spirit wear lawrenceville"],
+    cover_image_url: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1200&auto=format&fit=crop&q=80",
+    cover_image_credit: "Photo via Unsplash",
+    body: "# Your Full Rich Markdown Content Here",
+  },
+  {
     slug: "custom-cheer-gymnastics-apparel-spirit-wear-atlanta-2026",
     title: "Custom T-Shirts, Hoodies & Team Merch for Metro Atlanta Cheer & Gymnastics Gyms (2026 Guide)",
     description: "Custom practice tees, competition warmup hoodies, and parent booster spirit wear for Metro Atlanta cheer and gymnastics teams. Flexible DTF printing, zero setup fees.",
