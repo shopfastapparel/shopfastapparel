@@ -9,11 +9,33 @@ interface PricingCalculatorProps {
   baseCost: number;
   productId: string;
   allowProductSelect?: boolean;
+  quantity?: number;
+  onQuantityChange?: (qty: number) => void;
+  sizeBreakdown?: string;
+  selectedColor?: string;
 }
 
-export function PricingCalculator({ baseCost: initialBaseCost, productId: initialProductId, allowProductSelect }: PricingCalculatorProps) {
+export function PricingCalculator({
+  baseCost: initialBaseCost,
+  productId: initialProductId,
+  allowProductSelect,
+  quantity: externalQuantity,
+  onQuantityChange,
+  sizeBreakdown,
+  selectedColor,
+}: PricingCalculatorProps) {
   const [selectedProductId, setSelectedProductId] = useState(initialProductId);
-  const [quantity, setQuantity] = useState<number>(50);
+  const [internalQuantity, setInternalQuantity] = useState<number>(50);
+  const quantity = externalQuantity !== undefined ? externalQuantity : internalQuantity;
+
+  const setQuantity = (val: number) => {
+    if (onQuantityChange) {
+      onQuantityChange(val);
+    } else {
+      setInternalQuantity(val);
+    }
+  };
+
   const [locations, setLocations] = useState<1 | 2>(1);
   const [liveBaseCost, setLiveBaseCost] = useState<number | null>(null);
   const [loadingPrice, setLoadingPrice] = useState(false);
@@ -199,7 +221,9 @@ export function PricingCalculator({ baseCost: initialBaseCost, productId: initia
               service: "custom-tshirts", 
               productId: currentProduct.id,
               quantity: getQuantityBucket(quantity),
-              printLocations: locations
+              printLocations: locations,
+              sizes: sizeBreakdown || undefined,
+              color: selectedColor || undefined,
             }}
           >
             Get a Free Mockup & Quote

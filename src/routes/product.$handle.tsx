@@ -5,7 +5,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { PricingCalculator } from "@/components/PricingCalculator";
 import { APPAREL_STYLES } from "@/lib/apparel";
-import { CheckCircle2, ChevronRight, Shield } from "lucide-react";
+import { CheckCircle2, ChevronRight, Shield, Plus, Minus } from "lucide-react";
 
 export const Route = createFileRoute("/product/$handle")({
   component: ProductPage,
@@ -46,6 +46,51 @@ function ProductPage() {
     // 50% Profit Margin formula: (Base Cost + $1 Shipping + $2 Print) * 2
     return ((lowestBasePrice + 1.00 + 2.00) * 2).toFixed(2);
   }, [lowestBasePrice]);
+
+  // Interactive Size Breakdown State
+  const [selectedSizes, setSelectedSizes] = useState<Record<string, number>>({});
+
+  const totalSizesSelected = useMemo(() => {
+    return Object.values(selectedSizes).reduce((sum, n) => sum + (Number(n) || 0), 0);
+  }, [selectedSizes]);
+
+  const updateSize = (sizeName: string, delta: number) => {
+    setSelectedSizes(prev => {
+      const current = prev[sizeName] || 0;
+      const next = Math.max(0, current + delta);
+      return { ...prev, [sizeName]: next };
+    });
+  };
+
+  const handleDirectSizeChange = (sizeName: string, val: number) => {
+    setSelectedSizes(prev => ({
+      ...prev,
+      [sizeName]: Math.max(0, isNaN(val) ? 0 : val)
+    }));
+  };
+
+  const handleApplyPreset = (preset: "12" | "24" | "50" | "100") => {
+    if (preset === "12") {
+      setSelectedSizes({ S: 2, M: 4, L: 4, XL: 2 });
+    } else if (preset === "24") {
+      setSelectedSizes({ S: 4, M: 8, L: 8, XL: 4 });
+    } else if (preset === "50") {
+      setSelectedSizes({ S: 8, M: 16, L: 16, XL: 8, "2XL": 2 });
+    } else if (preset === "100") {
+      setSelectedSizes({ S: 15, M: 35, L: 35, XL: 12, "2XL": 3 });
+    }
+  };
+
+  const handleResetSizes = () => {
+    setSelectedSizes({});
+  };
+
+  const formattedSizesParam = useMemo(() => {
+    const items = Object.entries(selectedSizes)
+      .filter(([_, qty]) => qty > 0)
+      .map(([sz, qty]) => `${sz}:${qty}`);
+    return items.join(",");
+  }, [selectedSizes]);
 
   if (!product) {
     return (
@@ -189,38 +234,138 @@ function ProductPage() {
                       </div>
                     </div>
 
-                    {/* Size & Quantity Grid for Selected Color */}
+                    {/* Size & Quantity Grid with Interactive Steppers for Selected Color */}
                     {selectedColor && (
-                      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
-                        {inventory
-                          .filter(i => i.colorName === selectedColor)
-                          // Basic sort so S comes before M etc if possible (or just alphabetic fallback)
-                          .sort((a, b) => {
-                             const order = { "XS": 1, "S": 2, "M": 3, "L": 4, "XL": 5, "2XL": 6, "3XL": 7, "4XL": 8 };
-                             const aVal = order[a.sizeName as keyof typeof order] || 99;
-                             const bVal = order[b.sizeName as keyof typeof order] || 99;
-                             return aVal - bVal || a.sizeName.localeCompare(b.sizeName);
-                          })
-                          .map((item, idx) => {
-                            const isOutOfStock = item.qty === 0;
-                            const isLowStock = item.qty > 0 && item.qty < 50;
-                            return (
-                              <div 
-                                key={idx} 
-                                className={`flex flex-col items-center justify-center p-2 rounded-lg border text-center ${
-                                  isOutOfStock ? 'opacity-50 bg-muted/50 border-dashed' : 'bg-card shadow-sm'
-                                }`}
+                      <div className="pt-2">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                          <div>
+                            <span className="text-xs font-bold uppercase tracking-wider text-ink block">
+                              Select Sizes for Quote:
+                            </span>
+                            <span className="text-[11px] text-muted-foreground">
+                              Tap + / - or type quantities to build your order with live stock
+                            </span>
+                          </div>
+
+                          {/* Quick Fill Preset Buttons */}
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase">Presets:</span>
+                            <button
+                              type="button"
+                              onClick={() => handleApplyPreset("12")}
+                              className="text-[11px] font-bold px-2 py-0.5 rounded bg-yellow-brand/20 hover:bg-yellow-brand text-ink border border-yellow-brand/40 transition-colors"
+                            >
+                              12-Pack
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleApplyPreset("24")}
+                              className="text-[11px] font-bold px-2 py-0.5 rounded bg-yellow-brand/20 hover:bg-yellow-brand text-ink border border-yellow-brand/40 transition-colors"
+                            >
+                              24-Pack
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleApplyPreset("50")}
+                              className="text-[11px] font-bold px-2 py-0.5 rounded bg-yellow-brand/20 hover:bg-yellow-brand text-ink border border-yellow-brand/40 transition-colors"
+                            >
+                              50-Pack
+                            </button>
+                            {totalSizesSelected > 0 && (
+                              <button
+                                type="button"
+                                onClick={handleResetSizes}
+                                className="text-[11px] text-muted-foreground hover:text-ink underline px-1"
                               >
-                                <span className="font-bold text-sm">{item.sizeName}</span>
-                                <span className={`text-xs font-medium mt-0.5 ${
-                                  isOutOfStock ? 'text-muted-foreground' : 
-                                  isLowStock ? 'text-orange-500' : 'text-green-600'
-                                }`}>
-                                  {isOutOfStock ? '0' : item.qty}
-                                </span>
-                              </div>
-                            );
-                          })}
+                                Reset
+                              </button>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Live Total Badge if sizes are chosen */}
+                        {totalSizesSelected > 0 && (
+                          <div className="mb-3 p-2.5 rounded-lg bg-yellow-brand/20 border border-yellow-brand flex items-center justify-between">
+                            <span className="text-xs font-bold text-ink flex items-center gap-1.5">
+                              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                              Allocated: <strong className="text-magenta-brand text-sm">{totalSizesSelected} shirts</strong>
+                            </span>
+                            <span className="text-[11px] font-medium text-ink/80">
+                              Synced to calculator below ↓
+                            </span>
+                          </div>
+                        )}
+
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5">
+                          {inventory
+                            .filter(i => i.colorName === selectedColor)
+                            .sort((a, b) => {
+                               const order = { "XS": 1, "S": 2, "M": 3, "L": 4, "XL": 5, "2XL": 6, "3XL": 7, "4XL": 8 };
+                               const aVal = order[a.sizeName as keyof typeof order] || 99;
+                               const bVal = order[b.sizeName as keyof typeof order] || 99;
+                               return aVal - bVal || a.sizeName.localeCompare(b.sizeName);
+                            })
+                            .map((item, idx) => {
+                              const isOutOfStock = item.qty === 0;
+                              const isLowStock = item.qty > 0 && item.qty < 50;
+                              const selectedQty = selectedSizes[item.sizeName] || 0;
+                              return (
+                                <div 
+                                  key={idx} 
+                                  className={`flex flex-col justify-between p-2.5 rounded-xl border-2 transition-all ${
+                                    isOutOfStock 
+                                      ? 'opacity-40 bg-muted/40 border-dashed border-border' 
+                                      : selectedQty > 0
+                                        ? 'border-magenta-brand bg-background shadow-sm'
+                                        : 'bg-card border-border hover:border-ink/40'
+                                  }`}
+                                >
+                                  <div className="flex items-center justify-between mb-1.5">
+                                    <span className="font-bold text-sm text-ink">{item.sizeName}</span>
+                                    <span className={`text-[10px] font-semibold px-1.5 py-0.2 rounded ${
+                                      isOutOfStock ? 'text-muted-foreground bg-muted' : 
+                                      isLowStock ? 'text-orange-700 bg-orange-50' : 'text-emerald-700 bg-emerald-50'
+                                    }`}>
+                                      {isOutOfStock ? 'Out of stock' : `${item.qty} in stock`}
+                                    </span>
+                                  </div>
+
+                                  {/* Stepper Controls */}
+                                  <div className="flex items-center justify-center gap-1 mt-1 bg-muted/40 p-1 rounded-lg border border-border">
+                                    <button
+                                      type="button"
+                                      onClick={() => updateSize(item.sizeName, -1)}
+                                      disabled={selectedQty === 0}
+                                      className="w-6 h-6 rounded bg-background hover:bg-ink hover:text-white border border-border flex items-center justify-center disabled:opacity-30 disabled:hover:bg-background disabled:hover:text-inherit transition-colors"
+                                      aria-label={`Decrease ${item.sizeName}`}
+                                    >
+                                      <Minus className="w-3 h-3" />
+                                    </button>
+                                    <input
+                                      type="number"
+                                      min="0"
+                                      max={item.qty > 0 ? item.qty : 0}
+                                      value={selectedQty === 0 ? "" : selectedQty}
+                                      placeholder="0"
+                                      disabled={isOutOfStock}
+                                      onChange={(e) => handleDirectSizeChange(item.sizeName, parseInt(e.target.value) || 0)}
+                                      className="w-9 text-center font-bold text-sm bg-transparent border-b border-ink/30 focus:border-magenta-brand focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none disabled:cursor-not-allowed"
+                                      aria-label={`Quantity for ${item.sizeName}`}
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => updateSize(item.sizeName, 1)}
+                                      disabled={isOutOfStock}
+                                      className="w-6 h-6 rounded bg-background hover:bg-ink hover:text-white border border-border flex items-center justify-center disabled:opacity-30 disabled:hover:bg-background disabled:hover:text-inherit transition-colors"
+                                      aria-label={`Increase ${item.sizeName}`}
+                                    >
+                                      <Plus className="w-3 h-3" />
+                                    </button>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -235,7 +380,19 @@ function ProductPage() {
             {/* Pricing Calculator */}
             {lowestBasePrice !== null && (
               <div className="pt-8">
-                <PricingCalculator baseCost={lowestBasePrice} productId={product.id} />
+                <PricingCalculator 
+                  baseCost={lowestBasePrice} 
+                  productId={product.id}
+                  quantity={totalSizesSelected > 0 ? totalSizesSelected : undefined}
+                  onQuantityChange={(newQty) => {
+                    // If user manually adjusts calculator quantity directly, clear explicit breakdown or maintain
+                    if (totalSizesSelected > 0 && newQty !== totalSizesSelected) {
+                      setSelectedSizes({});
+                    }
+                  }}
+                  sizeBreakdown={formattedSizesParam}
+                  selectedColor={selectedColor || undefined}
+                />
               </div>
             )}
           </div>

@@ -41,6 +41,8 @@ type QuoteSearch = {
   productId?: string;
   quantity?: QuantityKey;
   printLocations?: number;
+  sizes?: string;
+  color?: string;
 };
 
 export const Route = createFileRoute("/quote")({
@@ -49,6 +51,8 @@ export const Route = createFileRoute("/quote")({
     productId: search.productId as string | undefined,
     quantity: search.quantity as QuantityKey | undefined,
     printLocations: search.printLocations ? Number(search.printLocations) : undefined,
+    sizes: search.sizes as string | undefined,
+    color: search.color as string | undefined,
   }),
   head: () => ({
     meta: [
@@ -218,9 +222,24 @@ function QuotePage() {
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const submitQuoteFn = useServerFn(submitQuoteRequest);
   
-  const defaultDetails = searchParams.printLocations 
-    ? `Required Print Locations: ${searchParams.printLocations}\n\n`
-    : "";
+  const initialSizes = useMemo<Record<SizeKey, number>>(() => {
+    const base: Record<SizeKey, number> = { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0 };
+    if (!searchParams.sizes) return base;
+    // format like "S:4,M:8,L:8,XL:4"
+    const pairs = searchParams.sizes.split(",");
+    for (const p of pairs) {
+      const [sz, count] = p.split(":");
+      if (sz && count && sz in base) {
+        base[sz as SizeKey] = Math.max(0, parseInt(count) || 0);
+      }
+    }
+    return base;
+  }, [searchParams.sizes]);
+
+  let initialDetails = defaultDetails;
+  if (searchParams.color) {
+    initialDetails = `Preferred Garment Color: ${searchParams.color}\n\n` + initialDetails;
+  }
 
   const [state, setState] = useState<QuoteState>({
     service: searchParams.service || "",
@@ -229,7 +248,7 @@ function QuotePage() {
     deadline: "",
     city: "",
     zipCode: "",
-    details: defaultDetails,
+    details: initialDetails,
     frontFiles: [],
     frontPlacement: "Full Front Center",
     backFiles: [],
@@ -243,14 +262,7 @@ function QuotePage() {
   });
 
   // Interactive Size Breakdown State
-  const [sizes, setSizes] = useState<Record<SizeKey, number>>({
-    S: 0,
-    M: 0,
-    L: 0,
-    XL: 0,
-    "2XL": 0,
-    "3XL": 0,
-  });
+  const [sizes, setSizes] = useState<Record<SizeKey, number>>(initialSizes);
 
   const totalSizesSelected = useMemo(() => {
     return Object.values(sizes).reduce((sum, n) => sum + (Number(n) || 0), 0);
