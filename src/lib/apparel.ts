@@ -56,6 +56,27 @@ export const APPAREL_STYLES: ApparelStyle[] = [
     baseCost: 3.37
   },
   {
+    id: "gildan-5000b",
+    name: "Gildan Youth Heavy Cotton T-Shirt",
+    brand: "Gildan",
+    model: "5000B",
+    image: "/images/apparel/gildan-5000b.jpg",
+    fabricComposition: "100% U.S. cotton (Heathers/Neons 50/50, Sport Grey 90/10, Ash Grey 99/1)",
+    fabricWeight: "5.3 oz/yd²",
+    features: [
+      "Classic youth fit",
+      "Tear-away label",
+      "Taped neck and shoulders",
+      "Heavyweight durable cotton",
+      "CPSIA Tracking Label Compliant",
+      "Seamless 3/4\" rib collar"
+    ],
+    description: "The youth edition of the iconic Gildan 5000 heavy cotton tee. Delivering the same rugged durability and broad 50+ color matching range as the adult version, CPSIA compliant, and ideal for school spirit wear, sports leagues, and youth events.",
+    badge: "Best Seller",
+    ssStyleId: 543,
+    baseCost: 2.58
+  },
+  {
     id: "gildan-64000",
     name: "Gildan Softstyle T-Shirt",
     brand: "Gildan",
