@@ -8,6 +8,8 @@ export interface LocationInfo {
   neighborhoods: string[];
   highlights?: string[];
   features?: string[];
+  bannerImage?: string;
+  bannerCaption?: string;
 }
 
 export const LOCATIONS: LocationInfo[] = [
@@ -17,6 +19,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "Gwinnett County",
     zipPrefix: "300",
+    bannerImage: "/images/locations/lawrenceville.webp",
+    bannerCaption: "Historic Gwinnett County Courthouse — Downtown Lawrenceville Square",
     blurb:
       "Our home base. Lawrenceville's premier custom t-shirt printer — full-color DTF and promotional products with local delivery options for Gwinnett County.",
     neighborhoods: ["Downtown Lawrenceville", "Sugarloaf", "Collins Hill", "Five Forks", "Grayson"],
@@ -32,6 +36,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "Metro Atlanta",
     zipPrefix: "303",
+    bannerImage: "/images/locations/atlanta.webp",
+    bannerCaption: "Downtown Atlanta Skyline from Jackson Street Bridge",
     blurb:
       "Atlanta's go-to custom DTF t-shirt printer. Full-color, photo-quality prints with the fastest turnaround in the city.",
     neighborhoods: ["Midtown", "Buckhead", "West Midtown", "Old Fourth Ward", "Inman Park"],
@@ -47,6 +53,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "Cobb County",
     zipPrefix: "300",
+    bannerImage: "/images/locations/marietta.webp",
+    bannerCaption: "Historic Marietta Square & Glover Park Fountain",
     blurb:
       "Custom apparel printing for Marietta and Cobb County. Bulk team uniforms, business merch, and event shirts done fast.",
     neighborhoods: ["East Cobb", "West Cobb", "Kennesaw", "Smyrna", "Powder Springs"],
@@ -62,6 +70,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "North Fulton",
     zipPrefix: "300",
+    bannerImage: "/images/locations/alpharetta.webp",
+    bannerCaption: "Alpharetta City Center & Town Green",
     blurb:
       "Alpharetta's premium custom shirt printer. Full-color DTF and bulk orders for North Fulton businesses.",
     neighborhoods: ["Avalon", "Downtown Alpharetta", "Halcyon", "Crabapple", "Windward"],
@@ -77,6 +87,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "North Metro Atlanta",
     zipPrefix: "303",
+    bannerImage: "/images/locations/sandy-springs.webp",
+    bannerCaption: "Iconic Concourse King & Queen Towers — Sandy Springs",
     blurb:
       "Sandy Springs custom printing — fast, professional apparel for offices, gyms, and community events along GA-400.",
     neighborhoods: ["Perimeter", "City Springs", "Dunwoody border", "Roswell Road corridor"],
@@ -92,6 +104,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "DeKalb County",
     zipPrefix: "300",
+    bannerImage: "/images/locations/decatur.webp",
+    bannerCaption: "Historic DeKalb County Courthouse — Decatur Square",
     blurb:
       "Decatur's local custom apparel shop. Small-batch DTF and event tees — low minimums.",
     neighborhoods: ["Oakhurst", "Kirkwood", "Avondale Estates", "Druid Hills", "Emory area"],
@@ -107,6 +121,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "North Fulton",
     zipPrefix: "300",
+    bannerImage: "/images/locations/roswell.webp",
+    bannerCaption: "Historic Roswell Mill Covered Bridge at Vickery Creek",
     blurb:
       "Roswell custom t-shirt and merch printing. Premium DTF quality with fast turnaround for Roswell schools, teams, and businesses.",
     neighborhoods: ["Historic Roswell", "East Roswell", "Crabapple", "Martin's Landing"],
@@ -122,6 +138,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "Gwinnett County",
     zipPrefix: "300",
+    bannerImage: "/images/locations/dacula.webp",
+    bannerCaption: "Historic 2nd Avenue District — Downtown Dacula",
     blurb:
       "Dacula's local choice for custom t-shirts, hoodies, and team uniforms. Vibrant full-color DTF printing, school spirit wear, and business apparel with fast local delivery across Gwinnett.",
     neighborhoods: ["Downtown Dacula", "Hamilton Mill", "Harbins", "Apalachee", "Alcovy"],
@@ -137,6 +155,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "North Fulton",
     zipPrefix: "300",
+    bannerImage: "/images/locations/johns-creek.webp",
+    bannerCaption: "Johns Creek Municipal Center & Heritage District",
     blurb:
       "Premium custom t-shirts and corporate apparel in Johns Creek. Professional DTF printing for medical practices, tech offices, private academies, and community events.",
     neighborhoods: ["Technology Park Johns Creek", "Medlock Bridge", "Abbotts Bridge", "Country Club of the South", "Ocee"],
@@ -152,6 +172,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "Gwinnett County",
     zipPrefix: "300",
+    bannerImage: "/images/locations/norcross.webp",
+    bannerCaption: "Historic Norcross Train Depot & Downtown District",
     blurb:
       "Custom apparel and merchandise printing for Historic Norcross and Peachtree Corners. Durable workwear, restaurant tees, and event shirts made locally.",
     neighborhoods: ["Historic Downtown Norcross", "Peachtree Corners border", "Jimmy Carter Blvd", "Holcomb Bridge corridor", "Beaver Ruin"],
@@ -167,6 +189,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "DeKalb County",
     zipPrefix: "303",
+    bannerImage: "/images/locations/brookhaven.webp",
+    bannerCaption: "Historic Oglethorpe University — Brookhaven Landmark",
     blurb:
       "Brookhaven custom t-shirt printing and event apparel. Soft-style tees, boutique fitness merch, and neighborhood festival gear delivered fast.",
     neighborhoods: ["Town Brookhaven", "Ashford Park", "Oglethorpe", "Dresden Drive", "Lynwood Park"],
@@ -182,6 +206,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "DeKalb & Gwinnett",
     zipPrefix: "300",
+    bannerImage: "/images/locations/tucker.webp",
+    bannerCaption: "Historic Tucker Train Depot & Main Street",
     blurb:
       "Tucker's local source for custom printed tees, hoodies, and work uniforms. Vibrant full-color DTF prints for Main Street businesses, breweries, and sports clubs.",
     neighborhoods: ["Main Street Tucker", "Smoke Rise", "Midvale", "Northlake area", "Idlewood"],
@@ -197,6 +223,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "Barrow & Gwinnett County",
     zipPrefix: "300",
+    bannerImage: "/images/locations/auburn.webp",
+    bannerCaption: "Historic Downtown Auburn & Depot District",
     blurb:
       "Custom t-shirt printing for Auburn, Carl, and surrounding Barrow and Gwinnett communities. Reliable team shirts, family reunion tees, and small business apparel.",
     neighborhoods: ["Downtown Auburn", "County Line", "Carl border", "Parks Mill", "Whistleville Park area"],
@@ -212,6 +240,8 @@ export const LOCATIONS: LocationInfo[] = [
     state: "GA",
     region: "South Gwinnett",
     zipPrefix: "300",
+    bannerImage: "/images/locations/snellville.webp",
+    bannerCaption: "Snellville Town Center & City Hall",
     blurb:
       "Snellville custom apparel and t-shirt printing. Premium shirts for South Gwinnett schools, churches, youth sports, and healthcare practices.",
     neighborhoods: ["The Grove at Snellville", "Scenic Highway corridor", "Centerville", "Brookwood area", "North Road"],

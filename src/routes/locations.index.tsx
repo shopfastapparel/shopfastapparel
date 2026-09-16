@@ -37,25 +37,46 @@ function LocationsIndex() {
           </p>
         </div>
       </section>
-      <section className="mx-auto max-w-7xl px-4 py-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <section className="mx-auto max-w-7xl px-4 py-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {LOCATIONS.map((l) => (
           <Link
             key={l.slug}
             to="/locations/$slug"
             params={{ slug: l.slug }}
-            className="group bg-card border-2 border-ink rounded-xl p-6 hover:shadow-pop transition-all"
+            className="group bg-card border-2 border-ink rounded-xl overflow-hidden hover:shadow-pop transition-all flex flex-col"
           >
-            <MapPin className="h-6 w-6 text-magenta-brand" />
-            <h2 className="mt-4 font-display text-2xl">
-              {l.city}, {l.state}
-            </h2>
-            <p className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
-              {l.region}
-            </p>
-            <p className="mt-3 text-sm text-foreground/80 line-clamp-3">{l.blurb}</p>
-            <span className="mt-4 inline-block text-sm font-semibold text-magenta-brand">
-              Learn more →
-            </span>
+            {l.bannerImage ? (
+              <div className="relative h-44 w-full overflow-hidden border-b-2 border-ink bg-muted">
+                <img
+                  src={l.bannerImage}
+                  alt={l.bannerCaption || `${l.city} landmark`}
+                  className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" />
+                <span className="absolute bottom-2.5 left-3 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-white drop-shadow">
+                  <MapPin className="h-3 w-3 text-magenta-brand" /> {l.city} Landmark
+                </span>
+              </div>
+            ) : (
+              <div className="p-6 pb-0">
+                <MapPin className="h-6 w-6 text-magenta-brand" />
+              </div>
+            )}
+            <div className="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h2 className="font-display text-2xl group-hover:text-magenta-brand transition-colors">
+                  {l.city}, {l.state}
+                </h2>
+                <p className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
+                  {l.region}
+                </p>
+                <p className="mt-3 text-sm text-foreground/80 line-clamp-2">{l.blurb}</p>
+              </div>
+              <span className="mt-5 inline-flex items-center gap-1 text-sm font-bold text-magenta-brand group-hover:translate-x-1 transition-transform">
+                Explore {l.city} Custom Apparel →
+              </span>
+            </div>
           </Link>
         ))}
       </section>

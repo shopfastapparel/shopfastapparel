@@ -21,6 +21,14 @@ export const Route = createFileRoute("/locations/$slug")({
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
+        ...(loc.bannerImage
+          ? [
+              {
+                property: "og:image",
+                content: `https://shopfastapparel.com${loc.bannerImage}`,
+              },
+            ]
+          : []),
       ],
       scripts: [
         {
@@ -96,6 +104,43 @@ function LocationPage() {
           </div>
         </div>
       </section>
+
+      {/* RECOGNIZABLE CITY LANDMARK BANNER */}
+      {loc.bannerImage && (
+        <section className="border-b bg-card/50">
+          <div className="mx-auto max-w-7xl px-4 py-8 sm:py-10">
+            <div className="group relative overflow-hidden rounded-2xl border-2 border-ink bg-muted shadow-pop">
+              <div className="relative aspect-[16/9] sm:aspect-[21/9] md:aspect-[24/9] min-h-[220px] max-h-[420px] w-full overflow-hidden">
+                <img
+                  src={loc.bannerImage}
+                  alt={loc.bannerCaption || `${loc.city} landmark`}
+                  className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                  loading="eager"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/35 to-transparent pointer-events-none" />
+
+                <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-3 pointer-events-none">
+                  <div className="space-y-1.5 max-w-xl">
+                    <span className="inline-flex items-center gap-1.5 rounded-md bg-white/95 px-2.5 py-1 text-xs font-black uppercase tracking-wider text-ink shadow-sm backdrop-blur-sm">
+                      <MapPin className="h-3.5 w-3.5 text-magenta-brand" /> {loc.city} Landmark
+                    </span>
+                    {loc.bannerCaption && (
+                      <p className="text-sm sm:text-base md:text-lg font-bold text-white drop-shadow-md leading-snug">
+                        {loc.bannerCaption}
+                      </p>
+                    )}
+                  </div>
+                  <div className="hidden sm:block text-right">
+                    <span className="inline-block rounded-md bg-ink/75 border border-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
+                      Local Custom Apparel in {loc.city}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="mx-auto max-w-7xl px-4 py-16 grid lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2 space-y-10">
