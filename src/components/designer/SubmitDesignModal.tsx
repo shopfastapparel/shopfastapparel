@@ -4,6 +4,7 @@ import { GarmentColor } from "./designerTypes";
 import { Button } from "@/components/ui/button";
 import { Check, Loader2, Sparkles, X, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { notifyStudioSubmission } from "@/lib/quote.functions";
 
 interface SubmitDesignModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface SubmitDesignModalProps {
   quantity: number;
   frontProofUrl: string | null;
   backProofUrl: string | null;
+  rawUploadFiles?: File[];
 }
 
 export function SubmitDesignModal({
@@ -23,6 +25,7 @@ export function SubmitDesignModal({
   quantity,
   frontProofUrl,
   backProofUrl,
+  rawUploadFiles,
 }: SubmitDesignModalProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -71,6 +74,39 @@ export function SubmitDesignModal({
 
     try {
       const fileNames: string[] = [];
+      const rawFileLinks: { name: string; url: string }[] = [];
+
+      // Upload Original Raw Source Files if available
+      if (rawUploadFiles && rawUploadFiles.length > 0) {
+        for (const rawFile of rawUploadFiles) {
+          try {
+            const cleanName = rawFile.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+            const rawFileName = `raw_${Date.now()}_${cleanName}`;
+            const { data: rawUploadData, error: rawErr } = await supabase.storage
+              .from("quote_artwork")
+              .upload(rawFileName, rawFile, { contentType: rawFile.type || "application/octet-stream" });
+
+            if (!rawErr && rawUploadData?.path) {
+              fileNames.push(
+                JSON.stringify({
+                  name: `Original: ${rawFile.name}`,
+                  path: rawUploadData.path,
+                  placement: "Source Asset",
+                  location: "Original Customer Upload",
+                })
+              );
+              const { data: publicData } = supabase.storage
+                .from("quote_artwork")
+                .getPublicUrl(rawUploadData.path);
+              if (publicData?.publicUrl) {
+                rawFileLinks.push({ name: rawFile.name, url: publicData.publicUrl });
+              }
+            }
+          } catch (rawErr) {
+            console.error("Failed to upload raw asset:", rawErr);
+          }
+        }
+      }
 
       // Upload Front Proof to Supabase Storage if available
       if (frontProofUrl) {
@@ -129,7 +165,7 @@ export function SubmitDesignModal({
         .join("\n");
 
       // Insert record into Supabase quote_requests
-      const { error } = await supabase.from("quote_requests").insert([
+      const { data: dbRecord, error } = await supabase.from("quote_requests").insert([
         {
           name,
           email,
@@ -145,10 +181,36 @@ export function SubmitDesignModal({
           file_names: fileNames.length > 0 ? fileNames : null,
           status: "New Request",
         },
-      ]);
+      ]).select("id").single();
 
       if (error) {
         console.error("Supabase insert error:", error);
+      }
+
+      // Trigger email notifications (shop owner alert + customer confirmation)
+      try {
+        await notifyStudioSubmission({
+          data: {
+            quoteId: dbRecord?.id,
+            name,
+            email,
+            phone: phone || undefined,
+            company: company || undefined,
+            styleName: style.name,
+            styleBrand: style.brand,
+            colorName: color.name,
+            quantity: quantity ? `${quantity}` : "1-23",
+            sizeList: sizeList || undefined,
+            zipCode: zipCode || undefined,
+            deadline: deadline || undefined,
+            notes: notes || undefined,
+            frontProofUrl,
+            backProofUrl,
+            rawFileLinks: rawFileLinks.length > 0 ? rawFileLinks : undefined,
+          }
+        });
+      } catch (notifyErr) {
+        console.error("Studio notification dispatch error:", notifyErr);
       }
 
       setIsSuccess(true);

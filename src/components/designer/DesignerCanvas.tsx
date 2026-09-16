@@ -217,7 +217,8 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
         if (!canvas) return;
 
         fabric.loadSVGFromString(svgString).then((res) => {
-          const obj = fabric.util.groupSVGElements(res.objects, res.options);
+          const validObjects = (res.objects.filter(Boolean) as fabric.FabricObject[]);
+          const obj = fabric.util.groupSVGElements(validObjects, res.options);
           obj.set({
             left: bounds.width / 2,
             top: bounds.height / 2,

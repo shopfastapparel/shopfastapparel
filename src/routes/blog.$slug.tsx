@@ -234,9 +234,9 @@ function BlogPostPage() {
                       </div>
                     ) : (
                       <div
-                        className={`aspect-[16/10] bg-gradient-to-br ${p.cover.gradient} flex items-center justify-center text-5xl`}
+                        className={`aspect-[16/10] bg-gradient-to-br ${p.cover?.gradient || "from-cyan-500 to-magenta-500"} flex items-center justify-center text-5xl`}
                       >
-                        <span aria-hidden>{p.cover.emoji}</span>
+                        <span aria-hidden>{p.cover?.emoji || "✨"}</span>
                       </div>
                     )}
                     <div className="p-5">

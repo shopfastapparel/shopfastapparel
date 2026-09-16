@@ -61,6 +61,7 @@ function DesignerPage() {
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [frontProofUrl, setFrontProofUrl] = useState<string | null>(null);
   const [backProofUrl, setBackProofUrl] = useState<string | null>(null);
+  const [rawUploadFiles, setRawUploadFiles] = useState<File[]>([]);
   const [isExporting, setIsExporting] = useState(false);
 
   // Handle Quote Submission Opening
@@ -256,6 +257,12 @@ function DesignerPage() {
                     onAddImage={(url, w, h) =>
                       canvasRef.current?.addImage(url, w, h)
                     }
+                    onRawFileUpload={(file) => {
+                      setRawUploadFiles((prev) => {
+                        if (prev.some((f) => f.name === file.name && f.size === file.size)) return prev;
+                        return [...prev, file];
+                      });
+                    }}
                     selectedImageObject={selectedObject}
                   />
                 )}
@@ -336,6 +343,7 @@ function DesignerPage() {
         quantity={quantity}
         frontProofUrl={frontProofUrl}
         backProofUrl={backProofUrl}
+        rawUploadFiles={rawUploadFiles}
       />
     </SiteLayout>
   );

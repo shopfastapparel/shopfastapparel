@@ -145,18 +145,20 @@ function BundleDealPage() {
       const formattedDetails = `Shirt Color: ${formData.shirtColor}\nSize Breakdown: ${sizesSummary}\nPrint Location: ${formData.printLocation}\n\nNotes: ${formData.notes}`;
 
       await submitQuoteFn({
-        service: "24-Pack Bundle Deal: Gildan Softstyle",
-        quantity: "24",
-        turnaround: "Standard",
-        turnaroundEstimate: "5-7 Business Days",
-        name: formData.name,
-        company: formData.company || undefined,
-        email: formData.email,
-        phone: formData.phone || undefined,
-        zipCode: formData.zipCode || undefined,
-        details: formattedDetails,
-        fileNames: filePaths,
-        captchaToken,
+        data: {
+          service: "24-Pack Bundle Deal: Gildan Softstyle",
+          quantity: "24",
+          turnaround: "Standard",
+          turnaroundEstimate: "5-7 Business Days",
+          name: formData.name,
+          company: formData.company || undefined,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          zipCode: formData.zipCode || undefined,
+          details: formattedDetails,
+          fileNames: filePaths,
+          captchaToken,
+        },
       });
       
       setIsSubmitted(true);

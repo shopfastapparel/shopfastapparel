@@ -12,11 +12,11 @@ const quoteSchema = z.object({
   deadline: z.string().optional(),
   city: z.string().optional(),
   zipCode: z.string().optional(),
-  details: z.string().min(1),
+  details: z.string().default("No details provided"),
   fileNames: z.array(z.string()),
-  name: z.string().min(1),
+  name: z.string().trim().min(1),
   company: z.string().optional(),
-  email: z.string().email(),
+  email: z.string().trim().email(),
   phone: z.string().optional(),
   captchaToken: z.string().min(1),
   productId: z.string().optional(),
@@ -305,5 +305,145 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
     }
 
     console.log(`[quote] Quote submitted: ${data.service} from ${data.name} (${data.email})`);
+    return { ok: true };
+  });
+
+const studioNotificationSchema = z.object({
+  quoteId: z.string().optional(),
+  name: z.string().trim().min(1),
+  email: z.string().trim().email(),
+  phone: z.string().optional(),
+  company: z.string().optional(),
+  styleName: z.string(),
+  styleBrand: z.string().optional(),
+  colorName: z.string(),
+  quantity: z.union([z.string(), z.number()]),
+  sizeList: z.string().optional(),
+  zipCode: z.string().optional(),
+  deadline: z.string().optional(),
+  notes: z.string().optional(),
+  frontProofUrl: z.string().nullable().optional(),
+  backProofUrl: z.string().nullable().optional(),
+  rawFileLinks: z.array(z.object({ name: z.string(), url: z.string() })).optional(),
+});
+
+export const notifyStudioSubmission = createServerFn({ method: "POST" })
+  .inputValidator((d) => studioNotificationSchema.parse(d))
+  .handler(async ({ data }) => {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      console.warn("[studio-quote] Resend API key missing, skipping email");
+      return { ok: false };
+    }
+
+    const resend = new Resend(apiKey);
+    const from = process.env.RESEND_FROM_EMAIL || "Fast Apparel <info@shopfastapparel.com>";
+    const toEmail = process.env.RESEND_TO_EMAIL || "shopfastapparel@gmail.com";
+
+    const quoteIdShort = data.quoteId ? data.quoteId.substring(0, 8) : "STUDIO";
+    const companyDisplay = data.company ? ` · ${data.company}` : "";
+
+    let proofsHtml = "";
+    if (data.frontProofUrl || data.backProofUrl) {
+      proofsHtml = `
+      <div style="margin-top: 20px;">
+        <h4 style="margin: 0 0 10px 0; color: #111827;">Submitted Custom Proofs:</h4>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+          ${data.frontProofUrl ? `<div><strong>Front:</strong><br><a href="${data.frontProofUrl}" target="_blank"><img src="${data.frontProofUrl}" width="200" style="border: 1px solid #e5e7eb; border-radius: 8px; margin-top: 4px;"/></a></div>` : ""}
+          ${data.backProofUrl ? `<div><strong>Back:</strong><br><a href="${data.backProofUrl}" target="_blank"><img src="${data.backProofUrl}" width="200" style="border: 1px solid #e5e7eb; border-radius: 8px; margin-top: 4px;"/></a></div>` : ""}
+        </div>
+      </div>`;
+    }
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a2e; margin: 0; padding: 0; background: #f4f4f5; }
+    .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; }
+    .header { background: linear-gradient(135deg, #00d4ff, #ff2d8a); padding: 24px 32px; color: #fff; }
+    .header h1 { margin: 0; font-size: 22px; }
+    .header p { margin: 8px 0 0; opacity: 0.9; font-size: 14px; }
+    .body { padding: 24px 32px; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+    td { padding: 10px 12px; border-bottom: 1px solid #e4e4e7; font-size: 14px; }
+    td:first-child { color: #71717a; width: 140px; }
+    td:last-child { font-weight: 600; }
+    .details { background: #f4f4f5; border-radius: 8px; padding: 16px; margin: 16px 0; font-size: 14px; white-space: pre-wrap; }
+    .cta { display: inline-block; background: #ff2d8a; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; margin-top: 16px; }
+    .footer { padding: 16px 32px; background: #f4f4f5; font-size: 12px; color: #71717a; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📬 New Custom Shirt Studio Request</h1>
+      <p>From ${data.name}${companyDisplay}</p>
+    </div>
+    <div class="body">
+      <table>
+        <tr><td>Customer</td><td>${data.name}</td></tr>
+        ${data.company ? `<tr><td>Organization</td><td>${data.company}</td></tr>` : ""}
+        <tr><td>Email</td><td><a href="mailto:${data.email}">${data.email}</a></td></tr>
+        ${data.phone ? `<tr><td>Phone</td><td><a href="tel:${data.phone}">${data.phone}</a></td></tr>` : ""}
+        <tr><td>Garment Blank</td><td>${data.styleName} (${data.styleBrand || ""})</td></tr>
+        <tr><td>Garment Color</td><td>${data.colorName}</td></tr>
+        <tr><td>Quantity</td><td>${data.quantity} shirts</td></tr>
+        ${data.sizeList ? `<tr><td>Sizes</td><td>${data.sizeList}</td></tr>` : ""}
+        ${data.zipCode ? `<tr><td>Shipping Zip</td><td><strong style="color: #ff2d8a;">${data.zipCode}</strong></td></tr>` : ""}
+        ${data.deadline ? `<tr><td>Target Deadline</td><td>${data.deadline}</td></tr>` : ""}
+      </table>
+
+      ${proofsHtml}
+
+      ${data.rawFileLinks && data.rawFileLinks.length > 0 ? `
+      <div style="margin-top: 20px; background: #FEF3C7; border: 1.5px solid #FDE68A; border-radius: 8px; padding: 14px 18px;">
+        <strong style="font-size: 13px; color: #92400E; display: block; margin-bottom: 6px;">
+          📦 Original High-Resolution Source Asset(s):
+        </strong>
+        ${data.rawFileLinks.map(f => `<div style="margin-top: 4px;"><a href="${f.url}" target="_blank" style="color: #B45309; font-weight: 700; text-decoration: underline;">⬇️ Download Original ${f.name}</a></div>`).join("")}
+      </div>` : ""}
+
+      <div style="margin-top: 24px;">
+        <a href="mailto:${data.email}?subject=Quote %26 Digital Proofs — ${encodeURIComponent(data.company || data.name)}" class="cta">
+          Reply to ${data.name}
+        </a>
+      </div>
+    </div>
+    <div class="footer">
+      Submitted via Custom Shirt Studio · shopfastapparel.com
+    </div>
+  </div>
+</body>
+</html>`;
+
+    try {
+      await resend.emails.send({
+        from,
+        to: [toEmail],
+        replyTo: data.email,
+        subject: `Studio Quote Request [${quoteIdShort}] — ${data.styleName} — ${data.name}${companyDisplay}`,
+        html,
+      });
+
+      // Customer confirmation
+      await resend.emails.send({
+        from,
+        to: [data.email],
+        bcc: [toEmail],
+        subject: "We got your custom design! — Fast Apparel",
+        html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; color: #1f2937;">
+          <h2 style="color: #111827;">Hey ${data.name.split(" ")[0]}, we received your custom design!</h2>
+          <p>Thank you for creating your design in our Custom Shirt Studio for the <strong>${data.styleName}</strong> in <strong>${data.colorName}</strong>.</p>
+          <p>Our production team is reviewing your print safe-zones and sizing distribution, and we'll have an official price quote and digital proof in your inbox within 24 hours.</p>
+          <p style="margin-top: 20px; font-size: 13px; color: #6b7280;">Need rush turnaround or have questions? Call us directly at ${PRIMARY_PHONE} or reply to this email.</p>
+        </div>`,
+      });
+    } catch (err) {
+      console.error("[studio-quote] Failed to send email notifications:", err);
+    }
+
     return { ok: true };
   });

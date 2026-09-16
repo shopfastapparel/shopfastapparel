@@ -249,18 +249,20 @@ function HoodieDealPage() {
       const formattedDetails = `Selected Bundle: ${targetQuantity} Pack for $${currentPrice} (${currentPerPiece}/each)\nGarment Style: ${formData.garmentStyle}\nColor: ${formData.hoodieColor}\nBreakdown: ${sizesSummary}\nPrint Location: ${formData.printLocation}\n\nNotes: ${formData.notes}`;
 
       await submitQuoteFn({
-        service: `Fall Fleece Deal (${formData.garmentStyle}): ${targetQuantity} Pack ($${currentPrice})`,
-        quantity: String(targetQuantity),
-        turnaround: "Standard",
-        turnaroundEstimate: "5-7 Business Days",
-        name: formData.name,
-        company: formData.company || undefined,
-        email: formData.email,
-        phone: formData.phone || undefined,
-        zipCode: formData.zipCode || undefined,
-        details: formattedDetails,
-        fileNames: filePaths,
-        captchaToken,
+        data: {
+          service: `Fall Fleece Deal (${formData.garmentStyle}): ${targetQuantity} Pack ($${currentPrice})`,
+          quantity: String(targetQuantity),
+          turnaround: "Standard",
+          turnaroundEstimate: "5-7 Business Days",
+          name: formData.name,
+          company: formData.company || undefined,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          zipCode: formData.zipCode || undefined,
+          details: formattedDetails,
+          fileNames: filePaths,
+          captchaToken,
+        },
       });
       
       setIsSubmitted(true);

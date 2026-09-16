@@ -236,6 +236,9 @@ function QuotePage() {
     return base;
   }, [searchParams.sizes]);
 
+  const defaultDetails = searchParams.printLocations 
+    ? `Required Print Locations: ${searchParams.printLocations}\n\n`
+    : "";
   let initialDetails = defaultDetails;
   if (searchParams.color) {
     initialDetails = `Preferred Garment Color: ${searchParams.color}\n\n` + initialDetails;

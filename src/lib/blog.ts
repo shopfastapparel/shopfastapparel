@@ -2,14 +2,19 @@ export interface BlogPost {
   slug: string;
   title: string;
   description: string;
-  category: "Custom T-Shirts" | "Team & Bulk" | "Promotional Products" | "Local Guides" | "Tips & Trends" | "Custom Workwear";
+  category: "Custom T-Shirts" | "Team & Bulk" | "Promotional Products" | "Local Guides" | "Tips & Trends" | "Custom Workwear" | string;
   city?: string;
-  readMinutes: number;
-  publishedAt: string; // ISO date
+  readMinutes?: number;
+  read_minutes?: number;
+  publishedAt?: string; // ISO date
   author: string;
-  cover: { gradient: string; emoji: string };
+  cover?: { gradient: string; emoji: string };
+  cover_gradient?: string;
+  cover_emoji?: string;
   coverImageUrl?: string;
   coverImageCredit?: string;
+  cover_image_url?: string;
+  cover_image_credit?: string;
   keywords: string[];
   // Markdown-ish body using a tiny subset: ## H2, ### H3, blank line paragraphs, - bullets
   body: string;

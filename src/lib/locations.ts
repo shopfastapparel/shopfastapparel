@@ -20,7 +20,7 @@ export const LOCATIONS: LocationInfo[] = [
     blurb:
       "Our home base. Lawrenceville's premier custom t-shirt printer — full-color DTF and promotional products with local delivery options for Gwinnett County.",
     neighborhoods: ["Downtown Lawrenceville", "Sugarloaf", "Collins Hill", "Five Forks", "Grayson"],
-    features: [
+    highlights: [
       "Local delivery available within 10 miles",
       "Free shipping on orders over $149",
       "Trusted by Gwinnett schools, churches, and small businesses",
@@ -95,8 +95,8 @@ export const LOCATIONS: LocationInfo[] = [
     blurb:
       "Decatur's local custom apparel shop. Small-batch DTF and event tees — low minimums.",
     neighborhoods: ["Oakhurst", "Kirkwood", "Avondale Estates", "Druid Hills", "Emory area"],
-    features: [
-      "Local delivery available for Duluth businesses",
+    highlights: [
+      "Local delivery available for DeKalb businesses",
       "Low minimums on DTF transfers",
       "Perfect for Decatur events and festivals",
     ],
@@ -114,6 +114,111 @@ export const LOCATIONS: LocationInfo[] = [
       "Roswell youth sports uniform specialist",
       "Free shipping on bulk orders",
       "Custom DTF prints for Roswell businesses",
+    ],
+  },
+  {
+    slug: "dacula",
+    city: "Dacula",
+    state: "GA",
+    region: "Gwinnett County",
+    zipPrefix: "300",
+    blurb:
+      "Dacula's local choice for custom t-shirts, hoodies, and team uniforms. Vibrant full-color DTF printing, school spirit wear, and business apparel with fast local delivery across Gwinnett.",
+    neighborhoods: ["Downtown Dacula", "Hamilton Mill", "Harbins", "Apalachee", "Alcovy"],
+    highlights: [
+      "School spirit wear for Dacula High & Hamilton Mill teams",
+      "Local delivery and rush turnaround available across Gwinnett",
+      "Vibrant full-color DTF printing with zero screen or setup fees",
+    ],
+  },
+  {
+    slug: "johns-creek",
+    city: "Johns Creek",
+    state: "GA",
+    region: "North Fulton",
+    zipPrefix: "300",
+    blurb:
+      "Premium custom t-shirts and corporate apparel in Johns Creek. Professional DTF printing for medical practices, tech offices, private academies, and community events.",
+    neighborhoods: ["Technology Park Johns Creek", "Medlock Bridge", "Abbotts Bridge", "Country Club of the South", "Ocee"],
+    highlights: [
+      "High-end corporate merch and medical clinic uniforms",
+      "Ultra-soft retail blanks (Comfort Colors 1717, Bella+Canvas 3001)",
+      "Fast delivery along Medlock Bridge and State Bridge corridors",
+    ],
+  },
+  {
+    slug: "norcross",
+    city: "Norcross",
+    state: "GA",
+    region: "Gwinnett County",
+    zipPrefix: "300",
+    blurb:
+      "Custom apparel and merchandise printing for Historic Norcross and Peachtree Corners. Durable workwear, restaurant tees, and event shirts made locally.",
+    neighborhoods: ["Historic Downtown Norcross", "Peachtree Corners border", "Jimmy Carter Blvd", "Holcomb Bridge corridor", "Beaver Ruin"],
+    highlights: [
+      "Commercial district & industrial park workwear uniforms",
+      "Durable DTF printing built for high-wash commercial demands",
+      "Zero setup fees and fast 3–7 business day delivery",
+    ],
+  },
+  {
+    slug: "brookhaven",
+    city: "Brookhaven",
+    state: "GA",
+    region: "DeKalb County",
+    zipPrefix: "303",
+    blurb:
+      "Brookhaven custom t-shirt printing and event apparel. Soft-style tees, boutique fitness merch, and neighborhood festival gear delivered fast.",
+    neighborhoods: ["Town Brookhaven", "Ashford Park", "Oglethorpe", "Dresden Drive", "Lynwood Park"],
+    highlights: [
+      "Boutique fitness, beauty studio, and hospitality staff shirts",
+      "Free digital mockups and safe-zone placement previews",
+      "Fast turnaround inside the perimeter (ITP)",
+    ],
+  },
+  {
+    slug: "tucker",
+    city: "Tucker",
+    state: "GA",
+    region: "DeKalb & Gwinnett",
+    zipPrefix: "300",
+    blurb:
+      "Tucker's local source for custom printed tees, hoodies, and work uniforms. Vibrant full-color DTF prints for Main Street businesses, breweries, and sports clubs.",
+    neighborhoods: ["Main Street Tucker", "Smoke Rise", "Midvale", "Northlake area", "Idlewood"],
+    highlights: [
+      "Craft brewery merch, restaurant uniforms, and race event shirts",
+      "Fast turnaround along Lawrenceville Highway and US-78 corridor",
+      "Wholesale volume pricing with zero per-color screen penalties",
+    ],
+  },
+  {
+    slug: "auburn",
+    city: "Auburn",
+    state: "GA",
+    region: "Barrow & Gwinnett County",
+    zipPrefix: "300",
+    blurb:
+      "Custom t-shirt printing for Auburn, Carl, and surrounding Barrow and Gwinnett communities. Reliable team shirts, family reunion tees, and small business apparel.",
+    neighborhoods: ["Downtown Auburn", "County Line", "Carl border", "Parks Mill", "Whistleville Park area"],
+    highlights: [
+      "Local delivery for Auburn family events, churches, and youth teams",
+      "Vibrant full-color DTF printing on all cotton and blend fabrics",
+      "Zero minimum order requirements for quick restocks",
+    ],
+  },
+  {
+    slug: "snellville",
+    city: "Snellville",
+    state: "GA",
+    region: "South Gwinnett",
+    zipPrefix: "300",
+    blurb:
+      "Snellville custom apparel and t-shirt printing. Premium shirts for South Gwinnett schools, churches, youth sports, and healthcare practices.",
+    neighborhoods: ["The Grove at Snellville", "Scenic Highway corridor", "Centerville", "Brookwood area", "North Road"],
+    highlights: [
+      "South Gwinnett church and school spirit wear specialist",
+      "Fast turnaround on Highway 124 & 78 corridors",
+      "Heavyweight cotton, ringspun blends, and performance dry-fit",
     ],
   },
 ];

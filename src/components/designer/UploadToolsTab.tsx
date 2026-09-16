@@ -7,11 +7,13 @@ interface UploadToolsTabProps {
   onAddImage: (imgUrl: string, originalWidth: number, originalHeight: number) => void;
   selectedImageObject: any | null;
   onRemoveBackground?: () => void;
+  onRawFileUpload?: (file: File) => void;
 }
 
 export function UploadToolsTab({
   onAddImage,
   selectedImageObject,
+  onRawFileUpload,
 }: UploadToolsTabProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadedImages, setUploadedImages] = useState<
@@ -25,6 +27,8 @@ export function UploadToolsTab({
       alert("Please upload a valid image file (PNG, JPG, SVG, WebP).");
       return;
     }
+
+    onRawFileUpload?.(file);
 
     const reader = new FileReader();
     reader.onload = (e) => {

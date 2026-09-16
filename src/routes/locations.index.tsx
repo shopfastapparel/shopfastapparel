@@ -10,7 +10,7 @@ export const Route = createFileRoute("/locations/")({
       {
         name: "description",
         content:
-          "Fast Apparel — based in Lawrenceville, GA — serves Atlanta, Marietta, Alpharetta, Sandy Springs, Decatur, Roswell and the entire metro area with custom DTF t-shirt printing and promotional products.",
+          "Fast Apparel — based in Lawrenceville, GA — serves Atlanta, Marietta, Alpharetta, Sandy Springs, Decatur, Roswell, Dacula, Johns Creek, Norcross, Brookhaven, Tucker, Auburn, Snellville and the entire metro area with custom DTF t-shirt printing and promotional products.",
       },
       { property: "og:title", content: "Service Areas | Fast Apparel" },
       {

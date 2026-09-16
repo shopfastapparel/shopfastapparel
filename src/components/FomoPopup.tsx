@@ -11,7 +11,9 @@ const NAMES = [
 const LOCATIONS = [
   "Atlanta, GA", "Lawrenceville, GA", "Marietta, GA", "Alpharetta, GA", 
   "Decatur, GA", "Sandy Springs, GA", "Roswell, GA", "Suwanee, GA", 
-  "Duluth, GA", "Chicago, IL", "Austin, TX", "Dallas, TX", 
+  "Duluth, GA", "Dacula, GA", "Johns Creek, GA", "Norcross, GA",
+  "Brookhaven, GA", "Tucker, GA", "Auburn, GA", "Snellville, GA",
+  "Chicago, IL", "Austin, TX", "Dallas, TX", 
   "Orlando, FL", "Charlotte, NC", "Nashville, TN", "Miami, FL"
 ];
 
