@@ -22,6 +22,22 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "custom-film-crew-shirts-wrap-gifts-atlanta-2026",
+    title: "Custom Film & TV Crew Shirts, Department Tees & Wrap Gifts in Atlanta (2026 Guide)",
+    description: "Custom crew shirts, department hoodies, and wrap gifts for Metro Atlanta film and TV productions. Photo-quality DTF printing, fast rush delivery, zero setup fees.",
+    category: "Entertainment & Crew Apparel",
+    city: "Atlanta",
+    read_minutes: 5,
+    author: "Fast Apparel Team",
+    cover_gradient: "from-amber-500 to-zinc-950",
+    cover_emoji: "\ud83c\udfac",
+    keywords: ["custom film crew shirts atlanta", "film production wrap gifts georgia", "movie crew custom hoodies atlanta", "dtf film merchandise soundstages", "tv production t shirts gwinnett"],
+    cover_image_url: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1200&auto=format&fit=crop&q=80",
+    cover_image_credit: "Photo via Unsplash",
+    body: "# Your Full Rich Markdown Content Here",
+  },
+
+  {
     slug: "custom-youth-soccer-jerseys-shirts-atlanta-2026",
     title: "Custom T-Shirts, Warmups & Team Merch for Metro Atlanta Youth Soccer Clubs (2026 Guide)",
     description: "Custom moisture-wicking soccer tees, coach polos, and parent sideline hoodies for Metro Atlanta youth soccer clubs. Durable DTF printing, zero setup fees.",
