@@ -85,9 +85,20 @@ function AdminEtsyOrders() {
             </h1>
             <p className="mt-2 text-sm text-gray-500">Live feed of your most recent Etsy shop orders.</p>
           </div>
-          <div className="text-right">
-            <span className="text-2xl font-bold text-primary">{orders.length}</span>
-            <p className="text-sm text-gray-500 uppercase font-semibold tracking-wider">Recent Orders</p>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://www.etsy.com/your/shops/me/dashboard"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-3.5 py-2 border border-gray-200 shadow-sm text-xs font-semibold rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+            >
+              Shop Manager
+              <ExternalLink className="ml-1.5 w-3.5 h-3.5 text-gray-500" />
+            </a>
+            <div className="text-right">
+              <span className="text-2xl font-bold text-primary">{orders.length}</span>
+              <p className="text-sm text-gray-500 uppercase font-semibold tracking-wider">Recent Orders</p>
+            </div>
           </div>
         </div>
 
@@ -201,7 +212,7 @@ function AdminEtsyOrders() {
                       </td>
                       <td className="px-3 py-3 whitespace-nowrap text-right text-sm font-medium">
                         <a 
-                          href={`https://www.etsy.com/your/orders/${order.receipt_id}`} 
+                          href={`https://www.etsy.com/your/shops/me/orders/${order.receipt_id}`} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="text-primary hover:text-primary/80 inline-flex items-center"
