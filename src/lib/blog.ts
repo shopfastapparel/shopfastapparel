@@ -22,6 +22,22 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "custom-youth-baseball-softball-uniforms-shirts-atlanta-2026",
+    title: "Custom Youth Baseball & Softball Uniforms, Spirit Wear & Tournament Shirts in Metro Atlanta (2026 Guide)",
+    description: "Custom dry-fit jerseys, coach polos, parent sideline hoodies, and tournament tees for Metro Atlanta baseball and softball teams. Durable DTF printing with zero setup fees.",
+    category: "Team & Bulk",
+    city: "Atlanta",
+    read_minutes: 5,
+    author: "Fast Apparel Team",
+    cover_gradient: "from-blue-600 to-amber-950",
+    cover_emoji: "\u26be",
+    keywords: ["custom baseball jerseys atlanta", "youth softball team shirts georgia", "baseball tournament shirts gwinnett", "dtf baseball uniforms east cobb", "little league spirit wear lawrenceville"],
+    cover_image_url: "https://images.unsplash.com/photo-1508344928928-7165b67de128?w=1200&auto=format&fit=crop&q=80",
+    cover_image_credit: "Photo via Unsplash",
+    body: "# Your Full Rich Markdown Content Here",
+  },
+
+  {
     slug: "custom-film-crew-shirts-wrap-gifts-atlanta-2026",
     title: "Custom Film & TV Crew Shirts, Department Tees & Wrap Gifts in Atlanta (2026 Guide)",
     description: "Custom crew shirts, department hoodies, and wrap gifts for Metro Atlanta film and TV productions. Photo-quality DTF printing, fast rush delivery, zero setup fees.",
