@@ -32,7 +32,7 @@ const FAQS = [
   },
   {
     q: "Do you offer Net-30 payment terms?",
-    a: "Yes, for qualified schools, government entities, churches, and established businesses. Ask about it during your quote.",
+    a: "We currently do not offer Net-30 terms at this time. All orders require payment upon digital proof approval before production begins. We accept all major credit and debit cards, Apple Pay, and secure online bank transfers.",
   },
   {
     q: "Do you ship orders? Is shipping free?",

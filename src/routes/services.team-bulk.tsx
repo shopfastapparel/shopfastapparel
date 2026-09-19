@@ -50,7 +50,7 @@ export const Route = createFileRoute("/services/team-bulk")({
         "Names & numbers added at no rush charge",
         "Dedicated bulk-order account manager",
         "Pre-production samples available",
-        "Net-30 terms for qualified businesses & schools",
+        "Fast, secure digital invoicing for all orders",
         "Re-orders ship in 48 hours",
       ]}
       faqs={[
@@ -64,7 +64,7 @@ export const Route = createFileRoute("/services/team-bulk")({
         },
         {
           q: "Do you offer Net-30 terms?",
-          a: "Yes, for qualified schools, government entities, and established businesses. Just ask during your quote.",
+          a: "We currently do not offer Net-30 terms at this time. All orders require payment upon digital proof approval before production begins. We accept all major credit and debit cards, Apple Pay, and secure online bank transfers.",
         },
       ]}
       showCalculator={true}
