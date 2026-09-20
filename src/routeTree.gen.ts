@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TurnaroundTimeRouteImport } from './routes/turnaround-time'
 import { Route as TrackRouteImport } from './routes/track'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ShopRouteImport } from './routes/shop'
@@ -56,6 +57,11 @@ import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
 import { Route as ApiCronGenerateBlogRouteImport } from './routes/api/cron/generate-blog'
 import { Route as ApiPublicHooksGenerateBlogPostRouteImport } from './routes/api/public/hooks/generate-blog-post'
 
+const TurnaroundTimeRoute = TurnaroundTimeRouteImport.update({
+  id: '/turnaround-time',
+  path: '/turnaround-time',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrackRoute = TrackRouteImport.update({
   id: '/track',
   path: '/track',
@@ -307,6 +313,7 @@ export interface FileRoutesByFullPath {
   '/shop': typeof ShopRoute
   '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
+  '/turnaround-time': typeof TurnaroundTimeRoute
   '/admin/announcement': typeof AdminAnnouncementRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/etsy': typeof AdminEtsyRoute
@@ -355,6 +362,7 @@ export interface FileRoutesByTo {
   '/shop': typeof ShopRoute
   '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
+  '/turnaround-time': typeof TurnaroundTimeRoute
   '/admin/announcement': typeof AdminAnnouncementRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/etsy': typeof AdminEtsyRoute
@@ -404,6 +412,7 @@ export interface FileRoutesById {
   '/shop': typeof ShopRoute
   '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
+  '/turnaround-time': typeof TurnaroundTimeRoute
   '/admin/announcement': typeof AdminAnnouncementRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/etsy': typeof AdminEtsyRoute
@@ -454,6 +463,7 @@ export interface FileRouteTypes {
     | '/shop'
     | '/terms'
     | '/track'
+    | '/turnaround-time'
     | '/admin/announcement'
     | '/admin/blog'
     | '/admin/etsy'
@@ -502,6 +512,7 @@ export interface FileRouteTypes {
     | '/shop'
     | '/terms'
     | '/track'
+    | '/turnaround-time'
     | '/admin/announcement'
     | '/admin/blog'
     | '/admin/etsy'
@@ -550,6 +561,7 @@ export interface FileRouteTypes {
     | '/shop'
     | '/terms'
     | '/track'
+    | '/turnaround-time'
     | '/admin/announcement'
     | '/admin/blog'
     | '/admin/etsy'
@@ -599,6 +611,7 @@ export interface RootRouteChildren {
   ShopRoute: typeof ShopRoute
   TermsRoute: typeof TermsRoute
   TrackRoute: typeof TrackRoute
+  TurnaroundTimeRoute: typeof TurnaroundTimeRoute
   AdminAnnouncementRoute: typeof AdminAnnouncementRoute
   AdminBlogRoute: typeof AdminBlogRoute
   AdminEtsyRoute: typeof AdminEtsyRoute
@@ -633,6 +646,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/turnaround-time': {
+      id: '/turnaround-time'
+      path: '/turnaround-time'
+      fullPath: '/turnaround-time'
+      preLoaderRoute: typeof TurnaroundTimeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/track': {
       id: '/track'
       path: '/track'
@@ -975,6 +995,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShopRoute: ShopRoute,
   TermsRoute: TermsRoute,
   TrackRoute: TrackRoute,
+  TurnaroundTimeRoute: TurnaroundTimeRoute,
   AdminAnnouncementRoute: AdminAnnouncementRoute,
   AdminBlogRoute: AdminBlogRoute,
   AdminEtsyRoute: AdminEtsyRoute,

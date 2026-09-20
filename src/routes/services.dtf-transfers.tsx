@@ -11,7 +11,7 @@ export const Route = createFileRoute("/services/dtf-transfers")({
       {
         name: "description",
         content:
-          "Order custom Direct-to-Film (DTF) transfers and gang sheets. High-quality, ready-to-press transfers shipped directly to your door or available for local pickup in Lawrenceville.",
+          "Order custom Direct-to-Film (DTF) transfers and gang sheets. High-quality, ready-to-press transfers shipped directly to your door with fast delivery across Georgia.",
       },
       {
         property: "og:title",
@@ -53,7 +53,7 @@ export const Route = createFileRoute("/services/dtf-transfers")({
         "Same-day or next-day printing available",
         "Applies in just 15 seconds",
         "Perfect for inside neck labels and small chest hits",
-        "Free local pickup in Lawrenceville, GA",
+        "Free Standard Shipping on orders over $149 & Local Courier Delivery",
       ]}
       faqs={[
         {

@@ -124,6 +124,11 @@ export function Footer() {
                 Artwork Prep Guide
               </Link>
             </li>
+            <li>
+              <Link to="/turnaround-time" className="hover:text-yellow-brand text-background">
+                Turnaround &amp; Shipping
+              </Link>
+            </li>
             <li className="pt-2">
               <Link to="/faq" className="hover:text-background">
                 FAQ

@@ -227,7 +227,7 @@ function TrackPage() {
                   <p className="text-muted-foreground">Mockup approved! We will begin production on your order shortly. Look out for an invoice if you haven't received one.</p>
                 )}
                 {quote.status === "In Production" && (
-                  <p className="text-muted-foreground">Your order is currently on the press! We will notify you as soon as it ships or is ready for local pickup.</p>
+                  <p className="text-muted-foreground">Your order is currently on the press! We will notify you as soon as it ships or is dispatched for delivery.</p>
                 )}
                 {quote.status === "Shipped" && (
                   <p className="text-muted-foreground">Your order is complete and has been shipped/delivered! Thank you for choosing Fast Apparel.</p>
