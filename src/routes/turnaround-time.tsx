@@ -145,18 +145,18 @@ export function TurnaroundTimePage() {
                 <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-cyan-brand/10 text-cyan-brand border border-cyan-brand/30 uppercase tracking-wide">
                   Standard Apparel
                 </span>
-                <h3 className="text-xl font-bold text-ink mt-3">Custom T-Shirts</h3>
+                <h3 className="text-xl font-bold text-ink mt-3">Standard Tees</h3>
                 <div className="my-4">
-                  <span className="font-display text-3xl text-ink font-black">5–7</span>
+                  <span className="font-display text-3xl text-ink font-black">7–10</span>
                   <span className="text-sm text-muted-foreground ml-1.5 font-bold">Business Days</span>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">
                   Applies to Gildan 64000/5000, Bella+Canvas 3001, Comfort Colors 1717, and standard
-                  short-sleeve & long-sleeve cotton/poly tees.
+                  short-sleeve &amp; long-sleeve cotton/poly tees.
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-border/80 flex items-center gap-2 text-xs font-semibold text-emerald-600">
-                <CheckCircle2 className="w-4 h-4" /> Average completion: 5 days
+                <CheckCircle2 className="w-4 h-4" /> Usually around 5 days
               </div>
             </div>
 
@@ -187,9 +187,9 @@ export function TurnaroundTimePage() {
                 <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/30 uppercase tracking-wide">
                   Fast Replenishment
                 </span>
-                <h3 className="text-xl font-bold text-ink mt-3">Repeat Re-Orders</h3>
+                <h3 className="text-xl font-bold text-ink mt-3">Repeat Orders</h3>
                 <div className="my-4">
-                  <span className="font-display text-3xl text-ink font-black">3–5</span>
+                  <span className="font-display text-3xl text-ink font-black">5–7</span>
                   <span className="text-sm text-muted-foreground ml-1.5 font-bold">Business Days</span>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">
@@ -210,16 +210,16 @@ export function TurnaroundTimePage() {
                 </span>
                 <h3 className="text-xl font-bold text-ink mt-3">Express Production</h3>
                 <div className="my-4">
-                  <span className="font-display text-3xl text-ink font-black">3–5</span>
-                  <span className="text-sm text-muted-foreground ml-1.5 font-bold">Days / ASAP</span>
+                  <span className="font-display text-3xl text-ink font-black">4–5</span>
+                  <span className="text-sm text-muted-foreground ml-1.5 font-bold">Business Days</span>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Have an urgent event, tournament, or grand opening? Rush slots are available depending
-                  on shop capacity (48–72h turnaround in Metro Atlanta).
+                  Have an urgent event, tournament, or grand opening? Express production slots are available depending
+                  on shop capacity to rush your order through pressing.
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-yellow-brand/30 flex items-center gap-2 text-xs font-semibold text-ink">
-                <Zap className="w-4 h-4 text-yellow-brand fill-yellow-brand" /> Inquire for rush availability
+                <Zap className="w-4 h-4 text-yellow-brand fill-yellow-brand" /> Inquire for express availability
               </div>
             </div>
           </div>
@@ -412,6 +412,15 @@ export function TurnaroundTimePage() {
                   Order Tracker
                 </Link>{" "}
                 at any time to check status in real time.
+              </p>
+            </div>
+
+            <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
+              <h3 className="font-bold text-base text-ink mb-1.5">
+                What are your turnaround times for t-shirts, re-orders, and express jobs?
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Standard custom t-shirts are produced in <strong>7–10 business days</strong> (usually completed in around 5 days). Repeat re-orders are produced in <strong>5–7 business days</strong>, and <strong>Express Production</strong> is available in <strong>4–5 business days</strong> depending on shop capacity. Sweatshirts and specialty fleeces take 10–12 business days.
               </p>
             </div>
 
