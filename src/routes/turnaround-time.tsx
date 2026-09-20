@@ -67,8 +67,8 @@ export function TurnaroundTimePage() {
       </section>
 
       {/* When Does The Clock Start? */}
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="text-center max-w-3xl mx-auto mb-12">
+      <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">
+        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-12">
           <h2 className="font-display text-3xl md:text-4xl text-ink">
             When Does Your Turnaround Time Begin?
           </h2>
@@ -124,9 +124,9 @@ export function TurnaroundTimePage() {
       </section>
 
       {/* Production Timelines Matrix */}
-      <section className="bg-muted/40 border-y border-border py-16">
+      <section className="bg-muted/40 border-y border-border py-12 md:py-16">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="text-center max-w-3xl mx-auto mb-10 md:mb-12">
             <span className="text-xs font-bold uppercase tracking-wider text-pink-brand mb-2 block">
               In-House Manufacturing Schedules
             </span>
@@ -227,16 +227,16 @@ export function TurnaroundTimePage() {
       </section>
 
       {/* CREATIVE ON-BRAND US SHIPPING MAP */}
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="text-center max-w-3xl mx-auto mb-10">
+      <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
           <span className="text-xs font-bold uppercase tracking-wider text-pink-brand mb-2 block">
             National UPS Logistics
           </span>
-          <h2 className="font-display text-3xl md:text-4xl text-ink">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-ink">
             UPS Ground Shipping Speeds From Georgia
           </h2>
-          <p className="mt-3 text-muted-foreground text-base md:text-lg">
-            Click any state or zone on the map below to view estimated business days in transit from our
+          <p className="mt-3 text-muted-foreground text-sm sm:text-base md:text-lg">
+            Click or tap any state on the map to view estimated business days in transit from our
             production facility in Lawrenceville, Georgia.
           </p>
         </div>
@@ -246,9 +246,9 @@ export function TurnaroundTimePage() {
       </section>
 
       {/* UPS Shipping Services Breakdown */}
-      <section className="bg-muted/40 border-y border-border py-16">
+      <section className="bg-muted/40 border-y border-border py-12 md:py-16">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="text-center max-w-3xl mx-auto mb-10 md:mb-12">
             <h2 className="font-display text-3xl md:text-4xl text-ink">
               Available Shipping Services
             </h2>
@@ -310,10 +310,10 @@ export function TurnaroundTimePage() {
       </section>
 
       {/* Local Metro Atlanta Options & Delivery Services */}
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="grid md:grid-cols-2 gap-10 items-start">
+      <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-10 items-start">
           {/* Free Shipping & Local Courier Service */}
-          <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
+          <div className="bg-card border border-border rounded-2xl p-5 sm:p-8 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-pink-brand/20 text-pink-brand grid place-items-center">
                 <Truck className="w-5 h-5" />
@@ -347,7 +347,7 @@ export function TurnaroundTimePage() {
           </div>
 
           {/* Holiday Schedule */}
-          <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
+          <div className="bg-card border border-border rounded-2xl p-5 sm:p-8 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-yellow-brand/30 text-yellow-brand grid place-items-center">
                 <Calendar className="w-5 h-5" />
@@ -361,7 +361,7 @@ export function TurnaroundTimePage() {
               Our printing facility is closed during major US holidays to allow our team to celebrate
               with their families. Please account for these dates when scheduling hard deadlines:
             </p>
-            <div className="grid grid-cols-2 gap-2.5 text-xs text-ink/80 font-medium">
+            <div className="grid grid-cols-2 gap-2 text-xs text-ink/80 font-medium">
               <div className="p-2 rounded-lg bg-muted/60">🎉 New Year's Day (Jan 1)</div>
               <div className="p-2 rounded-lg bg-muted/60">🕊️ Memorial Day (Late May)</div>
               <div className="p-2 rounded-lg bg-muted/60">🎆 Independence Day (July 4)</div>
@@ -374,14 +374,14 @@ export function TurnaroundTimePage() {
       </section>
 
       {/* Turnaround FAQ */}
-      <section className="bg-muted/40 border-t border-border py-16">
+      <section className="bg-muted/40 border-t border-border py-12 md:py-16">
         <div className="mx-auto max-w-4xl px-4">
-          <div className="text-center mb-10">
-            <h2 className="font-display text-3xl text-ink">Frequently Asked Questions</h2>
+          <div className="text-center mb-8 sm:mb-10">
+            <h2 className="font-display text-2xl sm:text-3xl text-ink">Frequently Asked Questions</h2>
           </div>
 
           <div className="space-y-4">
-            <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
+            <div className="bg-card border border-border rounded-xl p-4 sm:p-5 shadow-sm">
               <h3 className="font-bold text-base text-ink mb-1.5">
                 Do you offer customer facility pickup in Lawrenceville?
               </h3>
@@ -390,7 +390,7 @@ export function TurnaroundTimePage() {
               </p>
             </div>
 
-            <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
+            <div className="bg-card border border-border rounded-xl p-4 sm:p-5 shadow-sm">
               <h3 className="font-bold text-base text-ink mb-1.5">
                 Can I upgrade my shipping speed after placing an order?
               </h3>
@@ -401,7 +401,7 @@ export function TurnaroundTimePage() {
               </p>
             </div>
 
-            <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
+            <div className="bg-card border border-border rounded-xl p-4 sm:p-5 shadow-sm">
               <h3 className="font-bold text-base text-ink mb-1.5">
                 How do I track my shipment once it leaves your facility?
               </h3>
@@ -415,7 +415,7 @@ export function TurnaroundTimePage() {
               </p>
             </div>
 
-            <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
+            <div className="bg-card border border-border rounded-xl p-4 sm:p-5 shadow-sm">
               <h3 className="font-bold text-base text-ink mb-1.5">
                 What are your turnaround times for t-shirts, re-orders, and express jobs?
               </h3>
@@ -424,7 +424,7 @@ export function TurnaroundTimePage() {
               </p>
             </div>
 
-            <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
+            <div className="bg-card border border-border rounded-xl p-4 sm:p-5 shadow-sm">
               <h3 className="font-bold text-base text-ink mb-1.5">
                 What if I have an inflexible event deadline (race, festival, wedding, grand opening)?
               </h3>
@@ -439,7 +439,7 @@ export function TurnaroundTimePage() {
       </section>
 
       {/* Bottom CTA Banner */}
-      <section className="bg-ink text-background py-16 border-t border-ink/80 text-center">
+      <section className="bg-ink text-background py-12 md:py-16 border-t border-ink/80 text-center">
         <div className="mx-auto max-w-3xl px-4">
           <h2 className="font-display text-3xl md:text-4xl text-background">
             Ready to Start Your Custom Apparel Project?
