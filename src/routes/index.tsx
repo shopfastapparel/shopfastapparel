@@ -113,7 +113,7 @@ function TiltImageSlideshow({ images }: { images: {src: string, alt: string}[] }
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ rotateY, rotateX, transformStyle: "preserve-3d" }}
-      className="relative z-10 perspective-1000 w-full aspect-square md:aspect-[4/3] lg:aspect-square max-w-lg mx-auto"
+      className="relative z-10 perspective-1000 w-full aspect-square md:aspect-[4/3] lg:aspect-square max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto"
     >
       <div className="absolute -inset-10 bg-gradient-to-tr from-cyan-brand/40 to-magenta-brand/40 blur-3xl rounded-full mix-blend-multiply animate-pulse" />
       
@@ -227,16 +227,16 @@ function HomePage() {
           muted 
           playsInline 
           poster="/images/hero-poster.png"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-[center_35%] sm:object-center transition-all duration-700"
         >
           <source src="/hero-bg.mp4?v=4" type="video/mp4" />
         </video>
-        {/* Gradient overlay: Dark on the left behind the text, fading out on the right so the video is highly visible */}
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/50 to-transparent" />
+        {/* Orientation-adaptive overlay: Top-to-bottom on mobile portrait so press & steam stay visible; Left-to-right on desktop & landscape */}
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/35 to-ink/90 lg:bg-gradient-to-r lg:from-ink/90 lg:via-ink/50 lg:to-transparent pointer-events-none" />
         
-        <div className="relative mx-auto max-w-7xl px-4 py-20 md:py-32 grid lg:grid-cols-2 gap-16 items-center">
+        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:py-16 md:py-24 lg:py-32 landscape:py-8 grid lg:grid-cols-2 landscape:grid-cols-2 gap-10 lg:gap-16 landscape:gap-8 items-center">
           <motion.div variants={staggerContainer} initial="hidden" animate="show" className="relative z-10">
-            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-cyan-brand text-xs font-bold uppercase tracking-widest mb-6 border border-white/20">
+            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-cyan-brand text-xs font-bold uppercase tracking-widest mb-4 sm:mb-6 border border-white/20">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-magenta-brand opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-magenta-brand"></span>
@@ -244,37 +244,37 @@ function HomePage() {
               Lawrenceville's Premier Print Shop
             </motion.div>
             
-            <motion.h1 variants={fadeInUp} className="font-display text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.95] tracking-tight mb-6">
+            <motion.h1 variants={fadeInUp} className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-[5.5rem] leading-[0.98] sm:leading-[0.95] tracking-tight mb-4 sm:mb-6">
               Custom Apparel. <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-brand via-magenta-brand to-yellow-brand animate-pulse">
                 Created Fast.
               </span>
             </motion.h1>
             
-            <motion.p variants={fadeInUp} className="mt-6 text-xl text-background/80 max-w-xl font-light">
+            <motion.p variants={fadeInUp} className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-background/85 max-w-xl font-light leading-relaxed">
               From family reunions and youth sports to massive corporate orders, we print vibrant, full-color custom apparel for every occasion. No minimums, no setup fees, just premium quality shirts delivered in days.
             </motion.p>
             
-            <motion.div variants={fadeInUp} className="mt-10 flex flex-wrap gap-4">
-              <Button asChild size="xl" className="shadow-[0_0_40px_-10px_rgba(236,72,153,0.5)] border border-magenta-brand bg-magenta-brand hover:bg-magenta-brand/90 text-white text-lg font-bold">
+            <motion.div variants={fadeInUp} className="mt-6 sm:mt-10 flex flex-wrap gap-3 sm:gap-4">
+              <Button asChild size="lg" className="sm:h-14 sm:px-8 sm:text-lg shadow-[0_0_40px_-10px_rgba(236,72,153,0.5)] border border-magenta-brand bg-magenta-brand hover:bg-magenta-brand/90 text-white font-bold rounded-xl">
                 <Link to="/designer">
-                  <Sparkles className="mr-2 h-5 w-5 text-yellow-brand" /> Launch Design Studio
+                  <Sparkles className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-yellow-brand" /> Launch Design Studio
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="xl" className="bg-transparent border-white/20 text-white hover:bg-white/10 text-lg font-bold">
+              <Button asChild variant="outline" size="lg" className="sm:h-14 sm:px-8 sm:text-lg bg-transparent border-white/20 text-white hover:bg-white/10 font-bold rounded-xl">
                 <Link to="/quote">Get A Quick Quote</Link>
               </Button>
             </motion.div>
             
-            <motion.div variants={fadeInUp} className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm font-medium text-background/60">
-              <span className="flex items-center gap-2">
-                <Zap className="h-5 w-5 text-yellow-brand" /> 3-7 Day Turnaround
+            <motion.div variants={fadeInUp} className="mt-6 sm:mt-10 flex flex-wrap gap-x-6 sm:gap-x-8 gap-y-2.5 text-xs sm:text-sm font-medium text-background/70">
+              <span className="flex items-center gap-1.5 sm:gap-2">
+                <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-brand" /> 3-7 Day Turnaround
               </span>
-              <span className="flex items-center gap-2">
-                <ShieldCheck className="h-5 w-5 text-cyan-brand" /> 100% Satisfaction
+              <span className="flex items-center gap-1.5 sm:gap-2">
+                <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-brand" /> 100% Satisfaction
               </span>
-              <span className="flex items-center gap-2">
-                <Star className="h-5 w-5 text-magenta-brand" /> 5-Star Rated
+              <span className="flex items-center gap-1.5 sm:gap-2">
+                <Star className="h-4 w-4 sm:h-5 sm:w-5 text-magenta-brand" /> 5-Star Rated
               </span>
             </motion.div>
           </motion.div>
@@ -284,7 +284,7 @@ function HomePage() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: "spring", stiffness: 50, delay: 0.2 }}
-            className="relative perspective-1000 w-full mt-12 lg:mt-0"
+            className="relative perspective-1000 w-full mt-6 lg:mt-0 landscape:mt-0"
           >
             <TiltImageSlideshow images={[
               { src: "/images/hero_family.jpg", alt: "Family Reunions" },
