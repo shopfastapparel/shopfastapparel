@@ -1,4 +1,5 @@
-import { Star, BadgeCheck, ExternalLink } from "lucide-react";
+import { Star, BadgeCheck, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 
 export type Review = {
   name: string;
@@ -106,6 +107,94 @@ export function Testimonials({ dynamicProjects = [] }: { dynamicProjects?: any[]
   }));
 
   const allProjects = [...dynamicProjects, ...staticProjects];
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const singleSetRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isUserInteracting, setIsUserInteracting] = useState(false);
+  const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastTimeRef = useRef<number | null>(null);
+
+  // Initialize scroll position so the user starts at Set 1 (allowing scrolling backward or forward)
+  useEffect(() => {
+    const initScroll = () => {
+      const container = scrollContainerRef.current;
+      const setEl = singleSetRef.current;
+      if (container && setEl && setEl.offsetWidth > 0 && container.scrollLeft === 0) {
+        container.scrollLeft = setEl.offsetWidth;
+      }
+    };
+    initScroll();
+    const t = setTimeout(initScroll, 150);
+    return () => clearTimeout(t);
+  }, [allProjects.length]);
+
+  // Marquee auto-scroll loop
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const animate = (timestamp: number) => {
+      if (lastTimeRef.current === null) {
+        lastTimeRef.current = timestamp;
+      }
+      const deltaTime = (timestamp - lastTimeRef.current) / 1000;
+      lastTimeRef.current = timestamp;
+
+      const container = scrollContainerRef.current;
+      const setEl = singleSetRef.current;
+
+      if (container && setEl && !isHovered && !isUserInteracting) {
+        const setWidth = setEl.offsetWidth;
+        if (setWidth > 0) {
+          if (container.scrollLeft === 0) {
+            container.scrollLeft = setWidth;
+          } else if (container.scrollLeft >= setWidth * 2) {
+            container.scrollLeft -= setWidth;
+          } else if (container.scrollLeft < setWidth * 0.5) {
+            container.scrollLeft += setWidth;
+          }
+
+          // Smooth continuous advance ~45px per second
+          container.scrollLeft += 45 * deltaTime;
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isHovered, isUserInteracting]);
+
+  const handleAdvance = (direction: -1 | 1) => {
+    const container = scrollContainerRef.current;
+    const setEl = singleSetRef.current;
+    if (!container) return;
+
+    // Pause auto-scrolling temporarily so the user can see what they advanced to
+    setIsUserInteracting(true);
+    if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
+    interactionTimeoutRef.current = setTimeout(() => {
+      setIsUserInteracting(false);
+    }, 3500);
+
+    // If near the boundaries, normalize without jarring
+    if (setEl && setEl.offsetWidth > 0) {
+      const setWidth = setEl.offsetWidth;
+      if (direction === -1 && container.scrollLeft <= setWidth * 0.5) {
+        container.scrollLeft += setWidth;
+      } else if (direction === 1 && container.scrollLeft >= setWidth * 2.5) {
+        container.scrollLeft -= setWidth;
+      }
+    }
+
+    // Advance by 1 card distance (card width + margin)
+    const cardStep = window.innerWidth < 768 ? 288 : 352;
+    container.scrollBy({
+      left: direction * cardStep,
+      behavior: "smooth",
+    });
+  };
   
   return (
     <section className="bg-background border-y-2 border-ink">
@@ -145,20 +234,69 @@ export function Testimonials({ dynamicProjects = [] }: { dynamicProjects?: any[]
           <div className="py-2 text-center uppercase tracking-[0.3em] font-bold text-xs bg-ink text-yellow-brand border-b-2 border-ink">
             Fresh off the press — Recent Customer Projects
           </div>
-          <div className="flex animate-marquee py-8" style={{ width: 'max-content', animationDuration: `${allProjects.length * 2 * 8}s` }}>
-            {[...allProjects, ...allProjects, ...allProjects, ...allProjects].map((p, idx) => (
-              <div 
-                key={`${p.id}-${idx}`} 
-                className="w-64 h-64 md:w-80 md:h-80 flex-shrink-0 mx-4 border-2 border-ink rounded-xl overflow-hidden shadow-pop bg-background transition-transform duration-300 hover:-translate-y-2"
-              >
-                <img 
-                  src={p.url} 
-                  alt={p.name}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-            ))}
+
+          <div
+            className="relative"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            {/* Left Advance Arrow */}
+            <button
+              type="button"
+              onClick={() => handleAdvance(-1)}
+              aria-label="Previous customer project"
+              className="absolute left-3 sm:left-6 md:left-8 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-13 sm:w-13 md:h-14 md:w-14 rounded-full bg-yellow-brand text-ink border-2 border-ink shadow-pop flex items-center justify-center hover:bg-ink hover:text-yellow-brand hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer group/btn"
+            >
+              <ChevronLeft className="h-6 w-6 sm:h-7 sm:w-7 transition-transform group-hover/btn:-translate-x-0.5" />
+            </button>
+
+            {/* Right Advance Arrow */}
+            <button
+              type="button"
+              onClick={() => handleAdvance(1)}
+              aria-label="Next customer project"
+              className="absolute right-3 sm:right-6 md:right-8 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-13 sm:w-13 md:h-14 md:w-14 rounded-full bg-yellow-brand text-ink border-2 border-ink shadow-pop flex items-center justify-center hover:bg-ink hover:text-yellow-brand hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer group/btn"
+            >
+              <ChevronRight className="h-6 w-6 sm:h-7 sm:w-7 transition-transform group-hover/btn:translate-x-0.5" />
+            </button>
+
+            {/* Subtle edge fade masks */}
+            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 bg-gradient-to-r from-background/80 via-background/20 to-transparent z-20" />
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 bg-gradient-to-l from-background/80 via-background/20 to-transparent z-20" />
+
+            {/* Scrolling Track Container */}
+            <div
+              ref={scrollContainerRef}
+              className="overflow-x-auto no-scrollbar py-8 flex"
+              onTouchStart={() => setIsUserInteracting(true)}
+              onTouchEnd={() => {
+                if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
+                interactionTimeoutRef.current = setTimeout(() => setIsUserInteracting(false), 3500);
+              }}
+            >
+              {[0, 1, 2, 3].map((setIndex) => (
+                <div
+                  key={setIndex}
+                  ref={setIndex === 0 ? singleSetRef : undefined}
+                  className="flex flex-shrink-0"
+                >
+                  {allProjects.map((p, idx) => (
+                    <div
+                      key={`${setIndex}-${p.id}-${idx}`}
+                      className="w-64 h-64 md:w-80 md:h-80 flex-shrink-0 mx-4 border-2 border-ink rounded-xl overflow-hidden shadow-pop bg-background transition-transform duration-300 hover:-translate-y-2 select-none"
+                    >
+                      <img
+                        src={p.url}
+                        alt={p.name}
+                        className="w-full h-full object-cover select-none pointer-events-none"
+                        loading="lazy"
+                        draggable={false}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
