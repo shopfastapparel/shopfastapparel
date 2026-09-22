@@ -13,7 +13,6 @@ import { Route as TurnaroundTimeRouteImport } from './routes/turnaround-time'
 import { Route as TrackRouteImport } from './routes/track'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ShopRouteImport } from './routes/shop'
-import { Route as ShirtColorsRouteImport } from './routes/shirt-colors'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as ReturnsRouteImport } from './routes/returns'
 import { Route as QuoteRouteImport } from './routes/quote'
@@ -76,11 +75,6 @@ const TermsRoute = TermsRouteImport.update({
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ShirtColorsRoute = ShirtColorsRouteImport.update({
-  id: '/shirt-colors',
-  path: '/shirt-colors',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReviewsRoute = ReviewsRouteImport.update({
@@ -316,7 +310,6 @@ export interface FileRoutesByFullPath {
   '/quote': typeof QuoteRoute
   '/returns': typeof ReturnsRoute
   '/reviews': typeof ReviewsRoute
-  '/shirt-colors': typeof ShirtColorsRoute
   '/shop': typeof ShopRoute
   '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
@@ -366,7 +359,6 @@ export interface FileRoutesByTo {
   '/quote': typeof QuoteRoute
   '/returns': typeof ReturnsRoute
   '/reviews': typeof ReviewsRoute
-  '/shirt-colors': typeof ShirtColorsRoute
   '/shop': typeof ShopRoute
   '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
@@ -417,7 +409,6 @@ export interface FileRoutesById {
   '/quote': typeof QuoteRoute
   '/returns': typeof ReturnsRoute
   '/reviews': typeof ReviewsRoute
-  '/shirt-colors': typeof ShirtColorsRoute
   '/shop': typeof ShopRoute
   '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
@@ -469,7 +460,6 @@ export interface FileRouteTypes {
     | '/quote'
     | '/returns'
     | '/reviews'
-    | '/shirt-colors'
     | '/shop'
     | '/terms'
     | '/track'
@@ -519,7 +509,6 @@ export interface FileRouteTypes {
     | '/quote'
     | '/returns'
     | '/reviews'
-    | '/shirt-colors'
     | '/shop'
     | '/terms'
     | '/track'
@@ -569,7 +558,6 @@ export interface FileRouteTypes {
     | '/quote'
     | '/returns'
     | '/reviews'
-    | '/shirt-colors'
     | '/shop'
     | '/terms'
     | '/track'
@@ -620,7 +608,6 @@ export interface RootRouteChildren {
   QuoteRoute: typeof QuoteRoute
   ReturnsRoute: typeof ReturnsRoute
   ReviewsRoute: typeof ReviewsRoute
-  ShirtColorsRoute: typeof ShirtColorsRoute
   ShopRoute: typeof ShopRoute
   TermsRoute: typeof TermsRoute
   TrackRoute: typeof TrackRoute
@@ -685,13 +672,6 @@ declare module '@tanstack/react-router' {
       path: '/shop'
       fullPath: '/shop'
       preLoaderRoute: typeof ShopRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/shirt-colors': {
-      id: '/shirt-colors'
-      path: '/shirt-colors'
-      fullPath: '/shirt-colors'
-      preLoaderRoute: typeof ShirtColorsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reviews': {
@@ -1012,7 +992,6 @@ const rootRouteChildren: RootRouteChildren = {
   QuoteRoute: QuoteRoute,
   ReturnsRoute: ReturnsRoute,
   ReviewsRoute: ReviewsRoute,
-  ShirtColorsRoute: ShirtColorsRoute,
   ShopRoute: ShopRoute,
   TermsRoute: TermsRoute,
   TrackRoute: TrackRoute,

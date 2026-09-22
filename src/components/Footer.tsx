@@ -48,11 +48,6 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/shirt-colors" className="hover:text-background">
-                Shirt Colors & Blanks
-              </Link>
-            </li>
-            <li>
               <Link to="/catalog" className="hover:text-yellow-brand text-background font-semibold">
                 Wholesale Catalog (5,000+ Styles)
               </Link>
