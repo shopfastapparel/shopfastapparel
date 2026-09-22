@@ -1,8 +1,13 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { submitQuoteRequest } from "@/lib/quote.functions";
-import { searchCatalogStyles, type CatalogStyle } from "@/lib/ssactivewear.functions";
+import {
+  searchCatalogStyles,
+  fetchStyleColors,
+  type CatalogStyle,
+  type GarmentColor,
+} from "@/lib/ssactivewear.functions";
 import ReCAPTCHA from "react-google-recaptcha";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/SiteLayout";
@@ -32,6 +37,8 @@ import {
   Sparkles,
   X,
   Package,
+  Palette,
+  Check,
 } from "lucide-react";
 import { LOCATIONS, PRIMARY_EMAIL, PRIMARY_PHONE } from "@/lib/locations";
 import { APPAREL_STYLES } from "@/lib/apparel";
@@ -47,6 +54,7 @@ export type SpecialtyGarment = {
   styleName: string;
   title: string;
   styleImage: string;
+  selectedColor?: string;
 };
 
 type QuoteSearch = {
@@ -275,10 +283,78 @@ function QuotePage() {
         styleName: searchParams.styleName || "",
         title: searchParams.title || searchParams.brandName || "Specialty Garment",
         styleImage: searchParams.styleImage || "",
+        selectedColor: searchParams.color || undefined,
       };
     }
     return null;
   });
+
+  const [availableColors, setAvailableColors] = useState<GarmentColor[]>([]);
+  const [loadingColors, setLoadingColors] = useState(false);
+  const [selectedColor, setSelectedColor] = useState<string>(searchParams.color || "");
+  const fetchStyleColorsFn = useServerFn(fetchStyleColors);
+
+  // Automatically fetch live colors whenever specialtyGarment changes or loads
+  useEffect(() => {
+    if (!specialtyGarment?.styleId) {
+      setAvailableColors([]);
+      return;
+    }
+    let isCurrent = true;
+    setLoadingColors(true);
+    fetchStyleColorsFn({ data: { styleId: Number(specialtyGarment.styleId) } })
+      .then((colors) => {
+        if (isCurrent) {
+          setAvailableColors(colors || []);
+          if (colors && colors.length > 0) {
+            if (searchParams.color) {
+              const matched = colors.find(
+                (c) => c.colorName.toLowerCase() === searchParams.color?.toLowerCase()
+              );
+              if (matched) {
+                setSelectedColor(matched.colorName);
+                if (matched.frontImage) {
+                  setSpecialtyGarment((prev) =>
+                    prev ? { ...prev, styleImage: matched.frontImage!, selectedColor: matched.colorName } : null
+                  );
+                }
+              } else {
+                setSelectedColor(searchParams.color);
+              }
+            } else if (!selectedColor) {
+              setSelectedColor(colors[0].colorName);
+              if (colors[0].frontImage) {
+                setSpecialtyGarment((prev) =>
+                  prev ? { ...prev, styleImage: colors[0].frontImage!, selectedColor: colors[0].colorName } : null
+                );
+              }
+            }
+          }
+          setLoadingColors(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load garment colors:", err);
+        if (isCurrent) setLoadingColors(false);
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [specialtyGarment?.styleId]);
+
+  const handleSelectColor = (color: GarmentColor) => {
+    setSelectedColor(color.colorName);
+    setSpecialtyGarment((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        styleImage: color.frontImage || prev.styleImage,
+        selectedColor: color.colorName,
+      };
+    });
+    toast.success(`Color selected: ${color.colorName}`);
+  };
 
   const [catalogModalOpen, setCatalogModalOpen] = useState(false);
   const [catalogSearchTerm, setCatalogSearchTerm] = useState("");
@@ -500,7 +576,8 @@ function QuotePage() {
 
       let submissionDetails = state.details;
       if (specialtyGarment) {
-        const specSummary = `Selected Specialty Garment (S&S Activewear Catalog):\n- Brand: ${specialtyGarment.brandName}\n- Style: ${specialtyGarment.styleName} (${specialtyGarment.title})\n- Style ID: #${specialtyGarment.styleId}${specialtyGarment.styleImage ? `\n- Image: ${specialtyGarment.styleImage}` : ""}\n\n`;
+        const colorLine = selectedColor ? `- Chosen Garment Color: ${selectedColor}\n` : "";
+        const specSummary = `Selected Garment Blank (Wholesale Catalog):\n- Brand: ${specialtyGarment.brandName}\n- Style: ${specialtyGarment.styleName} (${specialtyGarment.title})\n- Style ID: #${specialtyGarment.styleId}\n${colorLine}${specialtyGarment.styleImage ? `- Image: ${specialtyGarment.styleImage}\n` : ""}\n\n`;
         submissionDetails = specSummary + (submissionDetails || "");
       }
       const sizesSummary = formatSizesSummary();
@@ -626,60 +703,130 @@ function QuotePage() {
 
         <div className="bg-card border-2 border-ink rounded-xl p-6 md:p-8 shadow-pop">
           {specialtyGarment && (
-            <div className="mb-6 bg-yellow-brand/15 border-2 border-ink rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                {specialtyGarment.styleImage ? (
-                  <img
-                    src={specialtyGarment.styleImage}
-                    alt={specialtyGarment.title}
-                    className="w-14 h-16 object-contain rounded-lg border border-ink/20 bg-background p-1 shrink-0 mix-blend-multiply"
-                  />
-                ) : (
-                  <div className="w-14 h-16 rounded-lg border border-ink/20 bg-background flex items-center justify-center shrink-0">
-                    <Package className="w-6 h-6 text-muted-foreground" />
+            <div className="mb-6 bg-yellow-brand/15 border-2 border-ink rounded-xl p-4 sm:p-5 space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  {specialtyGarment.styleImage ? (
+                    <img
+                      src={specialtyGarment.styleImage}
+                      alt={specialtyGarment.title}
+                      className="w-16 h-18 object-contain rounded-lg border border-ink/20 bg-background p-1 shrink-0 mix-blend-multiply transition-all duration-200"
+                    />
+                  ) : (
+                    <div className="w-16 h-18 rounded-lg border border-ink/20 bg-background flex items-center justify-center shrink-0">
+                      <Package className="w-6 h-6 text-muted-foreground" />
+                    </div>
+                  )}
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider bg-ink text-background px-2 py-0.5 rounded">
+                        Specialty Blank ({specialtyGarment.brandName})
+                      </span>
+                      <span className="text-xs font-mono font-bold text-muted-foreground">
+                        #{specialtyGarment.styleName || specialtyGarment.styleId}
+                      </span>
+                    </div>
+                    <h4 className="font-bold text-ink text-sm sm:text-base mt-0.5">
+                      {specialtyGarment.title}
+                    </h4>
+                    <p className="text-xs text-muted-foreground">
+                      Sourced directly from wholesale distributor inventory
+                    </p>
                   </div>
-                )}
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider bg-ink text-background px-2 py-0.5 rounded">
-                      Specialty Blank ({specialtyGarment.brandName})
-                    </span>
-                    <span className="text-xs font-mono font-bold text-muted-foreground">
-                      #{specialtyGarment.styleName || specialtyGarment.styleId}
-                    </span>
-                  </div>
-                  <h4 className="font-bold text-ink text-sm sm:text-base mt-0.5">
-                    {specialtyGarment.title}
-                  </h4>
-                  <p className="text-xs text-muted-foreground">
-                    Sourced directly from wholesale distributor inventory
-                  </p>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setCatalogModalOpen(true);
+                      if (catalogResults.length === 0) {
+                        handleCatalogSearch(specialtyGarment.brandName || "tee");
+                      }
+                    }}
+                    className="text-xs font-semibold border-ink bg-background"
+                  >
+                    Change Garment
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setSpecialtyGarment(null);
+                      setSelectedColor("");
+                    }}
+                    className="text-xs text-muted-foreground hover:text-red-600"
+                  >
+                    Remove
+                  </Button>
                 </div>
               </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setCatalogModalOpen(true);
-                    if (catalogResults.length === 0) {
-                      handleCatalogSearch(specialtyGarment.brandName || "tee");
-                    }
-                  }}
-                  className="text-xs font-semibold border-ink bg-background"
-                >
-                  Change Garment
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setSpecialtyGarment(null)}
-                  className="text-xs text-muted-foreground hover:text-red-600"
-                >
-                  Remove
-                </Button>
+
+              {/* Interactive Garment Color Swatches */}
+              <div className="pt-3 border-t border-ink/20">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center gap-2 text-xs font-bold text-ink">
+                    <Palette className="w-3.5 h-3.5 text-magenta-brand" />
+                    <span>Garment Color:</span>
+                    {selectedColor ? (
+                      <span className="text-magenta-brand bg-background border border-ink/20 px-2 py-0.5 rounded-full text-[11px] font-bold shadow-xs">
+                        {selectedColor}
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground font-normal">Choose your color below</span>
+                    )}
+                  </div>
+                  {availableColors.length > 0 && (
+                    <span className="text-[11px] text-muted-foreground font-medium">
+                      {availableColors.length} available colors
+                    </span>
+                  )}
+                </div>
+
+                {loadingColors ? (
+                  <div className="py-2 text-xs text-muted-foreground flex items-center gap-2">
+                    <div className="w-3.5 h-3.5 border-2 border-magenta-brand border-t-transparent rounded-full animate-spin" />
+                    Loading available color options...
+                  </div>
+                ) : availableColors.length > 0 ? (
+                  <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto p-1.5 scrollbar-thin bg-background/80 rounded-lg border border-ink/20">
+                    {availableColors.map((col) => {
+                      const isSelected = selectedColor?.toLowerCase() === col.colorName.toLowerCase();
+                      return (
+                        <button
+                          key={col.colorName}
+                          type="button"
+                          onClick={() => handleSelectColor(col)}
+                          title={col.colorName}
+                          className={`group relative flex items-center gap-1 px-2 py-1 rounded text-xs transition-all border ${
+                            isSelected
+                              ? "bg-ink text-background border-ink font-bold shadow-xs scale-105"
+                              : "bg-background text-foreground/80 hover:bg-muted border-border hover:border-ink/50"
+                          }`}
+                        >
+                          {col.swatchImage ? (
+                            <img
+                              src={col.swatchImage}
+                              alt={col.colorName}
+                              className="w-3.5 h-3.5 rounded-full object-cover border border-ink/30 shrink-0"
+                            />
+                          ) : col.colorHex ? (
+                            <span
+                              className="w-3.5 h-3.5 rounded-full border border-ink/30 shrink-0"
+                              style={{ backgroundColor: col.colorHex }}
+                            />
+                          ) : null}
+                          <span className="truncate max-w-[110px] text-[11px]">{col.colorName}</span>
+                          {isSelected && <Check className="w-3 h-3 ml-0.5" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-xs text-muted-foreground">Full wholesale colorway options available upon request.</p>
+                )}
               </div>
             </div>
           )}
@@ -816,7 +963,7 @@ function QuotePage() {
                   );
                 })()}
 
-                {/* S&S Activewear Live Catalog Quick Search Trigger */}
+                {/* Wholesale Apparel Live Catalog Quick Search Trigger */}
                 <div className="mt-4 p-3.5 rounded-xl border-2 border-dashed border-ink/30 bg-muted/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-start gap-2.5">
                     <Sparkles className="w-4 h-4 text-magenta-brand shrink-0 mt-0.5" />
@@ -841,7 +988,7 @@ function QuotePage() {
                     }}
                     className="border-2 border-ink font-bold text-xs shrink-0 shadow-xs bg-background hover:bg-yellow-brand hover:text-ink transition-colors"
                   >
-                    <Search className="w-3.5 h-3.5 mr-1 text-magenta-brand" /> Search S&S Catalog
+                    <Search className="w-3.5 h-3.5 mr-1 text-magenta-brand" /> Search Wholesale Catalog
                   </Button>
                 </div>
               </div>
@@ -1269,7 +1416,7 @@ function QuotePage() {
         </p>
       </section>
 
-      {/* S&S Activewear Live Catalog Search Modal */}
+      {/* Wholesale Apparel Live Catalog Search Modal */}
       {catalogModalOpen && (
         <div className="fixed inset-0 z-50 bg-ink/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
           <div className="bg-background rounded-2xl border-2 border-ink max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden shadow-pop animate-in fade-in zoom-in-95">
@@ -1278,7 +1425,7 @@ function QuotePage() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold uppercase tracking-wider text-magenta-brand">
-                    S&S Activewear Live Catalog
+                    Wholesale Apparel Catalog
                   </span>
                   <span className="text-[10px] bg-yellow-brand text-ink px-1.5 py-0.5 rounded font-bold uppercase">
                     5,000+ Blanks
@@ -1542,10 +1689,15 @@ function Summary({
       <dl className="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
         <Row label="Service" value={service?.label} />
         {specialtyGarment ? (
-          <Row
-            label="Specialty Garment"
-            value={`${specialtyGarment.brandName} ${specialtyGarment.styleName} - ${specialtyGarment.title}`}
-          />
+          <>
+            <Row
+              label="Specialty Garment"
+              value={`${specialtyGarment.brandName} ${specialtyGarment.styleName} - ${specialtyGarment.title}`}
+            />
+            {specialtyGarment.selectedColor && (
+              <Row label="Garment Color" value={specialtyGarment.selectedColor} />
+            )}
+          </>
         ) : apparel ? (
           <Row label="Apparel Style" value={`${apparel.name} (${apparel.brand} ${apparel.model})`} />
         ) : null}

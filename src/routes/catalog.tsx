@@ -1,7 +1,12 @@
-import { useState, useEffect, useTransition } from "react";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { searchCatalogStyles, type CatalogStyle } from "@/lib/ssactivewear.functions";
+import {
+  searchCatalogStyles,
+  fetchStyleColors,
+  type CatalogStyle,
+  type GarmentColor,
+} from "@/lib/ssactivewear.functions";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +21,8 @@ import {
   Layers,
   Phone,
   X,
+  Palette,
+  Check,
 } from "lucide-react";
 import { PRIMARY_PHONE } from "@/lib/locations";
 
@@ -33,17 +40,17 @@ export const Route = createFileRoute("/catalog")({
   }),
   head: () => ({
     meta: [
-      { title: "Wholesale Apparel Catalog (5,000+ Styles) | S&S Activewear Live Search | Fast Apparel" },
+      { title: "Wholesale Apparel Catalog (5,000+ Styles) | Live Inventory Search | Fast Apparel" },
       {
         name: "description",
         content:
-          "Search over 5,000 blank apparel styles from Champion, Adidas, Richardson, Comfort Colors, Bella+Canvas, and more. Direct S&S Activewear live catalog with 1-click custom print quotes.",
+          "Search over 5,000 blank apparel styles from Champion, Adidas, Richardson, Comfort Colors, Bella+Canvas, and more. Direct live wholesale catalog with 1-click custom print quotes.",
       },
       { property: "og:title", content: "Live Wholesale Apparel Catalog | Fast Apparel Atlanta" },
       {
         property: "og:description",
         content:
-          "Looking for a specific brand or garment? Search 5,000+ wholesale blanks and get a custom print quote in 24 hours.",
+          "Looking for a specific brand or garment? Search 5,000+ wholesale blanks with real-time colors and get a custom print quote in 24 hours.",
       },
     ],
   }),
@@ -79,6 +86,7 @@ const CATEGORIES = [
 function CatalogPage() {
   const searchParams = Route.useSearch();
   const searchCatalogFn = useServerFn(searchCatalogStyles);
+  const fetchStyleColorsFn = useServerFn(fetchStyleColors);
 
   const [searchQuery, setSearchQuery] = useState(searchParams.q || "");
   const [selectedBrand, setSelectedBrand] = useState(searchParams.brand || "All Brands");
@@ -88,7 +96,12 @@ function CatalogPage() {
   const [totalCount, setTotalCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+
+  // Modal inspection and interactive color selection
   const [selectedModalStyle, setSelectedModalStyle] = useState<CatalogStyle | null>(null);
+  const [modalColors, setModalColors] = useState<GarmentColor[]>([]);
+  const [modalLoadingColors, setModalLoadingColors] = useState(false);
+  const [selectedColor, setSelectedColor] = useState<GarmentColor | null>(null);
 
   const PAGE_SIZE = 36;
 
@@ -134,6 +147,38 @@ function CatalogPage() {
       clearTimeout(timer);
     };
   }, [searchQuery, selectedBrand, selectedCategory]);
+
+  // When opening modal for a style, fetch its available colors
+  useEffect(() => {
+    if (!selectedModalStyle) {
+      setModalColors([]);
+      setSelectedColor(null);
+      return;
+    }
+
+    let isCurrent = true;
+    setModalLoadingColors(true);
+    setSelectedColor(null);
+
+    fetchStyleColorsFn({ data: { styleId: selectedModalStyle.styleID } })
+      .then((colors) => {
+        if (isCurrent) {
+          setModalColors(colors || []);
+          if (colors && colors.length > 0) {
+            setSelectedColor(colors[0]);
+          }
+          setModalLoadingColors(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load style colors:", err);
+        if (isCurrent) setModalLoadingColors(false);
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [selectedModalStyle]);
 
   // Load more styles
   const handleLoadMore = async () => {
@@ -184,8 +229,8 @@ function CatalogPage() {
               </h1>
               <p className="mt-3 text-base sm:text-lg text-muted-foreground leading-relaxed">
                 Looking for a specific brand, heavyweight hoodie, snapback, or athletic apparel? Search over{" "}
-                <span className="font-bold text-ink">5,000+ blank styles</span> from S&S Activewear. If they carry it,
-                Fast Apparel can acquire it, print your design, and deliver it fast.
+                <span className="font-bold text-ink">5,000+ blank styles</span> from America's top wholesale distributors.
+                If they carry it, Fast Apparel can acquire it, print your design, and deliver it fast.
               </p>
             </div>
 
@@ -308,8 +353,8 @@ function CatalogPage() {
           </div>
 
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span className="bg-muted px-2.5 py-1 rounded border font-medium">
-              Real-time S&S Activewear Stock Available
+            <span className="bg-muted px-2.5 py-1 rounded border font-medium flex items-center gap-1.5">
+              <Palette className="w-3.5 h-3.5 text-cyan-brand" /> Live Color Options Available
             </span>
           </div>
         </div>
@@ -388,7 +433,10 @@ function CatalogPage() {
                 className="group relative flex flex-col bg-background rounded-xl border-2 border-ink overflow-hidden shadow-sm hover:shadow-pop transition-all hover:-translate-y-1"
               >
                 {/* Image Box */}
-                <div className="relative aspect-[3/4] bg-muted/10 p-3 overflow-hidden flex items-center justify-center border-b border-border">
+                <div
+                  onClick={() => setSelectedModalStyle(style)}
+                  className="relative aspect-[3/4] bg-muted/10 p-3 overflow-hidden flex items-center justify-center border-b border-border cursor-pointer"
+                >
                   {style.styleImage ? (
                     <img
                       src={style.styleImage}
@@ -417,7 +465,10 @@ function CatalogPage() {
                 {/* Content Box */}
                 <div className="p-3.5 flex flex-col flex-1 justify-between">
                   <div>
-                    <h3 className="font-bold text-sm text-ink line-clamp-2 leading-snug group-hover:text-magenta-brand transition-colors">
+                    <h3
+                      onClick={() => setSelectedModalStyle(style)}
+                      className="font-bold text-sm text-ink line-clamp-2 leading-snug group-hover:text-magenta-brand transition-colors cursor-pointer"
+                    >
                       {style.title}
                     </h3>
                     {style.baseCategory && (
@@ -429,18 +480,16 @@ function CatalogPage() {
 
                   {/* Actions */}
                   <div className="mt-4 pt-3 border-t border-border/60 space-y-2">
-                    {/* Quick Specs Modal Trigger */}
-                    {style.description && (
-                      <button
-                        type="button"
-                        onClick={() => setSelectedModalStyle(style)}
-                        className="w-full text-center text-[11px] font-semibold text-muted-foreground hover:text-ink flex items-center justify-center gap-1 py-1"
-                      >
-                        <Info className="w-3 h-3" /> View Fabric Specs
-                      </button>
-                    )}
+                    {/* View Colors & Specs Button */}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedModalStyle(style)}
+                      className="w-full text-center text-[11px] font-bold text-muted-foreground hover:text-ink flex items-center justify-center gap-1.5 py-1 bg-muted/40 hover:bg-muted rounded-md transition-colors"
+                    >
+                      <Palette className="w-3.5 h-3.5 text-cyan-brand" /> View Colors & Specs
+                    </button>
 
-                    {/* Request Quote Button */}
+                    {/* Quick Quote Button */}
                     <Button
                       asChild
                       size="sm"
@@ -487,7 +536,7 @@ function CatalogPage() {
               Don't see the exact color, cut, or accessory you need?
             </h3>
             <p className="mt-2 text-sm text-background/80 leading-relaxed">
-              We have direct access to S&S Activewear's multi-million unit warehouse inventory. Tell us what you're
+              We have direct access to multi-million unit wholesale warehouse inventory nationwide. Tell us what you're
               looking for and our production team will source it with volume wholesale discounts.
             </p>
           </div>
@@ -504,10 +553,10 @@ function CatalogPage() {
         </div>
       </section>
 
-      {/* Fabric Specs Modal */}
+      {/* Fabric Specs & Interactive Color Selection Modal */}
       {selectedModalStyle && (
         <div className="fixed inset-0 z-50 bg-ink/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-background rounded-2xl border-2 border-ink max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 relative shadow-pop animate-in fade-in zoom-in-95">
+          <div className="bg-background rounded-2xl border-2 border-ink max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 relative shadow-pop animate-in fade-in zoom-in-95">
             <button
               type="button"
               onClick={() => setSelectedModalStyle(null)}
@@ -516,14 +565,20 @@ function CatalogPage() {
               <X className="w-5 h-5" />
             </button>
 
+            {/* Header info with dynamic color photo */}
             <div className="flex items-start gap-4 pr-8">
-              {selectedModalStyle.styleImage && (
-                <img
-                  src={selectedModalStyle.styleImage}
-                  alt={selectedModalStyle.title}
-                  className="w-20 h-24 object-contain rounded-lg border border-ink/20 bg-muted/20 shrink-0"
-                />
-              )}
+              <div className="w-24 h-28 bg-muted/20 rounded-lg border border-ink/20 p-1 shrink-0 flex items-center justify-center relative overflow-hidden">
+                {selectedColor?.frontImage || selectedModalStyle.styleImage ? (
+                  <img
+                    src={selectedColor?.frontImage || selectedModalStyle.styleImage}
+                    alt={selectedModalStyle.title}
+                    className="w-full h-full object-contain mix-blend-multiply transition-all duration-200"
+                  />
+                ) : (
+                  <Package className="w-10 h-10 text-muted-foreground" />
+                )}
+              </div>
+
               <div>
                 <span className="text-xs font-extrabold uppercase text-magenta-brand tracking-wider">
                   {selectedModalStyle.brandName}
@@ -534,10 +589,79 @@ function CatalogPage() {
                 <p className="text-xs font-mono font-bold text-muted-foreground mt-1">
                   Style #{selectedModalStyle.styleName || selectedModalStyle.styleID}
                 </p>
+                {selectedColor && (
+                  <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-yellow-brand/20 border border-yellow-brand text-ink text-xs font-bold">
+                    {selectedColor.colorHex && (
+                      <span
+                        className="w-3 h-3 rounded-full border border-ink/30 shrink-0"
+                        style={{ backgroundColor: selectedColor.colorHex }}
+                      />
+                    )}
+                    <span>Color: {selectedColor.colorName}</span>
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="mt-6 border-t pt-4">
+            {/* Color Palette Selector */}
+            <div className="mt-5 border-t pt-4">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-ink flex items-center gap-1.5">
+                  <Palette className="w-3.5 h-3.5 text-magenta-brand" /> Available Colors ({modalColors.length}):
+                </h4>
+                {selectedColor && (
+                  <span className="text-xs font-semibold text-muted-foreground">
+                    Click any swatch to preview & quote
+                  </span>
+                )}
+              </div>
+
+              {modalLoadingColors ? (
+                <div className="py-4 text-xs text-muted-foreground flex items-center gap-2">
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin text-magenta-brand" />
+                  Loading available colorways...
+                </div>
+              ) : modalColors.length > 0 ? (
+                <div className="flex flex-wrap gap-1.5 max-h-44 overflow-y-auto p-2 scrollbar-thin border rounded-xl bg-muted/10">
+                  {modalColors.map((color) => {
+                    const isSelected = selectedColor?.colorName === color.colorName;
+                    return (
+                      <button
+                        key={color.colorName}
+                        type="button"
+                        onClick={() => setSelectedColor(color)}
+                        title={color.colorName}
+                        className={`group relative flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-all border ${
+                          isSelected
+                            ? "bg-ink text-background border-ink font-bold shadow-xs scale-105"
+                            : "bg-background text-foreground/80 hover:bg-muted border-border hover:border-ink/50"
+                        }`}
+                      >
+                        {color.swatchImage ? (
+                          <img
+                            src={color.swatchImage}
+                            alt={color.colorName}
+                            className="w-3.5 h-3.5 rounded-full object-cover border border-ink/30 shrink-0"
+                          />
+                        ) : color.colorHex ? (
+                          <span
+                            className="w-3.5 h-3.5 rounded-full border border-ink/30 shrink-0"
+                            style={{ backgroundColor: color.colorHex }}
+                          />
+                        ) : null}
+                        <span className="truncate max-w-[120px]">{color.colorName}</span>
+                        {isSelected && <Check className="w-3 h-3 ml-0.5" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground">Full wholesale color palette available upon quote.</p>
+              )}
+            </div>
+
+            {/* Fabric Specs */}
+            <div className="mt-5 border-t pt-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-ink mb-2">
                 Garment & Fabric Specifications:
               </h4>
@@ -551,6 +675,7 @@ function CatalogPage() {
               )}
             </div>
 
+            {/* Footer Actions */}
             <div className="mt-6 pt-4 border-t flex items-center justify-end gap-3">
               <Button variant="outline" size="sm" onClick={() => setSelectedModalStyle(null)}>
                 Close
@@ -567,11 +692,12 @@ function CatalogPage() {
                     brandName: selectedModalStyle.brandName,
                     styleName: selectedModalStyle.styleName,
                     title: selectedModalStyle.title,
-                    styleImage: selectedModalStyle.styleImage,
+                    styleImage: selectedColor?.frontImage || selectedModalStyle.styleImage,
+                    color: selectedColor?.colorName || undefined,
                   }}
                   onClick={() => setSelectedModalStyle(null)}
                 >
-                  Request Quote for This Garment &rarr;
+                  Quote in {selectedColor ? selectedColor.colorName : "This Style"} &rarr;
                 </Link>
               </Button>
             </div>

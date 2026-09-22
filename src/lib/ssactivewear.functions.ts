@@ -154,6 +154,83 @@ export const searchCatalogStyles = createServerFn({ method: "POST" })
     };
   });
 
+export type GarmentColor = {
+  colorName: string;
+  colorHex?: string;
+  color2?: string;
+  swatchImage?: string;
+  frontImage?: string;
+};
+
+const colorsCache = new Map<number, { timestamp: number; data: GarmentColor[] }>();
+
+export const fetchStyleColors = createServerFn({ method: "POST" })
+  .inputValidator((d) => z.object({ styleId: z.number() }).parse(d))
+  .handler(async ({ data }): Promise<GarmentColor[]> => {
+    const { styleId } = data;
+    const now = Date.now();
+    const cached = colorsCache.get(styleId);
+    if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+      return cached.data;
+    }
+
+    const accountNo = process.env.SS_ACCOUNT_NUMBER?.trim();
+    const apiKey = process.env.SS_API_KEY?.trim();
+
+    if (!accountNo || !apiKey) {
+      return [];
+    }
+
+    try {
+      const authHeader = "Basic " + btoa(`${accountNo}:${apiKey}`);
+      const res = await fetch(`https://api.ssactivewear.com/v2/products/?styleID=${styleId}`, {
+        headers: {
+          Authorization: authHeader,
+          Accept: "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        return [];
+      }
+
+      const products: any[] = await res.json();
+      if (!Array.isArray(products)) {
+        return [];
+      }
+
+      const colorMap = new Map<string, GarmentColor>();
+      for (const p of products) {
+        const cName = (p.colorName || "").trim();
+        if (cName && !colorMap.has(cName)) {
+          let swatch = p.colorSwatchImage || "";
+          if (swatch && !swatch.startsWith("http")) {
+            swatch = `https://cdn.ssactivewear.com/${swatch.replace(/^\/+/, "")}`;
+          }
+          let front = p.colorFrontImage || "";
+          if (front && !front.startsWith("http")) {
+            front = `https://cdn.ssactivewear.com/${front.replace(/^\/+/, "")}`;
+          }
+
+          colorMap.set(cName, {
+            colorName: cName,
+            colorHex: p.color1 || undefined,
+            color2: p.color2 || undefined,
+            swatchImage: swatch || undefined,
+            frontImage: front || undefined,
+          });
+        }
+      }
+
+      const colors = Array.from(colorMap.values());
+      colorsCache.set(styleId, { timestamp: now, data: colors });
+      return colors;
+    } catch (err) {
+      console.error("Failed to fetch style colors:", err);
+      return [];
+    }
+  });
+
 
 // This server function runs securely on the backend (Node/Vercel)
 // so the API key and Account Number are never exposed to the browser.

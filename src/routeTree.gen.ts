@@ -23,6 +23,7 @@ import { Route as ImagePlacementsRouteImport } from './routes/image-placements'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as DesignerRouteImport } from './routes/designer'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CatalogRouteImport } from './routes/catalog'
 import { Route as ArtworkGuidelinesRouteImport } from './routes/artwork-guidelines'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -125,6 +126,11 @@ const DesignerRoute = DesignerRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CatalogRoute = CatalogRouteImport.update({
+  id: '/catalog',
+  path: '/catalog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArtworkGuidelinesRoute = ArtworkGuidelinesRouteImport.update({
@@ -300,6 +306,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/artwork-guidelines': typeof ArtworkGuidelinesRoute
+  '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
   '/designer': typeof DesignerRoute
   '/faq': typeof FaqRoute
@@ -349,6 +356,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/artwork-guidelines': typeof ArtworkGuidelinesRoute
+  '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
   '/designer': typeof DesignerRoute
   '/faq': typeof FaqRoute
@@ -399,6 +407,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/artwork-guidelines': typeof ArtworkGuidelinesRoute
+  '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
   '/designer': typeof DesignerRoute
   '/faq': typeof FaqRoute
@@ -450,6 +459,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/artwork-guidelines'
+    | '/catalog'
     | '/contact'
     | '/designer'
     | '/faq'
@@ -499,6 +509,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/artwork-guidelines'
+    | '/catalog'
     | '/contact'
     | '/designer'
     | '/faq'
@@ -548,6 +559,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/artwork-guidelines'
+    | '/catalog'
     | '/contact'
     | '/designer'
     | '/faq'
@@ -598,6 +610,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ArtworkGuidelinesRoute: typeof ArtworkGuidelinesRoute
+  CatalogRoute: typeof CatalogRoute
   ContactRoute: typeof ContactRoute
   DesignerRoute: typeof DesignerRoute
   FaqRoute: typeof FaqRoute
@@ -742,6 +755,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/catalog': {
+      id: '/catalog'
+      path: '/catalog'
+      fullPath: '/catalog'
+      preLoaderRoute: typeof CatalogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/artwork-guidelines': {
@@ -982,6 +1002,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ArtworkGuidelinesRoute: ArtworkGuidelinesRoute,
+  CatalogRoute: CatalogRoute,
   ContactRoute: ContactRoute,
   DesignerRoute: DesignerRoute,
   FaqRoute: FaqRoute,

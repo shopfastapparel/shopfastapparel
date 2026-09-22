@@ -187,7 +187,7 @@ function ProductPage() {
                   Live Warehouse Inventory
                 </span>
                 {loadingInv && (
-                  <span className="text-xs text-muted-foreground animate-pulse">Syncing with S&S Activewear...</span>
+                  <span className="text-xs text-muted-foreground animate-pulse">Syncing live warehouse stock...</span>
                 )}
               </div>
               
