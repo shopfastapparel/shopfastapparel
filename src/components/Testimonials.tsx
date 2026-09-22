@@ -108,54 +108,62 @@ export function Testimonials({ dynamicProjects = [] }: { dynamicProjects?: any[]
 
   const allProjects = [...dynamicProjects, ...staticProjects];
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const singleSetRef = useRef<HTMLDivElement>(null);
+  const currentOffsetRef = useRef<number>(0);
+  const targetOffsetRef = useRef<number>(0);
   const [isHovered, setIsHovered] = useState(false);
-  const [isUserInteracting, setIsUserInteracting] = useState(false);
-  const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastTimeRef = useRef<number | null>(null);
+  const touchStartXRef = useRef<number | null>(null);
 
-  // Initialize scroll position so the user starts at Set 1 (allowing scrolling backward or forward)
-  useEffect(() => {
-    const initScroll = () => {
-      const container = scrollContainerRef.current;
-      const setEl = singleSetRef.current;
-      if (container && setEl && setEl.offsetWidth > 0 && container.scrollLeft === 0) {
-        container.scrollLeft = setEl.offsetWidth;
-      }
-    };
-    initScroll();
-    const t = setTimeout(initScroll, 150);
-    return () => clearTimeout(t);
-  }, [allProjects.length]);
-
-  // Marquee auto-scroll loop
+  // Marquee auto-scroll loop via GPU translate3d
   useEffect(() => {
     let animationFrameId: number;
+    let lastTime: number | null = null;
 
     const animate = (timestamp: number) => {
-      if (lastTimeRef.current === null) {
-        lastTimeRef.current = timestamp;
+      if (lastTime === null) {
+        lastTime = timestamp;
       }
-      const deltaTime = (timestamp - lastTimeRef.current) / 1000;
-      lastTimeRef.current = timestamp;
+      const deltaTime = Math.min((timestamp - lastTime) / 1000, 0.1);
+      lastTime = timestamp;
 
-      const container = scrollContainerRef.current;
-      const setEl = singleSetRef.current;
+      const track = trackRef.current;
+      const singleSet = singleSetRef.current;
 
-      if (container && setEl && !isHovered && !isUserInteracting) {
-        const setWidth = setEl.offsetWidth;
+      if (track && singleSet) {
+        const setWidth = singleSet.offsetWidth;
+
         if (setWidth > 0) {
-          if (container.scrollLeft === 0) {
-            container.scrollLeft = setWidth;
-          } else if (container.scrollLeft >= setWidth * 2) {
-            container.scrollLeft -= setWidth;
-          } else if (container.scrollLeft < setWidth * 0.5) {
-            container.scrollLeft += setWidth;
+          // Auto-scroll pace: 40px/sec when not hovered
+          if (!isHovered) {
+            targetOffsetRef.current += 40 * deltaTime;
           }
 
-          // Smooth continuous advance ~45px per second
-          container.scrollLeft += 45 * deltaTime;
+          // Smooth easing towards target offset (spring / lerp)
+          const diff = targetOffsetRef.current - currentOffsetRef.current;
+          if (Math.abs(diff) > 0.05) {
+            currentOffsetRef.current += diff * 0.12;
+          } else {
+            currentOffsetRef.current = targetOffsetRef.current;
+          }
+
+          // Handle seamless wrap-around
+          if (targetOffsetRef.current >= setWidth * 2) {
+            targetOffsetRef.current -= setWidth;
+            currentOffsetRef.current -= setWidth;
+          } else if (targetOffsetRef.current < 0) {
+            targetOffsetRef.current += setWidth;
+            currentOffsetRef.current += setWidth;
+          }
+
+          if (currentOffsetRef.current >= setWidth * 2) {
+            currentOffsetRef.current -= setWidth;
+          } else if (currentOffsetRef.current < 0) {
+            currentOffsetRef.current += setWidth;
+          }
+
+          // Apply hardware-accelerated transform with subpixel accuracy
+          track.style.transform = `translate3d(-${currentOffsetRef.current}px, 0, 0)`;
         }
       }
 
@@ -164,36 +172,27 @@ export function Testimonials({ dynamicProjects = [] }: { dynamicProjects?: any[]
 
     animationFrameId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationFrameId);
-  }, [isHovered, isUserInteracting]);
+  }, [isHovered]);
 
   const handleAdvance = (direction: -1 | 1) => {
-    const container = scrollContainerRef.current;
-    const setEl = singleSetRef.current;
-    if (!container) return;
+    const cardStep = typeof window !== "undefined" && window.innerWidth < 768 ? 288 : 352;
+    targetOffsetRef.current += direction * cardStep;
+  };
 
-    // Pause auto-scrolling temporarily so the user can see what they advanced to
-    setIsUserInteracting(true);
-    if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
-    interactionTimeoutRef.current = setTimeout(() => {
-      setIsUserInteracting(false);
-    }, 3500);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.touches[0].clientX;
+    setIsHovered(true);
+  };
 
-    // If near the boundaries, normalize without jarring
-    if (setEl && setEl.offsetWidth > 0) {
-      const setWidth = setEl.offsetWidth;
-      if (direction === -1 && container.scrollLeft <= setWidth * 0.5) {
-        container.scrollLeft += setWidth;
-      } else if (direction === 1 && container.scrollLeft >= setWidth * 2.5) {
-        container.scrollLeft -= setWidth;
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartXRef.current !== null) {
+      const diffX = touchStartXRef.current - e.changedTouches[0].clientX;
+      if (Math.abs(diffX) > 40) {
+        handleAdvance(diffX > 0 ? 1 : -1);
       }
     }
-
-    // Advance by 1 card distance (card width + margin)
-    const cardStep = window.innerWidth < 768 ? 288 : 352;
-    container.scrollBy({
-      left: direction * cardStep,
-      behavior: "smooth",
-    });
+    touchStartXRef.current = null;
+    setTimeout(() => setIsHovered(false), 2000);
   };
   
   return (
@@ -236,14 +235,19 @@ export function Testimonials({ dynamicProjects = [] }: { dynamicProjects?: any[]
           </div>
 
           <div
-            className="relative"
+            className="relative overflow-hidden w-full"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
             {/* Left Advance Arrow */}
             <button
               type="button"
-              onClick={() => handleAdvance(-1)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAdvance(-1);
+              }}
               aria-label="Previous customer project"
               className="absolute left-3 sm:left-6 md:left-8 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-13 sm:w-13 md:h-14 md:w-14 rounded-full bg-yellow-brand text-ink border-2 border-ink shadow-pop flex items-center justify-center hover:bg-ink hover:text-yellow-brand hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer group/btn"
             >
@@ -253,7 +257,10 @@ export function Testimonials({ dynamicProjects = [] }: { dynamicProjects?: any[]
             {/* Right Advance Arrow */}
             <button
               type="button"
-              onClick={() => handleAdvance(1)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAdvance(1);
+              }}
               aria-label="Next customer project"
               className="absolute right-3 sm:right-6 md:right-8 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-13 sm:w-13 md:h-14 md:w-14 rounded-full bg-yellow-brand text-ink border-2 border-ink shadow-pop flex items-center justify-center hover:bg-ink hover:text-yellow-brand hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer group/btn"
             >
@@ -261,24 +268,20 @@ export function Testimonials({ dynamicProjects = [] }: { dynamicProjects?: any[]
             </button>
 
             {/* Subtle edge fade masks */}
-            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 bg-gradient-to-r from-background/80 via-background/20 to-transparent z-20" />
-            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 bg-gradient-to-l from-background/80 via-background/20 to-transparent z-20" />
+            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 bg-gradient-to-r from-background/90 via-background/30 to-transparent z-20" />
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-24 md:w-32 bg-gradient-to-l from-background/90 via-background/30 to-transparent z-20" />
 
             {/* Scrolling Track Container */}
             <div
-              ref={scrollContainerRef}
-              className="overflow-x-auto no-scrollbar py-8 flex"
-              onTouchStart={() => setIsUserInteracting(true)}
-              onTouchEnd={() => {
-                if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
-                interactionTimeoutRef.current = setTimeout(() => setIsUserInteracting(false), 3500);
-              }}
+              ref={trackRef}
+              className="py-8 flex flex-nowrap"
+              style={{ willChange: "transform" }}
             >
-              {[0, 1, 2, 3].map((setIndex) => (
+              {[0, 1, 2].map((setIndex) => (
                 <div
                   key={setIndex}
                   ref={setIndex === 0 ? singleSetRef : undefined}
-                  className="flex flex-shrink-0"
+                  className="flex flex-nowrap flex-shrink-0"
                 >
                   {allProjects.map((p, idx) => (
                     <div
