@@ -12,6 +12,7 @@ const NAV = [
   { label: "Bulk & Teams", to: "/services/team-bulk" as const },
   { label: "Family Tees", to: "/services/family-tees" as const },
   { label: "Shirt Colors", to: "/shirt-colors" as const },
+  { label: "Catalog", to: "/catalog" as const },
   { label: "Promo Products", to: "/services/promotional-products" as const },
   { label: "Shop", to: "/shop" as const },
   { label: "Locations", to: "/locations" as const },

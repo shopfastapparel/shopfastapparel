@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { submitQuoteRequest } from "@/lib/quote.functions";
+import { searchCatalogStyles, type CatalogStyle } from "@/lib/ssactivewear.functions";
 import ReCAPTCHA from "react-google-recaptcha";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/SiteLayout";
@@ -27,6 +28,10 @@ import {
   Gift,
   Plus,
   Minus,
+  Search,
+  Sparkles,
+  X,
+  Package,
 } from "lucide-react";
 import { LOCATIONS, PRIMARY_EMAIL, PRIMARY_PHONE } from "@/lib/locations";
 import { APPAREL_STYLES } from "@/lib/apparel";
@@ -36,6 +41,14 @@ type TurnaroundKey = "rush" | "standard" | "flexible";
 type QuantityKey = "1-23" | "24-47" | "48-99" | "100-249" | "250-499" | "500+";
 type SizeKey = "S" | "M" | "L" | "XL" | "2XL" | "3XL";
 
+export type SpecialtyGarment = {
+  styleId: string | number;
+  brandName: string;
+  styleName: string;
+  title: string;
+  styleImage: string;
+};
+
 type QuoteSearch = {
   service?: ServiceKey;
   productId?: string;
@@ -43,6 +56,11 @@ type QuoteSearch = {
   printLocations?: number;
   sizes?: string;
   color?: string;
+  styleId?: string | number;
+  brandName?: string;
+  styleName?: string;
+  title?: string;
+  styleImage?: string;
 };
 
 export const Route = createFileRoute("/quote")({
@@ -53,6 +71,11 @@ export const Route = createFileRoute("/quote")({
     printLocations: search.printLocations ? Number(search.printLocations) : undefined,
     sizes: search.sizes as string | undefined,
     color: search.color as string | undefined,
+    styleId: search.styleId ? String(search.styleId) : undefined,
+    brandName: search.brandName as string | undefined,
+    styleName: search.styleName as string | undefined,
+    title: search.title as string | undefined,
+    styleImage: search.styleImage as string | undefined,
   }),
   head: () => ({
     meta: [
@@ -244,8 +267,44 @@ function QuotePage() {
     initialDetails = `Preferred Garment Color: ${searchParams.color}\n\n` + initialDetails;
   }
 
+  const [specialtyGarment, setSpecialtyGarment] = useState<SpecialtyGarment | null>(() => {
+    if (searchParams.brandName || searchParams.title || searchParams.styleId) {
+      return {
+        styleId: searchParams.styleId || "",
+        brandName: searchParams.brandName || "",
+        styleName: searchParams.styleName || "",
+        title: searchParams.title || searchParams.brandName || "Specialty Garment",
+        styleImage: searchParams.styleImage || "",
+      };
+    }
+    return null;
+  });
+
+  const [catalogModalOpen, setCatalogModalOpen] = useState(false);
+  const [catalogSearchTerm, setCatalogSearchTerm] = useState("");
+  const [catalogResults, setCatalogResults] = useState<CatalogStyle[]>([]);
+  const [catalogSearching, setCatalogSearching] = useState(false);
+  const searchCatalogFn = useServerFn(searchCatalogStyles);
+
+  const handleCatalogSearch = async (term: string) => {
+    setCatalogSearching(true);
+    try {
+      const res = await searchCatalogFn({
+        data: {
+          query: term.trim() || "tee",
+          limit: 24,
+        },
+      });
+      setCatalogResults(res.styles || []);
+    } catch (err) {
+      console.error("Error searching in-form catalog:", err);
+    } finally {
+      setCatalogSearching(false);
+    }
+  };
+
   const [state, setState] = useState<QuoteState>({
-    service: searchParams.service || "",
+    service: searchParams.service || (searchParams.brandName || searchParams.styleId ? "custom-tshirts" : ""),
     quantity: searchParams.quantity || "",
     turnaround: "",
     deadline: "",
@@ -439,10 +498,15 @@ function QuotePage() {
         filePaths.push(JSON.stringify({ name: f.name, path: filePath, placement: f.placement, location: f.location }));
       }
 
+      let submissionDetails = state.details;
+      if (specialtyGarment) {
+        const specSummary = `Selected Specialty Garment (S&S Activewear Catalog):\n- Brand: ${specialtyGarment.brandName}\n- Style: ${specialtyGarment.styleName} (${specialtyGarment.title})\n- Style ID: #${specialtyGarment.styleId}${specialtyGarment.styleImage ? `\n- Image: ${specialtyGarment.styleImage}` : ""}\n\n`;
+        submissionDetails = specSummary + (submissionDetails || "");
+      }
       const sizesSummary = formatSizesSummary();
-      const submissionDetails = sizesSummary
-        ? `${state.details ? `${state.details}\n\n` : ""}Specific Size Breakdown (${totalSizesSelected} total):\n${sizesSummary}`
-        : state.details;
+      if (sizesSummary) {
+        submissionDetails = `${submissionDetails ? `${submissionDetails}\n\n` : ""}Specific Size Breakdown (${totalSizesSelected} total):\n${sizesSummary}`;
+      }
 
       await submitQuoteFn({
         data: {
@@ -460,7 +524,7 @@ function QuotePage() {
           email: state.email,
           phone: state.phone || undefined,
           captchaToken: captchaToken,
-          productId: state.productId || undefined,
+          productId: state.productId || (specialtyGarment ? `ss-${specialtyGarment.styleId}` : undefined),
           printLocations: state.printLocations ? Number(state.printLocations) : undefined,
         },
       });
@@ -561,6 +625,65 @@ function QuotePage() {
         </div>
 
         <div className="bg-card border-2 border-ink rounded-xl p-6 md:p-8 shadow-pop">
+          {specialtyGarment && (
+            <div className="mb-6 bg-yellow-brand/15 border-2 border-ink rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                {specialtyGarment.styleImage ? (
+                  <img
+                    src={specialtyGarment.styleImage}
+                    alt={specialtyGarment.title}
+                    className="w-14 h-16 object-contain rounded-lg border border-ink/20 bg-background p-1 shrink-0 mix-blend-multiply"
+                  />
+                ) : (
+                  <div className="w-14 h-16 rounded-lg border border-ink/20 bg-background flex items-center justify-center shrink-0">
+                    <Package className="w-6 h-6 text-muted-foreground" />
+                  </div>
+                )}
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider bg-ink text-background px-2 py-0.5 rounded">
+                      Specialty Blank ({specialtyGarment.brandName})
+                    </span>
+                    <span className="text-xs font-mono font-bold text-muted-foreground">
+                      #{specialtyGarment.styleName || specialtyGarment.styleId}
+                    </span>
+                  </div>
+                  <h4 className="font-bold text-ink text-sm sm:text-base mt-0.5">
+                    {specialtyGarment.title}
+                  </h4>
+                  <p className="text-xs text-muted-foreground">
+                    Sourced directly from wholesale distributor inventory
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setCatalogModalOpen(true);
+                    if (catalogResults.length === 0) {
+                      handleCatalogSearch(specialtyGarment.brandName || "tee");
+                    }
+                  }}
+                  className="text-xs font-semibold border-ink bg-background"
+                >
+                  Change Garment
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSpecialtyGarment(null)}
+                  className="text-xs text-muted-foreground hover:text-red-600"
+                >
+                  Remove
+                </Button>
+              </div>
+            </div>
+          )}
+
           {step === 0 && (
             <StepWrapper
               title="What do you need?"
@@ -692,6 +815,35 @@ function QuotePage() {
                     </div>
                   );
                 })()}
+
+                {/* S&S Activewear Live Catalog Quick Search Trigger */}
+                <div className="mt-4 p-3.5 rounded-xl border-2 border-dashed border-ink/30 bg-muted/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-start gap-2.5">
+                    <Sparkles className="w-4 h-4 text-magenta-brand shrink-0 mt-0.5" />
+                    <div>
+                      <span className="text-xs font-bold text-ink">
+                        Looking for Champion, Adidas, Richardson 112, or specific blanks?
+                      </span>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">
+                        Search over 5,000+ wholesale items in our live distributor catalog.
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setCatalogModalOpen(true);
+                      if (catalogResults.length === 0) {
+                        handleCatalogSearch("tee");
+                      }
+                    }}
+                    className="border-2 border-ink font-bold text-xs shrink-0 shadow-xs bg-background hover:bg-yellow-brand hover:text-ink transition-colors"
+                  >
+                    <Search className="w-3.5 h-3.5 mr-1 text-magenta-brand" /> Search S&S Catalog
+                  </Button>
+                </div>
               </div>
 
               {/* INTERACTIVE SIZE BREAKDOWN & QUICK FILL PRESETS */}
@@ -1056,7 +1208,7 @@ function QuotePage() {
                   onChange={(token) => setCaptchaToken(token)}
                 />
               </div>
-              <Summary state={state} />
+              <Summary state={state} specialtyGarment={specialtyGarment} />
             </StepWrapper>
           )}
 
@@ -1116,6 +1268,165 @@ function QuotePage() {
           </a>
         </p>
       </section>
+
+      {/* S&S Activewear Live Catalog Search Modal */}
+      {catalogModalOpen && (
+        <div className="fixed inset-0 z-50 bg-ink/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-background rounded-2xl border-2 border-ink max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden shadow-pop animate-in fade-in zoom-in-95">
+            {/* Modal Header */}
+            <div className="p-4 sm:p-5 border-b-2 border-ink flex items-center justify-between bg-muted/20">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-magenta-brand">
+                    S&S Activewear Live Catalog
+                  </span>
+                  <span className="text-[10px] bg-yellow-brand text-ink px-1.5 py-0.5 rounded font-bold uppercase">
+                    5,000+ Blanks
+                  </span>
+                </div>
+                <h3 className="text-lg font-bold text-ink mt-0.5">
+                  Select a Garment Blank for Your Quote
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setCatalogModalOpen(false)}
+                className="p-2 rounded-full hover:bg-muted text-ink"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Search Input & Quick Chips */}
+            <div className="p-4 border-b border-border bg-background space-y-2">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search brand, style # or name (e.g. 'Richardson 112', 'Champion', 'Bella 3001')..."
+                  value={catalogSearchTerm}
+                  onChange={(e) => {
+                    setCatalogSearchTerm(e.target.value);
+                    handleCatalogSearch(e.target.value);
+                  }}
+                  className="pl-9 pr-8 text-sm py-2 rounded-lg border-2 border-ink"
+                  autoFocus
+                />
+                {catalogSearchTerm && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCatalogSearchTerm("");
+                      handleCatalogSearch("tee");
+                    }}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-ink p-1"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+              <div className="flex items-center gap-1.5 overflow-x-auto text-[11px] text-muted-foreground scrollbar-thin">
+                <span className="font-semibold shrink-0">Popular:</span>
+                {["Champion", "Richardson 112", "Comfort Colors", "BELLA + CANVAS", "Next Level", "Hoodie", "Polo"].map((qs) => (
+                  <button
+                    key={qs}
+                    type="button"
+                    onClick={() => {
+                      setCatalogSearchTerm(qs);
+                      handleCatalogSearch(qs);
+                    }}
+                    className="px-2 py-0.5 rounded bg-muted hover:bg-ink hover:text-background transition-colors shrink-0 font-medium"
+                  >
+                    {qs}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Results List */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-2.5">
+              {catalogSearching ? (
+                <div className="py-12 text-center text-muted-foreground flex items-center justify-center gap-2 text-sm">
+                  <div className="w-4 h-4 border-2 border-magenta-brand border-t-transparent rounded-full animate-spin" />
+                  Searching wholesale inventory...
+                </div>
+              ) : catalogResults.length === 0 ? (
+                <div className="py-12 text-center text-muted-foreground text-sm">
+                  No matching garments found. Try a different brand or search term.
+                </div>
+              ) : (
+                catalogResults.map((item) => (
+                  <div
+                    key={item.styleID}
+                    className="flex items-center justify-between gap-3 p-3 rounded-xl border border-border hover:border-ink hover:bg-muted/30 transition-all group"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      {item.styleImage ? (
+                        <img
+                          src={item.styleImage}
+                          alt={item.title}
+                          className="w-12 h-14 object-contain rounded bg-background border border-ink/20 p-1 shrink-0 mix-blend-multiply"
+                        />
+                      ) : (
+                        <div className="w-12 h-14 rounded bg-muted flex items-center justify-center shrink-0">
+                          <Shirt className="w-6 h-6 text-muted-foreground/40" />
+                        </div>
+                      )}
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-extrabold uppercase text-magenta-brand tracking-wider">
+                            {item.brandName}
+                          </span>
+                          <span className="text-[10px] font-mono font-bold bg-muted px-1.5 py-0.2 rounded">
+                            #{item.styleName || item.styleID}
+                          </span>
+                        </div>
+                        <h4 className="font-bold text-sm text-ink truncate group-hover:text-magenta-brand transition-colors">
+                          {item.title}
+                        </h4>
+                        {item.baseCategory && (
+                          <p className="text-[11px] text-muted-foreground capitalize">
+                            {item.baseCategory}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={() => {
+                        setSpecialtyGarment({
+                          styleId: item.styleID,
+                          brandName: item.brandName,
+                          styleName: item.styleName,
+                          title: item.title,
+                          styleImage: item.styleImage,
+                        });
+                        if (!state.service) {
+                          setState((prev) => ({ ...prev, service: "custom-tshirts" }));
+                        }
+                        setCatalogModalOpen(false);
+                        toast.success(`Selected ${item.brandName} ${item.styleName}!`);
+                      }}
+                      className="bg-yellow-brand text-ink hover:bg-yellow-brand/90 font-bold text-xs border border-ink shrink-0"
+                    >
+                      Select Garment
+                    </Button>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-3 sm:p-4 border-t bg-muted/20 flex items-center justify-between text-xs text-muted-foreground">
+              <span>Can't find it here? We can special order any blank.</span>
+              <Button variant="outline" size="sm" onClick={() => setCatalogModalOpen(false)} className="text-xs">
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </SiteLayout>
   );
 }
@@ -1213,7 +1524,13 @@ function FileDropzone({
   );
 }
 
-function Summary({ state }: { state: QuoteState }) {
+function Summary({
+  state,
+  specialtyGarment,
+}: {
+  state: QuoteState;
+  specialtyGarment?: SpecialtyGarment | null;
+}) {
   const service = SERVICES.find((s) => s.key === state.service);
   const turnaround = TURNAROUNDS.find((t) => t.key === state.turnaround);
   const apparel = APPAREL_STYLES.find((s) => s.id === state.productId);
@@ -1224,9 +1541,14 @@ function Summary({ state }: { state: QuoteState }) {
       </div>
       <dl className="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
         <Row label="Service" value={service?.label} />
-        {apparel && (
+        {specialtyGarment ? (
+          <Row
+            label="Specialty Garment"
+            value={`${specialtyGarment.brandName} ${specialtyGarment.styleName} - ${specialtyGarment.title}`}
+          />
+        ) : apparel ? (
           <Row label="Apparel Style" value={`${apparel.name} (${apparel.brand} ${apparel.model})`} />
-        )}
+        ) : null}
         <Row label="Quantity" value={state.quantity} />
         <Row label="Turnaround" value={`${turnaround?.label} · ${turnaround?.estimate}`} />
         <Row label="City" value={state.city || "—"} />

@@ -53,6 +53,11 @@ export function Footer() {
               </Link>
             </li>
             <li>
+              <Link to="/catalog" className="hover:text-yellow-brand text-background font-semibold">
+                Wholesale Catalog (5,000+ Styles)
+              </Link>
+            </li>
+            <li>
               <Link to="/shop" className="hover:text-background">
                 Shop Products
               </Link>
