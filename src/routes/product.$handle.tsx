@@ -383,6 +383,7 @@ function ProductPage() {
                 <PricingCalculator 
                   baseCost={lowestBasePrice} 
                   productId={product.id}
+                  hasSizesAbove={true}
                   quantity={totalSizesSelected > 0 ? totalSizesSelected : undefined}
                   onQuantityChange={(newQty) => {
                     // If user manually adjusts calculator quantity directly, clear explicit breakdown or maintain

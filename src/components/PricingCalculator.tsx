@@ -13,6 +13,7 @@ interface PricingCalculatorProps {
   onQuantityChange?: (qty: number) => void;
   sizeBreakdown?: string;
   selectedColor?: string;
+  hasSizesAbove?: boolean;
 }
 
 export function PricingCalculator({
@@ -23,9 +24,10 @@ export function PricingCalculator({
   onQuantityChange,
   sizeBreakdown,
   selectedColor,
+  hasSizesAbove,
 }: PricingCalculatorProps) {
   const [selectedProductId, setSelectedProductId] = useState(initialProductId);
-  const [internalQuantity, setInternalQuantity] = useState<number>(50);
+  const [internalQuantity, setInternalQuantity] = useState<number>(hasSizesAbove ? 0 : 50);
   const quantity = externalQuantity !== undefined ? externalQuantity : internalQuantity;
 
   const setQuantity = (val: number) => {
@@ -86,7 +88,7 @@ export function PricingCalculator({
     
     return {
       unitPrice: discountedRetail,
-      totalPrice: discountedRetail * quantity,
+      totalPrice: quantity > 0 ? discountedRetail * quantity : 0,
       discountPct: discount,
       printCost: print
     };
@@ -106,7 +108,7 @@ export function PricingCalculator({
     <div className="bg-card border-2 border-ink rounded-xl p-5 shadow-[4px_4px_0px_0px_#1a1a2e] sticky top-24">
       <h3 className="font-display text-xl mb-4 text-ink flex items-center justify-between">
         Live Pricing Calculator
-        {discountPct > 0 && (
+        {discountPct > 0 && quantity > 0 && (
           <span className="text-xs bg-magenta-brand text-background px-2 py-1 rounded font-bold uppercase tracking-wider">
             {discountPct * 100}% Bulk Discount Applied!
           </span>
@@ -141,17 +143,35 @@ export function PricingCalculator({
 
         {/* Quantity Input */}
         <div>
-          <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider mb-2">
-            Estimated Quantity
-          </label>
-          <input
-            type="number"
-            min={1}
-            max={10000}
-            value={quantity || ""}
-            onChange={(e) => setQuantity(parseInt(e.target.value) || 0)}
-            className="w-full text-xl font-medium px-4 py-3 border-2 border-ink rounded-lg focus:ring-2 focus:ring-yellow-brand focus:border-ink outline-none transition-all bg-background"
-          />
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider">
+              Estimated Quantity
+            </label>
+            {hasSizesAbove && (
+              <span className="text-[11px] font-semibold text-magenta-brand">
+                {quantity > 0 ? `(${quantity} shirts chosen)` : "Select sizes above ↑"}
+              </span>
+            )}
+          </div>
+          <div className="relative">
+            <input
+              type="number"
+              min={1}
+              max={10000}
+              value={quantity > 0 ? quantity : ""}
+              placeholder={hasSizesAbove ? "Enter quantities from above sizes" : "e.g. 50"}
+              onChange={(e) => setQuantity(parseInt(e.target.value) || 0)}
+              className="w-full text-base sm:text-lg font-medium px-4 py-3 border-2 border-ink rounded-lg focus:ring-2 focus:ring-yellow-brand focus:border-ink outline-none transition-all bg-background placeholder:text-muted-foreground placeholder:text-sm placeholder:font-normal"
+            />
+          </div>
+          {hasSizesAbove && (
+            <p className="text-xs text-muted-foreground mt-1.5 flex items-center gap-1.5">
+              <span className="text-cyan-brand font-bold">ℹ</span>
+              {quantity > 0 
+                ? "Quantity synced from the size options above. You can also type a number directly."
+                : "Please enter quantities in the size options above (or type an estimated quantity here)."}
+            </p>
+          )}
         </div>
 
         {/* Print Locations */}
@@ -198,7 +218,9 @@ export function PricingCalculator({
             {loadingPrice ? (
                <Loader2 className="h-6 w-6 animate-spin text-cyan-brand" />
             ) : (
-               <span className="font-display text-2xl text-cyan-brand">${unitPrice.toFixed(2)}</span>
+               <span className="font-display text-2xl text-cyan-brand">
+                 {quantity > 0 ? `$${unitPrice.toFixed(2)}` : `From $${unitPrice.toFixed(2)}`}
+               </span>
             )}
           </div>
           <div className="flex justify-between items-end pt-3 border-t border-border mt-3">
@@ -206,7 +228,9 @@ export function PricingCalculator({
             {loadingPrice ? (
                <Loader2 className="h-6 w-6 animate-spin text-ink" />
             ) : (
-               <span className="font-display text-3xl text-ink">${totalPrice.toFixed(2)}</span>
+               <span className="font-display text-3xl text-ink">
+                 {quantity > 0 ? `$${totalPrice.toFixed(2)}` : "$0.00"}
+               </span>
             )}
           </div>
           <p className="text-[11px] text-muted-foreground mt-3 italic leading-snug">
@@ -220,7 +244,7 @@ export function PricingCalculator({
             search={{ 
               service: "custom-tshirts", 
               productId: currentProduct.id,
-              quantity: getQuantityBucket(quantity),
+              quantity: getQuantityBucket(quantity > 0 ? quantity : 50),
               printLocations: locations,
               sizes: sizeBreakdown || undefined,
               color: selectedColor || undefined,

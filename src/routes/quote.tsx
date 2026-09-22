@@ -112,6 +112,7 @@ interface UploadedFile {
   size: number;
   type: string;
   dataUrl?: string;
+  file?: File;
 }
 
 interface QuoteState {
@@ -522,6 +523,7 @@ function QuotePage() {
         size: f.size,
         type: f.type,
         dataUrl,
+        file: f,
       });
     }
     if (accepted.length) {
@@ -557,13 +559,20 @@ function QuotePage() {
       for (const f of allFiles) {
         const filePath = `${Date.now()}-${f.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
         
-        // Convert dataUrl to Blob
-        const res = await fetch(f.dataUrl as string);
-        const blob = await res.blob();
+        let uploadPayload: Blob | File | null = f.file || null;
+        if (!uploadPayload && f.dataUrl) {
+          const res = await fetch(f.dataUrl);
+          uploadPayload = await res.blob();
+        }
+
+        if (!uploadPayload) {
+          console.error("[quote] No file content found for", f.name);
+          throw new Error("Missing file content for: " + f.name);
+        }
 
         const { error: uploadError } = await supabase.storage
           .from("quote_artwork")
-          .upload(filePath, blob, { contentType: f.type });
+          .upload(filePath, uploadPayload, { contentType: f.type || "application/octet-stream" });
 
         if (uploadError) {
           console.error("[quote] File upload failed for", f.name, uploadError);

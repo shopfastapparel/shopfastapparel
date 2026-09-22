@@ -1,39 +1,49 @@
 {
   "grants": [
     {
-      "name": "Founders First CDC Job Creators Quest Grant",
-      "amount": "Up to $10,000",
-      "deadline": "Varies/Seasonal",
-      "eligibility": "Diverse-led businesses (minority, women, LGBTQ+, veteran) in eligible regions including the South.",
-      "link": "https://foundersfirstcdc.org"
+      "name": "Small Business Revitalization (SBR) Grant Program",
+      "organization": "Georgia Coalition of Black Chambers (GCBC) & Advancing Black Businesses Foundation (ABBF)",
+      "amount": "Up to $15,000",
+      "deadline": "Rolling Cycles / Regional Rounds (Late 2026)",
+      "eligibility": "Georgia-based Black-owned and historically under-resourced small businesses seeking capital support, technical assistance, and business expansion.",
+      "url": "https://georgiacoalitionofblackchambers.org",
+      "description": "State-supported grant providing direct capital grants up to $15,000 and technical assistance to small businesses in Georgia to drive operational expansion and economic growth."
     },
     {
-      "name": "SheaMoisture Community Impact Grant",
-      "amount": "$10,000",
-      "deadline": "Annual",
-      "eligibility": "Black-owned and minority women-owned businesses.",
-      "link": "https://www.sheamoisture.com"
+      "name": "Galaxy Grant",
+      "organization": "Galaxy of Stars / Hidden Star (501(c)(3))",
+      "amount": "$2,450",
+      "deadline": "October 31, 2026",
+      "eligibility": "U.S.-based minority-owned or women-owned small businesses and startups. Free entry, instant registration.",
+      "url": "https://www.galaxyofstars.org",
+      "description": "Fast-entry cash grant designed to support women and minority entrepreneurs with non-dilutive capital for inventory, marketing, and working capital."
     },
     {
-      "name": "Bizee Fresh Start Business Grant",
-      "amount": "$2,500",
-      "deadline": "Rolling",
-      "eligibility": "New entrepreneurs looking to start and grow a business.",
-      "link": "https://www.bizee.com/entrepreneur-grant"
+      "name": "Invest Atlanta Small Business Improvement Grant (SBIG)",
+      "organization": "Invest Atlanta / City of Atlanta",
+      "amount": "Up to $50,000",
+      "deadline": "Rolling 2026 Cycles",
+      "eligibility": "Metro Atlanta small businesses and commercial properties located within eligible Tax Allocation Districts (TADs) under 15,000 sq ft.",
+      "url": "https://www.investatlanta.com",
+      "description": "Substantial capital grant up to $50,000 to assist small businesses with commercial facility buildout, equipment upgrades, and production expansion."
     },
     {
-      "name": "FedEx Small Business Grant Contest",
-      "amount": "Up to $30,000",
-      "deadline": "Annual",
-      "eligibility": "U.S.-based for-profit small businesses, including e-commerce, active for at least 6 months.",
-      "link": "https://www.fedex.com/en-us/small-business/grants.html"
+      "name": "Tory Burch Foundation Fellows Program & Grant",
+      "organization": "Tory Burch Foundation",
+      "amount": "$5,000 Cash Grant + Fellowship & Access to 0% Interest Loans",
+      "deadline": "November 11, 2026 (Opens Sept 22, 2026)",
+      "eligibility": "For-profit U.S. small businesses that are majority woman/diverse-owned (operating at least 1-2 years) with scalable business models.",
+      "url": "https://www.toryburchfoundation.org",
+      "description": "Premier fellowship offering $5,000 in non-dilutive capital, 50+ hours of executive education, national peer network, and direct access to zero-interest loan capital."
     },
     {
-      "name": "Skip Monthly Grants",
-      "amount": "$1,000",
-      "deadline": "Monthly",
-      "eligibility": "U.S.-based small businesses; active support for minority and diverse founders.",
-      "link": "https://www.helloskip.com"
+      "name": "NASE Growth Grants",
+      "organization": "National Association for the Self-Employed (NASE)",
+      "amount": "Up to $4,000",
+      "deadline": "Quarterly (Q3 Closes September 30, 2026 / Q4 Closes December 31, 2026)",
+      "eligibility": "U.S. micro-businesses, print shops, and independent small business owners for specific growth projects (equipment purchases, marketing, technology).",
+      "url": "https://www.nase.org",
+      "description": "Year-round small business grant offering $4,000 quarterly awards for targeted investments in manufacturing equipment, software, and marketing."
     }
   ]
 }
