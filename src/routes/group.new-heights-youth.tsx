@@ -112,10 +112,12 @@ function NewHeightsYouthCollectionPage() {
   const [paymentMethod, setPaymentMethod] = useState("Venmo (@newheightsLC)");
   const [submittedPaymentMethod, setSubmittedPaymentMethod] = useState("");
   const [submittedTotalPrice, setSubmittedTotalPrice] = useState(0);
+  const isPortalClosed = true; // Permanently closed - no more orders accepted
 
   useEffect(() => {
     async function loadSettings() {
       try {
+
         const { data: deadlineData } = await supabase
           .from("quote_requests")
           .select("details")
@@ -207,99 +209,10 @@ function NewHeightsYouthCollectionPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email || !phone) {
-      toast.error("Please fill in your Name, Email, and Phone Number.");
-      return;
-    }
-    if (items.length === 0) {
-      toast.error("Please add at least one shirt option to your selection.");
-      return;
-    }
-    if (!paymentMethod) {
-      toast.error("Please select a payment method for your order.");
-      return;
-    }
-
-    setSubmitting(true);
-    try {
-      const summaryItems = items.map((item) => {
-        const opt = SHIRT_OPTIONS.find((o) => o.id === item.optionId);
-        const unitP = getItemUnitPrice(item.optionId, item.size);
-        const lineP = getItemTotalPrice(item);
-        return `${opt?.name} (${opt?.color}) — Size: ${item.size}, Qty: ${item.quantity} ($${unitP.toFixed(2)} ea = $${lineP.toFixed(2)})`;
-      });
-
-      const formattedNotes = `
-NEW HEIGHTS YOUTH COLLECTION SUBMISSION:
-------------------------------------------
-Name: ${name}
-Email: ${email}
-Phone: ${phone}
-Total Garments: ${totalGarments}
-Total Order Price: $${orderTotalPrice.toFixed(2)}
-Payment Method: ${paymentMethod}
-
-SELECTIONS:
-${summaryItems.map((s, idx) => `${idx + 1}. ${s}`).join("\n")}
-
-Additional Notes:
-${notes || "None"}
-      `.trim();
-
-      const { error } = await supabase.from("quote_requests").insert([
-        {
-          name,
-          email,
-          phone,
-          service: "New Heights Youth Group Collection",
-          quantity: totalGarments.toString(),
-          details: formattedNotes,
-          status: "New Submission",
-        },
-      ]);
-
-      if (error) throw error;
-
-      // Dispatch background email notification to shop owner
-      fetch("/api/group-admin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "notify_new_order",
-          name,
-          email,
-          phone,
-          totalGarments,
-          totalPrice: orderTotalPrice,
-          paymentMethod,
-          notes,
-          items: items.map((it) => {
-            const opt = SHIRT_OPTIONS.find((o) => o.id === it.optionId);
-            const unitP = getItemUnitPrice(it.optionId, it.size);
-            const lineP = getItemTotalPrice(it);
-            return {
-              optionName: opt?.name,
-              color: opt?.color,
-              size: it.size,
-              quantity: it.quantity,
-              unitPrice: unitP,
-              linePrice: lineP,
-            };
-          }),
-        }),
-      }).catch((nErr) => console.error("Notification trigger error:", nErr));
-
-      setSubmittedPaymentMethod(paymentMethod);
-      setSubmittedTotalPrice(orderTotalPrice);
-      setSubmitted(true);
-      toast.success("Order submission received! Thank you!");
-    } catch (err: any) {
-      console.error(err);
-      toast.error("Failed to submit your choices. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
+    toast.error("The New Heights Youth Group collection is officially closed. No additional orders can be submitted.");
+    return;
   };
+
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -357,11 +270,17 @@ ${notes || "None"}
             Custom Apparel Collection
           </h1>
 
-          {/* Submit By Date Banner */}
-          <div className="inline-flex items-center gap-3 bg-yellow-brand text-ink px-6 py-2.5 rounded-full font-bold text-sm md:text-base border-2 border-ink shadow-pop mt-6 animate-pulse">
-            <Calendar className="w-5 h-5 text-magenta-brand" />
-            <span>Submit By Date: <strong>{deadline}</strong></span>
-          </div>
+          {/* Submit By Date / Closed Banner */}
+          {isPortalClosed ? (
+            <div className="inline-flex items-center gap-3 bg-red-600 text-white px-6 py-2.5 rounded-full font-bold text-sm md:text-base border-2 border-white shadow-pop mt-6">
+              <span>🛑 Group Ordering Collection is Closed (Deadline: {deadline})</span>
+            </div>
+          ) : (
+            <div className="inline-flex items-center gap-3 bg-yellow-brand text-ink px-6 py-2.5 rounded-full font-bold text-sm md:text-base border-2 border-ink shadow-pop mt-6 animate-pulse">
+              <Calendar className="w-5 h-5 text-magenta-brand" />
+              <span>Submit By Date: <strong>{deadline}</strong></span>
+            </div>
+          )}
 
           <p className="mt-4 text-lg text-background/80 max-w-2xl mx-auto font-light">
             Select your favorite apparel designs, specify your sizes, and submit your group order choices below. You can order as many options and quantities as you'd like!
@@ -431,6 +350,85 @@ ${notes || "None"}
             >
               Submit Another Entry
             </Button>
+          </div>
+        ) : isPortalClosed ? (
+          <div className="space-y-12">
+            <div className="bg-card border-2 border-ink rounded-2xl p-8 md:p-12 text-center shadow-pop max-w-2xl mx-auto my-8 animate-in fade-in">
+              <div className="w-16 h-16 rounded-full bg-red-100 dark:bg-red-950/50 border-2 border-red-500 text-red-600 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+                🛑
+              </div>
+              <h2 className="font-display text-3xl md:text-4xl text-foreground">
+                Group Orders Collection is Now Closed
+              </h2>
+              <p className="text-muted-foreground mt-3 text-lg max-w-xl mx-auto">
+                The submission window for the <strong>New Heights Youth Group Custom Apparel Collection</strong> officially closed on <strong>{deadline}</strong>.
+              </p>
+              <div className="bg-muted/40 p-6 rounded-xl border border-border mt-6 text-sm max-w-xl mx-auto text-left space-y-3">
+                <p className="text-foreground/90 font-medium">
+                  ✅ All <strong>18 group garments</strong> across <strong>12 member submissions</strong> have been locked in and submitted to Fast Apparel for bulk production.
+                </p>
+                <div className="pt-3 border-t border-border flex items-center justify-between flex-wrap gap-2 text-xs text-muted-foreground">
+                  <span>Youth Organizer: <strong>Kaia Wedig</strong></span>
+                  <a href={`mailto:${organizerEmail}`} className="text-cyan-brand font-bold hover:underline">
+                    {organizerEmail}
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Read-Only Designs Gallery */}
+            <div className="pt-4 border-t border-border">
+              <div className="text-center max-w-xl mx-auto mb-8">
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground bg-muted px-3 py-1 rounded-full border border-border">
+                  Official Apparel Designs
+                </span>
+                <h3 className="font-display text-2xl md:text-3xl text-foreground mt-2">
+                  Designs in Production
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Click any mockup below to inspect high-resolution design details.
+                </p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {SHIRT_OPTIONS.map((option) => (
+                  <div
+                    key={option.id}
+                    className="bg-card border-2 border-ink rounded-xl overflow-hidden shadow-pop hover:-translate-y-1 transition-transform flex flex-col justify-between group cursor-pointer"
+                    onClick={() => setSelectedMockup(option)}
+                  >
+                    <div>
+                      <div className="relative aspect-square bg-muted border-b border-ink overflow-hidden">
+                        <img
+                          src={option.image}
+                          alt={option.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start">
+                          <span className="bg-yellow-brand text-ink text-xs font-bold px-2.5 py-1 rounded border border-ink shadow-sm">
+                            {option.badge}
+                          </span>
+                        </div>
+                        <div className="absolute inset-0 bg-ink/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white gap-1.5 font-bold text-sm backdrop-blur-[2px]">
+                          <ZoomIn className="w-5 h-5 text-yellow-brand" /> View Design Proof
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <h4 className="font-bold text-base leading-tight text-foreground">
+                          {option.name}
+                        </h4>
+                        <p className="text-xs text-magenta-brand font-semibold mt-1">
+                          Color: {option.color}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
+                          {option.design}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-12">
