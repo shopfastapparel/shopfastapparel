@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { listRecentProjects } from "@/lib/projects-admin.functions";
 import { Button } from "@/components/ui/button";
 import { PricingCalculator } from "@/components/PricingCalculator";
 import { Testimonials } from "@/components/Testimonials";
@@ -64,6 +66,12 @@ function MinimalFooter() {
 function LandingPage() {
   const [selectedStyleId, setSelectedStyleId] = useState<string>(APPAREL_STYLES[0].id);
   const selectedStyle = APPAREL_STYLES.find(s => s.id === selectedStyleId) || APPAREL_STYLES[0];
+  const getProjects = useServerFn(listRecentProjects);
+  const [projects, setProjects] = useState<any[]>([]);
+
+  useEffect(() => {
+    getProjects().then(setProjects).catch(console.error);
+  }, [getProjects]);
 
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
@@ -197,13 +205,8 @@ function LandingPage() {
           </div>
         </section>
 
-        {/* TESTIMONIALS */}
-        <section className="py-20 bg-background border-t border-ink/10">
-          <div className="mx-auto max-w-5xl px-4 text-center mb-12">
-            <h2 className="font-display text-4xl text-ink">Don't just take our word for it.</h2>
-          </div>
-          <Testimonials />
-        </section>
+        {/* TESTIMONIALS & RECENT PROJECTS MARQUEE */}
+        <Testimonials dynamicProjects={projects} />
 
         {/* FINAL CTA */}
         <section className="py-24 bg-ink text-background text-center px-4 relative overflow-hidden">
