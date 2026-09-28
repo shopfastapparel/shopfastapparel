@@ -51,7 +51,8 @@ function BundleDealPage() {
     company: "",
     shirtColor: "Black",
     printLocation: "Front Center",
-    notes: ""
+    notes: "",
+    referralSource: ""
   });
 
   // Interactive Size Quantities
@@ -142,7 +143,7 @@ function BundleDealPage() {
       }
 
       const sizesSummary = formatSizesSummary();
-      const formattedDetails = `Shirt Color: ${formData.shirtColor}\nSize Breakdown: ${sizesSummary}\nPrint Location: ${formData.printLocation}\n\nNotes: ${formData.notes}`;
+      const formattedDetails = `Shirt Color: ${formData.shirtColor}\nSize Breakdown: ${sizesSummary}\nPrint Location: ${formData.printLocation}\n\nNotes: ${formData.notes}${formData.referralSource ? `\n\nHow Did You Find Us: ${formData.referralSource}` : ""}`;
 
       await submitQuoteFn({
         data: {
@@ -155,6 +156,7 @@ function BundleDealPage() {
           email: formData.email,
           phone: formData.phone || undefined,
           zipCode: formData.zipCode || undefined,
+          referralSource: formData.referralSource || undefined,
           details: formattedDetails,
           fileNames: filePaths,
           captchaToken,
@@ -272,7 +274,7 @@ function BundleDealPage() {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-6 mb-8">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div>
                   <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Email *</label>
                   <input required value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} type="email" className="w-full p-3 border-2 border-ink rounded-lg bg-background" placeholder="jane@example.com" />
@@ -284,6 +286,21 @@ function BundleDealPage() {
                 <div>
                   <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">Shipping Zip Code</label>
                   <input value={formData.zipCode} onChange={e => setFormData({...formData, zipCode: e.target.value})} type="text" maxLength={10} className="w-full p-3 border-2 border-ink rounded-lg bg-background" placeholder="e.g. 30045" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-ink uppercase tracking-wider mb-2">How did you find us?</label>
+                  <select
+                    value={formData.referralSource}
+                    onChange={e => setFormData({...formData, referralSource: e.target.value})}
+                    className="w-full p-3 border-2 border-ink rounded-lg bg-background font-medium text-sm text-foreground"
+                  >
+                    <option value="">Select an option...</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="Google">Google</option>
+                    <option value="Word of Mouth">Word of Mouth</option>
+                    <option value="Local">Local</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
               </div>
 

@@ -131,6 +131,7 @@ interface QuoteState {
   company: string;
   email: string;
   phone: string;
+  referralSource?: string;
   productId: string;
   printLocations?: number;
 }
@@ -396,6 +397,7 @@ function QuotePage() {
     company: "",
     email: "",
     phone: "",
+    referralSource: "",
     productId: searchParams.productId || "",
     printLocations: searchParams.printLocations,
   });
@@ -609,6 +611,7 @@ function QuotePage() {
           company: state.company || undefined,
           email: state.email,
           phone: state.phone || undefined,
+          referralSource: state.referralSource || undefined,
           captchaToken: captchaToken,
           productId: state.productId || (specialtyGarment ? `ss-${specialtyGarment.styleId}` : undefined),
           printLocations: state.printLocations ? Number(state.printLocations) : undefined,
@@ -1355,6 +1358,22 @@ function QuotePage() {
                     maxLength={10}
                     className="mt-1.5"
                   />
+                </div>
+                <div>
+                  <Label htmlFor="referralSource">How did you find us?</Label>
+                  <select
+                    id="referralSource"
+                    value={state.referralSource || ""}
+                    onChange={(e) => update("referralSource", e.target.value)}
+                    className="mt-1.5 flex h-10 w-full rounded-md border-2 border-ink bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <option value="">Select an option...</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="Google">Google</option>
+                    <option value="Word of Mouth">Word of Mouth</option>
+                    <option value="Local">Local</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
               </div>
 

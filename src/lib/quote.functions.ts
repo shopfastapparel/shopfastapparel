@@ -4,6 +4,16 @@ import { Resend } from "resend";
 import { PRIMARY_EMAIL, PRIMARY_PHONE } from "@/lib/locations";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
+export const REFERRAL_SOURCES = [
+  "Facebook",
+  "Google",
+  "Word of Mouth",
+  "Local",
+  "Other",
+] as const;
+
+export type ReferralSource = typeof REFERRAL_SOURCES[number];
+
 const quoteSchema = z.object({
   service: z.string().min(1),
   quantity: z.string().min(1),
@@ -18,6 +28,7 @@ const quoteSchema = z.object({
   company: z.string().optional(),
   email: z.string().trim().email(),
   phone: z.string().optional(),
+  referralSource: z.string().optional(),
   captchaToken: z.string().min(1),
   productId: z.string().optional(),
   printLocations: z.number().optional(),
@@ -60,6 +71,7 @@ function buildOwnerEmailHtml(data: QuoteData, fileLinksHtml: string, productLabe
         ${data.phone ? `<tr><td>Phone</td><td><a href="tel:${data.phone}">${data.phone}</a></td></tr>` : ""}
         ${data.city ? `<tr><td>City</td><td>${data.city}</td></tr>` : ""}
         ${data.zipCode ? `<tr><td>Shipping Zip</td><td><strong style="color: #ff2d8a;">${data.zipCode}</strong></td></tr>` : ""}
+        ${data.referralSource ? `<tr><td>Found Us Via</td><td><strong style="color: #ff2d8a;">${data.referralSource}</strong></td></tr>` : ""}
         <tr><td>Service</td><td>${data.service}</td></tr>
         ${productLabel ? `<tr><td>Apparel Style</td><td><strong style="color: #ff2d8a;">${productLabel}</strong></td></tr>` : ""}
         <tr><td>Quantity</td><td>${data.quantity}</td></tr>
@@ -158,6 +170,9 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
     // Calculate auto margins if productId is provided
     let calculatedQuote = null;
     let detailsString = data.details;
+    if (data.referralSource) {
+      detailsString = `${detailsString}\n\nHow Did You Find Us: ${data.referralSource}`;
+    }
     let productLabel: string | undefined = undefined;
 
     if (data.productId) {
@@ -322,6 +337,7 @@ const studioNotificationSchema = z.object({
   zipCode: z.string().optional(),
   deadline: z.string().optional(),
   notes: z.string().optional(),
+  referralSource: z.string().optional(),
   frontProofUrl: z.string().nullable().optional(),
   backProofUrl: z.string().nullable().optional(),
   rawFileLinks: z.array(z.object({ name: z.string(), url: z.string() })).optional(),
@@ -392,6 +408,7 @@ export const notifyStudioSubmission = createServerFn({ method: "POST" })
         <tr><td>Quantity</td><td>${data.quantity} shirts</td></tr>
         ${data.sizeList ? `<tr><td>Sizes</td><td>${data.sizeList}</td></tr>` : ""}
         ${data.zipCode ? `<tr><td>Shipping Zip</td><td><strong style="color: #ff2d8a;">${data.zipCode}</strong></td></tr>` : ""}
+        ${data.referralSource ? `<tr><td>Found Us Via</td><td><strong style="color: #ff2d8a;">${data.referralSource}</strong></td></tr>` : ""}
         ${data.deadline ? `<tr><td>Target Deadline</td><td>${data.deadline}</td></tr>` : ""}
       </table>
 

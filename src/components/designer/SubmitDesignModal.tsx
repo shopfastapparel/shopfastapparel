@@ -33,6 +33,7 @@ export function SubmitDesignModal({
   const [company, setCompany] = useState("");
   const [deadline, setDeadline] = useState("");
   const [zipCode, setZipCode] = useState("");
+  const [referralSource, setReferralSource] = useState("");
   const [notes, setNotes] = useState("");
   const [sizes, setSizes] = useState({
     S: "",
@@ -159,6 +160,7 @@ export function SubmitDesignModal({
         `Garment Color: ${color.name}`,
         sizeList ? `Requested Sizes: ${sizeList}` : `Estimated Quantity: ${quantity}`,
         zipCode ? `Shipping Zip: ${zipCode}` : "",
+        referralSource ? `How Did You Find Us: ${referralSource}` : "",
         notes ? `Special Notes: ${notes}` : "",
       ]
         .filter(Boolean)
@@ -204,6 +206,7 @@ export function SubmitDesignModal({
             zipCode: zipCode || undefined,
             deadline: deadline || undefined,
             notes: notes || undefined,
+            referralSource: referralSource || undefined,
             frontProofUrl,
             backProofUrl,
             rawFileLinks: rawFileLinks.length > 0 ? rawFileLinks : undefined,
@@ -333,7 +336,7 @@ export function SubmitDesignModal({
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
                   Phone (Optional)
@@ -370,6 +373,23 @@ export function SubmitDesignModal({
                   maxLength={10}
                   className="w-full px-3 py-2 border-2 border-ink rounded-lg font-medium text-sm bg-background outline-none focus:ring-2 focus:ring-yellow-brand"
                 />
+              </div>
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                  How did you find us?
+                </label>
+                <select
+                  value={referralSource}
+                  onChange={(e) => setReferralSource(e.target.value)}
+                  className="w-full px-3 py-2 border-2 border-ink rounded-lg font-medium text-sm bg-background outline-none focus:ring-2 focus:ring-yellow-brand text-foreground"
+                >
+                  <option value="">Select an option...</option>
+                  <option value="Facebook">Facebook</option>
+                  <option value="Google">Google</option>
+                  <option value="Word of Mouth">Word of Mouth</option>
+                  <option value="Local">Local</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
             </div>
 

@@ -85,7 +85,8 @@ function HoodieDealPage() {
     garmentStyle: "Mix & Match Both",
     hoodieColor: "Black",
     printLocation: "Center Chest",
-    notes: ""
+    notes: "",
+    referralSource: ""
   });
 
   // Interactive Size Quantities
@@ -246,7 +247,7 @@ function HoodieDealPage() {
       }
 
       const sizesSummary = formatSizesSummary();
-      const formattedDetails = `Selected Bundle: ${targetQuantity} Pack for $${currentPrice} (${currentPerPiece}/each)\nGarment Style: ${formData.garmentStyle}\nColor: ${formData.hoodieColor}\nBreakdown: ${sizesSummary}\nPrint Location: ${formData.printLocation}\n\nNotes: ${formData.notes}`;
+      const formattedDetails = `Selected Bundle: ${targetQuantity} Pack for $${currentPrice} (${currentPerPiece}/each)\nGarment Style: ${formData.garmentStyle}\nColor: ${formData.hoodieColor}\nBreakdown: ${sizesSummary}\nPrint Location: ${formData.printLocation}\n\nNotes: ${formData.notes}${formData.referralSource ? `\n\nHow Did You Find Us: ${formData.referralSource}` : ""}`;
 
       await submitQuoteFn({
         data: {
@@ -259,6 +260,7 @@ function HoodieDealPage() {
           email: formData.email,
           phone: formData.phone || undefined,
           zipCode: formData.zipCode || undefined,
+          referralSource: formData.referralSource || undefined,
           details: formattedDetails,
           fileNames: filePaths,
           captchaToken,
@@ -819,7 +821,7 @@ function HoodieDealPage() {
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-4">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-ink uppercase mb-1">Email *</label>
                     <input 
@@ -851,6 +853,21 @@ function HoodieDealPage() {
                       className="w-full p-3 border-2 border-ink rounded-lg bg-background" 
                       placeholder="e.g. 30045" 
                     />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-ink uppercase mb-1">How did you find us?</label>
+                    <select
+                      value={formData.referralSource}
+                      onChange={e => setFormData({...formData, referralSource: e.target.value})}
+                      className="w-full p-3 border-2 border-ink rounded-lg bg-background font-medium text-sm text-foreground"
+                    >
+                      <option value="">Select an option...</option>
+                      <option value="Facebook">Facebook</option>
+                      <option value="Google">Google</option>
+                      <option value="Word of Mouth">Word of Mouth</option>
+                      <option value="Local">Local</option>
+                      <option value="Other">Other</option>
+                    </select>
                   </div>
                 </div>
               </div>
