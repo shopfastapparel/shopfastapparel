@@ -44,6 +44,7 @@ import { Route as GroupNewHeightsYouthAdminRouteImport } from './routes/group.ne
 import { Route as GroupNewHeightsYouthRouteImport } from './routes/group.new-heights-youth'
 import { Route as GroupDemoRouteImport } from './routes/group.demo'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
 import { Route as ApiGroupAdminRouteImport } from './routes/api.group-admin'
 import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
 import { Route as AdminSalesRouteImport } from './routes/admin.sales'
@@ -235,6 +236,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
+  id: '/api/stripe-webhook',
+  path: '/api/stripe-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiGroupAdminRoute = ApiGroupAdminRouteImport.update({
   id: '/api/group-admin',
   path: '/api/group-admin',
@@ -329,6 +335,7 @@ export interface FileRoutesByFullPath {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/api/group-admin': typeof ApiGroupAdminRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/group/demo': typeof GroupDemoRoute
   '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
@@ -379,6 +386,7 @@ export interface FileRoutesByTo {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/api/group-admin': typeof ApiGroupAdminRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/group/demo': typeof GroupDemoRoute
   '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
@@ -430,6 +438,7 @@ export interface FileRoutesById {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/api/group-admin': typeof ApiGroupAdminRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/group/demo': typeof GroupDemoRoute
   '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
@@ -482,6 +491,7 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/api/group-admin'
+    | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/group/demo'
     | '/group/new-heights-youth'
@@ -532,6 +542,7 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/api/group-admin'
+    | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/group/demo'
     | '/group/new-heights-youth'
@@ -582,6 +593,7 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/api/group-admin'
+    | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/group/demo'
     | '/group/new-heights-youth'
@@ -633,6 +645,7 @@ export interface RootRouteChildren {
   AdminSalesRoute: typeof AdminSalesRoute
   AdminSubscribersRoute: typeof AdminSubscribersRoute
   ApiGroupAdminRoute: typeof ApiGroupAdminRoute
+  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   BlogSlugRoute: typeof BlogSlugRoute
   GroupDemoRoute: typeof GroupDemoRoute
   GroupNewHeightsYouthRoute: typeof GroupNewHeightsYouthRoute
@@ -905,6 +918,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stripe-webhook': {
+      id: '/api/stripe-webhook'
+      path: '/api/stripe-webhook'
+      fullPath: '/api/stripe-webhook'
+      preLoaderRoute: typeof ApiStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/group-admin': {
       id: '/api/group-admin'
       path: '/api/group-admin'
@@ -1025,6 +1045,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSalesRoute: AdminSalesRoute,
   AdminSubscribersRoute: AdminSubscribersRoute,
   ApiGroupAdminRoute: ApiGroupAdminRoute,
+  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   BlogSlugRoute: BlogSlugRoute,
   GroupDemoRoute: GroupDemoRoute,
   GroupNewHeightsYouthRoute: GroupNewHeightsYouthRoute,
