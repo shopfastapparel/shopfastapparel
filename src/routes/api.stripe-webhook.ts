@@ -1,6 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createClient } from "@supabase/supabase-js";
-import { Resend } from "resend";
 
 export const Route = createFileRoute("/api/stripe-webhook")({
   server: {
@@ -45,52 +43,61 @@ export const Route = createFileRoute("/api/stripe-webhook")({
           const receiptUrl = isInvoice ? obj.hosted_invoice_url : "";
           const paidDate = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
-          // Supabase lookup & status update
+          // Supabase lookup & status update using native REST fetch
           const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
           const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
           let proofUrl = "";
 
           if (supabaseUrl && supabaseKey && customerEmail) {
-            const supabase = createClient(supabaseUrl, supabaseKey);
             try {
-              const { data: quote } = await supabase
-                .from("quote_requests")
-                .select("id, mockup_url")
-                .eq("email", customerEmail)
-                .order("created_at", { ascending: false })
-                .limit(1)
-                .single();
-
-              if (quote) {
-                proofUrl = quote.mockup_url || "";
-                await supabase
-                  .from("quote_requests")
-                  .update({
-                    status: "Invoice Paid (Draft Ready for Owner Review)",
-                    details: `Invoice #${invoiceNumber} confirmed PAID (${amountPaid}). Payment confirmation draft preview dispatched to admin. Awaiting owner chat approval before customer dispatch.`,
-                  })
-                  .eq("id", quote.id);
+              const res = await fetch(
+                `${supabaseUrl}/rest/v1/quote_requests?email=eq.${encodeURIComponent(customerEmail)}&order=created_at.desc&limit=1`,
+                {
+                  headers: {
+                    apikey: supabaseKey,
+                    Authorization: `Bearer ${supabaseKey}`,
+                  },
+                }
+              );
+              if (res.ok) {
+                const quotes = await res.json();
+                if (quotes && quotes.length > 0) {
+                  const quote = quotes[0];
+                  proofUrl = quote.mockup_url || "";
+                  await fetch(`${supabaseUrl}/rest/v1/quote_requests?id=eq.${quote.id}`, {
+                    method: "PATCH",
+                    headers: {
+                      apikey: supabaseKey,
+                      Authorization: `Bearer ${supabaseKey}`,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      status: "Invoice Paid (Draft Ready for Owner Review)",
+                      details: `Invoice #${invoiceNumber} confirmed PAID (${amountPaid}). Payment confirmation draft preview dispatched to admin. Awaiting owner chat approval before customer dispatch.`,
+                    }),
+                  });
+                }
               }
             } catch (err) {
               console.error("[Stripe Webhook] Supabase lookup error:", err);
             }
           }
 
-          // Dispatch Draft Review to shop owner inbox via Resend
+          // Dispatch Draft Review to shop owner inbox via Resend REST API
           const resendKey = process.env.RESEND_API_KEY;
           const adminEmail = process.env.RESEND_TO_EMAIL || "shopfastapparel@gmail.com";
 
           if (resendKey && adminEmail) {
-            const resend = new Resend(resendKey);
-
-            const proofSectionHtml = proofUrl ? `
+            const proofSectionHtml = proofUrl
+              ? `
               <div style="margin: 22px 0; background-color: #F8FAFC; padding: 16px; border-radius: 10px; border: 1px solid #E2E8F0; text-align: center;">
                 <strong style="font-size: 14px; color: #0F172A; display: block; margin-bottom: 8px;">🎨 Approved Production Proof on File</strong>
                 <a href="${proofUrl}" target="_blank" style="text-decoration: none;">
                   <img src="${proofUrl}" alt="Approved Production Proof" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #CBD5E1;" />
                 </a>
               </div>
-            ` : "";
+            `
+              : "";
 
             const draftHtml = `
               <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #F8FAFC; padding: 24px; color: #1E293B;">
@@ -155,13 +162,20 @@ export const Route = createFileRoute("/api/stripe-webhook")({
             `;
 
             try {
-              await resend.emails.send({
-                from: "Tavarus Johnson <info@shopfastapparel.com>",
-                to: [adminEmail],
-                replyTo: "info@shopfastapparel.com",
-                subject: `[DRAFT REVIEW] Real-Time Payment Received! Invoice #${invoiceNumber} (${amountPaid}) — Production Kickoff 🚀`,
-                html: draftHtml,
-                text: `Real-Time Payment Received from ${customerName} (${customerEmail}) for Invoice #${invoiceNumber} in the amount of ${amountPaid}.\n\nZero emails sent to customer. Awaiting owner chat approval.`,
+              await fetch("https://api.resend.com/emails", {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${resendKey}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  from: "Tavarus Johnson <info@shopfastapparel.com>",
+                  to: [adminEmail],
+                  reply_to: "info@shopfastapparel.com",
+                  subject: `[DRAFT REVIEW] Real-Time Payment Received! Invoice #${invoiceNumber} (${amountPaid}) — Production Kickoff 🚀`,
+                  html: draftHtml,
+                  text: `Real-Time Payment Received from ${customerName} (${customerEmail}) for Invoice #${invoiceNumber} in the amount of ${amountPaid}.\n\nZero emails sent to customer. Awaiting owner chat approval.`,
+                }),
               });
               console.log(`[Stripe Webhook] Real-time draft preview sent to ${adminEmail} for Invoice #${invoiceNumber}`);
             } catch (err) {

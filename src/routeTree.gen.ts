@@ -56,7 +56,6 @@ import { Route as AdminAnnouncementRouteImport } from './routes/admin.announceme
 import { Route as ApiPublicVoiceRouteImport } from './routes/api/public/voice'
 import { Route as ApiPublicTrackRouteImport } from './routes/api/public/track'
 import { Route as ApiCronGenerateBlogRouteImport } from './routes/api/cron/generate-blog'
-import { Route as ApiPublicHooksStripeWebhookRouteImport } from './routes/api/public/hooks/stripe-webhook'
 import { Route as ApiPublicHooksGenerateBlogPostRouteImport } from './routes/api/public/hooks/generate-blog-post'
 
 const TurnaroundTimeRoute = TurnaroundTimeRouteImport.update({
@@ -296,12 +295,6 @@ const ApiCronGenerateBlogRoute = ApiCronGenerateBlogRouteImport.update({
   path: '/api/cron/generate-blog',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicHooksStripeWebhookRoute =
-  ApiPublicHooksStripeWebhookRouteImport.update({
-    id: '/api/public/hooks/stripe-webhook',
-    path: '/api/public/hooks/stripe-webhook',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const ApiPublicHooksGenerateBlogPostRoute =
   ApiPublicHooksGenerateBlogPostRouteImport.update({
     id: '/api/public/hooks/generate-blog-post',
@@ -358,7 +351,6 @@ export interface FileRoutesByFullPath {
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/voice': typeof ApiPublicVoiceRoute
   '/api/public/hooks/generate-blog-post': typeof ApiPublicHooksGenerateBlogPostRoute
-  '/api/public/hooks/stripe-webhook': typeof ApiPublicHooksStripeWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -409,7 +401,6 @@ export interface FileRoutesByTo {
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/voice': typeof ApiPublicVoiceRoute
   '/api/public/hooks/generate-blog-post': typeof ApiPublicHooksGenerateBlogPostRoute
-  '/api/public/hooks/stripe-webhook': typeof ApiPublicHooksStripeWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -461,7 +452,6 @@ export interface FileRoutesById {
   '/api/public/track': typeof ApiPublicTrackRoute
   '/api/public/voice': typeof ApiPublicVoiceRoute
   '/api/public/hooks/generate-blog-post': typeof ApiPublicHooksGenerateBlogPostRoute
-  '/api/public/hooks/stripe-webhook': typeof ApiPublicHooksStripeWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -514,7 +504,6 @@ export interface FileRouteTypes {
     | '/api/public/track'
     | '/api/public/voice'
     | '/api/public/hooks/generate-blog-post'
-    | '/api/public/hooks/stripe-webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -565,7 +554,6 @@ export interface FileRouteTypes {
     | '/api/public/track'
     | '/api/public/voice'
     | '/api/public/hooks/generate-blog-post'
-    | '/api/public/hooks/stripe-webhook'
   id:
     | '__root__'
     | '/'
@@ -616,7 +604,6 @@ export interface FileRouteTypes {
     | '/api/public/track'
     | '/api/public/voice'
     | '/api/public/hooks/generate-blog-post'
-    | '/api/public/hooks/stripe-webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -668,7 +655,6 @@ export interface RootRouteChildren {
   ApiPublicTrackRoute: typeof ApiPublicTrackRoute
   ApiPublicVoiceRoute: typeof ApiPublicVoiceRoute
   ApiPublicHooksGenerateBlogPostRoute: typeof ApiPublicHooksGenerateBlogPostRoute
-  ApiPublicHooksStripeWebhookRoute: typeof ApiPublicHooksStripeWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1002,13 +988,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiCronGenerateBlogRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/hooks/stripe-webhook': {
-      id: '/api/public/hooks/stripe-webhook'
-      path: '/api/public/hooks/stripe-webhook'
-      fullPath: '/api/public/hooks/stripe-webhook'
-      preLoaderRoute: typeof ApiPublicHooksStripeWebhookRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/public/hooks/generate-blog-post': {
       id: '/api/public/hooks/generate-blog-post'
       path: '/api/public/hooks/generate-blog-post'
@@ -1068,7 +1047,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicTrackRoute: ApiPublicTrackRoute,
   ApiPublicVoiceRoute: ApiPublicVoiceRoute,
   ApiPublicHooksGenerateBlogPostRoute: ApiPublicHooksGenerateBlogPostRoute,
-  ApiPublicHooksStripeWebhookRoute: ApiPublicHooksStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
