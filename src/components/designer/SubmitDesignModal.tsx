@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { ApparelStyle } from "@/lib/apparel";
 import { GarmentColor } from "./designerTypes";
 import { Button } from "@/components/ui/button";
@@ -47,6 +48,7 @@ export function SubmitDesignModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
@@ -67,6 +69,11 @@ export function SubmitDesignModal({
     e.preventDefault();
     if (!name.trim() || !email.trim()) {
       setErrorMsg("Please provide your name and email address.");
+      return;
+    }
+
+    if (!captchaToken) {
+      setErrorMsg("Please verify that you are not a robot before submitting.");
       return;
     }
 
@@ -210,6 +217,7 @@ export function SubmitDesignModal({
             frontProofUrl,
             backProofUrl,
             rawFileLinks: rawFileLinks.length > 0 ? rawFileLinks : undefined,
+            captchaToken: captchaToken || undefined,
           }
         });
       } catch (notifyErr) {
@@ -227,7 +235,7 @@ export function SubmitDesignModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-card border-2 border-ink rounded-2xl max-w-xl w-full p-6 shadow-2xl relative my-8 animate-in fade-in zoom-in-95">
+      <div className="bg-card border-2 border-ink rounded-2xl max-w-xl w-full p-6 shadow-2xl relative my-8 max-h-[92vh] overflow-y-auto animate-in fade-in zoom-in-95">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-ink transition-colors"
@@ -433,6 +441,20 @@ export function SubmitDesignModal({
                 placeholder="Any special details, placement instructions, or deadline requirements..."
                 rows={2}
                 className="w-full px-3 py-2 border-2 border-ink rounded-lg font-medium text-xs bg-background outline-none focus:ring-2 focus:ring-yellow-brand"
+              />
+            </div>
+
+            {/* ReCAPTCHA "I'm not a robot" Verification */}
+            <div className="flex flex-col items-center justify-center py-2">
+              <ReCAPTCHA
+                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"}
+                onChange={(token) => {
+                  setCaptchaToken(token);
+                  if (token && errorMsg.includes("robot")) {
+                    setErrorMsg("");
+                  }
+                }}
+                onExpired={() => setCaptchaToken(null)}
               />
             </div>
 

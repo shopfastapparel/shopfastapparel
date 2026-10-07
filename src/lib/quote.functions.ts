@@ -341,11 +341,32 @@ const studioNotificationSchema = z.object({
   frontProofUrl: z.string().nullable().optional(),
   backProofUrl: z.string().nullable().optional(),
   rawFileLinks: z.array(z.object({ name: z.string(), url: z.string() })).optional(),
+  captchaToken: z.string().optional(),
 });
 
 export const notifyStudioSubmission = createServerFn({ method: "POST" })
   .inputValidator((d) => studioNotificationSchema.parse(d))
   .handler(async ({ data }) => {
+    if (data.captchaToken) {
+      const captchaSecret = process.env.RECAPTCHA_SECRET_KEY || "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe";
+      try {
+        const captchaVerifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({
+            secret: captchaSecret,
+            response: data.captchaToken,
+          }).toString(),
+        });
+        const captchaVerifyResult = await captchaVerifyRes.json();
+        if (!captchaVerifyResult.success) {
+          console.warn("[studio-quote] CAPTCHA verification warning:", captchaVerifyResult);
+        }
+      } catch (cErr) {
+        console.error("[studio-quote] Error verifying captcha:", cErr);
+      }
+    }
+
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
       console.warn("[studio-quote] Resend API key missing, skipping email");
