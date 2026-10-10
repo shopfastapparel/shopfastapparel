@@ -244,12 +244,19 @@ export function SubmitDesignModal({
         </button>
 
         {isSuccess ? (
-          <div className="text-center py-8 space-y-4">
-            <div className="w-16 h-16 bg-green-100 border-2 border-green-600 text-green-700 rounded-full flex items-center justify-center mx-auto">
-              <Check className="w-8 h-8 stroke-[3]" />
+          <div className="text-center py-6 space-y-4">
+            <div className="relative inline-block mx-auto">
+              <img
+                src="/images/mascot/dash_thumbs_up.png"
+                alt="Dash the Cheetah Thumbs Up"
+                className="w-28 sm:w-32 h-auto mx-auto drop-shadow-md animate-in zoom-in-95 duration-300"
+              />
+              <div className="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full p-1.5 shadow-md border-2 border-white">
+                <Check className="w-5 h-5 stroke-[3]" />
+              </div>
             </div>
-            <h3 className="font-display text-2xl text-ink">
-              Design Submitted Successfully!
+            <h3 className="font-display text-2xl sm:text-3xl text-ink">
+              Design Submitted to Dash &amp; Team!
             </h3>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
               Thank you, <span className="font-bold text-ink">{name}</span>! We’ve
@@ -257,10 +264,9 @@ export function SubmitDesignModal({
               <span className="font-bold text-ink">{style.name}</span> in{" "}
               <span className="font-bold text-ink">{color.name}</span>.
             </p>
-            <p className="text-xs text-muted-foreground">
-              Our team is reviewing your safe-zones and will email an official quote
-              and digital proof to <span className="font-bold text-ink">{email}</span> within 24 hours.
-            </p>
+            <div className="inline-flex items-center gap-2 bg-yellow-brand/20 border border-yellow-brand/50 px-3.5 py-1.5 rounded-full text-xs font-semibold text-ink">
+              <span>⚡ Lightning-fast review: Official proof &amp; quote arriving at <strong>{email}</strong> within 24 hours!</span>
+            </div>
 
             {/* Proofs Preview */}
             <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto pt-2">
@@ -299,13 +305,20 @@ export function SubmitDesignModal({
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <h3 className="font-display text-2xl text-ink">
-                Submit Design for Free Quote
-              </h3>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                We'll review your artwork safe-zones and email you an official proof & invoice.
-              </p>
+            <div className="flex items-center gap-3.5 border-b pb-3">
+              <img
+                src="/images/mascot/dash_avatar_circle.png"
+                alt="Dash the Cheetah"
+                className="w-12 h-12 rounded-full border-2 border-cyan-brand shadow-sm shrink-0"
+              />
+              <div>
+                <h3 className="font-display text-2xl text-ink leading-tight">
+                  Submit Design for Free Quote
+                </h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Dash &amp; our production crew will review your print safe-zones and email you an official proof within 24 hours.
+                </p>
+              </div>
             </div>
 
             {errorMsg && (

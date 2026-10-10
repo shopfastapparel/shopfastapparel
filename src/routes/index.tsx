@@ -266,16 +266,30 @@ function HomePage() {
               </Button>
             </motion.div>
             
-            <motion.div variants={fadeInUp} className="mt-6 sm:mt-10 flex flex-wrap gap-x-6 sm:gap-x-8 gap-y-2.5 text-xs sm:text-sm font-medium text-background/70">
-              <span className="flex items-center gap-1.5 sm:gap-2">
-                <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-brand" /> 3-7 Day Turnaround
-              </span>
-              <span className="flex items-center gap-1.5 sm:gap-2">
-                <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-brand" /> 100% Satisfaction
-              </span>
-              <span className="flex items-center gap-1.5 sm:gap-2">
-                <Star className="h-4 w-4 sm:h-5 sm:w-5 text-magenta-brand" /> 5-Star Rated
-              </span>
+            <motion.div variants={fadeInUp} className="mt-6 sm:mt-10 flex flex-wrap items-center gap-3 sm:gap-4">
+              <div className="inline-flex items-center gap-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-3 py-1.5 shadow-sm">
+                <img
+                  src="/images/mascot/dash_avatar_circle.png"
+                  alt="Dash the Cheetah"
+                  className="w-8 h-8 rounded-full border-2 border-cyan-brand shadow-xs shrink-0"
+                />
+                <div>
+                  <p className="text-xs font-bold text-white flex items-center gap-1 leading-tight">
+                    <Zap className="h-3 w-3 text-yellow-brand fill-yellow-brand" />
+                    3–7 Day Turnarounds with Dash
+                  </p>
+                  <p className="text-[10px] text-white/70">Metro Atlanta Pickup &amp; Express Delivery</p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-x-4 sm:gap-x-6 gap-y-2 text-xs sm:text-sm font-medium text-background/70">
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-brand" /> 100% Satisfaction
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Star className="h-4 w-4 sm:h-5 sm:w-5 text-magenta-brand" /> 5-Star Rated
+                </span>
+              </div>
             </motion.div>
           </motion.div>
 
@@ -332,6 +346,49 @@ function HomePage() {
                   <span className="text-xs font-bold uppercase tracking-wider text-magenta-brand mt-1.5">{tier.qty} Shirts</span>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* DASH SPEED & TURNAROUND BANNER */}
+      <section className="bg-ink text-background py-14 border-b-4 border-ink relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-brand/10 via-magenta-brand/10 to-yellow-brand/10 pointer-events-none" />
+        <div className="mx-auto max-w-7xl px-4 relative z-10">
+          <div className="grid md:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <div className="md:col-span-5 flex justify-center">
+              <motion.img
+                src="/images/mascot/dash_sprint.png"
+                alt="Dash the Cheetah sprinting with CMYK ink trails"
+                className="w-64 sm:w-72 md:w-full max-w-xs h-auto drop-shadow-[0_10px_25px_rgba(0,229,255,0.25)] hover:scale-105 transition-transform duration-300"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              />
+            </div>
+            <div className="md:col-span-7 space-y-4 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-yellow-brand text-ink text-xs font-bold uppercase tracking-widest border border-yellow-brand/50">
+                <Zap className="w-4 h-4 fill-ink" /> The Fast Apparel Promise
+              </div>
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight">
+                Speed is in our name. <span className="text-yellow-brand">3–7 Day Turnarounds</span> Guaranteed.
+              </h2>
+              <p className="text-white/80 text-base md:text-lg max-w-2xl leading-relaxed">
+                No waiting weeks for your custom shirts. Powered by industrial high-definition DTF print technology right here in Lawrenceville, GA, Dash and our production crew fulfill orders with uncompromising color vibrancy and rapid turnaround.
+              </p>
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
+                <Button asChild size="lg" className="bg-yellow-brand text-ink hover:bg-white font-bold border-2 border-ink shadow-pop">
+                  <Link to="/designer">
+                    <Sparkles className="mr-2 h-4 w-4 text-magenta-brand" /> Launch Design Studio
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 font-bold">
+                  <Link to="/turnaround">
+                    View Live Shipping Map ➔
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -786,17 +843,17 @@ function HomePage() {
             </div>
           </div>
           <div className="lg:col-span-5 flex justify-center">
-            <div className="relative border-4 border-ink rounded-2xl bg-card p-6 shadow-pop-lg max-w-sm w-full rotate-2 hover:rotate-0 transition-transform">
+            <div className="relative border-4 border-ink rounded-2xl bg-card p-6 shadow-pop-lg max-w-sm w-full rotate-2 hover:rotate-0 transition-transform text-center">
               <div className="absolute -top-3 -right-3 bg-magenta-brand text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow">
-                Instant Mockup
+                Meet Dash
               </div>
               <img
-                src="/images/apparel/gildan-64000.jpg"
-                alt="Online Designer Preview"
-                className="w-full h-56 object-cover rounded-xl border-2 border-ink/20 mb-4"
+                src="/images/mascot/dash_holding_shirt.png"
+                alt="Dash the Cheetah holding custom Fast Apparel shirt"
+                className="w-56 h-auto mx-auto drop-shadow-md mb-4"
               />
-              <div className="flex items-center justify-between text-xs font-bold text-ink">
-                <span>Front & Back Safe Zones</span>
+              <div className="flex items-center justify-between text-xs font-bold text-ink bg-muted/40 p-2.5 rounded-lg border border-ink/10">
+                <span>Front &amp; Back Safe Zones</span>
                 <span className="text-cyan-brand">Live 300 DPI Proofs</span>
               </div>
             </div>
