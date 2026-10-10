@@ -86,7 +86,7 @@ function BulkLandingPage() {
                   "Free shipping on large bulk orders",
                   "Vibrant, full-color DTF prints (No color limits)",
                   "Heavyweight & premium blank options",
-                  "Fast local 3-7 day turnaround"
+                  "Fast local 7–10 business day turnaround"
                 ].map(bullet => (
                   <li key={bullet} className="flex items-center gap-3 font-medium text-ink">
                     <CheckCircle2 className="w-6 h-6 text-yellow-brand shrink-0" /> {bullet}

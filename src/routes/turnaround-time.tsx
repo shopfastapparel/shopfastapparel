@@ -156,7 +156,7 @@ export function TurnaroundTimePage() {
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-border/80 flex items-center gap-2 text-xs font-semibold text-emerald-600">
-                <CheckCircle2 className="w-4 h-4" /> Usually around 5 days
+                <CheckCircle2 className="w-4 h-4" /> Standard 7–10 business days
               </div>
             </div>
 

@@ -41,7 +41,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Lawrenceville's #1 DTF custom t-shirt printer. Full-color DTF prints & promotional products with most orders completed in as little as 7 days. Free mockups, low minimums, free shipping on bulk orders. Serving Lawrenceville, Gwinnett County, Atlanta & all of metro GA.",
+          "Lawrenceville's #1 DTF custom t-shirt printer. Full-color DTF prints & promotional products with standard 7–10 business day turnaround. Free mockups, low minimums, free shipping on bulk orders. Serving Lawrenceville, Gwinnett County, Atlanta & all of metro GA.",
       },
       { property: "og:title", content: "Custom DTF T-Shirt Printing in Lawrenceville | Fast Apparel" },
       {
@@ -276,7 +276,7 @@ function HomePage() {
                 <div>
                   <p className="text-xs font-bold text-white flex items-center gap-1 leading-tight">
                     <Zap className="h-3 w-3 text-yellow-brand fill-yellow-brand" />
-                    3–7 Day Turnarounds with Dash
+                    7–10 Business Day Turnarounds with Dash
                   </p>
                   <p className="text-[10px] text-white/70">Metro Atlanta Pickup &amp; Express Delivery</p>
                 </div>
@@ -372,10 +372,10 @@ function HomePage() {
                 <Zap className="w-4 h-4 fill-ink" /> The Fast Apparel Promise
               </div>
               <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight">
-                Speed is in our name. <span className="text-yellow-brand">3–7 Day Turnarounds</span> Guaranteed.
+                Speed is in our name. <span className="text-yellow-brand">7–10 Business Day Turnaround</span> Guaranteed.
               </h2>
               <p className="text-white/80 text-base md:text-lg max-w-2xl leading-relaxed">
-                No waiting weeks for your custom shirts. Powered by industrial high-definition DTF print technology right here in Lawrenceville, GA, Dash and our production crew fulfill orders with uncompromising color vibrancy and rapid turnaround.
+                No waiting weeks for your custom shirts. Powered by industrial high-definition DTF print technology right here in Lawrenceville, GA, Dash and our production crew fulfill orders with uncompromising color vibrancy and dependable turnaround.
               </p>
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
                 <Button asChild size="lg" className="bg-yellow-brand text-ink hover:bg-white font-bold border-2 border-ink shadow-pop">
@@ -384,7 +384,7 @@ function HomePage() {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 font-bold">
-                  <Link to="/turnaround">
+                  <Link to="/turnaround-time">
                     View Live Shipping Map ➔
                   </Link>
                 </Button>
@@ -791,7 +791,7 @@ function HomePage() {
           </p>
           <h2 className="mt-2 font-display text-4xl md:text-5xl">Local custom printing, fast.</h2>
           <p className="mt-4 text-muted-foreground">
-            Free mockups and most orders completed in as little as 7 days across the metro Atlanta area.
+            Free mockups and reliable 7–10 business day turnaround across the metro Atlanta area.
           </p>
         </motion.div>
         <motion.div

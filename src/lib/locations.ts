@@ -42,7 +42,7 @@ export const LOCATIONS: LocationInfo[] = [
       "Atlanta's go-to custom DTF t-shirt printer. Full-color, photo-quality prints with the fastest turnaround in the city.",
     neighborhoods: ["Midtown", "Buckhead", "West Midtown", "Old Fourth Ward", "Inman Park"],
     highlights: [
-      "Most orders completed in as little as 7 days inside the perimeter",
+      "Orders completed in 7–10 business days inside the perimeter",
       "Free shipping on bulk ATL orders",
       "Trusted by Atlanta schools, churches, and small businesses",
     ],
@@ -93,7 +93,7 @@ export const LOCATIONS: LocationInfo[] = [
       "Sandy Springs custom printing — fast, professional apparel for offices, gyms, and community events along GA-400.",
     neighborhoods: ["Perimeter", "City Springs", "Dunwoody border", "Roswell Road corridor"],
     highlights: [
-      "Corporate orders completed in as little as 7 days",
+      "Corporate orders completed in 7–10 business days",
       "Free mockups before you commit",
       "Free shipping on bulk orders to Perimeter offices",
     ],
