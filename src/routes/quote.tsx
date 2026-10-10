@@ -201,7 +201,7 @@ const TURNAROUNDS: {
     key: "standard",
     label: "Standard",
     estimate: "7–10 business days",
-    blurb: "Most popular — best balance of speed & price",
+    blurb: "Most popular — best balance of speed & price (often times even sooner!)",
     Icon: Clock,
   },
   {
@@ -658,10 +658,10 @@ function QuotePage() {
             .
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" className="border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors">
               <Link to="/blog">Read the blog</Link>
             </Button>
-            <Button asChild>
+            <Button asChild className="border-2 border-ink bg-magenta-brand text-white font-bold hover:bg-magenta-brand/90 shadow-pop">
               <Link to="/shop">Browse the shop</Link>
             </Button>
           </div>

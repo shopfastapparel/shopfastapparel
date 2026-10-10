@@ -265,7 +265,7 @@ export function SubmitDesignModal({
               <span className="font-bold text-ink">{color.name}</span>.
             </p>
             <div className="inline-flex items-center gap-2 bg-yellow-brand/20 border border-yellow-brand/50 px-3.5 py-1.5 rounded-full text-xs font-semibold text-ink">
-              <span>⚡ Lightning-fast review: Official proof &amp; quote arriving at <strong>{email}</strong> within 24 hours!</span>
+              <span>⚡ Review in 24 hrs • Standard 7–10 business day turnaround (often times even sooner!)</span>
             </div>
 
             {/* Proofs Preview */}
@@ -316,7 +316,7 @@ export function SubmitDesignModal({
                   Submit Design for Free Quote
                 </h3>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Dash &amp; our production crew will review your print safe-zones and email you an official proof within 24 hours.
+                  Dash &amp; our crew will review print safe-zones and email an official proof within 24 hours. Standard 7–10 business day turnaround (often times even sooner!).
                 </p>
               </div>
             </div>
@@ -477,7 +477,7 @@ export function SubmitDesignModal({
                 type="button"
                 variant="outline"
                 onClick={onClose}
-                className="flex-1 border-2 border-ink font-bold"
+                className="flex-1 border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors"
               >
                 Cancel
               </Button>

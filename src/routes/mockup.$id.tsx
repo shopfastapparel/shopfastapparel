@@ -196,7 +196,7 @@ function MockupApprovalPage() {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full h-12" 
+                    className="w-full h-12 border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors" 
                     onClick={() => setShowRejectForm(true)}
                     disabled={processing}
                   >

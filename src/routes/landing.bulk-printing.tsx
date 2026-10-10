@@ -86,7 +86,7 @@ function BulkLandingPage() {
                   "Free shipping on large bulk orders",
                   "Vibrant, full-color DTF prints (No color limits)",
                   "Heavyweight & premium blank options",
-                  "Fast local 7–10 business day turnaround"
+                  "Fast local 7–10 business day turnaround (often times even sooner!)"
                 ].map(bullet => (
                   <li key={bullet} className="flex items-center gap-3 font-medium text-ink">
                     <CheckCircle2 className="w-6 h-6 text-yellow-brand shrink-0" /> {bullet}
@@ -138,7 +138,7 @@ function BulkLandingPage() {
                   <p className="text-xl font-bold text-muted-foreground mb-2">{tier.qty} Items</p>
                   <h3 className={`font-display text-4xl mb-2 ${tier.highlight ? 'text-magenta-brand' : 'text-ink'}`}>{tier.discount}</h3>
                   <p className="font-medium text-ink/80 mb-6">{tier.subtitle}</p>
-                  <Button asChild variant={tier.highlight ? "default" : "outline"} className={tier.highlight ? "w-full bg-magenta-brand hover:bg-magenta-brand/90 text-white" : "w-full"}>
+                  <Button asChild variant={tier.highlight ? "default" : "outline"} className={tier.highlight ? "w-full bg-magenta-brand hover:bg-magenta-brand/90 text-white font-bold" : "w-full border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors"}>
                     <Link to="/quote">Get Quote</Link>
                   </Button>
                 </div>

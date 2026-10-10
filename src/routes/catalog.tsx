@@ -275,7 +275,7 @@ function CatalogPage() {
                 variant="outline"
                 size="sm"
                 onClick={handleClearFilters}
-                className="hidden sm:inline-flex border-2 border-ink font-semibold text-xs"
+                className="hidden sm:inline-flex border-2 border-ink text-ink hover:bg-ink hover:text-white font-semibold text-xs transition-colors"
               >
                 Reset
               </Button>
@@ -386,7 +386,7 @@ function CatalogPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setSearchQuery("Champion")}
-                className="border-ink text-xs font-semibold"
+                className="border-ink text-ink hover:bg-ink hover:text-white text-xs font-semibold transition-colors"
               >
                 Try "Champion"
               </Button>
@@ -394,7 +394,7 @@ function CatalogPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setSearchQuery("Richardson 112")}
-                className="border-ink text-xs font-semibold"
+                className="border-ink text-ink hover:bg-ink hover:text-white text-xs font-semibold transition-colors"
               >
                 Try "Richardson 112"
               </Button>
@@ -402,7 +402,7 @@ function CatalogPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setSearchQuery("Hoodie")}
-                className="border-ink text-xs font-semibold"
+                className="border-ink text-ink hover:bg-ink hover:text-white text-xs font-semibold transition-colors"
               >
                 Try "Hoodie"
               </Button>
@@ -522,7 +522,7 @@ function CatalogPage() {
               onClick={handleLoadMore}
               size="lg"
               variant="outline"
-              className="border-2 border-ink font-bold px-8 shadow-sm hover:shadow-pop transition-all hover:-translate-y-0.5"
+              className="border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white px-8 shadow-sm hover:shadow-pop transition-all hover:-translate-y-0.5"
             >
               Load More Styles ({styles.length} of {totalCount.toLocaleString()})
             </Button>
@@ -541,7 +541,7 @@ function CatalogPage() {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-            <Button asChild variant="outline" className="border-2 border-background text-background hover:bg-background hover:text-ink font-bold">
+            <Button asChild className="bg-white/10 hover:bg-white text-white hover:text-ink border-2 border-white/50 hover:border-white font-bold transition-all shadow-sm">
               <a href={`tel:${PRIMARY_PHONE}`}>
                 <Phone className="w-4 h-4 mr-2" /> Call {PRIMARY_PHONE}
               </a>

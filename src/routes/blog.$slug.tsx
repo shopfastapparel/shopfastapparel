@@ -186,7 +186,7 @@ function BlogPostPage() {
               <Button asChild size="lg" className="border-2 border-ink shadow-pop">
                 <Link to="/quote">Start Your Free Quote</Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
+              <Button asChild variant="outline" size="lg" className="border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors">
                 <Link to="/shop">Browse the Shop</Link>
               </Button>
             </div>

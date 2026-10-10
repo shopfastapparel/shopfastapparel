@@ -682,7 +682,7 @@ function GroupDemoPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="font-bold border-2 border-ink"
+                  className="font-bold border-2 border-ink text-ink hover:bg-ink hover:text-white transition-colors"
                   onClick={() => setShowDemoModal(false)}
                 >
                   Continue Exploring

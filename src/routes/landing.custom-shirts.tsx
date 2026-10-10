@@ -99,7 +99,7 @@ function LandingPage() {
               <ul className="space-y-4 mb-10">
                 {[
                   "Free digital mockup within 24 hours",
-                  "Most orders completed in 7–10 business days",
+                  "Most orders completed in 7–10 business days (often times even sooner!)",
                   "No minimums—order 1 or 1,000",
                   "Free shipping on bulk orders"
                 ].map(bullet => (
@@ -132,6 +132,7 @@ function LandingPage() {
                 <div>
                   <p className="text-xs font-bold text-muted-foreground uppercase">Average Turnaround</p>
                   <p className="font-display text-xl text-ink">7–10 Business Days</p>
+                  <p className="text-[10px] font-bold text-magenta-brand">(often times even sooner!)</p>
                 </div>
               </div>
             </div>

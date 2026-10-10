@@ -57,7 +57,7 @@ export function TurnaroundTimePage() {
                 Get a Free Quote <ArrowRight className="ml-2 w-4 h-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-background/30 text-background hover:bg-background/10 font-bold rounded-xl px-6">
+            <Button asChild size="lg" className="bg-white/10 hover:bg-white text-white hover:text-ink border-2 border-white/50 hover:border-white font-bold rounded-xl px-6 transition-all shadow-sm">
               <a href={`tel:${PRIMARY_PHONE}`}>
                 <PhoneCall className="mr-2 w-4 h-4" /> Call (678) 491-2655
               </a>
@@ -149,6 +149,7 @@ export function TurnaroundTimePage() {
                 <div className="my-4">
                   <span className="font-display text-3xl text-ink font-black">7–10</span>
                   <span className="text-sm text-muted-foreground ml-1.5 font-bold">Business Days</span>
+                  <p className="text-[11px] font-bold text-pink-brand mt-0.5">(often times even sooner! 😉)</p>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">
                   Applies to Gildan 64000/5000, Bella+Canvas 3001, Comfort Colors 1717, and standard
@@ -156,7 +157,7 @@ export function TurnaroundTimePage() {
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-border/80 flex items-center gap-2 text-xs font-semibold text-emerald-600">
-                <CheckCircle2 className="w-4 h-4" /> Standard 7–10 business days
+                <CheckCircle2 className="w-4 h-4" /> Standard 7–10 business days (often times even sooner!)
               </div>
             </div>
 
@@ -420,7 +421,7 @@ export function TurnaroundTimePage() {
                 What are your turnaround times for t-shirts, re-orders, and express jobs?
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Standard custom t-shirts are produced in <strong>7–10 business days</strong> (usually completed in around 5 days). Repeat re-orders are produced in <strong>5–7 business days</strong>, and <strong>Express Production</strong> is available in <strong>4–5 business days</strong> depending on shop capacity. Sweatshirts and specialty fleeces take 10–12 business days.
+                Standard custom t-shirts are produced in <strong>7–10 business days</strong> (though with our streamlined DTF setup, often times even sooner!). Repeat re-orders are produced in <strong>5–7 business days</strong>, and <strong>Express Production</strong> is available in <strong>4–5 business days</strong> depending on shop capacity. Sweatshirts and specialty fleeces take 10–12 business days.
               </p>
             </div>
 
@@ -453,7 +454,7 @@ export function TurnaroundTimePage() {
                 Request a Free Quote <ArrowRight className="ml-2 w-4 h-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-background/30 text-background hover:bg-background/10 font-bold rounded-xl px-6">
+            <Button asChild size="lg" className="bg-white/10 hover:bg-white text-white hover:text-ink border-2 border-white/50 hover:border-white font-bold rounded-xl px-6 transition-all shadow-sm">
               <Link to="/designer">Launch Online Designer</Link>
             </Button>
           </div>

@@ -96,7 +96,7 @@ function LocationPage() {
             <Button asChild size="lg" className="shadow-pop border-2 border-ink">
               <Link to="/quote">Get Free {loc.city} Quote</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-2 border-ink">
+            <Button asChild variant="outline" size="lg" className="border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors">
               <a href={`tel:${PRIMARY_PHONE}`}>
                 <Phone className="mr-2 h-4 w-4" /> {PRIMARY_PHONE}
               </a>
@@ -242,7 +242,7 @@ function LocationPage() {
                 <span className="transition-transform group-open:rotate-180 text-magenta-brand">▼</span>
               </summary>
               <div className="p-5 pt-0 text-muted-foreground border-t-2 border-ink/10 mt-2">
-                Most orders in {loc.region} are completed in 7-10 days from artwork approval. If you have an urgent deadline for an event in {loc.city}, let us know—we often accommodate rush orders!
+                Most orders in {loc.region} are completed in 7–10 business days from artwork approval (often times even sooner!). If you have an urgent deadline for an event in {loc.city}, let us know—we often accommodate rush orders!
               </div>
             </details>
             <details className="group border-2 border-ink bg-card rounded-lg overflow-hidden [&_summary::-webkit-details-marker]:hidden">

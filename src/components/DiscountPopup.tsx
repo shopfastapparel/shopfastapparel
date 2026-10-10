@@ -97,7 +97,7 @@ export function DiscountPopup() {
                   WELCOME10
                 </p>
               </div>
-              <Button onClick={handleClose} className="w-full mt-6" variant="outline">
+              <Button onClick={handleClose} className="w-full mt-6 border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors" variant="outline">
                 Continue Shopping
               </Button>
             </div>

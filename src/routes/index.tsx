@@ -261,7 +261,7 @@ function HomePage() {
                   <Sparkles className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-yellow-brand" /> Launch Design Studio
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="sm:h-14 sm:px-8 sm:text-lg bg-transparent border-white/20 text-white hover:bg-white/10 font-bold rounded-xl">
+              <Button asChild size="lg" className="sm:h-14 sm:px-8 sm:text-lg bg-white/10 hover:bg-white text-white hover:text-ink border-2 border-white/50 hover:border-white font-bold rounded-xl transition-all shadow-sm">
                 <Link to="/quote">Get A Quick Quote</Link>
               </Button>
             </motion.div>
@@ -276,7 +276,7 @@ function HomePage() {
                 <div>
                   <p className="text-xs font-bold text-white flex items-center gap-1 leading-tight">
                     <Zap className="h-3 w-3 text-yellow-brand fill-yellow-brand" />
-                    7–10 Business Day Turnarounds with Dash
+                    7–10 Business Days (Often Even Sooner!) • Powered by Dash
                   </p>
                   <p className="text-[10px] text-white/70">Metro Atlanta Pickup &amp; Express Delivery</p>
                 </div>
@@ -375,7 +375,7 @@ function HomePage() {
                 Speed is in our name. <span className="text-yellow-brand">7–10 Business Day Turnaround</span> Guaranteed.
               </h2>
               <p className="text-white/80 text-base md:text-lg max-w-2xl leading-relaxed">
-                No waiting weeks for your custom shirts. Powered by industrial high-definition DTF print technology right here in Lawrenceville, GA, Dash and our production crew fulfill orders with uncompromising color vibrancy and dependable turnaround.
+                No waiting weeks for your custom shirts. Standard orders roll off our presses in 7–10 business days—though if Dash gets his way on the production floor, <span className="text-yellow-brand font-semibold underline decoration-wavy decoration-magenta-brand underline-offset-4">often times even sooner!</span> 😉 Powered by industrial high-definition DTF print technology right here in Lawrenceville, GA, Dash and our production crew fulfill orders with uncompromising color vibrancy and dependable turnaround.
               </p>
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
                 <Button asChild size="lg" className="bg-yellow-brand text-ink hover:bg-white font-bold border-2 border-ink shadow-pop">
@@ -383,7 +383,7 @@ function HomePage() {
                     <Sparkles className="mr-2 h-4 w-4 text-magenta-brand" /> Launch Design Studio
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 font-bold">
+                <Button asChild size="lg" className="bg-white/10 hover:bg-white text-white hover:text-ink border-2 border-white/60 hover:border-white font-bold shadow-sm transition-all">
                   <Link to="/turnaround-time">
                     View Live Shipping Map ➔
                   </Link>
@@ -660,7 +660,7 @@ function HomePage() {
                       Try Interactive Demo ➔
                     </Link>
                   </Button>
-                  <Button asChild variant="outline" size="sm" className="border-2 border-ink text-xs h-10 px-4">
+                  <Button asChild variant="outline" size="sm" className="border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors text-xs h-10 px-4">
                     <Link to="/services/family-tees">Explore Family Tees</Link>
                   </Button>
                 </div>
@@ -724,7 +724,7 @@ function HomePage() {
               </p>
               <h2 className="mt-2 font-display text-4xl md:text-5xl">Popular products</h2>
             </div>
-            <Button asChild variant="outline" className="hidden md:inline-flex border-2 border-ink">
+            <Button asChild variant="outline" className="hidden md:inline-flex border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors">
               <Link to="/shop">View all</Link>
             </Button>
           </div>
@@ -791,7 +791,7 @@ function HomePage() {
           </p>
           <h2 className="mt-2 font-display text-4xl md:text-5xl">Local custom printing, fast.</h2>
           <p className="mt-4 text-muted-foreground">
-            Free mockups and reliable 7–10 business day turnaround across the metro Atlanta area.
+            Free mockups and reliable 7–10 business day turnaround (often times even sooner!) across the metro Atlanta area.
           </p>
         </motion.div>
         <motion.div
@@ -880,9 +880,8 @@ function HomePage() {
               </Button>
               <Button
                 asChild
-                variant="outline"
                 size="lg"
-                className="border-background/30 bg-transparent text-background hover:bg-background hover:text-ink"
+                className="bg-white/10 hover:bg-white text-white hover:text-ink border-2 border-white/50 hover:border-white font-bold transition-all shadow-sm"
               >
                 <Link to="/contact">Contact Us</Link>
               </Button>

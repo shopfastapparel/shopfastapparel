@@ -71,7 +71,7 @@ export function Header() {
             ))}
           </nav>
           <div className="flex items-center gap-2">
-            <Button asChild variant="outline" size="sm" className="hidden xl:inline-flex border-2 border-ink font-bold shadow-sm">
+            <Button asChild variant="outline" size="sm" className="hidden xl:inline-flex border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors shadow-sm">
               <Link to="/designer">
                 <Sparkles className="w-3.5 h-3.5 mr-1 text-cyan-brand" />
                 Design Online
@@ -111,7 +111,7 @@ export function Header() {
                 </Link>
               ))}
               <div className="grid grid-cols-2 gap-2 mt-2">
-                <Button asChild variant="outline" className="border-2 border-ink font-bold">
+                <Button asChild variant="outline" className="border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors">
                   <Link to="/designer" onClick={() => setOpen(false)}>
                     Design Studio
                   </Link>

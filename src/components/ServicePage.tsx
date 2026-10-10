@@ -37,7 +37,7 @@ export function ServicePage({ eyebrow, title, intro, features, bullets, faqs, ga
             <Button asChild size="lg" className="shadow-pop border-2 border-ink">
               <Link to="/quote">Get Free Quote</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-2 border-ink">
+            <Button asChild variant="outline" size="lg" className="border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors">
               <Link to="/shop">Browse Products</Link>
             </Button>
           </div>

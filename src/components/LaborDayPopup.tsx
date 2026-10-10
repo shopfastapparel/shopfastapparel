@@ -116,7 +116,7 @@ export function LaborDayPopup() {
             <Button 
               onClick={handleClose} 
               variant="outline" 
-              className="w-full font-bold border-2 border-border hover:bg-muted py-2.5"
+              className="w-full font-bold border-2 border-ink text-ink hover:bg-ink hover:text-white transition-colors py-2.5"
             >
               Continue Browsing
             </Button>

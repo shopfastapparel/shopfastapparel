@@ -131,7 +131,7 @@ function DesignerPage() {
                 variant="outline"
                 size="sm"
                 onClick={handleShareLink}
-                className="border-2 border-ink text-xs font-bold gap-1.5 shadow-sm"
+                className="border-2 border-ink text-ink hover:bg-ink hover:text-white text-xs font-bold gap-1.5 shadow-sm transition-colors"
               >
                 <Share2 className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Share</span>
@@ -140,7 +140,7 @@ function DesignerPage() {
                 variant="outline"
                 size="sm"
                 onClick={handleDownloadProof}
-                className="border-2 border-ink text-xs font-bold gap-1.5 shadow-sm"
+                className="border-2 border-ink text-ink hover:bg-ink hover:text-white text-xs font-bold gap-1.5 shadow-sm transition-colors"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Download Proof</span>

@@ -127,7 +127,7 @@ function FamilyTeesPage() {
             <Button asChild size="lg" className="bg-yellow-brand hover:bg-yellow-brand/90 text-ink font-bold shadow-pop border-2 border-ink text-base h-13 px-8">
               <Link to="/quote">Get Started & Free Collector Setup</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="bg-transparent border-white/30 text-white hover:bg-white hover:text-ink">
+            <Button asChild size="lg" className="bg-white/10 hover:bg-white text-white hover:text-ink border-2 border-white/50 hover:border-white font-bold transition-all shadow-sm">
               <Link to="/group/demo">Preview Sample Group Tool ➔</Link>
             </Button>
           </div>
