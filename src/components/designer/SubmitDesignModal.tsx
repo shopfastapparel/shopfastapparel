@@ -247,7 +247,7 @@ export function SubmitDesignModal({
           <div className="text-center py-6 space-y-4">
             <div className="relative inline-block mx-auto">
               <img
-                src="/images/mascot/dash_thumbs_up.png"
+                src="/images/mascot/dash_thumbs_up.webp"
                 alt="Dash the Cheetah Thumbs Up"
                 className="w-28 sm:w-32 h-auto mx-auto drop-shadow-md animate-in zoom-in-95 duration-300"
               />
@@ -307,7 +307,7 @@ export function SubmitDesignModal({
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="flex items-center gap-3.5 border-b pb-3">
               <img
-                src="/images/mascot/dash_avatar_circle.png"
+                src="/images/mascot/dash_avatar_circle.webp"
                 alt="Dash the Cheetah"
                 className="w-12 h-12 rounded-full border-2 border-cyan-brand shadow-sm shrink-0"
               />

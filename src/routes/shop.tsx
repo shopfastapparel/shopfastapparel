@@ -104,7 +104,7 @@ function ShopPage() {
           >
             <div className="aspect-square bg-muted overflow-hidden relative">
               <img
-                src="/images/apparel/gildan-bundle.png"
+                src="/images/apparel/gildan-bundle.webp"
                 alt="FAST Deal Bundle"
                 loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

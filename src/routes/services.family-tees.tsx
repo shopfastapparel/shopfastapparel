@@ -58,7 +58,7 @@ function FamilyTeesPage() {
           <div className="relative">
             <div className="absolute inset-0 bg-yellow-brand rounded-2xl transform translate-x-3 translate-y-3"></div>
             <img 
-              src="/images/family-tees/reunion.png" 
+              src="/images/family-tees/reunion.webp" 
               alt="Large extended family at a reunion wearing matching blue custom t-shirts" 
               className="relative z-10 w-full h-auto rounded-2xl border-2 border-ink object-cover aspect-[4/3] shadow-sm"
             />
@@ -82,7 +82,7 @@ function FamilyTeesPage() {
             <div className="absolute -inset-1.5 bg-gradient-to-r from-magenta-brand via-yellow-brand to-cyan-brand rounded-3xl blur-md opacity-30"></div>
             <div className="relative rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl bg-black">
               <img
-                src="/images/family-tees/family-collector-tool.jpg"
+                src="/images/family-tees/family-collector-tool.webp"
                 alt="Fast Apparel Family Size Collector Tool with feature callout arrows pointing to the shareable group chat link, live size picker, and organizer dashboard with size tallies"
                 className="w-full h-auto object-cover"
                 loading="lazy"
@@ -148,7 +148,7 @@ function FamilyTeesPage() {
             <div className="group">
               <div className="relative overflow-hidden rounded-2xl border-2 border-border mb-6 aspect-video">
                 <img 
-                  src="/images/family-tees/vacation.png" 
+                  src="/images/family-tees/vacation.webp" 
                   alt="Family wearing matching orange shirts on a beach vacation" 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -164,7 +164,7 @@ function FamilyTeesPage() {
             <div className="group">
               <div className="relative overflow-hidden rounded-2xl border-2 border-border mb-6 aspect-video">
                 <img 
-                  src="/images/family-tees/milestone.png" 
+                  src="/images/family-tees/milestone.webp" 
                   alt="Grandmother celebrating 80th birthday with family in matching maroon shirts" 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />

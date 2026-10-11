@@ -226,7 +226,7 @@ function HomePage() {
           loop 
           muted 
           playsInline 
-          poster="/images/hero-poster.png"
+          poster="/images/hero-poster.webp"
           className="absolute inset-0 w-full h-full object-cover object-[center_35%] sm:object-center transition-all duration-700"
         >
           <source src="/hero-bg.mp4?v=4" type="video/mp4" />
@@ -269,7 +269,7 @@ function HomePage() {
             <motion.div variants={fadeInUp} className="mt-6 sm:mt-10 flex flex-wrap items-center gap-3 sm:gap-4">
               <div className="inline-flex items-center gap-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-3 py-1.5 shadow-sm">
                 <img
-                  src="/images/mascot/dash_avatar_circle.png"
+                  src="/images/mascot/dash_avatar_circle.webp"
                   alt="Dash the Cheetah"
                   className="w-8 h-8 rounded-full border-2 border-cyan-brand shadow-xs shrink-0"
                 />
@@ -301,13 +301,13 @@ function HomePage() {
             className="relative perspective-1000 w-full mt-6 lg:mt-0 landscape:mt-0"
           >
             <TiltImageSlideshow images={[
-              { src: "/images/hero_family.jpg", alt: "Family Reunions" },
-              { src: "/images/hero_company.jpg", alt: "Company Uniforms" },
-              { src: "/images/hero_volunteer.jpg", alt: "Volunteer Teams" },
-              { src: "/images/hero_daycare.jpg", alt: "Daycare & Schools" },
-              { src: "/images/hero_sports.jpg", alt: "Youth & Adult Sports" },
-              { src: "/images/hero_vacations.jpg", alt: "Family Vacations" },
-              { src: "/images/hero_scrubs.jpg", alt: "Medical Scrubs" }
+              { src: "/images/hero_family.webp", alt: "Family Reunions" },
+              { src: "/images/hero_company.webp", alt: "Company Uniforms" },
+              { src: "/images/hero_volunteer.webp", alt: "Volunteer Teams" },
+              { src: "/images/hero_daycare.webp", alt: "Daycare & Schools" },
+              { src: "/images/hero_sports.webp", alt: "Youth & Adult Sports" },
+              { src: "/images/hero_vacations.webp", alt: "Family Vacations" },
+              { src: "/images/hero_scrubs.webp", alt: "Medical Scrubs" }
             ]} />
           </motion.div>
         </div>
@@ -358,7 +358,7 @@ function HomePage() {
           <div className="grid md:grid-cols-12 gap-8 lg:gap-12 items-center">
             <div className="md:col-span-5 flex justify-center">
               <motion.img
-                src="/images/mascot/dash_sprint.png"
+                src="/images/mascot/dash_sprint.webp"
                 alt="Dash the Cheetah sprinting with CMYK ink trails"
                 className="w-64 sm:w-72 md:w-full max-w-xs h-auto drop-shadow-[0_10px_25px_rgba(0,229,255,0.25)] hover:scale-105 transition-transform duration-300"
                 initial={{ opacity: 0, x: -30 }}
@@ -514,7 +514,7 @@ function HomePage() {
 
                 <div className="relative mb-6 rounded-xl overflow-hidden border-2 border-white/10">
                   <img 
-                    src="/images/deals/fast_deal_variation1_stack.png" 
+                    src="/images/deals/fast_deal_variation1_stack.webp" 
                     alt="The $9 FAST Deal - 24 Custom Shirts" 
                     className="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-300"
                   />
@@ -571,7 +571,7 @@ function HomePage() {
 
                 <div className="relative mb-6 rounded-xl overflow-hidden border-2 border-amber-500/20">
                   <img 
-                    src="/images/deals/hoodie_crew_var1_hangers.png" 
+                    src="/images/deals/hoodie_crew_var1_hangers.webp" 
                     alt="Fall Fleece Deal - Custom Hoodies & Crewnecks" 
                     className="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-300"
                   />
@@ -679,7 +679,7 @@ function HomePage() {
               <div className="relative rounded-2xl border-2 border-ink overflow-hidden shadow-pop bg-ink group">
                 <Link to="/group/demo" className="block relative">
                   <img 
-                    src="/images/family-tees/family-collector-tool.jpg" 
+                    src="/images/family-tees/family-collector-tool.webp" 
                     alt="Fast Apparel Family & Group Size Collector Tool with feature callouts" 
                     className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                     loading="lazy"
@@ -696,14 +696,14 @@ function HomePage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-xl border-2 border-ink overflow-hidden shadow-sm aspect-video bg-card">
                   <img 
-                    src="/images/family-tees/reunion.png" 
+                    src="/images/family-tees/reunion.webp" 
                     alt="Family Reunion Shirts" 
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="rounded-xl border-2 border-ink overflow-hidden shadow-sm aspect-video bg-card">
                   <img 
-                    src="/images/family-tees/vacation.png" 
+                    src="/images/family-tees/vacation.webp" 
                     alt="Family Vacation Matching Shirts" 
                     className="w-full h-full object-cover"
                   />
@@ -738,7 +738,7 @@ function HomePage() {
                 >
                   <div className="aspect-square bg-muted overflow-hidden relative">
                     <img
-                      src="/images/apparel/gildan-bundle.png"
+                      src="/images/apparel/gildan-bundle.webp"
                       alt="FAST Deal Bundle"
                       loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -848,7 +848,7 @@ function HomePage() {
                 Meet Dash
               </div>
               <img
-                src="/images/mascot/dash_holding_shirt.png"
+                src="/images/mascot/dash_holding_shirt.webp"
                 alt="Dash the Cheetah holding custom Fast Apparel shirt"
                 className="w-56 h-auto mx-auto drop-shadow-md mb-4"
               />

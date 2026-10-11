@@ -14,7 +14,7 @@ import {
   Minus, 
   AlertCircle 
 } from "lucide-react";
-import bundleImage from "../../public/images/deals/fast_deal_variation1_stack.png";
+import bundleImage from "../../public/images/deals/fast_deal_variation1_stack.webp";
 import { SiteLayout } from "@/components/SiteLayout";
 import { useServerFn } from "@tanstack/react-start";
 import { submitQuoteRequest } from "@/lib/quote.functions";

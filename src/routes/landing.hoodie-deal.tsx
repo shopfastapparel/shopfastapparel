@@ -17,8 +17,8 @@ import {
   Minus,
   AlertCircle
 } from "lucide-react";
-import hoodieCrewHangers from "../../public/images/deals/hoodie_crew_var1_hangers.png";
-import hoodieCrewFlatlay from "../../public/images/deals/hoodie_crew_var2_flatlay.png";
+import hoodieCrewHangers from "../../public/images/deals/hoodie_crew_var1_hangers.webp";
+import hoodieCrewFlatlay from "../../public/images/deals/hoodie_crew_var2_flatlay.webp";
 import { SiteLayout } from "@/components/SiteLayout";
 import { useServerFn } from "@tanstack/react-start";
 import { submitQuoteRequest } from "@/lib/quote.functions";
