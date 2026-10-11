@@ -33,10 +33,17 @@ export function Header() {
   return (
     <>
       <div className="bg-ink text-background text-xs">
-        <div className="mx-auto max-w-7xl px-4 py-2 flex items-center justify-between gap-4">
-          <span className="font-medium tracking-wide">
-            Free Shipping on orders over $149 · Local delivery up to 10 miles from Lawrenceville, GA
-          </span>
+        <div className="mx-auto max-w-7xl px-4 py-1.5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <img
+              src="/images/mascot/dash_avatar_circle.webp"
+              alt="Dash"
+              className="w-4 h-4 rounded-full border border-cyan-brand inline-block shrink-0"
+            />
+            <span className="font-medium tracking-wide">
+              Free Shipping over $149 · 7–10 Day Turnaround (Often Sooner!) • Powered by Dash
+            </span>
+          </div>
           <a href={`tel:${PRIMARY_PHONE}`} className="hidden sm:inline hover:text-yellow-brand font-bold tracking-wide">
             Call or Text: {PRIMARY_PHONE}
           </a>

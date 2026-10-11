@@ -647,22 +647,92 @@ function QuotePage() {
   if (submitted) {
     return (
       <SiteLayout>
-        <div className="mx-auto max-w-2xl px-4 py-24 text-center">
-          <CheckCircle2 className="h-16 w-16 text-magenta-brand mx-auto" />
-          <h1 className="mt-6 font-display text-4xl">Thanks — we got it!</h1>
-          <p className="mt-4 text-muted-foreground">
-            We'll respond with a quote and free mockup within 24 hours. Need it sooner? Call{" "}
-            <a href={`tel:${PRIMARY_PHONE}`} className="text-magenta-brand font-semibold">
+        <div className="mx-auto max-w-2xl px-4 py-16 sm:py-20 text-center">
+          {/* Dash Header Pill */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-yellow-brand/20 border border-yellow-brand/40 text-yellow-brand text-xs font-bold uppercase tracking-wider mb-6">
+            <img
+              src="/images/mascot/dash_avatar_circle.webp"
+              alt="Dash"
+              className="w-5 h-5 rounded-full border border-cyan-brand shrink-0"
+            />
+            <span className="text-ink">Powered by Dash &bull; Fast Apparel Speed Guarantee</span>
+          </div>
+
+          {/* Dash Mascot Graphic */}
+          <div className="relative mx-auto w-36 h-36 sm:w-44 sm:h-44 mb-6">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-yellow-brand/30 via-pink-brand/20 to-cyan-brand/30 blur-xl opacity-75" />
+            <div className="relative w-full h-full rounded-2xl bg-card border-2 border-border shadow-pop p-3 flex items-center justify-center overflow-hidden">
+              <img
+                src="/images/mascot/dash_thumbs_up.webp"
+                alt="Dash giving thumbs up"
+                className="w-full h-full object-contain filter drop-shadow-md"
+              />
+            </div>
+          </div>
+
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl text-ink tracking-tight">
+            Dash is On It! Quote Request Received.
+          </h1>
+          <p className="mt-3 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+            Our Chief Speed Officer and Lawrenceville art crew are already analyzing your project details and safe zones. You will receive an itemized quote and free digital mockup proofs within <strong>24 hours</strong>!
+          </p>
+
+          {/* What happens next card */}
+          <div className="mt-8 bg-card border-2 border-border rounded-2xl p-5 sm:p-6 text-left shadow-sm">
+            <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground mb-4">
+              What Happens Next:
+            </h2>
+            <div className="space-y-3.5">
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-magenta-brand/10 text-magenta-brand flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
+                  1
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-ink">Free Digital Proof &amp; Quote Prep</p>
+                  <p className="text-xs text-muted-foreground">
+                    Our art department validates your artwork resolution and prepares photo-realistic proofs.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-magenta-brand/10 text-magenta-brand flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
+                  2
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-ink">Review &amp; Approve in 1-Click</p>
+                  <p className="text-xs text-muted-foreground">
+                    Confirm your print placements, garment blanks, and sizing manifest directly via email.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-magenta-brand/10 text-magenta-brand flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
+                  3
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-ink">Standard 7–10 Business Days</p>
+                  <p className="text-xs text-muted-foreground">
+                    Production kicks off immediately upon payment (often times even sooner!).
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p className="mt-6 text-xs sm:text-sm text-muted-foreground">
+            Need immediate rush assistance or have event deadline questions? Call us directly at{" "}
+            <a href={`tel:${PRIMARY_PHONE}`} className="text-magenta-brand font-bold underline decoration-magenta-brand/30 hover:decoration-magenta-brand">
               {PRIMARY_PHONE}
             </a>
             .
           </p>
+
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button asChild variant="outline" className="border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors">
-              <Link to="/blog">Read the blog</Link>
+              <Link to="/track">Track An Order</Link>
             </Button>
             <Button asChild className="border-2 border-ink bg-magenta-brand text-white font-bold hover:bg-magenta-brand/90 shadow-pop">
-              <Link to="/shop">Browse the shop</Link>
+              <Link to="/shop">Browse Catalog</Link>
             </Button>
           </div>
         </div>

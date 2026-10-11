@@ -79,11 +79,12 @@ function TrackPage() {
 
   return (
     <SiteLayout>
-      <section className="bg-hero border-b">
-        <div className="mx-auto max-w-4xl px-4 py-16 text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-cyan-brand mb-3">
-            Customer Portal
-          </p>
+      <section className="bg-hero border-b relative overflow-hidden">
+        <div className="mx-auto max-w-4xl px-4 py-16 text-center relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-brand/15 border border-cyan-brand/40 text-ink text-xs font-bold uppercase tracking-wider mb-3">
+            <img src="/images/mascot/dash_avatar_circle.webp" alt="Dash" className="w-4 h-4 rounded-full border border-cyan-brand shrink-0" />
+            <span>Powered by Dash &bull; Real-Time Production Tracker</span>
+          </div>
           <h1 className="font-display text-4xl md:text-5xl leading-tight">
             Track Your Order
           </h1>
@@ -212,26 +213,121 @@ function TrackPage() {
                 </div>
               </div>
 
-              {/* Status Specific Messages */}
-              <div className="bg-muted/50 rounded-xl p-6 text-center border">
-                {quote.status === "New Request" && (
-                  <p className="text-muted-foreground">We have received your request! A team member is reviewing your details and will email you a quote and mockup shortly.</p>
-                )}
-                {(quote.status === "Mockup Sent" || quote.status === "Quote Sent") && (
-                  <p className="text-muted-foreground">Please check your email! We have sent your quote and mockup. You must approve the mockup before we can begin production.</p>
-                )}
-                {quote.status === "Changes Requested" && (
-                  <p className="text-muted-foreground">We received your revision request. Our design team is updating your mockup and will send a new version soon.</p>
-                )}
-                {quote.status === "Approved" && (
-                  <p className="text-muted-foreground">Mockup approved! We will begin production on your order shortly. Look out for an invoice if you haven't received one.</p>
-                )}
-                {quote.status === "In Production" && (
-                  <p className="text-muted-foreground">Your order is currently on the press! We will notify you as soon as it ships or is dispatched for delivery.</p>
-                )}
-                {quote.status === "Shipped" && (
-                  <p className="text-muted-foreground">Your order is complete and has been shipped/delivered! Thank you for choosing Fast Apparel.</p>
-                )}
+              {/* Status Specific Messages Featuring Dash */}
+              <div className="bg-card border-2 border-ink rounded-xl p-6 shadow-sm">
+                <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
+                  <div className="shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-ink/5 border border-ink/10 flex items-center justify-center p-2">
+                    {quote.status === "New Request" && (
+                      <img
+                        src="/images/mascot/dash_avatar_circle.webp"
+                        alt="Dash"
+                        className="w-20 h-20 rounded-full border-2 border-cyan-brand drop-shadow-sm"
+                      />
+                    )}
+                    {(quote.status === "Mockup Sent" || quote.status === "Quote Sent" || quote.status === "Changes Requested") && (
+                      <img
+                        src="/images/mascot/dash_holding_shirt.webp"
+                        alt="Dash holding shirt"
+                        className="max-h-24 w-auto object-contain drop-shadow-sm"
+                      />
+                    )}
+                    {(quote.status === "Approved" || quote.status === "Invoice Sent" || quote.status === "Invoice Paid (Draft Ready for Owner Review)") && (
+                      <img
+                        src="/images/mascot/dash_thumbs_up.webp"
+                        alt="Dash Thumbs Up"
+                        className="max-h-24 w-auto object-contain drop-shadow-sm"
+                      />
+                    )}
+                    {quote.status === "In Production" && (
+                      <img
+                        src="/images/mascot/dash_sprint.webp"
+                        alt="Dash Sprinting"
+                        className="max-h-24 w-auto object-contain drop-shadow-sm"
+                      />
+                    )}
+                    {quote.status === "Shipped" && (
+                      <img
+                        src="/images/mascot/dash_sticker_badge.webp"
+                        alt="Dash Speed Badge"
+                        className="max-h-24 w-auto object-contain drop-shadow-sm"
+                      />
+                    )}
+                    {![
+                      "New Request",
+                      "Mockup Sent",
+                      "Quote Sent",
+                      "Changes Requested",
+                      "Approved",
+                      "Invoice Sent",
+                      "Invoice Paid (Draft Ready for Owner Review)",
+                      "In Production",
+                      "Shipped",
+                    ].includes(quote.status) && (
+                      <img
+                        src="/images/mascot/dash_avatar_circle.webp"
+                        alt="Dash"
+                        className="w-20 h-20 rounded-full border-2 border-cyan-brand drop-shadow-sm"
+                      />
+                    )}
+                  </div>
+                  <div className="space-y-1.5 flex-1">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-yellow-brand/20 text-ink text-[11px] font-bold uppercase tracking-wider">
+                      <span>⚡ Dash Update: {quote.status}</span>
+                    </div>
+                    <h3 className="font-display text-lg sm:text-xl text-ink">
+                      {quote.status === "New Request" && "We're reviewing your print specs!"}
+                      {(quote.status === "Mockup Sent" || quote.status === "Quote Sent") && "Your digital proofs are in your inbox!"}
+                      {quote.status === "Changes Requested" && "Dash and the art crew are refining your proofs!"}
+                      {(quote.status === "Approved" || quote.status === "Invoice Sent" || quote.status === "Invoice Paid (Draft Ready for Owner Review)") && "Proofs locked in! Ready for print staging."}
+                      {quote.status === "In Production" && "Dash is rushing your shirts on the press!"}
+                      {quote.status === "Shipped" && "Ultra Fast Delivery is on the way!"}
+                      {![
+                        "New Request",
+                        "Mockup Sent",
+                        "Quote Sent",
+                        "Changes Requested",
+                        "Approved",
+                        "Invoice Sent",
+                        "Invoice Paid (Draft Ready for Owner Review)",
+                        "In Production",
+                        "Shipped",
+                      ].includes(quote.status) && "Your order is progressing smoothly!"}
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {quote.status === "New Request" && (
+                        "Dash and our Lawrenceville design crew just received your details. We're verifying safe zones, colors, and resolution to prepare your free digital mockup proof within 24 hours."
+                      )}
+                      {(quote.status === "Mockup Sent" || quote.status === "Quote Sent") && (
+                        "Please check your inbox! We've sent your official quote and high-definition mockup proofs. Reply 'Approved' or approve online to lock in your blanks and trigger production."
+                      )}
+                      {quote.status === "Changes Requested" && (
+                        "We received your revision request! Our design team is polishing your mockup to perfection and will email you an updated proof shortly."
+                      )}
+                      {(quote.status === "Approved" || quote.status === "Invoice Sent" || quote.status === "Invoice Paid (Draft Ready for Owner Review)") && (
+                        "Digital proofs approved! Once payment is confirmed, Dash secures blanks immediately from the distributor mill and slots your job onto our commercial presses."
+                      )}
+                      {quote.status === "In Production" && (
+                        "Your garments are currently rolling off the commercial DTF heat presses! Standard orders complete in 7–10 business days (often times even sooner!). We'll notify you the moment your box is labeled."
+                      )}
+                      {quote.status === "Shipped" && (
+                        "Your order is boxed, labeled, and dispatched! Check your email for live carrier tracking straight to your doorstep."
+                      )}
+                      {![
+                        "New Request",
+                        "Mockup Sent",
+                        "Quote Sent",
+                        "Changes Requested",
+                        "Approved",
+                        "Invoice Sent",
+                        "Invoice Paid (Draft Ready for Owner Review)",
+                        "In Production",
+                        "Shipped",
+                      ].includes(quote.status) && (
+                        "Our team is actively managing your project. If you have questions or need emergency rush service, give us a call at (678) 491-2655."
+                      )}
+                    </p>
+                  </div>
+                </div>
               </div>
 
             </div>

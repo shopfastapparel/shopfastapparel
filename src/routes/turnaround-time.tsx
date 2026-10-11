@@ -39,9 +39,9 @@ export function TurnaroundTimePage() {
       <section className="bg-ink text-background border-b border-ink/80 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-pink-brand/10 via-transparent to-cyan-brand/10 pointer-events-none" />
         <div className="mx-auto max-w-5xl px-4 py-16 md:py-24 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-brand/20 border border-yellow-brand/40 text-yellow-brand text-xs font-bold uppercase tracking-wider mb-4">
-            <Clock className="w-3.5 h-3.5" />
-            Reliable Production & Delivery Standards
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-yellow-brand/20 border border-yellow-brand/40 text-yellow-brand text-xs font-bold uppercase tracking-wider mb-4">
+            <img src="/images/mascot/dash_avatar_circle.webp" alt="Dash" className="w-5 h-5 rounded-full border border-cyan-brand shrink-0" />
+            <span>Powered by Dash &bull; Chief Speed Officer Guarantee</span>
           </div>
           <h1 className="font-display text-4xl sm:text-5xl md:text-6xl text-background tracking-tight leading-tight">
             Turnaround Times &amp; Shipping
@@ -68,13 +68,23 @@ export function TurnaroundTimePage() {
 
       {/* When Does The Clock Start? */}
       <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">
-        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-12">
-          <h2 className="font-display text-3xl md:text-4xl text-ink">
-            When Does Your Turnaround Time Begin?
-          </h2>
-          <p className="mt-3 text-muted-foreground text-base md:text-lg">
-            Production schedules are locked in once two key milestones are completed:
-          </p>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 md:mb-12">
+          <div className="max-w-2xl text-center md:text-left">
+            <h2 className="font-display text-3xl md:text-4xl text-ink">
+              When Does Your Turnaround Time Begin?
+            </h2>
+            <p className="mt-3 text-muted-foreground text-base md:text-lg">
+              Dash and our Lawrenceville print crew lock in your production schedule once two key milestones are completed:
+            </p>
+          </div>
+          <div className="shrink-0 flex items-center gap-3 bg-muted/60 border border-border px-4 py-2.5 rounded-2xl">
+            <img src="/images/mascot/dash_sticker_badge.webp" alt="Dash Speed Badge" className="w-14 h-14 object-contain" />
+            <div className="text-left">
+              <span className="text-xs font-extrabold uppercase text-magenta-brand block">Dash Guarantee</span>
+              <span className="text-sm font-bold text-ink">7–10 Business Days</span>
+              <span className="text-[11px] text-muted-foreground block">(often times even sooner!)</span>
+            </div>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -440,23 +450,39 @@ export function TurnaroundTimePage() {
       </section>
 
       {/* Bottom CTA Banner */}
-      <section className="bg-ink text-background py-12 md:py-16 border-t border-ink/80 text-center">
-        <div className="mx-auto max-w-3xl px-4">
-          <h2 className="font-display text-3xl md:text-4xl text-background">
-            Ready to Start Your Custom Apparel Project?
-          </h2>
-          <p className="mt-4 text-background/80 text-base md:text-lg">
-            Get an instant custom quote, free digital proofs, and guaranteed fast turnaround.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg" className="bg-pink-brand hover:bg-pink-brand/90 text-white font-bold rounded-xl px-8 shadow-lg shadow-pink-brand/30">
-              <Link to="/quote">
-                Request a Free Quote <ArrowRight className="ml-2 w-4 h-4" />
-              </Link>
-            </Button>
-            <Button asChild size="lg" className="bg-white/10 hover:bg-white text-white hover:text-ink border-2 border-white/50 hover:border-white font-bold rounded-xl px-6 transition-all shadow-sm">
-              <Link to="/designer">Launch Online Designer</Link>
-            </Button>
+      <section className="bg-ink text-background py-14 md:py-20 border-t border-ink/80 overflow-hidden relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-brand/10 via-transparent to-cyan-brand/10 pointer-events-none" />
+        <div className="mx-auto max-w-5xl px-4 relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-brand/20 border border-yellow-brand/40 text-yellow-brand text-xs font-bold uppercase tracking-wider mb-4">
+              <Zap className="w-3.5 h-3.5" />
+              Standard 7–10 Business Days (Often Sooner!)
+            </div>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-background">
+              Ready to Start Your Custom Apparel Project?
+            </h2>
+            <p className="mt-4 text-background/80 text-base md:text-lg">
+              Dash is standing by. Get an instant custom quote, free digital mockup proofs within 24 hours, and guaranteed fast turnaround.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center md:justify-start gap-4">
+              <Button asChild size="lg" className="bg-pink-brand hover:bg-pink-brand/90 text-white font-bold rounded-xl px-8 shadow-lg shadow-pink-brand/30">
+                <Link to="/quote">
+                  Request a Free Quote <ArrowRight className="ml-2 w-4 h-4" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" className="bg-white/10 hover:bg-white text-white hover:text-ink border-2 border-white/60 hover:border-white font-bold rounded-xl px-6 transition-all shadow-sm">
+                <Link to="/designer">Launch Online Designer</Link>
+              </Button>
+            </div>
+          </div>
+          <div className="shrink-0 relative">
+            <div className="w-44 h-44 sm:w-52 sm:h-52 rounded-full bg-gradient-to-br from-yellow-brand/20 to-pink-brand/20 border border-white/20 p-4 flex items-center justify-center">
+              <img
+                src="/images/mascot/dash_holding_shirt.webp"
+                alt="Dash holding custom shirt"
+                className="w-full h-full object-contain filter drop-shadow-xl"
+              />
+            </div>
           </div>
         </div>
       </section>
