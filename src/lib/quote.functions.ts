@@ -3,6 +3,14 @@ import { z } from "zod";
 import { Resend } from "resend";
 import { PRIMARY_EMAIL, PRIMARY_PHONE } from "@/lib/locations";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import {
+  DASH_AVATAR_URL,
+  DASH_SPRINT_URL,
+  DASH_THUMBS_UP_URL,
+  FAST_LOGO_URL,
+  ANIMATED_SIGNATURE_HTML,
+  EMAIL_FOOTER_HTML,
+} from "./email-constants";
 
 export const REFERRAL_SOURCES = [
   "Facebook",
@@ -96,47 +104,150 @@ function buildOwnerEmailHtml(data: QuoteData, fileLinksHtml: string, productLabe
 }
 
 function buildCustomerEmailHtml(data: QuoteData, productLabel?: string): string {
-  return `
-<!DOCTYPE html>
+  const firstName = data.name.trim().split(" ")[0] || "there";
+  return `<!DOCTYPE html>
 <html>
 <head>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a2e; margin: 0; padding: 0; background: #f4f4f5; }
-    .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; }
-    .header { background: linear-gradient(135deg, #00d4ff, #ff2d8a); padding: 24px 32px; color: #fff; }
-    .header h1 { margin: 0; font-size: 22px; }
-    .body { padding: 24px 32px; font-size: 15px; line-height: 1.6; }
-    .summary { background: #f4f4f5; border-radius: 8px; padding: 16px; margin: 16px 0; font-size: 14px; }
-    .summary strong { display: block; margin-bottom: 8px; }
-    .footer { padding: 16px 32px; background: #f4f4f5; font-size: 12px; color: #71717a; text-align: center; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dash is On It! Quote Request Received</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0B0F19; margin: 0; padding: 20px 10px; color: #1E293B; }
+  .wrapper { max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 2px solid #1E293B; }
+  .header { background-color: #0F172A; padding: 24px 30px; text-align: center; border-bottom: 3px solid #00E5FF; }
+  .content { padding: 32px 30px; }
+  h1 { font-size: 24px; font-weight: 800; color: #0F172A; margin: 0 0 12px 0; line-height: 1.25; }
+  p { font-size: 15px; line-height: 1.6; color: #475569; margin: 0 0 16px 0; }
+  .highlight-card { background: linear-gradient(135deg, #F0FDFA 0%, #E0F2FE 100%); border: 2px solid #38BDF8; border-radius: 14px; padding: 20px; margin: 24px 0; }
+  .detail-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
+  .detail-table td { padding: 8px 10px; border-bottom: 1px solid #E2E8F0; }
+  .detail-table td.label { color: #64748B; font-weight: 600; width: 140px; }
+  .detail-table td.val { color: #0F172A; font-weight: 700; }
+</style>
 </head>
 <body>
-  <div class="container">
+  <div class="wrapper">
     <div class="header">
-      <h1>✅ We got your quote request!</h1>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="left" valign="middle">
+            <a href="https://www.shopfastapparel.com">
+              <img src="${FAST_LOGO_URL}" alt="Fast Apparel" height="34" style="height: 34px; max-width: 170px; display: block; border: 0;">
+            </a>
+          </td>
+          <td align="right" valign="middle">
+            <div style="display: inline-block; background: rgba(0, 229, 255, 0.15); border: 1.5px solid #00E5FF; border-radius: 20px; padding: 5px 12px;">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td valign="middle" style="padding-right: 6px;">
+                    <img src="${DASH_AVATAR_URL}" alt="Dash" width="22" height="22" style="border-radius: 50%; display: block;">
+                  </td>
+                  <td valign="middle" style="font-size: 12px; font-weight: 800; color: #00E5FF; text-transform: uppercase; letter-spacing: 0.5px;">
+                    Dash Approved
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
-    <div class="body">
-      <p>Hey ${data.name.split(" ")[0]},</p>
-      <p>Thanks for reaching out! We received your quote request and will get back to you with <strong>pricing and a free digital mockup within 24 hours</strong>.</p>
 
-      <div class="summary">
-        <strong>Your request summary:</strong>
-        Service: ${data.service}<br>
-        ${productLabel ? `Apparel Style: <strong>${productLabel}</strong><br>` : ""}
-        Quantity: ${data.quantity}<br>
-        Turnaround: ${data.turnaround} · ${data.turnaroundEstimate}<br>
-        ${data.city ? `City: ${data.city}<br>` : ""}
-        ${data.zipCode ? `Shipping Zip: ${data.zipCode}<br>` : ""}
-        ${data.deadline ? `Deadline: ${data.deadline}<br>` : ""}
+    <div class="content">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px; background: #0F172A; border-radius: 14px; overflow: hidden; border: 2px solid #1E293B;">
+        <tr>
+          <td style="padding: 22px 20px;" valign="middle">
+            <div style="display: inline-block; background: #FFE600; color: #0F172A; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 9px; border-radius: 4px; margin-bottom: 8px;">
+              ⚡ Request Received!
+            </div>
+            <h2 style="font-size: 21px; font-weight: 900; color: #FFFFFF; margin: 0 0 6px 0; line-height: 1.2;">
+              Dash is on it, ${firstName}!
+            </h2>
+            <p style="font-size: 13.5px; color: #94A3B8; margin: 0; line-height: 1.45;">
+              Our Chief Speed Officer Dash and our Lawrenceville design crew just received your quote request.
+            </p>
+          </td>
+          <td width="125" align="center" valign="middle" style="padding-right: 18px;">
+            <img src="${DASH_SPRINT_URL}" alt="Dash Sprinting" width="115" style="width: 115px; max-width: 115px; display: block; border: 0;">
+          </td>
+        </tr>
+      </table>
+
+      <h1>We're reviewing your print specs right now!</h1>
+      <p>
+        Thank you for submitting your custom apparel request with <strong>Fast Apparel</strong>. Our production team is currently reviewing your safe zones, colorways, and artwork resolution to prepare your official proposal.
+      </p>
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; margin-bottom: 24px;">
+        <tr>
+          <td style="padding: 18px 20px;">
+            <strong style="color: #0F172A; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 10px;">
+              ⏱️ What Happens Next:
+            </strong>
+            <table width="100%" cellpadding="6" cellspacing="0" border="0" style="font-size: 13.5px; color: #475569;">
+              <tr>
+                <td width="28" valign="top">🎨</td>
+                <td><strong>Free Digital Mockup Proof (Within 24 Hours):</strong> You'll receive a detailed proof in your inbox showing exact artwork placements with 100% color accuracy.</td>
+              </tr>
+              <tr>
+                <td width="28" valign="top">💰</td>
+                <td><strong>Transparent Wholesale Pricing:</strong> Zero hidden fees, zero color limits, and commercial Ultra HD DTF printing included.</td>
+              </tr>
+              <tr>
+                <td width="28" valign="top">🚀</td>
+                <td><strong>Fast 7–10 Business Day Turnaround:</strong> Once approved, production kicks off immediately <em>(often times even sooner!)</em>.</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <div class="highlight-card">
+        <strong style="color: #0369A1; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">
+          📋 Your Request Summary:
+        </strong>
+        <table class="detail-table">
+          <tr>
+            <td class="label">Service / Project:</td>
+            <td class="val">${data.service}</td>
+          </tr>
+          ${productLabel ? `<tr><td class="label">Apparel Style:</td><td class="val">${productLabel}</td></tr>` : ""}
+          <tr>
+            <td class="label">Quantity:</td>
+            <td class="val">${data.quantity}</td>
+          </tr>
+          <tr>
+            <td class="label">Turnaround Need:</td>
+            <td class="val"><span style="color: #0284C7;">${data.turnaround} · ${data.turnaroundEstimate} (Often Sooner!)</span></td>
+          </tr>
+          ${data.city ? `<tr><td class="label">City / Delivery:</td><td class="val">${data.city}</td></tr>` : ""}
+          ${data.zipCode ? `<tr><td class="label">Shipping Zip:</td><td class="val">${data.zipCode}</td></tr>` : ""}
+          ${data.deadline ? `<tr><td class="label">Target Deadline:</td><td class="val">${data.deadline}</td></tr>` : ""}
+        </table>
       </div>
 
-      <p>Need it sooner? Give us a call at <strong>${PRIMARY_PHONE}</strong>.</p>
-      <p>— The Fast Apparel Team</p>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #E2E8F0;">
+        <tr>
+          <td width="70" valign="middle">
+            <img src="${DASH_THUMBS_UP_URL}" alt="Dash Thumbs Up" width="60" style="width: 60px; display: block; border: 0;">
+          </td>
+          <td valign="middle" style="padding-left: 12px;">
+            <p style="font-size: 14px; color: #0F172A; font-weight: 700; margin: 0 0 2px 0;">
+              Have questions or need emergency rush turnaround?
+            </p>
+            <p style="font-size: 13px; color: #64748B; margin: 0;">
+              Call or text our local team at <strong>${PRIMARY_PHONE}</strong> or reply directly to this email.
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #E2E8F0;">
+        ${ANIMATED_SIGNATURE_HTML}
+      </div>
     </div>
-    <div class="footer">
-      Fast Apparel · Lawrenceville, GA · <a href="https://shopfastapparel.com">shopfastapparel.com</a>
-    </div>
+
+    ${EMAIL_FOOTER_HTML}
   </div>
 </body>
 </html>`;
@@ -323,6 +434,143 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+function buildStudioCustomerEmailHtml(data: {
+  name: string;
+  styleName: string;
+  colorName: string;
+  frontProofUrl?: string | null;
+  backProofUrl?: string | null;
+}): string {
+  const firstName = data.name.trim().split(" ")[0] || "there";
+  return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dash Got Your Custom Design! — Fast Apparel</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0B0F19; margin: 0; padding: 20px 10px; color: #1E293B; }
+  .wrapper { max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 2px solid #1E293B; }
+  .header { background-color: #0F172A; padding: 24px 30px; text-align: center; border-bottom: 3px solid #00E5FF; }
+  .content { padding: 32px 30px; }
+  h1 { font-size: 24px; font-weight: 800; color: #0F172A; margin: 0 0 12px 0; line-height: 1.25; }
+  p { font-size: 15px; line-height: 1.6; color: #475569; margin: 0 0 16px 0; }
+</style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="left" valign="middle">
+            <a href="https://www.shopfastapparel.com">
+              <img src="${FAST_LOGO_URL}" alt="Fast Apparel" height="34" style="height: 34px; max-width: 170px; display: block; border: 0;">
+            </a>
+          </td>
+          <td align="right" valign="middle">
+            <div style="display: inline-block; background: rgba(0, 229, 255, 0.15); border: 1.5px solid #00E5FF; border-radius: 20px; padding: 5px 12px;">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td valign="middle" style="padding-right: 6px;">
+                    <img src="${DASH_AVATAR_URL}" alt="Dash" width="22" height="22" style="border-radius: 50%; display: block;">
+                  </td>
+                  <td valign="middle" style="font-size: 12px; font-weight: 800; color: #00E5FF; text-transform: uppercase; letter-spacing: 0.5px;">
+                    Studio Design
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="content">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px; background: #0F172A; border-radius: 14px; overflow: hidden; border: 2px solid #1E293B;">
+        <tr>
+          <td style="padding: 22px 20px;" valign="middle">
+            <div style="display: inline-block; background: #FFE600; color: #0F172A; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 9px; border-radius: 4px; margin-bottom: 8px;">
+              ⚡ Design Received!
+            </div>
+            <h2 style="font-size: 21px; font-weight: 900; color: #FFFFFF; margin: 0 0 6px 0; line-height: 1.2;">
+              Dash is on it, ${firstName}!
+            </h2>
+            <p style="font-size: 13.5px; color: #94A3B8; margin: 0; line-height: 1.45;">
+              We got your custom design for the <strong>${data.styleName}</strong> in <strong>${data.colorName}</strong>.
+            </p>
+          </td>
+          <td width="125" align="center" valign="middle" style="padding-right: 18px;">
+            <img src="${DASH_SPRINT_URL}" alt="Dash Sprinting" width="115" style="width: 115px; max-width: 115px; display: block; border: 0;">
+          </td>
+        </tr>
+      </table>
+
+      <h1>Your proofs are being prepared!</h1>
+      <p>
+        Our production crew is reviewing your artwork placement, resolution, and safe-zones right now. We'll have your official price quote and print-ready digital proof in your inbox within 24 hours.
+      </p>
+
+      ${(data.frontProofUrl || data.backProofUrl) ? `
+      <div style="background-color: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 14px; padding: 18px; margin: 24px 0;">
+        <strong style="color: #0F172A; font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 12px;">
+          🎨 Your Studio Proof Preview:
+        </strong>
+        <table width="100%" cellpadding="6" cellspacing="0" border="0">
+          <tr>
+            ${data.frontProofUrl ? `
+            <td width="50%" align="center">
+              <div style="border: 1px solid #CBD5E1; border-radius: 10px; overflow: hidden; background: #FFFFFF; padding: 6px;">
+                <img src="${data.frontProofUrl}" alt="Front Proof" style="width: 100%; max-width: 240px; height: auto; border-radius: 6px; display: block;">
+                <span style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-top: 6px;">Front Design</span>
+              </div>
+            </td>` : ""}
+            ${data.backProofUrl ? `
+            <td width="50%" align="center">
+              <div style="border: 1px solid #CBD5E1; border-radius: 10px; overflow: hidden; background: #FFFFFF; padding: 6px;">
+                <img src="${data.backProofUrl}" alt="Back Proof" style="width: 100%; max-width: 240px; height: auto; border-radius: 6px; display: block;">
+                <span style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-top: 6px;">Back Design</span>
+              </div>
+            </td>` : ""}
+          </tr>
+        </table>
+      </div>` : ""}
+
+      <div style="background: #F0FDF4; border: 1.5px solid #86EFAC; border-radius: 12px; padding: 16px; margin: 20px 0;">
+        <strong style="color: #166534; font-size: 13.5px; display: block; margin-bottom: 4px;">
+          🚀 Fast 7–10 Business Day Turnaround (Often Even Sooner!)
+        </strong>
+        <p style="font-size: 13px; color: #14532D; margin: 0;">
+          All custom orders are printed using commercial Ultra HD Direct-to-Film (DTF) transfers with zero setup fees, unlimited print colors, and free US shipping on orders over $149.
+        </p>
+      </div>
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #E2E8F0;">
+        <tr>
+          <td width="70" valign="middle">
+            <img src="${DASH_THUMBS_UP_URL}" alt="Dash Thumbs Up" width="60" style="width: 60px; display: block; border: 0;">
+          </td>
+          <td valign="middle" style="padding-left: 12px;">
+            <p style="font-size: 14px; color: #0F172A; font-weight: 700; margin: 0 0 2px 0;">
+              Need rush delivery or adjustments?
+            </p>
+            <p style="font-size: 13px; color: #64748B; margin: 0;">
+              Call or text us at <strong>${PRIMARY_PHONE}</strong> or reply to this email.
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #E2E8F0;">
+        ${ANIMATED_SIGNATURE_HTML}
+      </div>
+    </div>
+
+    ${EMAIL_FOOTER_HTML}
+  </div>
+</body>
+</html>`;
+}
+
 const studioNotificationSchema = z.object({
   quoteId: z.string().optional(),
   name: z.string().trim().min(1),
@@ -471,13 +719,7 @@ export const notifyStudioSubmission = createServerFn({ method: "POST" })
         to: [data.email],
         bcc: [toEmail],
         subject: "We got your custom design! — Fast Apparel",
-        html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; color: #1f2937;">
-          <h2 style="color: #111827;">Hey ${data.name.split(" ")[0]}, we received your custom design!</h2>
-          <p>Thank you for creating your design in our Custom Shirt Studio for the <strong>${data.styleName}</strong> in <strong>${data.colorName}</strong>.</p>
-          <p>Our production team is reviewing your print safe-zones and sizing distribution, and we'll have an official price quote and digital proof in your inbox within 24 hours.</p>
-          <p style="margin-top: 20px; font-size: 13px; color: #6b7280;">Need rush turnaround or have questions? Call us directly at ${PRIMARY_PHONE} or reply to this email.</p>
-        </div>`,
+        html: buildStudioCustomerEmailHtml(data),
       });
     } catch (err) {
       console.error("[studio-quote] Failed to send email notifications:", err);

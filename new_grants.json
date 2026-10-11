@@ -1,49 +1,49 @@
 {
   "grants": [
     {
-      "name": "Small Business Revitalization (SBR) Grant Program",
-      "organization": "Georgia Coalition of Black Chambers (GCBC) & Advancing Black Businesses Foundation (ABBF)",
-      "amount": "Up to $15,000",
-      "deadline": "Rolling Cycles / Regional Rounds (Late 2026)",
-      "eligibility": "Georgia-based Black-owned and historically under-resourced small businesses seeking capital support, technical assistance, and business expansion.",
-      "url": "https://georgiacoalitionofblackchambers.org",
-      "description": "State-supported grant providing direct capital grants up to $15,000 and technical assistance to small businesses in Georgia to drive operational expansion and economic growth."
+      "name": "Verizon Small Business Digital Ready Grant",
+      "organization": "Verizon & Local Initiatives Support Corporation (LISC)",
+      "amount": "$10,000",
+      "deadline": "Rolling monthly through December 2026 (Open Q4 2026)",
+      "eligibility": "For-profit small businesses located in the United States; applicant must be 18+ and complete any two free modules, coaching sessions, or community events on the platform to unlock the application. Priority given to historically under-resourced and minority entrepreneurs.",
+      "link": "https://digitalready.verizonwireless.com/",
+      "description": "Provides $10,000 in non-dilutive capital alongside complimentary operational courses. It is a fantastic fit for Fast Apparel to fund digital marketing and automate e-commerce storefront workflows while completing free courses on supply chain and lean operations."
+    },
+    {
+      "name": "The Amber Grant",
+      "organization": "WomensNet",
+      "amount": "$10,000 monthly (plus eligible for $50,000 year-end award)",
+      "deadline": "Rolling monthly (Last day of each month: October 31, November 30, December 31, 2026)",
+      "eligibility": "At least 50% women-owned businesses based in the United States or Canada, ranging from idea-stage ventures to established operating small businesses.",
+      "link": "https://ambergrantsforwomen.com/",
+      "description": "A prestigious, long-running monthly grant recognizing passion and authentic entrepreneurial storytelling. Fast Apparel is an ideal candidate by highlighting community impact, high-quality custom apparel production, and allocating the funds toward upgraded printing equipment."
+    },
+    {
+      "name": "Small Business Growth Fund",
+      "organization": "Hello Alice & Global Entrepreneurship Network (GEN)",
+      "amount": "$5,000 to $25,000",
+      "deadline": "Rolling / Open Q4 2026",
+      "eligibility": "U.S.-based for-profit small businesses with under $1,000,000 in gross annual revenue, a demonstrated commitment to their customers/community, and a clear plan to achieve a defined business milestone.",
+      "link": "https://helloalice.com/",
+      "description": "High-impact capital program that awards milestone-driven funding to underrepresented entrepreneurs and micro-manufacturers. Fast Apparel can submit a proposal focused on expanding in-house custom print capacity and fulfilling bulk orders for local organizations."
     },
     {
       "name": "Galaxy Grant",
-      "organization": "Galaxy of Stars / Hidden Star (501(c)(3))",
-      "amount": "$2,450",
+      "organization": "Hidden Star",
+      "amount": "$2,500",
       "deadline": "October 31, 2026",
-      "eligibility": "U.S.-based minority-owned or women-owned small businesses and startups. Free entry, instant registration.",
-      "url": "https://www.galaxyofstars.org",
-      "description": "Fast-entry cash grant designed to support women and minority entrepreneurs with non-dilutive capital for inventory, marketing, and working capital."
+      "eligibility": "U.S.-based women and minority small business owners or entrepreneurs at any stage; free entry with no application fee.",
+      "link": "https://galaxyofstars.org/",
+      "description": "A rapid, streamlined 501(c)(3) grant specifically targeting women and minority entrepreneurs to overcome initial capital hurdles. It is a quick win for Fast Apparel to secure immediate non-dilutive cash flow for Q4 holiday blank garment stock and ink supplies."
     },
     {
-      "name": "Invest Atlanta Small Business Improvement Grant (SBIG)",
-      "organization": "Invest Atlanta / City of Atlanta",
-      "amount": "Up to $50,000",
-      "deadline": "Rolling 2026 Cycles",
-      "eligibility": "Metro Atlanta small businesses and commercial properties located within eligible Tax Allocation Districts (TADs) under 15,000 sq ft.",
-      "url": "https://www.investatlanta.com",
-      "description": "Substantial capital grant up to $50,000 to assist small businesses with commercial facility buildout, equipment upgrades, and production expansion."
-    },
-    {
-      "name": "Tory Burch Foundation Fellows Program & Grant",
-      "organization": "Tory Burch Foundation",
-      "amount": "$5,000 Cash Grant + Fellowship & Access to 0% Interest Loans",
-      "deadline": "November 11, 2026 (Opens Sept 22, 2026)",
-      "eligibility": "For-profit U.S. small businesses that are majority woman/diverse-owned (operating at least 1-2 years) with scalable business models.",
-      "url": "https://www.toryburchfoundation.org",
-      "description": "Premier fellowship offering $5,000 in non-dilutive capital, 50+ hours of executive education, national peer network, and direct access to zero-interest loan capital."
-    },
-    {
-      "name": "NASE Growth Grants",
-      "organization": "National Association for the Self-Employed (NASE)",
-      "amount": "Up to $4,000",
-      "deadline": "Quarterly (Q3 Closes September 30, 2026 / Q4 Closes December 31, 2026)",
-      "eligibility": "U.S. micro-businesses, print shops, and independent small business owners for specific growth projects (equipment purchases, marketing, technology).",
-      "url": "https://www.nase.org",
-      "description": "Year-round small business grant offering $4,000 quarterly awards for targeted investments in manufacturing equipment, software, and marketing."
+      "name": "HerRise MicroGrant",
+      "organization": "HerSuiteSpot & The Yva Jourdan Foundation",
+      "amount": "$1,000",
+      "deadline": "Rolling monthly (Last day of each month: October 31, November 30, December 31, 2026)",
+      "eligibility": "United States-registered for-profit small businesses that are at least 51% owned by women of color, with annual gross revenues under $1,000,000.",
+      "link": "https://www.hersuitespot.com/herrise-microgrant/",
+      "description": "Provides targeted monthly micro-grants directly to women-of-color founders navigating growth and working capital bottlenecks. Fast Apparel can utilize this grant for immediate shop consumables (DTF films, inks) and targeted B2B customer acquisition campaigns."
     }
   ]
 }

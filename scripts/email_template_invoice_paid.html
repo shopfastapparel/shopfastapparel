@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}}</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #F8FAFC; margin: 0; padding: 24px 12px; color: #1E293B; }
+  .wrapper { max-width: 620px; margin: 0 auto; background-color: #FFFFFF; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid #E2E8F0; }
+  .header { background-color: #0F172A; padding: 26px 20px; text-align: center; }
+  .header img { height: 42px; display: inline-block; }
+  .content { padding: 36px 28px; }
+  .h1 { font-size: 22px; font-weight: 800; color: #0F172A; margin: 0 0 14px 0; letter-spacing: -0.3px; line-height: 1.3; }
+  p { font-size: 15px; line-height: 1.6; color: #334155; margin: 0 0 16px 0; }
+  strong { color: #0F172A; font-weight: 700; }
+  
+  /* Status Banner */
+  .status-badge { display: inline-block; background-color: #ECFDF5; color: #047857; font-weight: 800; font-size: 12px; padding: 5px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.6px; border: 1px solid #A7F3D0; margin-bottom: 14px; }
+  
+  /* Receipt Box */
+  .receipt-box { background: linear-gradient(135deg, #F0FDF4 0%, #F8FAFC 100%); border: 2px solid #86EFAC; border-radius: 12px; padding: 20px; margin: 22px 0; }
+  .receipt-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #BBF7D0; padding-bottom: 12px; margin-bottom: 12px; }
+  .receipt-title { font-size: 15px; font-weight: 700; color: #166534; margin: 0; }
+  .receipt-amount { font-size: 22px; font-weight: 800; color: #047857; margin: 0; }
+  .receipt-meta { font-size: 13.5px; color: #1E3A8A; line-height: 1.7; }
+  
+  /* Progress Steps */
+  .progress-card { background-color: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 20px; margin: 24px 0; }
+  .progress-step { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+  .progress-step:last-child { margin-bottom: 0; }
+  .step-icon { font-size: 16px; min-width: 24px; text-align: center; }
+  .step-text { font-size: 13.5px; color: #334155; line-height: 1.45; }
+  .step-text strong { display: block; color: #0F172A; font-size: 14px; }
+  
+  /* CTA Button */
+  .cta-container { text-align: center; margin: 24px 0 16px 0; }
+  .cta-button { display: inline-block; background-color: #0F172A; color: #FFFFFF !important; text-decoration: none; font-weight: 700; font-size: 14.5px; padding: 12px 28px; border-radius: 8px; box-shadow: 0 4px 12px rgba(15,23,42,0.15); }
+  
+  /* Care Box */
+  .care-box { background-color: #F1F5F9; border-radius: 10px; padding: 16px 18px; margin: 24px 0; border: 1px solid #E2E8F0; }
+  .care-box strong { font-size: 13.5px; color: #1E293B; display: block; margin-bottom: 6px; }
+  .care-box p { font-size: 13px; color: #475569; line-height: 1.6; margin: 0; }
+  
+  /* Footer */
+  .footer { padding: 26px 20px; background-color: #F8FAFC; border-top: 1px solid #E2E8F0; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="wrapper">
+    <!-- Top Header -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td class="header">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td align="left" valign="middle">
+                <a href="https://www.shopfastapparel.com" target="_blank" style="text-decoration: none;">
+                  <img src="https://image.customesignature.com/images/signature-logo/12061" alt="Fast Custom Apparel" height="34" style="height: 34px; max-width: 170px; display: block; border: 0;">
+                </a>
+              </td>
+              <td align="right" valign="middle">
+                <div style="display: inline-block; background: rgba(0, 229, 255, 0.15); border: 1.5px solid #00E5FF; border-radius: 20px; padding: 4px 10px;">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td valign="middle" style="padding-right: 6px;">
+                        <img src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mascot/dash_avatar_circle.png" alt="Dash" width="20" height="20" style="border-radius: 50%; display: block;">
+                      </td>
+                      <td valign="middle" style="font-size: 11.5px; font-weight: 800; color: #00E5FF; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Powered by Dash
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Main Content Area -->
+    <div class="content">
+      {{DRAFT_BANNER}}
+
+      <div style="text-align: center; margin-bottom: 8px;">
+        <span class="status-badge">✓ Payment Received &bull; Order in Production</span>
+      </div>
+
+      <h1 class="h1" style="text-align: center;">{{TITLE}}</h1>
+
+      <p style="font-size: 16px;">Hi <strong>{{CUSTOMER_NAME}}</strong>,</p>
+
+      <p>
+        Thank you for your business! We have successfully received and processed your payment in full. Your custom apparel order is now officially confirmed and moving directly onto our production schedule! 🚀
+      </p>
+
+      <!-- PAYMENT RECEIPT SUMMARY CARD -->
+      <div class="receipt-box">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 10px;">
+          <tr>
+            <td align="left" valign="middle">
+              <strong style="font-size: 14.5px; color: #166534;">💳 Official Payment Receipt</strong><br/>
+              <span style="font-size: 12.5px; color: #4B5563;">Invoice #<strong>{{INVOICE_NUMBER}}</strong></span>
+            </td>
+            <td align="right" valign="middle">
+              <span class="receipt-amount">{{AMOUNT_PAID}}</span><br/>
+              <span style="font-size: 11.5px; font-weight: 700; color: #047857; background: #DCFCE7; padding: 2px 8px; border-radius: 10px;">PAID IN FULL</span>
+            </td>
+          </tr>
+        </table>
+        
+        <div style="font-size: 13.5px; color: #374151; line-height: 1.7; border-top: 1px solid #BBF7D0; padding-top: 10px;">
+          &bull; <strong>Payment Date:</strong> {{PAYMENT_DATE}}<br/>
+          &bull; <strong>Billed To:</strong> {{CUSTOMER_NAME}} &bull; {{CUSTOMER_EMAIL}}<br/>
+          &bull; <strong>Delivery Method:</strong> {{DELIVERY_METHOD}} ({{SHIPPING_ADDRESS}})
+        </div>
+
+        {{RECEIPT_CTA}}
+      </div>
+
+      <!-- WHAT HAPPENS NEXT (PRODUCTION TIMELINE) -->
+      <div class="progress-card">
+        <h3 style="margin: 0 0 14px 0; font-size: 15px; color: #0F172A; font-weight: 700;">
+          ⚡ What Happens Next:
+        </h3>
+        
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="30" valign="top" style="padding-bottom: 12px; font-size: 17px;">📦</td>
+            <td valign="top" style="padding-bottom: 12px; font-size: 13.5px; color: #334155; line-height: 1.45;">
+              <strong style="color: #0F172A;">1. Blank Garment Allocation &amp; Inspection</strong>
+              Your blanks are secured directly from our distributor mills, checked for defect-free consistency, and staged for print.
+            </td>
+          </tr>
+          <tr>
+            <td width="30" valign="top" style="padding-bottom: 12px; font-size: 17px;">🎨</td>
+            <td valign="top" style="padding-bottom: 12px; font-size: 13.5px; color: #334155; line-height: 1.45;">
+              <strong style="color: #0F172A;">2. High-Definition DTF Printing &amp; Calibrated Pressing</strong>
+              Your approved artwork is printed with commercial-grade elastomeric inks and thermally cured onto each garment at calibrated temperatures for maximum wash fastness.
+            </td>
+          </tr>
+          <tr>
+            <td width="30" valign="top" style="padding-bottom: 12px; font-size: 17px;">🔍</td>
+            <td valign="top" style="padding-bottom: 12px; font-size: 13.5px; color: #334155; line-height: 1.45;">
+              <strong style="color: #0F172A;">3. Hand Quality Inspection &amp; Packaging</strong>
+              Every piece is inspected for color fidelity, alignment, and seam integrity, then individually folded and packaged by size.
+            </td>
+          </tr>
+          <tr>
+            <td width="30" valign="top" style="font-size: 17px;">🚚</td>
+            <td valign="top" style="font-size: 13.5px; color: #334155; line-height: 1.45;">
+              <strong style="color: #0F172A;">4. Shipping &amp; Live Tracking Notification</strong>
+              As soon as your shipment is boxed and labeled, we will email you the official carrier tracking link so you can follow delivery right to your doorstep.
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- APPROVED PRODUCTION PROOFS & MOCKUPS -->
+      {{PROOF_GALLERY}}
+
+      <!-- ORDER MANIFEST & SIZE BREAKDOWN -->
+      {{MANIFEST_TABLE}}
+
+      <!-- APPAREL CARE INSTRUCTIONS -->
+      <div class="care-box">
+        <strong>💡 Garment Care Instructions:</strong>
+        <p>
+          To maintain print vibrancy and fabric softness wash after wash:<br/>
+          &bull; Machine wash <strong>cold</strong>, inside out, with like colors.<br/>
+          &bull; Tumble dry on <strong>low heat</strong> or hang dry for maximum lifespan.<br/>
+          &bull; Do not iron directly on the printed graphic.
+        </p>
+      </div>
+
+      <p style="margin-top: 24px; margin-bottom: 24px;">
+        {{CLOSING_NOTE}}
+      </p>
+    </div>
+
+    <!-- Official Signature Footer -->
+    <div class="footer">
+      <table class="signature_tbl" cellpadding="0" cellspacing="0" border="0" style="margin:0.1px auto; border-collapse:collapse;font-size:10px;font-family:Inter,sans-serif;"> <tbody><tr> <td class="layout_maintd" style="margin:0.1px; line-height:16px;font-family:Inter, sans-serif; border-collapse:collapse;"><table cellpadding="0" cellspacing="0" style="margin:0.1px; border-collapse: separate"> <tbody><tr> <td valign="top" align="left" class="layout_border" style="margin:0.1px; border-collapse:collapse; padding:20px; border-radius:5px; border-width: 2px; border-color:#e2e2e2; border-style: solid;"><table width="100%" border="0" cellspacing="0" cellpadding="0"> <tbody><tr> <td valign="middle" align="center" style="margin:0.1px; padding:0 15px 0 0; border-collapse:collapse;"><a href="https://www.shopfastapparel.com" id="layout_link"><img class="layout_logo" src="https://image.customesignature.com/images/signature-logo/12061" width="175"></a></td> <td valign="top" align="left" class="layout_divider" style="margin:0.1px; border:none; border-left-width:4px; border-left-color:#e2e2e2; border-left-style: solid; padding:0 0 0 15px; border-collapse:collapse;"><table cellpadding="0" cellspacing="0" border="0" style="margin:0.1px; border-collapse:collapse;"> <tbody><tr> <td valign="top" align="left" style="margin:0.1px; padding:0 15px 0 0;display:reversed;" class="htmltogifClass"><img style="display:inline;border-radius:0px" class="signature_profile image_gif_overlay" src="https://image.customesignature.com/images/signature-profile/12061/32393" width="68"></td> </tr> <tr> <td style="margin:0.1px; padding-bottom:8px;"><table border="0" cellspacing="0" cellpadding="0"> <tbody><tr> <td style="margin:0.1px; padding:12px 0 0 0; border-collapse: collapse;"><table border="0" cellspacing="0" cellpadding="0"> <tbody><tr> <td align="left" valign="middle" style="margin:0.1px;"><span class="layout_firstname" style="font-weight:bold; font-style:normal; color:#000000; font-size:15px;">Tavarus Johnson</span> </td> <td align="left" valign="middle" style="margin:0.1px; padding-left:5px;"><img class="layout_verified" width="14" height="14" src="https://image.customesignature.com/images/static/images/verify.gif" style="margin:0.1px; display:inline;"></td> </tr> </tbody></table></td> </tr> <tr> <td style="margin:0.1px;"><span class="layout_jobtitle" style="font-weight:normal; font-style:normal; color:#000000; font-size:12px;">Founder + Lead Designer</span></td> </tr> </tbody></table></td> </tr> <tr> <td style="margin:0.1px;"><span class="layout_company" style="font-weight:bold; font-style:normal; color:#000000; font-size:12px;">Fast Custom Apparel of GA</span></td> </tr> <tr> <td style="margin:0.1px;"> <span class="layout_text_label1 label" style="font-weight:bold; font-style:normal; color:#000000; font-size:12px;"></span><span class="layout_text1" style="font-weight:normal; font-style:normal; color:#000000; font-size:12px;">Subsidiary of Johnson Apparel Enterprises of GA</span></td> </tr> <tr> <td style="margin:0.1px;"> <a href="tel:16784912655" class="layout_phone_label1 label" style="text-decoration: none;font-weight:bold; font-style:normal; color:#000000; font-size:12px;"><span class="layout_phone1" style="font-weight:normal; font-style:normal; color:#000000; font-size:12px;">(678) 491-2655</span></a></td> </tr> <tr> <td style="margin:0.1px;"> <a href="mailto:info@shopfastapparel.com" class="layout_email_label1 label" style="text-decoration: none;font-weight:bold; font-style:normal; color:#000000; font-size:12px;"><span class="layout_email1" style="font-weight:normal; font-style:normal; color:#000000; font-size:12px;">info@shopfastapparel.com</span></a></td> </tr> </tbody></table></td> </tr> </tbody></table></td> </tr> </tbody></table></td> </tr></tbody></table>
+      <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #E2E8F0; text-align: center; color: #64748B; font-size: 13px;">
+        <p style="margin: 0 0 4px 0; font-weight: 700; color: #0F172A;">Fast Apparel of GA</p>
+        <p style="margin: 0 0 4px 0; font-size: 12px; color: #64748B;">Commercial Ultra HD DTF Printing</p>
+        <p style="margin: 0; font-size: 12px;">
+          <a href="https://www.shopfastapparel.com" style="color: #0284C7; text-decoration: none; font-weight: 600;">www.shopfastapparel.com</a> • <a href="tel:16784912655" style="color: #64748B; text-decoration: none;">(678) 491-2655</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
