@@ -12,6 +12,12 @@ export type Review = {
 
 export const REVIEWS: Review[] = [
   {
+    name: "Chaya",
+    location: "Verified Buyer",
+    product: "Custom Bulk Tees — Way To Go",
+    text: "Thank you for the t-shirts. I received the order and they look great. It was an extremely smooth process and I really appreciate it.",
+  },
+  {
     name: "Tara Armstrong",
     location: "Verified Buyer",
     product: "Custom Mission Trip Tees — Ark Church",
