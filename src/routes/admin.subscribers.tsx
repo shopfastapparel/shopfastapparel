@@ -57,8 +57,8 @@ function SubscribersDashboard() {
       <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="mb-8 flex justify-between items-end">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Newsletter Subscribers</h1>
-            <p className="mt-2 text-sm text-gray-500">View all emails collected from the 10% discount popup.</p>
+            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">VIP Promo Subscribers</h1>
+            <p className="mt-2 text-sm text-gray-500">View all emails collected from Dash's VIP deals & promos popup.</p>
           </div>
           <div className="text-right flex items-center space-x-6">
             <Button onClick={downloadCSV} variant="outline" className="flex items-center space-x-2" disabled={subscribers.length === 0}>
@@ -84,7 +84,7 @@ function SubscribersDashboard() {
                <Mailbox className="w-8 h-8 text-gray-400" />
             </div>
             <h3 className="text-lg font-medium text-gray-900">No subscribers yet</h3>
-            <p className="mt-1 text-gray-500">Emails collected from the discount popup will appear here.</p>
+            <p className="mt-1 text-gray-500">Emails collected from Dash's VIP deals & promo popup will appear here.</p>
           </div>
         ) : (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">

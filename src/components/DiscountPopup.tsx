@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X, Gift, CheckCircle2, Loader2 } from "lucide-react";
+import { X, CheckCircle2, Loader2, Sparkles, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,8 +11,8 @@ export function DiscountPopup() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    // Check if user has already seen or closed the popup
-    const hasSeenPopup = localStorage.getItem("discount_popup_seen");
+    // Check if user has already seen or closed Dash's VIP deals popup
+    const hasSeenPopup = localStorage.getItem("vip_deals_popup_seen");
     
     if (!hasSeenPopup) {
       // Show popup after 3.5 seconds
@@ -25,7 +25,7 @@ export function DiscountPopup() {
 
   const handleClose = () => {
     setIsOpen(false);
-    localStorage.setItem("discount_popup_seen", "true");
+    localStorage.setItem("vip_deals_popup_seen", "true");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,17 +41,17 @@ export function DiscountPopup() {
         .insert([{ email }]);
 
       if (error) {
-        // If it's a unique constraint violation, they already subscribed
-        if (error.code === '23505') {
-           setStatus("success");
-           localStorage.setItem("discount_popup_seen", "true");
-           return;
+        // If unique constraint violation, they are already subscribed
+        if (error.code === "23505") {
+          setStatus("success");
+          localStorage.setItem("vip_deals_popup_seen", "true");
+          return;
         }
         throw error;
       }
 
       setStatus("success");
-      localStorage.setItem("discount_popup_seen", "true");
+      localStorage.setItem("vip_deals_popup_seen", "true");
     } catch (err: any) {
       console.error(err);
       setStatus("error");
@@ -65,52 +65,77 @@ export function DiscountPopup() {
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 sm:p-0">
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" 
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" 
         onClick={handleClose}
       />
       
       {/* Modal */}
-      <div className="relative z-50 w-full max-w-md bg-card rounded-2xl shadow-2xl border overflow-hidden animate-in fade-in zoom-in-95 duration-300 sm:m-4">
+      <div className="relative z-50 w-full max-w-md bg-card rounded-2xl shadow-2xl border-2 border-ink overflow-hidden animate-in fade-in zoom-in-95 duration-300 sm:m-4">
+        {/* Top Multi-Color Brand Accent Bar */}
+        <div className="bg-gradient-to-r from-cyan-brand via-magenta-brand to-yellow-brand h-2.5 w-full" />
+
         <button 
           onClick={handleClose}
-          className="absolute right-4 top-4 text-muted-foreground hover:text-foreground transition-colors p-1"
+          className="absolute right-4 top-5 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-full hover:bg-muted"
           aria-label="Close"
         >
           <X className="w-5 h-5" />
         </button>
-
-        <div className="bg-magenta-brand h-2 w-full" />
         
-        <div className="p-8 text-center">
+        <div className="p-7 text-center">
           {status === "success" ? (
-            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="mx-auto w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6">
-                <CheckCircle2 className="w-8 h-8" />
+            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 py-2">
+              <div className="relative mx-auto w-24 h-24 flex items-center justify-center mb-3">
+                <div className="absolute inset-0 rounded-full bg-cyan-brand/20 blur-md" />
+                <img 
+                  src="/images/mascot/dash_thumbs_up.webp" 
+                  alt="Dash Thumbs Up" 
+                  className="relative w-24 h-24 object-contain drop-shadow-md"
+                />
               </div>
-              <h2 className="font-display text-2xl font-bold text-ink">You're In!</h2>
-              <p className="text-muted-foreground text-sm">
-                Use the promo code below at checkout to get 10% off your first order over $100.
+
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 border border-green-200 text-green-700 text-xs font-bold uppercase tracking-wider">
+                <CheckCircle2 className="w-3.5 h-3.5 text-green-600" /> You're on Dash's VIP List!
+              </div>
+
+              <h2 className="font-display text-2xl font-bold text-ink tracking-tight">
+                Welcome to the Crew!
+              </h2>
+
+              <p className="text-muted-foreground text-sm max-w-sm mx-auto leading-relaxed">
+                Dash has you locked in. We'll send exclusive seasonal deals, flash promos, and VIP apparel perks straight to your inbox throughout the year!
               </p>
-              <div className="mt-6 bg-muted p-4 rounded-xl border border-dashed border-magenta-brand/50">
-                <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-1">Your Promo Code</p>
-                <p className="font-mono text-3xl font-bold tracking-widest text-magenta-brand select-all">
-                  WELCOME10
-                </p>
-              </div>
-              <Button onClick={handleClose} className="w-full mt-6 border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors" variant="outline">
-                Continue Shopping
+
+              <Button 
+                onClick={handleClose} 
+                className="w-full mt-4 border-2 border-ink text-ink font-bold hover:bg-ink hover:text-white transition-colors shadow-pop" 
+                variant="outline"
+              >
+                Continue Exploring
               </Button>
             </div>
           ) : (
             <>
-              <div className="mx-auto w-16 h-16 bg-magenta-brand/10 text-magenta-brand rounded-full flex items-center justify-center mb-6">
-                <Gift className="w-8 h-8" />
+              {/* Dash Mascot Hero Feature */}
+              <div className="relative mx-auto w-24 h-24 flex items-center justify-center mb-2">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-brand/20 via-magenta-brand/15 to-yellow-brand/20 blur-md" />
+                <img 
+                  src="/images/mascot/dash_holding_shirt.webp" 
+                  alt="Dash with Custom Shirt" 
+                  className="relative w-24 h-24 object-contain drop-shadow-md transition-transform hover:scale-105"
+                />
               </div>
+
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-magenta-brand/10 border border-magenta-brand/20 text-magenta-brand text-xs font-bold uppercase tracking-wider mb-2">
+                <Sparkles className="w-3.5 h-3.5" /> Dash's VIP Insider Club
+              </div>
+
               <h2 className="font-display text-2xl md:text-3xl font-bold text-ink tracking-tight mb-2">
-                Enjoy 10% Off
+                Exclusive Deals & Promos
               </h2>
-              <p className="text-muted-foreground mb-8">
-                Sign up for our newsletter to receive 10% off your first order of $100 or more!
+
+              <p className="text-muted-foreground text-sm leading-relaxed mb-6 max-w-sm mx-auto">
+                Join our VIP email list! Dash will send you exclusive deals, secret seasonal promos, and flash savings throughout the year.
               </p>
               
               <form onSubmit={handleSubmit} className="space-y-3">
@@ -120,22 +145,29 @@ export function DiscountPopup() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="h-12 px-4"
+                  className="h-12 px-4 border-2 focus-visible:border-magenta-brand text-base"
                   disabled={status === "loading"}
                 />
                 <Button 
                   type="submit" 
-                  className="w-full h-12 bg-magenta-brand hover:bg-magenta-brand/90 text-white font-semibold text-base"
+                  className="w-full h-12 bg-magenta-brand hover:bg-magenta-brand/90 text-white font-bold text-base shadow-pop transition-transform hover:-translate-y-0.5"
                   disabled={status === "loading"}
                 >
-                  {status === "loading" ? <Loader2 className="w-5 h-5 animate-spin" /> : "Claim Discount"}
+                  {status === "loading" ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <span className="flex items-center justify-center gap-2">
+                      Get Exclusive Deals <ArrowRight className="w-4 h-4" />
+                    </span>
+                  )}
                 </Button>
                 {status === "error" && (
                   <p className="text-destructive text-sm mt-2">{errorMessage}</p>
                 )}
               </form>
-              <p className="text-xs text-muted-foreground mt-6">
-                We'll never share your email. You can unsubscribe at any time.
+
+              <p className="text-[11px] text-muted-foreground mt-4">
+                Zero spam, ever. Only top-tier promos. You can unsubscribe anytime with 1 click.
               </p>
             </>
           )}
