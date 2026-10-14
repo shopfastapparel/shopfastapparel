@@ -103,6 +103,49 @@ function buildOwnerEmailHtml(data: QuoteData, fileLinksHtml: string, productLabe
 </html>`;
 }
 
+function buildCustomerEmailText(data: QuoteData, productLabel?: string): string {
+  const firstName = data.name.trim().split(" ")[0] || "there";
+  const lines: string[] = [
+    `Hi ${firstName},`,
+    "",
+    "Thank you for submitting your custom apparel request with Fast Apparel! Our Chief Speed Officer Dash and our Lawrenceville production crew have received your request and are reviewing your project specifications right now.",
+    "",
+    "WHAT HAPPENS NEXT:",
+    "1. Digital Mockup Proof (Within 24 Hours): You'll receive a detailed proof in your inbox showing exact artwork placements and sizing.",
+    "2. Direct Itemized Pricing: Clear, transparent pricing with commercial Ultra HD DTF printed transfers included.",
+    "3. Fast 7–10 Business Day Turnaround: Once approved, production kicks off immediately (often times even sooner!).",
+    "",
+    "YOUR REQUEST SUMMARY:",
+    `- Service / Project: ${data.service}`,
+  ];
+
+  if (productLabel) {
+    lines.push(`- Apparel Style: ${productLabel}`);
+  }
+  lines.push(`- Quantity: ${data.quantity}`);
+  lines.push(`- Turnaround: ${data.turnaround} · ${data.turnaroundEstimate}`);
+  if (data.city) lines.push(`- City / Delivery: ${data.city}`);
+  if (data.zipCode) lines.push(`- Shipping Zip: ${data.zipCode}`);
+  if (data.deadline) lines.push(`- Target Deadline: ${data.deadline}`);
+  if (data.details && data.details !== "No details provided") {
+    lines.push(`- Project Details: ${data.details}`);
+  }
+
+  lines.push(
+    "",
+    "Have questions or need emergency rush turnaround? Call or text our local team directly at (678) 491-2655 or reply directly to this email.",
+    "",
+    "Warm regards,",
+    "Tavarus Johnson",
+    "Fast Apparel of GA",
+    "(678) 491-2655",
+    "info@shopfastapparel.com",
+    "https://www.shopfastapparel.com"
+  );
+
+  return lines.join("\n");
+}
+
 function buildCustomerEmailHtml(data: QuoteData, productLabel?: string): string {
   const firstName = data.name.trim().split(" ")[0] || "there";
   return `<!DOCTYPE html>
@@ -110,7 +153,7 @@ function buildCustomerEmailHtml(data: QuoteData, productLabel?: string): string 
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dash is On It! Quote Request Received</title>
+<title>Quote Request Received — Fast Apparel</title>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0B0F19; margin: 0; padding: 20px 10px; color: #1E293B; }
   .wrapper { max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 2px solid #1E293B; }
@@ -158,7 +201,7 @@ function buildCustomerEmailHtml(data: QuoteData, productLabel?: string): string 
         <tr>
           <td style="padding: 22px 20px;" valign="middle">
             <div style="display: inline-block; background: #FFE600; color: #0F172A; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 9px; border-radius: 4px; margin-bottom: 8px;">
-              ⚡ Request Received!
+              Request Received
             </div>
             <h2 style="font-size: 21px; font-weight: 900; color: #FFFFFF; margin: 0 0 6px 0; line-height: 1.2;">
               Dash is on it, ${firstName}!
@@ -182,19 +225,19 @@ function buildCustomerEmailHtml(data: QuoteData, productLabel?: string): string 
         <tr>
           <td style="padding: 18px 20px;">
             <strong style="color: #0F172A; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 10px;">
-              ⏱️ What Happens Next:
+              What Happens Next:
             </strong>
             <table width="100%" cellpadding="6" cellspacing="0" border="0" style="font-size: 13.5px; color: #475569;">
               <tr>
-                <td width="28" valign="top">🎨</td>
-                <td><strong>Free Digital Mockup Proof (Within 24 Hours):</strong> You'll receive a detailed proof in your inbox showing exact artwork placements with 100% color accuracy.</td>
+                <td width="28" valign="top" style="color: #0284C7; font-weight: 700;">1.</td>
+                <td><strong>Digital Mockup Proof (Within 24 Hours):</strong> You'll receive a detailed proof in your inbox showing exact artwork placements and sizing.</td>
               </tr>
               <tr>
-                <td width="28" valign="top">💰</td>
-                <td><strong>Transparent Wholesale Pricing:</strong> Zero hidden fees, zero color limits, and commercial Ultra HD DTF printing included.</td>
+                <td width="28" valign="top" style="color: #0284C7; font-weight: 700;">2.</td>
+                <td><strong>Direct Itemized Pricing:</strong> Clear, transparent pricing with commercial Ultra HD DTF printed transfers included.</td>
               </tr>
               <tr>
-                <td width="28" valign="top">🚀</td>
+                <td width="28" valign="top" style="color: #0284C7; font-weight: 700;">3.</td>
                 <td><strong>Fast 7–10 Business Day Turnaround:</strong> Once approved, production kicks off immediately <em>(often times even sooner!)</em>.</td>
               </tr>
             </table>
@@ -204,7 +247,7 @@ function buildCustomerEmailHtml(data: QuoteData, productLabel?: string): string 
 
       <div class="highlight-card">
         <strong style="color: #0369A1; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">
-          📋 Your Request Summary:
+          Your Request Summary:
         </strong>
         <table class="detail-table">
           <tr>
@@ -397,16 +440,17 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
     }
 
     const quoteId = dbRecord?.id || "N/A";
+    const quoteIdShort = quoteId.substring(0, 8);
 
-    // Determine sender — use verified domain if available, otherwise Resend default
-    const from = process.env.RESEND_FROM_EMAIL || "Fast Apparel <info@shopfastapparel.com>";
+    // Determine sender — use verified domain if available, otherwise default
+    const from = process.env.RESEND_FROM_EMAIL || "Tavarus Johnson <info@shopfastapparel.com>";
 
     // Send email to shop owner
     const toEmail = process.env.RESEND_TO_EMAIL || "shopfastapparel@gmail.com";
     const { error: ownerError } = await resend.emails.send({
       from,
       to: [toEmail],
-      subject: `Quote Request [${quoteId.substring(0, 8)}] — ${data.service} — ${data.name}`,
+      subject: `Quote Request [${quoteIdShort}] — ${data.service} — ${data.name}`,
       html: buildOwnerEmailHtml(data, fileLinksHtml, productLabel),
       replyTo: data.email,
     });
@@ -416,14 +460,23 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
       throw new Error("Failed to send quote request");
     }
 
-    // Send confirmation email to customer
+    // Send confirmation email to customer (Delivered to Primary inbox via Deliverability Rules)
     try {
+      const customerFrom = "Tavarus Johnson <info@shopfastapparel.com>";
+      const customerSubject = `Re: Custom Apparel Request — ${data.company || data.name || "Fast Apparel"}`;
       await resend.emails.send({
-        from,
+        from: customerFrom,
         to: [data.email],
         bcc: [toEmail],
-        subject: "We got your quote request! — Fast Apparel",
+        replyTo: "info@shopfastapparel.com",
+        subject: customerSubject,
         html: buildCustomerEmailHtml(data, productLabel),
+        text: buildCustomerEmailText(data, productLabel),
+        headers: {
+          "In-Reply-To": `<quote-${quoteId}@shopfastapparel.com>`,
+          "References": `<quote-${quoteId}@shopfastapparel.com>`,
+          "X-Entity-Ref-ID": `quote-received-${quoteId}`,
+        },
       });
     } catch (e) {
       // Don't fail the whole request if confirmation email fails
@@ -434,10 +487,71 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+function buildStudioCustomerEmailText(data: {
+  name: string;
+  company?: string;
+  styleName: string;
+  styleBrand?: string;
+  colorName: string;
+  quantity?: string | number;
+  sizeList?: string;
+  zipCode?: string;
+  deadline?: string;
+  notes?: string;
+  frontProofUrl?: string | null;
+  backProofUrl?: string | null;
+}): string {
+  const firstName = data.name.trim().split(" ")[0] || "there";
+  const lines: string[] = [
+    `Hi ${firstName},`,
+    "",
+    `Thank you for submitting your custom design with Fast Apparel! Our Chief Speed Officer Dash and our Lawrenceville production crew have received your design for the ${data.styleName} in ${data.colorName}.`,
+    "",
+    "Our production crew is reviewing your artwork placement, resolution, and safe-zones right now. We'll have your official price quote and print-ready digital proof in your inbox within 24 hours.",
+    "",
+    "PRODUCTION HIGHLIGHTS:",
+    "- Commercial Ultra HD Direct-to-Film (DTF) printed transfers.",
+    "- High-definition color reproduction with durable commercial wash resistance.",
+    "- Fast 7–10 business day turnaround (often times even sooner!).",
+    "",
+    "YOUR DESIGN DETAILS:",
+    `- Garment: ${data.styleName}${data.styleBrand ? ` (${data.styleBrand})` : ""}`,
+    `- Color: ${data.colorName}`,
+  ];
+
+  if (data.quantity) lines.push(`- Quantity: ${data.quantity}`);
+  if (data.sizeList) lines.push(`- Sizes: ${data.sizeList}`);
+  if (data.zipCode) lines.push(`- Shipping Zip: ${data.zipCode}`);
+  if (data.deadline) lines.push(`- Target Deadline: ${data.deadline}`);
+  if (data.notes) lines.push(`- Project Notes: ${data.notes}`);
+  if (data.frontProofUrl) lines.push(`- Front Proof Preview: ${data.frontProofUrl}`);
+  if (data.backProofUrl) lines.push(`- Back Proof Preview: ${data.backProofUrl}`);
+
+  lines.push(
+    "",
+    "Have questions or need rush delivery? Call or text our local team directly at (678) 491-2655 or reply directly to this email.",
+    "",
+    "Warm regards,",
+    "Tavarus Johnson",
+    "Fast Apparel of GA",
+    "(678) 491-2655",
+    "info@shopfastapparel.com",
+    "https://www.shopfastapparel.com"
+  );
+
+  return lines.join("\n");
+}
+
 function buildStudioCustomerEmailHtml(data: {
   name: string;
   styleName: string;
+  styleBrand?: string;
   colorName: string;
+  quantity?: string | number;
+  sizeList?: string;
+  zipCode?: string;
+  deadline?: string;
+  notes?: string;
   frontProofUrl?: string | null;
   backProofUrl?: string | null;
 }): string {
@@ -447,7 +561,7 @@ function buildStudioCustomerEmailHtml(data: {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dash Got Your Custom Design! — Fast Apparel</title>
+<title>Custom Design Received — Fast Apparel</title>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0B0F19; margin: 0; padding: 20px 10px; color: #1E293B; }
   .wrapper { max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 2px solid #1E293B; }
@@ -490,7 +604,7 @@ function buildStudioCustomerEmailHtml(data: {
         <tr>
           <td style="padding: 22px 20px;" valign="middle">
             <div style="display: inline-block; background: #FFE600; color: #0F172A; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 9px; border-radius: 4px; margin-bottom: 8px;">
-              ⚡ Design Received!
+              Design Received
             </div>
             <h2 style="font-size: 21px; font-weight: 900; color: #FFFFFF; margin: 0 0 6px 0; line-height: 1.2;">
               Dash is on it, ${firstName}!
@@ -513,7 +627,7 @@ function buildStudioCustomerEmailHtml(data: {
       ${(data.frontProofUrl || data.backProofUrl) ? `
       <div style="background-color: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 14px; padding: 18px; margin: 24px 0;">
         <strong style="color: #0F172A; font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 12px;">
-          🎨 Your Studio Proof Preview:
+          Your Studio Proof Preview:
         </strong>
         <table width="100%" cellpadding="6" cellspacing="0" border="0">
           <tr>
@@ -537,10 +651,10 @@ function buildStudioCustomerEmailHtml(data: {
 
       <div style="background: #F0FDF4; border: 1.5px solid #86EFAC; border-radius: 12px; padding: 16px; margin: 20px 0;">
         <strong style="color: #166534; font-size: 13.5px; display: block; margin-bottom: 4px;">
-          🚀 Fast 7–10 Business Day Turnaround (Often Even Sooner!)
+          Fast 7–10 Business Day Turnaround (Often Even Sooner!)
         </strong>
         <p style="font-size: 13px; color: #14532D; margin: 0;">
-          All custom orders are printed using commercial Ultra HD Direct-to-Film (DTF) transfers with zero setup fees, unlimited print colors, and free US shipping on orders over $149.
+          All custom orders are printed using commercial Ultra HD Direct-to-Film (DTF) transfers with durable commercial wash resistance and high-definition detail.
         </p>
       </div>
 
@@ -713,13 +827,22 @@ export const notifyStudioSubmission = createServerFn({ method: "POST" })
         html,
       });
 
-      // Customer confirmation
+      // Customer confirmation (Delivered to Primary inbox via Deliverability Rules)
+      const customerFrom = "Tavarus Johnson <info@shopfastapparel.com>";
+      const customerSubject = `Re: Custom Design Request — ${data.company || data.name || "Fast Apparel"}`;
       await resend.emails.send({
-        from,
+        from: customerFrom,
         to: [data.email],
         bcc: [toEmail],
-        subject: "We got your custom design! — Fast Apparel",
+        replyTo: "info@shopfastapparel.com",
+        subject: customerSubject,
         html: buildStudioCustomerEmailHtml(data),
+        text: buildStudioCustomerEmailText(data),
+        headers: {
+          "In-Reply-To": `<studio-${quoteIdShort}@shopfastapparel.com>`,
+          "References": `<studio-${quoteIdShort}@shopfastapparel.com>`,
+          "X-Entity-Ref-ID": `studio-received-${quoteIdShort}`,
+        },
       });
     } catch (err) {
       console.error("[studio-quote] Failed to send email notifications:", err);

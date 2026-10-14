@@ -28,6 +28,33 @@ const deleteQuoteSchema = z.object({
 
 // ----- HTML TEMPLATES -----
 
+function buildMockupEmailText(name: string, mockupUrl: string, quoteId: string, message?: string): string {
+  const firstName = name.trim().split(" ")[0] || "there";
+  const lines: string[] = [
+    `Hi ${firstName},`,
+    "",
+    "Great news! We have finished preparing the digital mockup for your custom apparel order.",
+  ];
+  if (message) {
+    lines.push("", `Note from our design team: "${message}"`);
+  }
+  lines.push(
+    "",
+    `Review and approve your design here: https://shopfastapparel.com/mockup/${quoteId}`,
+    `Direct Mockup Image: ${mockupUrl}`,
+    "",
+    "Please visit the secure link above to review and approve the design, or let us know if you need any adjustments before we move into production.",
+    "",
+    "Warm regards,",
+    "Tavarus Johnson",
+    "Fast Apparel of GA",
+    "(678) 491-2655",
+    "info@shopfastapparel.com",
+    "https://www.shopfastapparel.com"
+  );
+  return lines.join("\n");
+}
+
 function buildMockupEmailHtml(name: string, mockupUrl: string, quoteId: string, message?: string): string {
   return `
 <!DOCTYPE html>
@@ -47,10 +74,10 @@ function buildMockupEmailHtml(name: string, mockupUrl: string, quoteId: string, 
 <body>
   <div class="container">
     <div class="header">
-      <h1>🎨 Your Design Mockup is Ready!</h1>
+      <h1>Your Design Mockup is Ready</h1>
     </div>
     <div class="body">
-      <p>Hey ${name.split(" ")[0]},</p>
+      <p>Hi ${name.split(" ")[0]},</p>
       <p>Great news! We've finished preparing the digital mockup for your custom apparel order.</p>
       
       ${message ? `<p><em>"${message}"</em></p>` : ""}
@@ -64,7 +91,7 @@ function buildMockupEmailHtml(name: string, mockupUrl: string, quoteId: string, 
       </a>
       
       <p style="margin-top: 24px;">Please click the button above to securely approve the design, or let us know if you need any changes made before we move into production.</p>
-      <p>— The Fast Apparel Team</p>
+      <p>— Tavarus Johnson & the Fast Apparel Team</p>
     </div>
     <div class="footer">
       Fast Apparel · Lawrenceville, GA · shopfastapparel.com
@@ -117,19 +144,27 @@ export const sendMockup = createServerFn({ method: "POST" })
       })
       .eq("id", data.quoteId);
 
-    // 3. Send email to customer
+    // 3. Send email to customer (Delivered to Primary inbox via Deliverability Rules)
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) throw new Error("Email service not configured");
     const resend = new Resend(apiKey);
-    const from = process.env.RESEND_FROM_EMAIL || "Fast Apparel Quotes <onboarding@resend.dev>";
-
+    const customerFrom = "Tavarus Johnson <info@shopfastapparel.com>";
     const adminEmail = process.env.RESEND_TO_EMAIL || "shopfastapparel@gmail.com";
+    const customerSubject = `Re: Design Mockup & Approval — ${quote.company || quote.name}`;
+
     const { error: emailError } = await resend.emails.send({
-      from,
+      from: customerFrom,
       to: [quote.email],
       bcc: [adminEmail],
-      subject: "Your Design Mockup is Ready! — Fast Apparel",
+      replyTo: "info@shopfastapparel.com",
+      subject: customerSubject,
       html: buildMockupEmailHtml(quote.name, data.mockupUrl, quote.id, data.message),
+      text: buildMockupEmailText(quote.name, data.mockupUrl, quote.id, data.message),
+      headers: {
+        "In-Reply-To": `<mockup-${data.quoteId}@shopfastapparel.com>`,
+        "References": `<mockup-${data.quoteId}@shopfastapparel.com>`,
+        "X-Entity-Ref-ID": `mockup-${data.quoteId}`,
+      },
     });
 
     if (emailError) {
