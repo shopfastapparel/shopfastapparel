@@ -8,6 +8,9 @@ import {
   EMAIL_FOOTER_HTML,
 } from "@/lib/email-constants";
 
+// In-memory set to prevent duplicate webhook dispatches for the same invoice/payment
+const processedEvents = new Set<string>();
+
 export const Route = createFileRoute("/api/stripe-webhook")({
   server: {
     handlers: {
@@ -38,8 +41,26 @@ export const Route = createFileRoute("/api/stripe-webhook")({
             return Response.json({ received: true });
           }
 
+          // DEDUPLICATION: If this is checkout.session.completed for an invoice, skip it!
+          // Stripe fires both checkout.session.completed AND invoice.paid within ~1 second.
+          // invoice.paid contains the finalized invoice number, line items, and receipt URL.
+          if (eventType === "checkout.session.completed" && obj.invoice) {
+            console.log(`[Stripe Webhook] Skipping checkout.session.completed for invoice ${obj.invoice} (deferred to invoice.paid)`);
+            return Response.json({ received: true, skipped: "deferred_to_invoice_paid" });
+          }
+
           const isInvoice = eventType === "invoice.paid";
           const invoiceNumber = isInvoice ? (obj.number || obj.id) : (obj.invoice || obj.id);
+          const rawId = isInvoice ? (obj.id || obj.number) : (obj.invoice || obj.id);
+
+          // Deduplicate across retries or related events
+          const dedupeKey = `${rawId}-${invoiceNumber}`;
+          if (processedEvents.has(dedupeKey)) {
+            console.log(`[Stripe Webhook] Duplicate notification prevented for ${dedupeKey}`);
+            return Response.json({ received: true, skipped: "duplicate_blocked" });
+          }
+          processedEvents.add(dedupeKey);
+          setTimeout(() => processedEvents.delete(dedupeKey), 2 * 60 * 60 * 1000);
           const customerName = isInvoice
             ? (obj.customer_name || "Valued Customer")
             : (obj.customer_details?.name || obj.shipping_details?.name || "Valued Customer");
