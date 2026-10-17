@@ -387,50 +387,47 @@ function FountainOfFaithCollectionPage() {
       : "collection";
   const currentShare = SHARE_GRAPHICS[activeShareKey] || SHARE_GRAPHICS["collection"];
 
-  // Baseline community orders & interest distribution (building momentum towards 250-500 target)
-  const BASELINE_COUNTS: Record<string, number> = {
-    "opt-prayer-zip": 52, // #1 Congregation Leader
-    "opt-fountain-zip": 44, // #2 Trending High
-    "opt-prayer-hoodie": 32, // #3 Popular Choice
-    "opt-fountain-hoodie": 28, // #4
-    "opt-prayer-ls": 20, // #5
-    "opt-fountain-ls": 18, // #6
+  // Real-time congregation orders & popularity distribution (starts at 0 until actual member orders are submitted)
+  const liveCounts: Record<string, number> = {
+    "opt-prayer-zip": 0,
+    "opt-fountain-zip": 0,
+    "opt-prayer-hoodie": 0,
+    "opt-fountain-hoodie": 0,
+    "opt-prayer-ls": 0,
+    "opt-fountain-ls": 0,
   };
 
-  const liveCounts: Record<string, number> = { ...BASELINE_COUNTS };
-
   dbSubmissions.forEach((sub) => {
-    const text = (sub.details || "").toLowerCase();
-    if (text.includes("prayer") && text.includes("zip")) {
-      liveCounts["opt-prayer-zip"] += 1;
-    }
-    if (text.includes("fountain") && text.includes("zip")) {
-      liveCounts["opt-fountain-zip"] += 1;
-    }
-    if (
-      (text.includes("prayer") && text.includes("pullover")) ||
-      (text.includes("prayer") && text.includes("hoodie") && !text.includes("zip"))
-    ) {
-      liveCounts["opt-prayer-hoodie"] += 1;
-    }
-    if (
-      (text.includes("fountain") && text.includes("pullover")) ||
-      (text.includes("fountain") && text.includes("hoodie") && !text.includes("zip"))
-    ) {
-      liveCounts["opt-fountain-hoodie"] += 1;
-    }
-    if (text.includes("prayer") && (text.includes("long sleeve") || text.includes("ls"))) {
-      liveCounts["opt-prayer-ls"] += 1;
-    }
-    if (text.includes("fountain") && (text.includes("long sleeve") || text.includes("ls"))) {
-      liveCounts["opt-fountain-ls"] += 1;
-    }
+    const details = sub.details || "";
+    const lines = details.split("\n");
+    lines.forEach((line: string) => {
+      const lower = line.toLowerCase();
+      const matchQty = line.match(/(\d+)x\s+/i);
+      const qty = matchQty ? parseInt(matchQty[1], 10) : 1;
+
+      if (lower.includes("prayer") && lower.includes("zip")) {
+        liveCounts["opt-prayer-zip"] += qty;
+      } else if (lower.includes("fountain") && lower.includes("zip")) {
+        liveCounts["opt-fountain-zip"] += qty;
+      } else if (
+        (lower.includes("prayer") && lower.includes("pullover")) ||
+        (lower.includes("prayer") && lower.includes("hoodie") && !lower.includes("zip"))
+      ) {
+        liveCounts["opt-prayer-hoodie"] += qty;
+      } else if (
+        (lower.includes("fountain") && lower.includes("pullover")) ||
+        (lower.includes("fountain") && lower.includes("hoodie") && !lower.includes("zip"))
+      ) {
+        liveCounts["opt-fountain-hoodie"] += qty;
+      } else if (lower.includes("prayer") && (lower.includes("long sleeve") || lower.includes("ls"))) {
+        liveCounts["opt-prayer-ls"] += qty;
+      } else if (lower.includes("fountain") && (lower.includes("long sleeve") || lower.includes("ls"))) {
+        liveCounts["opt-fountain-ls"] += qty;
+      }
+    });
   });
 
   const totalCommunityPieces = Object.values(liveCounts).reduce((a, b) => a + b, 0);
-  const churchGoalPieces = 250;
-  const churchStretchGoal = 500;
-  const goalPercent = Math.min(100, Math.round((totalCommunityPieces / churchGoalPieces) * 100));
 
   const sortedFavorites = APPAREL_OPTIONS.map((opt) => {
     const pieces = liveCounts[opt.id] || 0;
@@ -440,7 +437,10 @@ function FountainOfFaithCollectionPage() {
       pieces,
       percentage,
     };
-  }).sort((a, b) => b.pieces - a.pieces);
+  }).sort((a, b) => {
+    if (b.pieces !== a.pieces) return b.pieces - a.pieces;
+    return 0;
+  });
 
   const handleAddItem = (optionId: string) => {
     setItems((prev) => [
@@ -974,16 +974,12 @@ ${notes || "None"}
                 <div className="absolute -left-12 -bottom-12 w-64 h-64 bg-purple-900/20 rounded-full blur-3xl pointer-events-none" />
 
                 {/* Meter Header */}
-                <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-5 pb-6 border-b border-purple-800/60">
+                <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-purple-800/60">
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-2.5 flex-wrap">
                       <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-900/90 text-purple-200 text-xs font-black uppercase tracking-wider border border-purple-400/50 shadow-sm">
-                        <span className="w-2.5 h-2.5 rounded-full bg-green-400 animate-ping" />
-                        Live Congregation Tracker
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/70 text-purple-300 text-xs font-bold uppercase tracking-wider border border-purple-700/60">
-                        <span className="w-2.5 h-2.5 rounded-full bg-purple-500" />
-                        Church Colors: Black &amp; Royal Purple
+                        <TrendingUp className="w-3.5 h-3.5 text-yellow-brand" />
+                        Live Popularity Meter
                       </span>
                     </div>
 
@@ -992,45 +988,20 @@ ${notes || "None"}
                     </h3>
 
                     <p className="text-xs md:text-sm text-purple-200/80 max-w-xl leading-relaxed">
-                      Real-time popular styles ordered by our church family! See what fellow members are selecting and track our progress toward the church bulk discount milestone.
+                      Real-time popularity rankings for our church apparel collection. See which styles fellow members are choosing as orders are submitted!
                     </p>
                   </div>
 
-                  {/* Church Bulk Goal Box */}
-                  <div className="bg-black/70 border-2 border-purple-500/60 rounded-xl p-4 text-center lg:text-right min-w-[240px] shadow-lg backdrop-blur-sm">
+                  <div className="bg-black/70 border-2 border-purple-500/60 rounded-xl px-4 py-3 text-center sm:text-right shadow-lg backdrop-blur-sm self-start sm:self-auto">
                     <span className="text-[11px] font-black uppercase tracking-wider text-purple-300 block">
-                      Congregation Bulk Goal
+                      Congregation Rankings
                     </span>
-                    <div className="flex items-baseline justify-center lg:justify-end gap-1.5 mt-1">
-                      <span className="font-black text-3xl md:text-4xl text-yellow-brand font-mono">
-                        {totalCommunityPieces}
-                      </span>
-                      <span className="text-xs text-purple-200 font-bold">
-                        / {churchGoalPieces} - {churchStretchGoal} Pieces
+                    <div className="flex items-center justify-center sm:justify-end gap-1.5 mt-0.5">
+                      <Flame className="w-4 h-4 text-yellow-brand" />
+                      <span className="text-sm font-bold text-white">
+                        {totalCommunityPieces > 0 ? `${totalCommunityPieces} ${totalCommunityPieces === 1 ? "Order" : "Orders"} Placed` : "Open for Orders"}
                       </span>
                     </div>
-                    <div className="mt-2 inline-flex items-center gap-1 bg-purple-900/60 text-purple-200 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-purple-400/40">
-                      ⚡ Group Bulk Tier Active!
-                    </div>
-                  </div>
-                </div>
-
-                {/* Progress Bar towards Milestone */}
-                <div className="relative z-10 mt-6 pt-1">
-                  <div className="flex items-center justify-between text-xs font-extrabold text-purple-200 mb-2">
-                    <span className="flex items-center gap-1.5">
-                      <TrendingUp className="w-4 h-4 text-yellow-brand" />
-                      Bulk Goal Progress
-                    </span>
-                    <span className="text-yellow-brand font-black font-mono">
-                      {goalPercent}% of 250 Target
-                    </span>
-                  </div>
-                  <div className="w-full h-4 bg-black/80 rounded-full overflow-hidden border border-purple-600/70 p-0.5 shadow-inner">
-                    <div
-                      className="h-full bg-gradient-to-r from-purple-800 via-purple-500 to-yellow-brand rounded-full transition-all duration-700 ease-out shadow-[0_0_15px_rgba(168,85,247,0.7)]"
-                      style={{ width: `${goalPercent}%` }}
-                    />
                   </div>
                 </div>
 
@@ -1044,9 +1015,9 @@ ${notes || "None"}
                       <div
                         key={option.id}
                         className={`rounded-xl p-4 transition-all border flex flex-col justify-between ${
-                          isLeader
+                          isLeader && pieces > 0
                             ? "bg-gradient-to-b from-purple-950/80 via-black/90 to-purple-950/60 border-yellow-brand/90 shadow-[0_0_25px_rgba(234,179,8,0.25)] ring-1 ring-yellow-brand/40"
-                            : isSecond
+                            : isSecond && pieces > 0
                             ? "bg-purple-950/40 via-black/80 to-purple-950/30 border-purple-500/70 shadow-sm"
                             : "bg-black/50 border-purple-900/40 hover:border-purple-600/60"
                         }`}
@@ -1057,9 +1028,9 @@ ${notes || "None"}
                             <div className="flex items-center gap-2">
                               <span
                                 className={`w-6 h-6 rounded-full font-black text-xs grid place-items-center shadow-sm ${
-                                  isLeader
+                                  isLeader && pieces > 0
                                     ? "bg-yellow-brand text-ink"
-                                    : isSecond
+                                    : isSecond && pieces > 0
                                     ? "bg-purple-500 text-white"
                                     : "bg-white/10 text-white/80"
                                 }`}
@@ -1067,9 +1038,9 @@ ${notes || "None"}
                                 #{index + 1}
                               </span>
                               <span className="text-[11px] font-black uppercase tracking-wider text-purple-200">
-                                {isLeader
+                                {isLeader && pieces > 0
                                   ? "👑 #1 Church Favorite"
-                                  : isSecond
+                                  : isSecond && pieces > 0
                                   ? "🔥 Trending High"
                                   : option.badge}
                               </span>
@@ -1095,7 +1066,7 @@ ${notes || "None"}
                               </p>
                               <div className="flex items-center justify-between text-xs mt-1.5 font-bold">
                                 <span className="text-purple-300 font-mono text-[11px]">
-                                  {pieces} pieces ordered
+                                  {totalCommunityPieces > 0 ? `${percentage}% Popularity` : "Popularity: 0%"}
                                 </span>
                                 <span className="font-extrabold text-yellow-brand">
                                   ${(optionPrices[option.id] ?? option.defaultPrice).toFixed(2)}
@@ -1108,11 +1079,11 @@ ${notes || "None"}
                           <div className="w-full h-2 bg-black/80 rounded-full overflow-hidden mt-3 border border-purple-900/50">
                             <div
                               className={`h-full rounded-full transition-all duration-500 ${
-                                isLeader
+                                isLeader && pieces > 0
                                   ? "bg-gradient-to-r from-yellow-brand to-yellow-400"
                                   : "bg-gradient-to-r from-purple-600 to-purple-400"
                               }`}
-                              style={{ width: `${Math.max(8, percentage)}%` }}
+                              style={{ width: `${percentage}%` }}
                             />
                           </div>
                         </div>
