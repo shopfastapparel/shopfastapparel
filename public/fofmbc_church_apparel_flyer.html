@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fountain of Faith Church Apparel Flyer</title>
+<style>
+  @page {
+    size: 8.5in 11in;
+    margin: 0;
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  html, body {
+    width: 816px;
+    height: 1056px;
+    background-color: #FFFFFF;
+    color: #0F172A;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    overflow: hidden;
+  }
+  .page {
+    width: 816px;
+    height: 1056px;
+    padding: 24px 28px 20px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Header */
+  .church-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid #7414CA;
+    padding-bottom: 10px;
+  }
+  .church-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .church-logo {
+    width: 76px;
+    height: 76px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+  }
+  .church-title h1 {
+    font-size: 24px;
+    font-weight: 900;
+    color: #0F172A;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .church-title .sub {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #7414CA;
+    margin-top: 2px;
+    display: block;
+  }
+  .church-title .pastor {
+    font-size: 11px;
+    font-weight: 600;
+    color: #475569;
+    margin-top: 2px;
+  }
+  .deadline-badge {
+    background: linear-gradient(135deg, #7414CA 0%, #4C1D95 100%);
+    color: #FFFFFF;
+    padding: 9px 16px;
+    border-radius: 12px;
+    text-align: right;
+    box-shadow: 0 4px 10px rgba(116,20,202,0.25);
+  }
+  .deadline-badge .label {
+    font-size: 9.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #E9D5FF;
+    display: block;
+  }
+  .deadline-badge .date {
+    font-size: 15px;
+    font-weight: 900;
+    color: #FDE047;
+    margin-top: 1px;
+    display: block;
+  }
+
+  /* Banner */
+  .banner {
+    background: #0F172A;
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+  .banner .main {
+    font-size: 14px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #F8FAFC;
+  }
+  .banner .taglines {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: #C084FC;
+    display: flex;
+    gap: 12px;
+  }
+
+  /* Showcase Section */
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: 1.12fr 0.88fr;
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .photos-card {
+    background: #F8FAFC;
+    border: 2px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .photos-header {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #7414CA;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .photos-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    height: 250px;
+  }
+  .photo-box {
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: 1.5px solid #CBD5E1;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    background: #E2E8F0;
+  }
+  .photo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+  .photo-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0) 100%);
+    color: #FFFFFF;
+    font-size: 9.5px;
+    font-weight: 800;
+    padding: 14px 6px 5px 6px;
+    text-align: center;
+  }
+
+  /* Pricing Table */
+  .pricing-card {
+    background: #FFFFFF;
+    border: 2px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .pricing-title {
+    font-size: 12.5px;
+    font-weight: 900;
+    color: #0F172A;
+    border-bottom: 2px solid #F1F5F9;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .pricing-title span {
+    font-size: 10px;
+    font-weight: 800;
+    color: #7414CA;
+    background: #F3E8FF;
+    padding: 2px 8px;
+    border-radius: 12px;
+    border: 1px solid #E9D5FF;
+  }
+  .pricing-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 8px;
+    border-radius: 6px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+  }
+  .price-row .style-name {
+    font-size: 11px;
+    font-weight: 800;
+    color: #0F172A;
+  }
+  .price-row .style-sub {
+    font-size: 9px;
+    color: #64748B;
+    display: block;
+  }
+  .price-row .price-val {
+    font-size: 13.5px;
+    font-weight: 900;
+    color: #7414CA;
+  }
+  .size-note {
+    font-size: 9.5px;
+    background: #FEF3C7;
+    border: 1px solid #FCD34D;
+    color: #92400E;
+    padding: 4px 6px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 800;
+    margin-top: 4px;
+  }
+
+  /* 6-Piece Garment Row */
+  .lineup-section {
+    margin-top: 8px;
+    background: #F8FAFC;
+    border: 2px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 8px 10px 10px 10px;
+  }
+  .lineup-title {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #475569;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .garments-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+  }
+  .garment-card {
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    padding: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  }
+  .garment-img-box {
+    height: 82px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0A0713;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .garment-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .garment-info {
+    margin-top: 4px;
+  }
+  .garment-title {
+    font-size: 9px;
+    font-weight: 800;
+    color: #0F172A;
+    display: block;
+    line-height: 1.15;
+    height: 20px;
+    overflow: hidden;
+  }
+  .garment-price {
+    font-size: 11px;
+    font-weight: 900;
+    color: #7414CA;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Action Section */
+  .action-section {
+    display: grid;
+    grid-template-columns: 190px 1fr;
+    gap: 14px;
+    margin-top: 8px;
+    background: #FAF5FF;
+    border: 2px solid #C084FC;
+    border-radius: 12px;
+    padding: 12px;
+    align-items: center;
+  }
+  .qr-box {
+    background: #FFFFFF;
+    border: 2px solid #7414CA;
+    border-radius: 10px;
+    padding: 8px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(116,20,202,0.15);
+  }
+  .qr-box img {
+    width: 140px;
+    height: 140px;
+    display: block;
+    margin: 0 auto;
+  }
+  .qr-label {
+    font-size: 11px;
+    font-weight: 900;
+    color: #0F172A;
+    text-transform: uppercase;
+    margin-top: 4px;
+    display: block;
+  }
+  .qr-sub {
+    font-size: 9px;
+    font-weight: 700;
+    color: #7414CA;
+  }
+
+  .steps-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .steps-title {
+    font-size: 14px;
+    font-weight: 900;
+    color: #0F172A;
+    margin-bottom: 6px;
+  }
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .step-num {
+    background: #7414CA;
+    color: #FFFFFF;
+    font-size: 10px;
+    font-weight: 900;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-text {
+    font-size: 11px;
+    color: #334155;
+    line-height: 1.35;
+  }
+  .step-text strong {
+    color: #0F172A;
+  }
+
+  /* Zelle Box */
+  .zelle-callout {
+    background: #FFFFFF;
+    border: 1.5px solid #9333EA;
+    border-radius: 8px;
+    padding: 7px 10px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 6px rgba(147,51,234,0.08);
+  }
+  .zelle-info {
+    font-size: 11px;
+    color: #1E293B;
+  }
+  .zelle-info strong {
+    color: #7414CA;
+    font-size: 12.5px;
+  }
+  .zelle-badge {
+    background: #7414CA;
+    color: #FFFFFF;
+    font-size: 9.5px;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+  }
+
+  /* Footer */
+  .flyer-footer {
+    border-top: 1px solid #CBD5E1;
+    padding-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #64748B;
+    margin-top: 6px;
+  }
+  .flyer-footer strong {
+    color: #0F172A;
+  }
+  .footer-logo {
+    height: 18px;
+    object-fit: contain;
+  }
+</style>
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- Header -->
+    <div class="church-header">
+      <div class="church-brand">
+        <img src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_circle_patch.png" alt="Fountain of Faith Emblem" class="church-logo">
+        <div class="church-title">
+          <h1>Fountain of Faith</h1>
+          <span class="sub">Missionary Baptist Church &middot; Riverdale, GA</span>
+          <div class="pastor">Senior Pastor: Rev. Daniel R. Perry &middot; Church Office: (404) 933-6254</div>
+        </div>
+      </div>
+      <div class="deadline-badge">
+        <span class="label">Order Submission Deadline</span>
+        <span class="date">Sunday, Nov 1, 2026</span>
+      </div>
+    </div>
+
+    <!-- Banner -->
+    <div class="banner">
+      <div class="main">Official 2026 Church Apparel Collection</div>
+      <div class="taglines">
+        <span>&#10022; "Together We Are Fountain Strong"</span>
+        <span>&#10022; "What Prayer Can't Do, Nothing Will"</span>
+      </div>
+    </div>
+
+    <!-- Showcase Grid -->
+    <div class="showcase-grid">
+      <!-- Photos -->
+      <div class="photos-card">
+        <div class="photos-header">
+          <span>&#128085; Member Spotlight &amp; Fit</span>
+          <span style="color:#64748B; font-weight:700; text-transform:none;">Ultra HD Commercial DTF Print</span>
+        </div>
+        <div class="photos-container">
+          <div class="photo-box">
+            <img src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_lifestyle_couple.jpg" alt="Church Members in Apparel">
+            <div class="photo-caption">"What Prayer Can't Do" Hoodie &amp; Zip</div>
+          </div>
+          <div class="photo-box">
+            <img src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_lifestyle_man.jpg" alt="Fountain Strong Apparel">
+            <div class="photo-caption">"Fountain Strong" Long Sleeve</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing List -->
+      <div class="pricing-card">
+        <div class="pricing-title">
+          <span>Approved Group Pricing</span>
+          <small style="color:#64748B; font-size:10px; font-weight:700;">Bulk Tier Applied</small>
+        </div>
+        <div class="pricing-list">
+          <div class="price-row">
+            <div>
+              <span class="style-name">"What Prayer Can't Do" Long Sleeve</span>
+              <span class="style-sub">Gildan 5400 100% Cotton &middot; Full Front Print</span>
+            </div>
+            <span class="price-val">$16.00</span>
+          </div>
+          <div class="price-row">
+            <div>
+              <span class="style-name">"Fountain Strong" Long Sleeve</span>
+              <span class="style-sub">Gildan 5400 &middot; Arched Script + Sleeve Patch</span>
+            </div>
+            <span class="price-val">$19.00</span>
+          </div>
+          <div class="price-row">
+            <div>
+              <span class="style-name">"What Prayer Can't Do" Pullover</span>
+              <span class="style-sub">Gildan 18500 8.0 oz Heavy Fleece &middot; Front Print</span>
+            </div>
+            <span class="price-val">$25.00</span>
+          </div>
+          <div class="price-row">
+            <div>
+              <span class="style-name">"Fountain Strong" Pullover</span>
+              <span class="style-sub">Gildan 18500 &middot; Arched Script + Sleeve Patch</span>
+            </div>
+            <span class="price-val">$28.00</span>
+          </div>
+          <div class="price-row">
+            <div>
+              <span class="style-name">Full-Zip Statement Hoodies</span>
+              <span class="style-sub">Prayer Warrior or Fountain Script &middot; Full Back</span>
+            </div>
+            <span class="price-val">$34.00</span>
+          </div>
+        </div>
+        <div class="size-note">
+          Sizes: Youth S &ndash; Adult 3XL &middot; (2XL +$2.50, 3XL +$3.50)
+        </div>
+      </div>
+    </div>
+
+    <!-- 6-Piece Garments Lineup -->
+    <div class="lineup-section">
+      <div class="lineup-title">Official 6-Piece Congregation Apparel Lineup</div>
+      <div class="garments-grid">
+        
+    <div class="garment-card">
+      <div class="garment-img-box">
+        <img src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_prayer_ls_1792254252.jpg" alt="Prayer Long Sleeve">
+      </div>
+      <div class="garment-info">
+        <span class="garment-title">Prayer Long Sleeve</span>
+        <span class="garment-price">$16.00</span>
+      </div>
+    </div>
+    
+    <div class="garment-card">
+      <div class="garment-img-box">
+        <img src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_fountain_ls_1792254252.jpg" alt="Fountain Long Sleeve">
+      </div>
+      <div class="garment-info">
+        <span class="garment-title">Fountain Long Sleeve</span>
+        <span class="garment-price">$19.00</span>
+      </div>
+    </div>
+    
+    <div class="garment-card">
+      <div class="garment-img-box">
+        <img src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_prayer_hoodie_1792254252.jpg" alt="Prayer Pullover">
+      </div>
+      <div class="garment-info">
+        <span class="garment-title">Prayer Pullover</span>
+        <span class="garment-price">$25.00</span>
+      </div>
+    </div>
+    
+    <div class="garment-card">
+      <div class="garment-img-box">
+        <img src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_fountain_hoodie_1792254252.jpg" alt="Fountain Pullover">
+      </div>
+      <div class="garment-info">
+        <span class="garment-title">Fountain Pullover</span>
+        <span class="garment-price">$28.00</span>
+      </div>
+    </div>
+    
+    <div class="garment-card">
+      <div class="garment-img-box">
+        <img src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_prayer_zip_back_1792254252.jpg" alt="Prayer Zip (Back)">
+      </div>
+      <div class="garment-info">
+        <span class="garment-title">Prayer Zip (Back)</span>
+        <span class="garment-price">$34.00</span>
+      </div>
+    </div>
+    
+    <div class="garment-card">
+      <div class="garment-img-box">
+        <img src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_fountain_zip_back_1792254252.jpg" alt="Fountain Zip (Back)">
+      </div>
+      <div class="garment-info">
+        <span class="garment-title">Fountain Zip (Back)</span>
+        <span class="garment-price">$34.00</span>
+      </div>
+    </div>
+    
+      </div>
+    </div>
+
+    <!-- Action Box -->
+    <div class="action-section">
+      <div class="qr-box">
+        <img src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_portal_qr.png" alt="Scan to Order QR Code">
+        <span class="qr-label">Scan to Order</span>
+        <span class="qr-sub">Point Phone Camera</span>
+      </div>
+
+      <div class="steps-box">
+        <div class="steps-title">&#128241; How to Place Your Church Order:</div>
+        
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <strong>Scan the QR Code</strong> or visit the portal directly: <br>
+            <strong style="color:#7414CA; font-size:12px;">www.shopfastapparel.com/group/fountain-of-faith</strong>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <strong>Select Garments &amp; Sizing</strong> for yourself and family members, and enter your contact details.
+          </div>
+        </div>
+
+        <!-- Zelle Box -->
+        <div class="zelle-callout">
+          <div class="zelle-info">
+            <div>Submit Payment via <strong>ZELLE</strong> to: <strong>(470) 856-1172</strong></div>
+            <div style="font-size:9.5px; color:#64748B; margin-top:2px;">
+              Recipient: <em>Fountain of Faith Missionary Baptist</em> &middot; Memo: <em>Order for [Your Name]</em>
+            </div>
+          </div>
+          <div class="zelle-badge">Zelle Only</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="flyer-footer">
+      <div>
+        Questions? Contact <strong>Pastor Daniel Perry</strong> at <a href="mailto:pastorpkids@comcast.net" style="color:#7414CA; text-decoration:none; font-weight:bold;">pastorpkids@comcast.net</a> or <strong>(404) 933-6254</strong>
+      </div>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span style="font-size:10px; font-weight:700;">Powered by</span>
+        <img src="https://www.shopfastapparel.com/images/fast_logo_contrasted.png" alt="Fast Custom Apparel" class="footer-logo">
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
