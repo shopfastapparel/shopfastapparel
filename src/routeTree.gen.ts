@@ -42,6 +42,8 @@ import { Route as LandingBundleDealRouteImport } from './routes/landing.bundle-d
 import { Route as LandingBulkPrintingRouteImport } from './routes/landing.bulk-printing'
 import { Route as GroupNewHeightsYouthAdminRouteImport } from './routes/group.new-heights-youth-admin'
 import { Route as GroupNewHeightsYouthRouteImport } from './routes/group.new-heights-youth'
+import { Route as GroupFountainOfFaithAdminRouteImport } from './routes/group.fountain-of-faith-admin'
+import { Route as GroupFountainOfFaithRouteImport } from './routes/group.fountain-of-faith'
 import { Route as GroupDemoRouteImport } from './routes/group.demo'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
@@ -225,6 +227,17 @@ const GroupNewHeightsYouthRoute = GroupNewHeightsYouthRouteImport.update({
   path: '/group/new-heights-youth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GroupFountainOfFaithAdminRoute =
+  GroupFountainOfFaithAdminRouteImport.update({
+    id: '/group/fountain-of-faith-admin',
+    path: '/group/fountain-of-faith-admin',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const GroupFountainOfFaithRoute = GroupFountainOfFaithRouteImport.update({
+  id: '/group/fountain-of-faith',
+  path: '/group/fountain-of-faith',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GroupDemoRoute = GroupDemoRouteImport.update({
   id: '/group/demo',
   path: '/group/demo',
@@ -331,6 +344,8 @@ export interface FileRoutesByFullPath {
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/group/demo': typeof GroupDemoRoute
+  '/group/fountain-of-faith': typeof GroupFountainOfFaithRoute
+  '/group/fountain-of-faith-admin': typeof GroupFountainOfFaithAdminRoute
   '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/group/new-heights-youth-admin': typeof GroupNewHeightsYouthAdminRoute
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
@@ -381,6 +396,8 @@ export interface FileRoutesByTo {
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/group/demo': typeof GroupDemoRoute
+  '/group/fountain-of-faith': typeof GroupFountainOfFaithRoute
+  '/group/fountain-of-faith-admin': typeof GroupFountainOfFaithAdminRoute
   '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/group/new-heights-youth-admin': typeof GroupNewHeightsYouthAdminRoute
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
@@ -432,6 +449,8 @@ export interface FileRoutesById {
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/group/demo': typeof GroupDemoRoute
+  '/group/fountain-of-faith': typeof GroupFountainOfFaithRoute
+  '/group/fountain-of-faith-admin': typeof GroupFountainOfFaithAdminRoute
   '/group/new-heights-youth': typeof GroupNewHeightsYouthRoute
   '/group/new-heights-youth-admin': typeof GroupNewHeightsYouthAdminRoute
   '/landing/bulk-printing': typeof LandingBulkPrintingRoute
@@ -484,6 +503,8 @@ export interface FileRouteTypes {
     | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/group/demo'
+    | '/group/fountain-of-faith'
+    | '/group/fountain-of-faith-admin'
     | '/group/new-heights-youth'
     | '/group/new-heights-youth-admin'
     | '/landing/bulk-printing'
@@ -534,6 +555,8 @@ export interface FileRouteTypes {
     | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/group/demo'
+    | '/group/fountain-of-faith'
+    | '/group/fountain-of-faith-admin'
     | '/group/new-heights-youth'
     | '/group/new-heights-youth-admin'
     | '/landing/bulk-printing'
@@ -584,6 +607,8 @@ export interface FileRouteTypes {
     | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/group/demo'
+    | '/group/fountain-of-faith'
+    | '/group/fountain-of-faith-admin'
     | '/group/new-heights-youth'
     | '/group/new-heights-youth-admin'
     | '/landing/bulk-printing'
@@ -635,6 +660,8 @@ export interface RootRouteChildren {
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   BlogSlugRoute: typeof BlogSlugRoute
   GroupDemoRoute: typeof GroupDemoRoute
+  GroupFountainOfFaithRoute: typeof GroupFountainOfFaithRoute
+  GroupFountainOfFaithAdminRoute: typeof GroupFountainOfFaithAdminRoute
   GroupNewHeightsYouthRoute: typeof GroupNewHeightsYouthRoute
   GroupNewHeightsYouthAdminRoute: typeof GroupNewHeightsYouthAdminRoute
   LandingBulkPrintingRoute: typeof LandingBulkPrintingRoute
@@ -890,6 +917,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GroupNewHeightsYouthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/group/fountain-of-faith-admin': {
+      id: '/group/fountain-of-faith-admin'
+      path: '/group/fountain-of-faith-admin'
+      fullPath: '/group/fountain-of-faith-admin'
+      preLoaderRoute: typeof GroupFountainOfFaithAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/group/fountain-of-faith': {
+      id: '/group/fountain-of-faith'
+      path: '/group/fountain-of-faith'
+      fullPath: '/group/fountain-of-faith'
+      preLoaderRoute: typeof GroupFountainOfFaithRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/group/demo': {
       id: '/group/demo'
       path: '/group/demo'
@@ -1027,6 +1068,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   BlogSlugRoute: BlogSlugRoute,
   GroupDemoRoute: GroupDemoRoute,
+  GroupFountainOfFaithRoute: GroupFountainOfFaithRoute,
+  GroupFountainOfFaithAdminRoute: GroupFountainOfFaithAdminRoute,
   GroupNewHeightsYouthRoute: GroupNewHeightsYouthRoute,
   GroupNewHeightsYouthAdminRoute: GroupNewHeightsYouthAdminRoute,
   LandingBulkPrintingRoute: LandingBulkPrintingRoute,
