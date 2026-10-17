@@ -19,9 +19,9 @@ church_patch_url = "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/p
 zelle_qr_url = "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_zelle_qr.png"
 social_share_url = "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_share_prayer_hoodie.png"
 dash_avatar_url = "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mascot/dash_avatar_circle.png"
-flyer_pdf_url = "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_apparel_flyer.pdf"
-flyer_png_url = "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_apparel_flyer.png"
-social_card_url = "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_social_card.png"
+flyer_pdf_url = "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_club_flyer.pdf"
+flyer_png_url = "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_club_flyer.png"
+
 
 portal_url = "https://www.shopfastapparel.com/group/fountain-of-faith"
 admin_url = "https://www.shopfastapparel.com/group/fountain-of-faith-admin"
@@ -275,65 +275,43 @@ body_content = f"""
   </div>
 </div>
 
-<!-- CHURCH MARKETING MATERIALS: PRINT FLYER & DIGITAL SHARE CARDS -->
+<!-- CHURCH MARKETING MATERIALS: OFFICIAL FLYER (PRINT & DIGITAL) -->
 <div style="background-color: #0c0617; border: 2px solid #7414CA; border-radius: 14px; padding: 24px; margin-bottom: 28px; color: #ffffff; box-shadow: 0 8px 24px rgba(116,20,202,0.25);">
   <div style="display: inline-block; background-color: #EAB308; color: #0B0C10; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;">
     Marketing &amp; Promotion Pack
   </div>
   <h3 style="font-size: 20px; font-weight: 900; margin: 0 0 6px 0; color: #ffffff;">
-    Printable Church Flyer &amp; Digital Share Cards
+    Official Church Apparel Flyer (Print-Ready &amp; Digital Social)
   </h3>
   <p style="font-size: 13.5px; line-height: 1.6; color: #D8B4FE; margin: 0 0 18px 0;">
-    We've custom-designed ready-to-use promotional materials representing Fountain of Faith MBC, featuring your official church seal, realistic member photos wearing the collection, Option A pricing, and your direct order QR code.
+    Your official, custom-designed promotional flyer is ready! It prominently features church members wearing the collection in your sanctuary, the complete 6-style garment manifest with Option A pricing, your November 1st deadline, direct Zelle details, and your verified scannable portal QR code.
   </p>
 
-  <!-- FLYER PREVIEWS TABLE -->
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 18px;">
-    <tr>
-      <td width="50%" align="center" valign="top" style="padding: 8px;">
-        <div style="background: #ffffff; border-radius: 10px; padding: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); max-width: 230px; margin: 0 auto;">
-          <a href="{flyer_pdf_url}" target="_blank">
-            <img src="{flyer_png_url}" alt="Printable Flyer (8.5x11)" style="width: 100%; border-radius: 6px; display: block; border: 0;" />
-          </a>
-        </div>
-        <span style="font-size: 12px; font-weight: 800; color: #FDE047; display: block; margin-top: 8px;">
-          📄 Printable Flyer (8.5&times;11&Prime; US Letter)
-        </span>
-        <span style="font-size: 11px; color: #D8B4FE; display: block; margin-top: 2px;">
-          Perfect for Sunday bulletins &amp; foyer handouts
-        </span>
-        <div style="margin-top: 10px;">
-          <a href="{flyer_pdf_url}" target="_blank" style="display: inline-block; background-color: #7414CA; color: #ffffff !important; text-decoration: none; font-weight: 800; font-size: 11px; padding: 8px 14px; border-radius: 6px; margin: 2px;">
-            📥 Download PDF
-          </a>
-          <a href="{flyer_png_url}" target="_blank" style="display: inline-block; background-color: #1E293B; color: #ffffff !important; text-decoration: none; font-weight: 700; font-size: 11px; padding: 8px 14px; border-radius: 6px; margin: 2px; border: 1px solid rgba(255,255,255,0.2);">
-            🖼️ View Image
-          </a>
-        </div>
-      </td>
-      <td width="50%" align="center" valign="top" style="padding: 8px;">
-        <div style="background: #000000; border-radius: 10px; padding: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); max-width: 230px; margin: 0 auto; border: 1px solid #7414CA;">
-          <a href="{social_card_url}" target="_blank">
-            <img src="{social_card_url}" alt="Digital & Social Media Share Card" style="width: 100%; border-radius: 6px; display: block; border: 0;" />
-          </a>
-        </div>
-        <span style="font-size: 12px; font-weight: 800; color: #FDE047; display: block; margin-top: 8px;">
-          📱 Social &amp; Mobile Card (1080&times;1350)
-        </span>
-        <span style="font-size: 11px; color: #D8B4FE; display: block; margin-top: 2px;">
-          Optimized for Instagram, Facebook &amp; text blasts
-        </span>
-        <div style="margin-top: 10px;">
-          <a href="{social_card_url}" target="_blank" style="display: inline-block; background-color: #EAB308; color: #0B0C10 !important; text-decoration: none; font-weight: 900; font-size: 11px; padding: 8px 14px; border-radius: 6px; margin: 2px;">
-            📲 Download Social Card
-          </a>
-        </div>
-      </td>
-    </tr>
-  </table>
+  <!-- FLYER SHOWCASE CARD -->
+  <div style="background: #000000; border-radius: 12px; padding: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.5); max-width: 440px; margin: 0 auto 16px auto; border: 1px solid #7414CA; text-align: center;">
+    <a href="{flyer_png_url}" target="_blank">
+      <img src="{flyer_png_url}" alt="Fountain of Faith Official Church Apparel Flyer" style="width: 100%; border-radius: 8px; display: block; border: 0;" />
+    </a>
+    <div style="padding-top: 14px;">
+      <span style="font-size: 13px; font-weight: 800; color: #FDE047; display: block;">
+        📄 Official Fountain of Faith Apparel Flyer
+      </span>
+      <span style="font-size: 11.5px; color: #D8B4FE; display: block; margin-top: 4px;">
+        300 DPI US Letter (8.5&times;11&Prime;) for Bulletins &bull; 1024&times;1536 High-Res for Social &amp; Mobile
+      </span>
+      <div style="margin-top: 14px;">
+        <a href="{flyer_pdf_url}" target="_blank" style="display: inline-block; background-color: #7414CA; color: #ffffff !important; text-decoration: none; font-weight: 800; font-size: 12px; padding: 10px 18px; border-radius: 8px; margin: 4px; box-shadow: 0 4px 10px rgba(116,20,202,0.4);">
+          📥 Download Print-Ready PDF
+        </a>
+        <a href="{flyer_png_url}" target="_blank" style="display: inline-block; background-color: #EAB308; color: #0B0C10 !important; text-decoration: none; font-weight: 900; font-size: 12px; padding: 10px 18px; border-radius: 8px; margin: 4px;">
+          📲 Download High-Res Image
+        </a>
+      </div>
+    </div>
+  </div>
 
   <p style="font-size: 12px; color: #A855F7; margin: 0; text-align: center;">
-    Tip: Both flyers and instant digital downloads are also integrated directly inside your <a href="{admin_url}" target="_blank" style="color: #FDE047; font-weight: 700; text-decoration: underline;">Church Admin Dashboard</a>!
+    Tip: The flyer files and downloads are also available inside your <a href="{admin_url}" target="_blank" style="color: #FDE047; font-weight: 700; text-decoration: underline;">Church Admin Dashboard</a>!
   </p>
 </div>
 

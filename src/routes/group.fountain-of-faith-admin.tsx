@@ -835,32 +835,31 @@ ${editNotes || "None"}
 
                 <div className="flex flex-wrap items-center gap-3">
                   <a
-                    href="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_apparel_flyer.pdf"
+                    href="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_club_flyer.pdf"
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-2 bg-[#7414CA] hover:bg-[#5E10A3] text-white font-extrabold text-xs px-4 py-2.5 rounded-lg shadow-sm transition-colors"
                   >
-                    <Download className="w-4 h-4" /> Download Printable PDF
+                    <Download className="w-4 h-4" /> Download Club Flyer (PDF)
                   </a>
 
                   <a
-                    href="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_apparel_flyer.png"
-                    download="Fountain_of_Faith_Church_Flyer_Print.png"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 bg-card hover:bg-muted text-foreground border-2 border-ink font-bold text-xs px-4 py-2.5 rounded-lg shadow-sm transition-colors"
-                  >
-                    <Printer className="w-4 h-4 text-purple-700" /> Print Flyer (PNG)
-                  </a>
-
-                  <a
-                    href="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_social_card.png"
-                    download="Fountain_of_Faith_Social_Card.png"
+                    href="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_club_flyer.png"
+                    download="Fountain_of_Faith_Church_Flyer.png"
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-2 bg-yellow-brand hover:bg-yellow-brand/90 text-ink border-2 border-ink font-black text-xs px-4 py-2.5 rounded-lg shadow-sm transition-colors"
                   >
-                    <Share2 className="w-4 h-4 text-ink" /> Social Share Card
+                    <Share2 className="w-4 h-4 text-ink" /> Download High-Res (PNG)
+                  </a>
+
+                  <a
+                    href="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_club_flyer.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 bg-card hover:bg-muted text-foreground border-2 border-ink font-bold text-xs px-4 py-2.5 rounded-lg shadow-sm transition-colors"
+                  >
+                    <Printer className="w-4 h-4 text-purple-700" /> Print Bulletin (PDF)
                   </a>
                 </div>
               </div>
@@ -871,11 +870,11 @@ ${editNotes || "None"}
                 <div className="bg-card border-2 border-border rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-center">
                   <div
                     onClick={() => setFlyerPreview("print")}
-                    className="w-32 h-44 rounded-lg overflow-hidden border border-border bg-muted flex-shrink-0 cursor-pointer shadow-sm hover:scale-105 transition-transform relative group"
+                    className="w-32 h-44 rounded-lg overflow-hidden border border-border bg-black flex-shrink-0 cursor-pointer shadow-sm hover:scale-105 transition-transform relative group"
                   >
                     <img
-                      src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_apparel_flyer.png"
-                      alt="Print Flyer Preview"
+                      src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_club_flyer.png"
+                      alt="Official Church Flyer Preview"
                       className="w-full h-full object-cover object-top"
                     />
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-xs font-bold gap-1">
@@ -884,13 +883,13 @@ ${editNotes || "None"}
                   </div>
                   <div className="space-y-2 flex-1 text-center sm:text-left">
                     <span className="text-[11px] font-extrabold uppercase tracking-wider text-purple-600 bg-purple-100 dark:bg-purple-950/60 dark:text-purple-300 px-2.5 py-0.5 rounded-full inline-block">
-                      US Letter &middot; 8.5&times;11&Prime;
+                      Print-Ready &middot; 300 DPI US Letter
                     </span>
                     <h4 className="font-bold text-base text-foreground">
-                      Sunday Bulletin &amp; Print Handout
+                      Sunday Bulletin &amp; Poster Flyer
                     </h4>
                     <p className="text-xs text-muted-foreground leading-relaxed">
-                      Clean white &amp; purple design designed for high-contrast paper printing. Features the order QR code, live lifestyle member photo mockups, and full pricing.
+                      Official church apparel promotional poster featuring congregation members wearing the collection in the sanctuary, Option A pricing, and verified order QR code.
                     </p>
                     <div className="pt-1 flex items-center justify-center sm:justify-start gap-2">
                       <button
@@ -911,7 +910,7 @@ ${editNotes || "None"}
                     className="w-32 h-44 rounded-lg overflow-hidden border border-border bg-black flex-shrink-0 cursor-pointer shadow-sm hover:scale-105 transition-transform relative group"
                   >
                     <img
-                      src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_social_card.png"
+                      src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_club_flyer.png"
                       alt="Social Media Card Preview"
                       className="w-full h-full object-cover object-top"
                     />
@@ -921,13 +920,13 @@ ${editNotes || "None"}
                   </div>
                   <div className="space-y-2 flex-1 text-center sm:text-left">
                     <span className="text-[11px] font-extrabold uppercase tracking-wider text-yellow-600 bg-yellow-100 dark:bg-yellow-950/60 dark:text-yellow-300 px-2.5 py-0.5 rounded-full inline-block">
-                      1080&times;1350 &middot; Social &amp; Mobile
+                      1024&times;1536 &middot; Digital &amp; Mobile
                     </span>
                     <h4 className="font-bold text-base text-foreground">
-                      Digital &amp; Social Media Share Card
+                      Digital &amp; Social Text Blast
                     </h4>
                     <p className="text-xs text-muted-foreground leading-relaxed">
-                      Optimized for Instagram, Facebook, church monitors, and mobile texting in congregation group chats with immediate tap-to-order details.
+                      Optimized for sanctuary projector screens, social media announcements, and direct texting into congregation group chats.
                     </p>
                     <div className="pt-1 flex items-center justify-center sm:justify-start gap-2">
                       <button
@@ -1614,60 +1613,36 @@ ${editNotes || "None"}
 
             {/* Image Preview */}
             <div className="p-4 sm:p-6 overflow-y-auto flex-1 flex items-center justify-center bg-zinc-950/90">
-              {flyerPreview === "print" ? (
-                <img
-                  src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_apparel_flyer.png"
-                  alt="Printable Church Flyer"
-                  className="max-h-[60vh] w-auto rounded-lg shadow-xl border border-white/10 object-contain"
-                />
-              ) : (
-                <img
-                  src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_social_card.png"
-                  alt="Social Media Share Card"
-                  className="max-h-[60vh] w-auto rounded-lg shadow-xl border border-white/10 object-contain"
-                />
-              )}
+              <img
+                src="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_club_flyer.png"
+                alt="Church Club Flyer"
+                className="max-h-[60vh] w-auto rounded-lg shadow-xl border border-white/10 object-contain"
+              />
             </div>
 
             {/* Actions Footer */}
             <div className="p-4 border-t border-border bg-card flex flex-wrap items-center justify-between gap-3">
               <p className="text-xs text-muted-foreground">
-                {flyerPreview === "print"
-                  ? "Standard US Letter portrait. Ready for paper bulletins or poster prints."
-                  : "Optimized for Instagram, Facebook, and mobile text messages."}
+                High-energy club flyer promotional drop featuring realistic models wearing the authentic apparel.
               </p>
               <div className="flex items-center gap-2">
-                {flyerPreview === "print" ? (
-                  <>
-                    <a
-                      href="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_apparel_flyer.pdf"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 bg-[#7414CA] hover:bg-[#5E10A3] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors"
-                    >
-                      <Download className="w-3.5 h-3.5" /> Download PDF
-                    </a>
-                    <a
-                      href="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_apparel_flyer.png"
-                      download="Fountain_of_Faith_Church_Flyer_Print.png"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 bg-muted hover:bg-muted/80 text-foreground text-xs font-bold px-3 py-2 rounded-lg border border-border transition-colors"
-                    >
-                      <Printer className="w-3.5 h-3.5 text-purple-600" /> Save PNG
-                    </a>
-                  </>
-                ) : (
-                  <a
-                    href="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_social_card.png"
-                    download="Fountain_of_Faith_Social_Card.png"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 bg-yellow-brand hover:bg-yellow-brand/90 text-ink border-2 border-ink text-xs font-black px-4 py-2 rounded-lg transition-colors shadow-sm"
-                  >
-                    <Share2 className="w-3.5 h-3.5 text-ink" /> Download Social Card
-                  </a>
-                )}
+                <a
+                  href="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_club_flyer.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 bg-[#7414CA] hover:bg-[#5E10A3] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" /> Download PDF
+                </a>
+                <a
+                  href="https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_church_club_flyer.png"
+                  download="Fountain_of_Faith_Church_Club_Flyer.png"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 bg-yellow-brand hover:bg-yellow-brand/90 text-ink border-2 border-ink text-xs font-black px-4 py-2 rounded-lg transition-colors shadow-sm"
+                >
+                  <Share2 className="w-3.5 h-3.5 text-ink" /> Download PNG
+                </a>
                 <Button
                   variant="outline"
                   size="sm"
