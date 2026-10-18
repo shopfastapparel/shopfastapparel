@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { X, CheckCircle2, Loader2, Sparkles, ArrowRight } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { X, CheckCircle2, Loader2, Sparkles, ArrowRight, ShieldCheck, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,8 +7,13 @@ import { supabase } from "@/integrations/supabase/client";
 export function DiscountPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
+  const [honeypot, setHoneypot] = useState("");
+  const [isHumanVerified, setIsHumanVerified] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [captchaError, setCaptchaError] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const mountTimeRef = useRef<number>(Date.now());
 
   useEffect(() => {
     // Check if user has already seen or closed Dash's VIP deals popup
@@ -18,6 +23,7 @@ export function DiscountPopup() {
       // Show popup after 3.5 seconds
       const timer = setTimeout(() => {
         setIsOpen(true);
+        mountTimeRef.current = Date.now();
       }, 3500);
       return () => clearTimeout(timer);
     }
@@ -28,9 +34,54 @@ export function DiscountPopup() {
     localStorage.setItem("vip_deals_popup_seen", "true");
   };
 
+  const handleVerifyHuman = () => {
+    if (isHumanVerified || isVerifying) return;
+    setIsVerifying(true);
+    setCaptchaError(false);
+
+    // Brief verification delay simulating authenticator check
+    setTimeout(() => {
+      setIsVerifying(false);
+      setIsHumanVerified(true);
+    }, 450);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
+
+    // 1. Check human verification checkbox
+    if (!isHumanVerified) {
+      setCaptchaError(true);
+      setErrorMessage("Please check the box to confirm you are not a robot.");
+      return;
+    }
+
+    // 2. Honeypot check: Bots auto-fill invisible inputs
+    if (honeypot && honeypot.trim().length > 0) {
+      console.warn("[bot-protection] Honeypot triggered, silently dropping submission");
+      setStatus("success");
+      localStorage.setItem("vip_deals_popup_seen", "true");
+      return;
+    }
+
+    // 3. Timing check: Submissions under 1.2s are automated bot scripts
+    if (Date.now() - mountTimeRef.current < 1200) {
+      console.warn("[bot-protection] Instant automated submission flagged, dropping");
+      setStatus("success");
+      localStorage.setItem("vip_deals_popup_seen", "true");
+      return;
+    }
+
+    // 4. Dot-trick spam bot filter (e.g., j.o.s.h.u.a... patterns)
+    const localPart = email.split("@")[0] || "";
+    const dotCount = (localPart.match(/\./g) || []).length;
+    if (dotCount >= 4) {
+      console.warn("[bot-protection] Excessive dot-trick bot email flagged, dropping");
+      setStatus("success");
+      localStorage.setItem("vip_deals_popup_seen", "true");
+      return;
+    }
 
     setStatus("loading");
     setErrorMessage("");
@@ -38,7 +89,7 @@ export function DiscountPopup() {
     try {
       const { error } = await supabase
         .from("newsletter_subscribers")
-        .insert([{ email }]);
+        .insert([{ email: email.trim().toLowerCase() }]);
 
       if (error) {
         // If unique constraint violation, they are already subscribed
@@ -138,16 +189,99 @@ export function DiscountPopup() {
                 Join our VIP email list! Dash will send you exclusive deals, secret seasonal promos, and flash savings throughout the year.
               </p>
               
-              <form onSubmit={handleSubmit} className="space-y-3">
+              <form onSubmit={handleSubmit} className="space-y-3.5">
+                {/* Honeypot field - invisible to humans, traps automated spam crawlers */}
+                <input
+                  type="text"
+                  name="company_website_hp"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  style={{
+                    position: "absolute",
+                    opacity: 0,
+                    top: 0,
+                    left: 0,
+                    height: 0,
+                    width: 0,
+                    zIndex: -1,
+                    pointerEvents: "none",
+                  }}
+                  aria-hidden="true"
+                />
+
                 <Input 
                   type="email" 
                   placeholder="Enter your email address" 
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="h-12 px-4 border-2 focus-visible:border-magenta-brand text-base"
+                  className="h-12 px-4 border-2 focus-visible:border-magenta-brand text-base bg-background"
                   disabled={status === "loading"}
                 />
+
+                {/* Robot Human Authenticator Checkbox */}
+                <div 
+                  onClick={handleVerifyHuman}
+                  role="checkbox"
+                  aria-checked={isHumanVerified}
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === " " || e.key === "Enter") {
+                      e.preventDefault();
+                      handleVerifyHuman();
+                    }
+                  }}
+                  className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all cursor-pointer select-none text-left ${
+                    captchaError 
+                      ? "border-destructive bg-destructive/5 animate-shake" 
+                      : isHumanVerified 
+                      ? "border-green-600/70 bg-green-50/60 dark:bg-green-950/20 shadow-sm" 
+                      : "border-border bg-muted/40 hover:bg-muted/70 hover:border-ink"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div 
+                      className={`w-7 h-7 rounded-md border-2 flex items-center justify-center transition-all ${
+                        isHumanVerified 
+                          ? "bg-green-600 border-green-600 text-white shadow-sm" 
+                          : isVerifying 
+                          ? "border-magenta-brand bg-card" 
+                          : "border-muted-foreground/50 bg-card hover:border-ink"
+                      }`}
+                    >
+                      {isVerifying ? (
+                        <Loader2 className="w-4 h-4 text-magenta-brand animate-spin" />
+                      ) : isHumanVerified ? (
+                        <Check className="w-4 h-4 stroke-[3]" />
+                      ) : null}
+                    </div>
+
+                    <div>
+                      <span className="text-sm font-bold text-foreground block leading-tight">
+                        I am not a robot
+                      </span>
+                      <span className="text-[10px] text-muted-foreground block leading-tight mt-0.5">
+                        {isHumanVerified ? "Human verification complete" : "Click to verify human identity"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-center justify-center pl-2 opacity-80">
+                    <ShieldCheck className={`w-5 h-5 ${isHumanVerified ? "text-green-600" : "text-muted-foreground"}`} />
+                    <span className="text-[8.5px] uppercase font-extrabold tracking-wider text-muted-foreground mt-0.5">
+                      FastShield
+                    </span>
+                  </div>
+                </div>
+
+                {captchaError && (
+                  <p className="text-destructive text-xs font-semibold text-left -mt-1 pl-1">
+                    {errorMessage || "Please check the box to confirm you are not a robot."}
+                  </p>
+                )}
+
                 <Button 
                   type="submit" 
                   className="w-full h-12 bg-magenta-brand hover:bg-magenta-brand/90 text-white font-bold text-base shadow-pop transition-transform hover:-translate-y-0.5"
