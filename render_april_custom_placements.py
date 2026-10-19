@@ -279,7 +279,8 @@ def render_april_proofs(config_path=None):
         ("2", "Medium (M)", "Gildan 64000 Softstyle Tee (Black)", "2x", "Ready"),
         ("3", "Large (L)", "Gildan 64000 Softstyle Tee (Black)", "1x", "Ready"),
         ("4", "X-Large (XL)", "Gildan 64000 Softstyle Tee (Black)", "2x", "Ready"),
-        ("5", "3X-Large (3XL)", "Gildan 64000 Softstyle Tee (Black)", "2x", "Ready")
+        ("5", "3X-Large (3XL)", "Gildan 64000 Softstyle Tee (Black)", "1x", "Ready"),
+        ("6", "4X-Large (4XL)", "Gildan 64000 Softstyle Tee (Black)", "1x", "Ready")
     ]
 
     row_y = table_y + 26
