@@ -1,49 +1,50 @@
 {
+  "last_updated": "2026-10-19",
   "grants": [
     {
-      "name": "Verizon Small Business Digital Ready Grant",
-      "organization": "Verizon & Local Initiatives Support Corporation (LISC)",
-      "amount": "$10,000",
-      "deadline": "Rolling monthly through December 2026 (Open Q4 2026)",
-      "eligibility": "For-profit small businesses located in the United States; applicant must be 18+ and complete any two free modules, coaching sessions, or community events on the platform to unlock the application. Priority given to historically under-resourced and minority entrepreneurs.",
-      "link": "https://digitalready.verizonwireless.com/",
-      "description": "Provides $10,000 in non-dilutive capital alongside complimentary operational courses. It is a fantastic fit for Fast Apparel to fund digital marketing and automate e-commerce storefront workflows while completing free courses on supply chain and lean operations."
+      "name": "Small Business Revitalization (SBR) Grant Program",
+      "organization": "Georgia Coalition of Black Chambers (GCBC) & Advancing Black Businesses Foundation",
+      "amount": "$5,000 to $15,000",
+      "deadline": "Rolling 2026 Cohorts / Open Q4 2026",
+      "eligibility": "Georgia-based for-profit small businesses, with targeted support for Black-owned and historically under-resourced enterprises across Georgia. Requires completion of a business development/financial education component (such as the FDIC Money Smart curriculum).",
+      "url": "https://georgiacoalitionofblackchambers.org",
+      "description": "Pairs non-dilutive capital grants with structured business education and growth coaching specifically for Georgia small businesses. Fast Apparel is uniquely positioned to apply for funds to scale commercial Ultra HD DTF production equipment, expand local warehouse blank inventory, and hire seasonal print technicians."
+    },
+    {
+      "name": "Tory Burch Foundation Fellows Program",
+      "organization": "Tory Burch Foundation",
+      "amount": "$2,000 Grant + Yearlong Executive Fellowship ($10,000+ Value)",
+      "deadline": "November 17, 2026 (11:59 PM ET)",
+      "eligibility": "Woman-owned (51%+), for-profit, U.S.-based business generating at least $75,000 in annual revenue. Founder must be 21+ and hold significant day-to-day management authority. Free application.",
+      "url": "https://www.toryburchfoundation.org",
+      "description": "A prestigious national fellowship providing a $2,000 non-dilutive grant, 1-on-1 executive coaching, workshops, and high-level founder networking. Fast Apparel can leverage this fellowship to expand executive operations, corporate client partnerships, and direct-to-consumer e-commerce expansion."
+    },
+    {
+      "name": "NASE Growth Grants",
+      "organization": "National Association for the Self-Employed (NASE)",
+      "amount": "Up to $4,000",
+      "deadline": "December 31, 2026 (Q4 2026 Review Cycle)",
+      "eligibility": "Micro-businesses and self-employed entrepreneurs who are NASE members in good standing. Funds can be used for marketing, equipment, software, or workspace expansion. Requires statement of use, business plan, and financial statement.",
+      "url": "https://www.nase.org/become-a-member/member-benefits/business-resources/growth-grants",
+      "description": "Awarded quarterly specifically to finance targeted equipment purchases or marketing campaigns. Fast Apparel can apply directly for commercial heat platen attachments, high-speed dual heat presses, or targeted digital ad spend across Metro Atlanta."
     },
     {
       "name": "The Amber Grant",
       "organization": "WomensNet",
-      "amount": "$10,000 monthly (plus eligible for $50,000 year-end award)",
-      "deadline": "Rolling monthly (Last day of each month: October 31, November 30, December 31, 2026)",
-      "eligibility": "At least 50% women-owned businesses based in the United States or Canada, ranging from idea-stage ventures to established operating small businesses.",
-      "link": "https://ambergrantsforwomen.com/",
-      "description": "A prestigious, long-running monthly grant recognizing passion and authentic entrepreneurial storytelling. Fast Apparel is an ideal candidate by highlighting community impact, high-quality custom apparel production, and allocating the funds toward upgraded printing equipment."
+      "amount": "$10,000 Monthly (Plus Eligible for $50,000 Year-End Award)",
+      "deadline": "October 31, 2026 (Monthly Rolling Cycles)",
+      "eligibility": "At least 50% women-owned businesses based in the United States or Canada, ranging from startup stage to established operating businesses. Application is quick and evaluated on community passion and business vision.",
+      "url": "https://ambergrantsforwomen.com/",
+      "description": "A long-running, trusted monthly grant recognizing entrepreneurial passion and community impact with no rigid balance sheet restrictions. Fast Apparel can highlight women-led operations and utilize the capital for seasonal garment blank stocking and rush fulfillment infrastructure."
     },
     {
-      "name": "Small Business Growth Fund",
-      "organization": "Hello Alice & Global Entrepreneurship Network (GEN)",
-      "amount": "$5,000 to $25,000",
-      "deadline": "Rolling / Open Q4 2026",
-      "eligibility": "U.S.-based for-profit small businesses with under $1,000,000 in gross annual revenue, a demonstrated commitment to their customers/community, and a clear plan to achieve a defined business milestone.",
-      "link": "https://helloalice.com/",
-      "description": "High-impact capital program that awards milestone-driven funding to underrepresented entrepreneurs and micro-manufacturers. Fast Apparel can submit a proposal focused on expanding in-house custom print capacity and fulfilling bulk orders for local organizations."
-    },
-    {
-      "name": "Galaxy Grant",
-      "organization": "Hidden Star",
-      "amount": "$2,500",
-      "deadline": "October 31, 2026",
-      "eligibility": "U.S.-based women and minority small business owners or entrepreneurs at any stage; free entry with no application fee.",
-      "link": "https://galaxyofstars.org/",
-      "description": "A rapid, streamlined 501(c)(3) grant specifically targeting women and minority entrepreneurs to overcome initial capital hurdles. It is a quick win for Fast Apparel to secure immediate non-dilutive cash flow for Q4 holiday blank garment stock and ink supplies."
-    },
-    {
-      "name": "HerRise MicroGrant",
-      "organization": "HerSuiteSpot & The Yva Jourdan Foundation",
-      "amount": "$1,000",
-      "deadline": "Rolling monthly (Last day of each month: October 31, November 30, December 31, 2026)",
-      "eligibility": "United States-registered for-profit small businesses that are at least 51% owned by women of color, with annual gross revenues under $1,000,000.",
-      "link": "https://www.hersuitespot.com/herrise-microgrant/",
-      "description": "Provides targeted monthly micro-grants directly to women-of-color founders navigating growth and working capital bottlenecks. Fast Apparel can utilize this grant for immediate shop consumables (DTF films, inks) and targeted B2B customer acquisition campaigns."
+      "name": "Invest Atlanta Small Business Improvement Grant (SBIG)",
+      "organization": "Invest Atlanta (City of Atlanta Economic Development Authority)",
+      "amount": "Up to $50,000",
+      "deadline": "Rolling / Open 2026 Cycles",
+      "eligibility": "Operating small businesses or commercial property owners located within designated City of Atlanta Tax Allocation Districts (TADs); facilities under 15,000 sq ft; eligible for interior and exterior physical capital improvements.",
+      "url": "https://www.investatlanta.com/businesses/funding-incentives/small-business-improvement-grants",
+      "description": "Provides up to $50,000 for physical facility and workspace buildouts, electrical infrastructure upgrades, and commercial exterior signage. Fast Apparel can strategically apply to fund industrial power drops and ventilation installations for high-volume commercial DTF printers and heat presses in Atlanta."
     }
   ]
 }
