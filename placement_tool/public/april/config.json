@@ -1,0 +1,21 @@
+{
+  "customer": "April Crawford",
+  "email": "anc1282@yahoo.com",
+  "phone": "6019544894",
+  "location": "Lawrenceville, GA 30043",
+  "garment": "gildan_64000",
+  "color": "black",
+  "artworkColor": "kelly_green",
+  "frontArtFile": "love_hurts_kelly_green.png",
+  "front": {
+    "x": 129,
+    "y": 136.87890625,
+    "width": 242,
+    "height": 242,
+    "collarY": 135,
+    "widthInches": 9.8,
+    "collarDropInches": 0.1
+  },
+  "canvasWidth": 500,
+  "canvasHeight": 625
+}

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fast Apparel — April Crawford Mockup Placement Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+    }
+    .canvas-container {
+      width: 500px;
+      height: 625px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      background-color: #0b1120;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+    }
+    .graphic-element {
+      position: absolute;
+      cursor: grab;
+      touch-action: none;
+      transition: outline 0.1s ease, border-color 0.1s ease;
+      z-index: 10;
+    }
+    .graphic-element:active {
+      cursor: grabbing;
+    }
+    .guide-center {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(239, 68, 68, 0.5);
+      pointer-events: none;
+      z-index: 5;
+    }
+    .guide-collar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      border-top: 2px dashed #38bdf8;
+      cursor: row-resize;
+      touch-action: none;
+      z-index: 20;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-6 antialiased">
+
+  <div class="max-w-6xl mx-auto">
+    <!-- TOP HEADER -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between pb-5 mb-6 border-b border-slate-800 gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-emerald-600 text-white text-xs font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">Studio Mockup Design Tool</span>
+          <span class="text-xs text-slate-400">April Crawford • Gildan 64000 Softstyle Unisex Tees • 8 Pieces Total • Lawrenceville, GA (30043)</span>
+        </div>
+        <h1 class="text-2xl font-black text-white tracking-tight flex items-center gap-2">
+          <span>🏈</span> "LOVE HURTS" Mockup Placement Studio
+        </h1>
+        <p class="text-sm text-slate-400">Drag to position, scale, and align the football heart logo on the chest. Switch seamlessly between Kelly Green and Midnight Green.</p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button id="btnSave" class="bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-black text-sm px-6 py-2.5 rounded-lg shadow-lg shadow-emerald-600/30 transition flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+          <span id="btnSaveText">Save &amp; Render Proofs</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- STATUS TOAST -->
+    <div id="saveToast" class="hidden mb-6 p-4 rounded-xl bg-emerald-950/90 border border-emerald-500/50 text-emerald-200 text-sm flex items-center justify-between shadow-xl">
+      <div class="flex items-center gap-2.5">
+        <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <div>
+          <strong class="text-emerald-100">Placements Saved &amp; Proofs Re-rendered!</strong>
+          <span class="text-emerald-300 ml-2" id="saveTimestamp">Updated just now</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a id="linkViewProof" href="/april/master_proof.jpg" target="_blank" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded transition">View Master Digital Proof Sheet ↗</a>
+      </div>
+    </div>
+
+    <!-- ARTWORK COLORWAY & GARMENT SELECTOR -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <!-- ART COLORWAY TOGGLE -->
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Artwork Color:</span>
+        <button id="btnColorKelly" class="px-4 py-2 rounded-xl font-bold text-xs transition flex items-center gap-2 bg-emerald-600 text-white shadow-lg border border-emerald-400">
+          <span class="w-3 h-3 rounded-full bg-emerald-400 inline-block shadow"></span>
+          <span>Kelly Green (Requested by April ★)</span>
+        </button>
+        <button id="btnColorMidnight" class="px-4 py-2 rounded-xl font-bold text-xs transition flex items-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+          <span class="w-3 h-3 rounded-full bg-teal-800 inline-block"></span>
+          <span>Midnight Green (Original Upload)</span>
+        </button>
+      </div>
+
+      <!-- INVENTORY BADGE -->
+      <div class="flex items-center gap-2 bg-emerald-950/60 border border-emerald-600/40 px-3.5 py-1.5 rounded-xl text-emerald-300 text-xs font-semibold">
+        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <span>Gildan 64000 Black: 100% In-Stock Local Warehouse (5,500+ Units)</span>
+      </div>
+    </div>
+
+    <!-- MAIN WORKSPACE -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- CANVAS AREA (500px x 625px) -->
+      <div class="lg:col-span-6 flex flex-col items-center">
+        <div class="canvas-container relative border-2 border-slate-700 select-none" id="canvasContainer">
+          <!-- Background Blank Image -->
+          <img id="blankImg" src="/april/blanks/gildan_64000_black_front.jpg" alt="Garment Blank" class="w-full h-full object-cover pointer-events-none select-none">
+
+          <!-- Centerline Guide (Red) -->
+          <div id="guideCenter" class="guide-center" style="left: 250px;"></div>
+
+          <!-- Collar Reference Line (Cyan) -->
+          <div id="collarGuide" class="guide-collar" style="top: 135px;">
+            <span id="collarGuideLabel" class="absolute right-2 -top-5 text-[10px] font-bold text-sky-400 bg-slate-900/80 px-1.5 py-0.5 rounded border border-sky-400/40">Collar Reference (~135px)</span>
+          </div>
+
+          <!-- Draggable Graphic Element -->
+          <div id="graphicElement" class="graphic-element border-2 border-dashed border-emerald-400 hover:border-emerald-300 rounded shadow-2xl" style="left: 120px; top: 180px; width: 260px;">
+            <div id="graphicBadge" class="absolute -top-5 left-0 text-[10px] font-black uppercase tracking-wider bg-emerald-600 text-white px-1.5 py-0.5 rounded shadow pointer-events-none">Full Front Chest</div>
+            <img id="graphicImg" src="/april/art/love_hurts_kelly_green.png" class="w-full h-auto pointer-events-none select-none drop-shadow-md" alt="Graphic Art">
+          </div>
+        </div>
+
+        <p class="text-xs text-slate-500 mt-3 text-center">
+          💡 <strong>Tip:</strong> Drag the graphic directly on the black tee to reposition. Use the presets and sliders below to dial in exact print specifications.
+        </p>
+      </div>
+
+      <!-- CONTROLS PANEL -->
+      <div class="lg:col-span-6 space-y-5 bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 backdrop-blur shadow-xl">
+        
+        <div class="flex items-center justify-between border-b border-slate-700 pb-4">
+          <h2 id="panelTitle" class="text-lg font-bold text-white flex items-center gap-2">
+            <span>📐</span> Chest Print Placement &amp; Sizing
+          </h2>
+          <button id="btnCenterHorizontal" class="text-xs bg-slate-700 hover:bg-slate-600 active:bg-slate-800 text-slate-200 px-3 py-1.5 rounded-lg font-semibold transition">
+            ⇥ Center Horizontally
+          </button>
+        </div>
+
+        <!-- QUICK PRESETS (Graphic Width) -->
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Print Width Presets</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="preset100" class="p-2.5 rounded-xl bg-slate-700/60 hover:bg-emerald-500/20 border border-slate-600/60 hover:border-emerald-400/40 text-left transition group">
+              <div class="text-xs font-bold text-slate-200 group-hover:text-emerald-300">10.0&quot; Standard Medium</div>
+              <div class="text-[11px] text-slate-400">248px W • Balanced Fit</div>
+            </button>
+            <button id="preset105" class="p-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500 text-left transition group">
+              <div class="text-xs font-bold text-emerald-300">10.5&quot; Full Front Center ★</div>
+              <div class="text-[11px] text-slate-300">260px W • Recommended</div>
+            </button>
+            <button id="preset110" class="p-2.5 rounded-xl bg-slate-700/60 hover:bg-emerald-500/20 border border-slate-600/60 hover:border-emerald-400/40 text-left transition group">
+              <div class="text-xs font-bold text-slate-200 group-hover:text-emerald-300">11.0&quot; Bold Athletic</div>
+              <div class="text-[11px] text-slate-400">273px W • High Impact</div>
+            </button>
+            <button id="preset115" class="p-2.5 rounded-xl bg-slate-700/60 hover:bg-emerald-500/20 border border-slate-600/60 hover:border-emerald-400/40 text-left transition group">
+              <div class="text-xs font-bold text-slate-200 group-hover:text-emerald-300">11.5&quot; Jumbo Football</div>
+              <div class="text-[11px] text-slate-400">285px W • Maximum Coverage</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- MAIN GRAPHIC SLIDERS -->
+        <div class="space-y-4 pt-2 border-t border-slate-700/60">
+          
+          <!-- Graphic Width Slider -->
+          <div>
+            <div class="flex justify-between text-xs font-bold text-slate-300 mb-1">
+              <span>Graphic Print Width</span>
+              <span id="labelWidth" class="text-emerald-400">10.5&quot; (260 px)</span>
+            </div>
+            <input type="range" id="rangeWidth" min="180" max="310" step="2" value="260" class="w-full accent-emerald-500 bg-slate-700 h-2 rounded-lg cursor-pointer">
+          </div>
+
+          <!-- Vertical Y Offset Slider (Collar Drop) -->
+          <div>
+            <div class="flex justify-between text-xs font-bold text-slate-300 mb-1">
+              <span>Collar Drop (Distance Below Collar)</span>
+              <span id="labelCollarDrop" class="text-sky-400">1.8&quot; (45 px)</span>
+            </div>
+            <input type="range" id="rangeCollarDrop" min="10" max="110" step="1" value="45" class="w-full accent-sky-500 bg-slate-700 h-2 rounded-lg cursor-pointer">
+          </div>
+
+          <!-- Horizontal X Position Slider -->
+          <div>
+            <div class="flex justify-between text-xs font-bold text-slate-300 mb-1">
+              <span>Horizontal Position (X Offset)</span>
+              <span id="labelXPos" class="text-slate-400">Center (X: 120 px)</span>
+            </div>
+            <input type="range" id="rangeXPos" min="20" max="220" step="1" value="120" class="w-full accent-emerald-500 bg-slate-700 h-2 rounded-lg cursor-pointer">
+          </div>
+        </div>
+
+        <!-- TELEMETRY READOUT CARD -->
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-700/60 space-y-2 text-xs">
+          <div class="font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between border-b border-slate-800 pb-2">
+            <span>Live DTF Print Telemetry</span>
+            <span class="text-emerald-400 font-mono">1440 DPI ULTRA HD</span>
+          </div>
+          <div class="grid grid-cols-2 gap-3 text-slate-300">
+            <div>
+              <span class="text-slate-500">Dimensions:</span>
+              <strong id="telemetryDims" class="text-white block font-mono">10.5&quot; W × 10.5&quot; H</strong>
+            </div>
+            <div>
+              <span class="text-slate-500">Collar Drop:</span>
+              <strong id="telemetryDrop" class="text-sky-400 block font-mono">1.8&quot; below seam</strong>
+            </div>
+            <div>
+              <span class="text-slate-500">Center Alignment:</span>
+              <strong id="telemetryAlignment" class="text-emerald-400 block font-mono">Centered (0.0&quot; offset)</strong>
+            </div>
+            <div>
+              <span class="text-slate-500">Print Process:</span>
+              <strong class="text-slate-200 block font-mono">Commercial DTF (No Screens)</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8-SHIRT ORDER MANIFEST & RUSH DEADLINE -->
+        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-700/50 space-y-2 text-xs">
+          <div class="flex items-center justify-between text-slate-300 font-bold border-b border-slate-800 pb-2">
+            <span>📋 8-Piece Size Breakdown</span>
+            <span class="text-amber-400 font-black">⚡ RUSH: Target Oct 24</span>
+          </div>
+          <div class="grid grid-cols-5 gap-2 text-center text-slate-300 pt-1">
+            <div class="bg-slate-800/80 p-1.5 rounded-lg border border-slate-700">
+              <span class="text-[10px] text-slate-400 block font-bold">SMALL</span>
+              <strong class="text-white text-sm">1x</strong>
+            </div>
+            <div class="bg-slate-800/80 p-1.5 rounded-lg border border-slate-700">
+              <span class="text-[10px] text-slate-400 block font-bold">MEDIUM</span>
+              <strong class="text-white text-sm">2x</strong>
+            </div>
+            <div class="bg-slate-800/80 p-1.5 rounded-lg border border-slate-700">
+              <span class="text-[10px] text-slate-400 block font-bold">LARGE</span>
+              <strong class="text-white text-sm">1x</strong>
+            </div>
+            <div class="bg-slate-800/80 p-1.5 rounded-lg border border-slate-700">
+              <span class="text-[10px] text-slate-400 block font-bold">X-LARGE</span>
+              <strong class="text-white text-sm">2x</strong>
+            </div>
+            <div class="bg-slate-800/80 p-1.5 rounded-lg border border-slate-700">
+              <span class="text-[10px] text-amber-400 block font-bold">3X-LARGE</span>
+              <strong class="text-amber-400 text-sm">2x</strong>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State management
+    const state = {
+      customer: "April Crawford",
+      garment: "gildan_64000",
+      color: "black",
+      artworkColor: "kelly_green",
+      artFile: "love_hurts_kelly_green.png",
+      front: {
+        x: 120,
+        y: 180,
+        width: 260,
+        height: 260,
+        collarY: 135,
+        widthInches: 10.5,
+        collarDropInches: 1.8
+      },
+      canvasWidth: 500,
+      canvasHeight: 625,
+      scaleFactor: 24.8 // 24.8 pixels = 1.0 inch
+    };
+
+    // DOM Elements
+    const canvasContainer = document.getElementById("canvasContainer");
+    const blankImg = document.getElementById("blankImg");
+    const graphicElement = document.getElementById("graphicElement");
+    const graphicImg = document.getElementById("graphicImg");
+    const collarGuide = document.getElementById("collarGuide");
+    const collarGuideLabel = document.getElementById("collarGuideLabel");
+    
+    const btnColorKelly = document.getElementById("btnColorKelly");
+    const btnColorMidnight = document.getElementById("btnColorMidnight");
+
+    const rangeWidth = document.getElementById("rangeWidth");
+    const labelWidth = document.getElementById("labelWidth");
+    const rangeCollarDrop = document.getElementById("rangeCollarDrop");
+    const labelCollarDrop = document.getElementById("labelCollarDrop");
+    const rangeXPos = document.getElementById("rangeXPos");
+    const labelXPos = document.getElementById("labelXPos");
+    const btnCenterHorizontal = document.getElementById("btnCenterHorizontal");
+
+    const telemetryDims = document.getElementById("telemetryDims");
+    const telemetryDrop = document.getElementById("telemetryDrop");
+    const telemetryAlignment = document.getElementById("telemetryAlignment");
+
+    const btnSave = document.getElementById("btnSave");
+    const btnSaveText = document.getElementById("btnSaveText");
+    const saveToast = document.getElementById("saveToast");
+    const saveTimestamp = document.getElementById("saveTimestamp");
+
+    // Load initial config from server
+    async function loadConfig() {
+      try {
+        const res = await fetch("/api/config_april");
+        if (res.ok) {
+          const cfg = await res.json();
+          if (cfg.front) Object.assign(state.front, cfg.front);
+          if (cfg.artworkColor) state.artworkColor = cfg.artworkColor;
+          if (cfg.frontArtFile) state.artFile = cfg.frontArtFile;
+        }
+      } catch (e) {
+        console.log("Using default configuration");
+      }
+      applyColorwayUI();
+      updateGraphicElement();
+    }
+
+    function applyColorwayUI() {
+      if (state.artworkColor === "kelly_green") {
+        btnColorKelly.className = "px-4 py-2 rounded-xl font-bold text-xs transition flex items-center gap-2 bg-emerald-600 text-white shadow-lg border border-emerald-400";
+        btnColorMidnight.className = "px-4 py-2 rounded-xl font-bold text-xs transition flex items-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700";
+        state.artFile = "love_hurts_kelly_green.png";
+      } else {
+        btnColorMidnight.className = "px-4 py-2 rounded-xl font-bold text-xs transition flex items-center gap-2 bg-emerald-600 text-white shadow-lg border border-emerald-400";
+        btnColorKelly.className = "px-4 py-2 rounded-xl font-bold text-xs transition flex items-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700";
+        state.artFile = "love_hurts_midnight_green.png";
+      }
+      graphicImg.src = "/april/art/" + state.artFile;
+    }
+
+    btnColorKelly.onclick = () => {
+      state.artworkColor = "kelly_green";
+      applyColorwayUI();
+    };
+
+    btnColorMidnight.onclick = () => {
+      state.artworkColor = "midnight_green";
+      applyColorwayUI();
+    };
+
+    function updateGraphicElement() {
+      const f = state.front;
+      graphicElement.style.left = f.x + "px";
+      graphicElement.style.top = f.y + "px";
+      graphicElement.style.width = f.width + "px";
+      collarGuide.style.top = f.collarY + "px";
+
+      rangeWidth.value = f.width;
+      rangeXPos.value = f.x;
+      rangeCollarDrop.value = Math.max(0, f.y - f.collarY);
+
+      updateTelemetry();
+    }
+
+    function updateTelemetry() {
+      const f = state.front;
+      const widthInches = (f.width / state.scaleFactor).toFixed(1);
+      const heightInches = (f.height / state.scaleFactor).toFixed(1);
+      const dropPx = Math.max(0, f.y - f.collarY);
+      const dropInches = (dropPx / state.scaleFactor).toFixed(1);
+      
+      f.widthInches = parseFloat(widthInches);
+      f.collarDropInches = parseFloat(dropInches);
+
+      labelWidth.textContent = `${widthInches}" (${f.width} px)`;
+      labelCollarDrop.textContent = `${dropInches}" (${dropPx} px)`;
+      
+      const centerX = Math.round((500 - f.width) / 2);
+      const offsetFromCenter = f.x - centerX;
+      if (Math.abs(offsetFromCenter) <= 2) {
+        labelXPos.textContent = `Center (X: ${Math.round(f.x)} px)`;
+        telemetryAlignment.textContent = "Centered (0.0\" offset)";
+        telemetryAlignment.className = "text-emerald-400 block font-mono";
+      } else {
+        const offsetIn = (offsetFromCenter / state.scaleFactor).toFixed(1);
+        const dir = offsetFromCenter > 0 ? "Right" : "Left";
+        labelXPos.textContent = `${dir} ${Math.abs(offsetIn)}" (X: ${Math.round(f.x)} px)`;
+        telemetryAlignment.textContent = `${dir} ${Math.abs(offsetIn)}" (${Math.abs(offsetFromCenter)}px)`;
+        telemetryAlignment.className = "text-amber-400 block font-mono";
+      }
+
+      telemetryDims.textContent = `${widthInches}" W × ${heightInches}" H`;
+      telemetryDrop.textContent = `${dropInches}" below seam`;
+    }
+
+    // Sliders
+    rangeWidth.oninput = (e) => {
+      const val = parseInt(e.target.value);
+      const oldW = state.front.width;
+      state.front.width = val;
+      state.front.height = val; // 1:1 square aspect ratio
+      // keep centered relative to previous position
+      state.front.x = state.front.x - (val - oldW) / 2;
+      graphicElement.style.width = val + "px";
+      graphicElement.style.left = state.front.x + "px";
+      rangeXPos.value = state.front.x;
+      updateTelemetry();
+    };
+
+    rangeCollarDrop.oninput = (e) => {
+      const drop = parseInt(e.target.value);
+      state.front.y = state.front.collarY + drop;
+      graphicElement.style.top = state.front.y + "px";
+      updateTelemetry();
+    };
+
+    rangeXPos.oninput = (e) => {
+      state.front.x = parseInt(e.target.value);
+      graphicElement.style.left = state.front.x + "px";
+      updateTelemetry();
+    };
+
+    btnCenterHorizontal.onclick = () => {
+      state.front.x = Math.round((500 - state.front.width) / 2);
+      graphicElement.style.left = state.front.x + "px";
+      rangeXPos.value = state.front.x;
+      updateTelemetry();
+    };
+
+    // Presets
+    function applyPreset(w) {
+      const oldW = state.front.width;
+      state.front.width = w;
+      state.front.height = w;
+      state.front.x = Math.round((500 - w) / 2);
+      graphicElement.style.width = w + "px";
+      graphicElement.style.left = state.front.x + "px";
+      rangeWidth.value = w;
+      rangeXPos.value = state.front.x;
+      updateTelemetry();
+    }
+
+    document.getElementById("preset100").onclick = () => applyPreset(248);
+    document.getElementById("preset105").onclick = () => applyPreset(260);
+    document.getElementById("preset110").onclick = () => applyPreset(273);
+    document.getElementById("preset115").onclick = () => applyPreset(285);
+
+    // Dragging logic
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let initialElementX = 0;
+    let initialElementY = 0;
+
+    graphicElement.addEventListener("pointerdown", (e) => {
+      isDragging = true;
+      graphicElement.setPointerCapture(e.pointerId);
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      initialElementX = state.front.x;
+      initialElementY = state.front.y;
+      graphicElement.style.cursor = "grabbing";
+    });
+
+    graphicElement.addEventListener("pointermove", (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - dragStartX;
+      const dy = e.clientY - dragStartY;
+      
+      let newX = initialElementX + dx;
+      let newY = initialElementY + dy;
+
+      // Constrain within container
+      newX = Math.max(10, Math.min(500 - state.front.width - 10, newX));
+      newY = Math.max(state.front.collarY - 20, Math.min(625 - state.front.height - 20, newY));
+
+      state.front.x = newX;
+      state.front.y = newY;
+      graphicElement.style.left = newX + "px";
+      graphicElement.style.top = newY + "px";
+
+      rangeXPos.value = newX;
+      rangeCollarDrop.value = Math.max(0, newY - state.front.collarY);
+
+      updateTelemetry();
+    });
+
+    const endDrag = (e) => {
+      if (isDragging) {
+        isDragging = false;
+        try { graphicElement.releasePointerCapture(e.pointerId); } catch(err){}
+        graphicElement.style.cursor = "grab";
+      }
+    };
+    graphicElement.addEventListener("pointerup", endDrag);
+    graphicElement.addEventListener("pointercancel", endDrag);
+
+    // Save & Render Proofs
+    btnSave.onclick = async () => {
+      btnSave.disabled = true;
+      btnSaveText.textContent = "Rendering High-Res Proofs...";
+
+      const payload = {
+        customer: "April Crawford",
+        email: "anc1282@yahoo.com",
+        phone: "6019544894",
+        location: "Lawrenceville, GA 30043",
+        garment: state.garment,
+        color: state.color,
+        artworkColor: state.artworkColor,
+        frontArtFile: state.artFile,
+        front: state.front,
+        canvasWidth: state.canvasWidth,
+        canvasHeight: state.canvasHeight
+      };
+
+      try {
+        const res = await fetch("/api/save_april", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          saveTimestamp.textContent = new Date().toLocaleTimeString();
+          saveToast.classList.remove("hidden");
+          setTimeout(() => { saveToast.classList.add("hidden"); }, 10000);
+        } else {
+          alert("Error rendering proofs: " + (data.error || "Unknown"));
+        }
+      } catch (err) {
+        alert("Failed to communicate with placement server: " + err.message);
+      } finally {
+        btnSave.disabled = false;
+        btnSaveText.textContent = "Save & Render Proofs";
+      }
+    };
+
+    // Initial config load
+    loadConfig();
+  </script>
+</body>
+</html>
