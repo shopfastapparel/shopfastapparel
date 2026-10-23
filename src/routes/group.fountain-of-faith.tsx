@@ -667,11 +667,6 @@ ${notes || "None"}
                 </span>
               </div>
 
-              <div className="inline-flex items-center gap-2 bg-[#7414CA] text-white px-4 py-2 rounded-full font-bold text-xs md:text-sm border border-purple-400/50 shadow-sm">
-                <Church className="w-4 h-4 text-yellow-brand" />
-                <span>$5.00 from each apparel goes to Church Fund!</span>
-              </div>
-
               <button
                 type="button"
                 onClick={() => setShowCompositeProof(true)}
@@ -1261,14 +1256,9 @@ ${notes || "None"}
                                   ${basePrice.toFixed(2)}
                                 </span>
                               </div>
-                              <div className="text-right">
-                                <span className="text-[11px] text-muted-foreground block">
-                                  2XL (+$2.50) &middot; 3XL (+$3.50)
-                                </span>
-                                <span className="text-[10px] text-purple-400 font-semibold block">
-                                  Includes $5 church donation
-                                </span>
-                              </div>
+                              <span className="text-[11px] text-muted-foreground">
+                                2XL (+$2.50) &middot; 3XL (+$3.50)
+                              </span>
                             </div>
                           </div>
                         </div>
