@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from "react";
+import { useLocation } from "@tanstack/react-router";
 import { X, CheckCircle2, Loader2, Sparkles, ArrowRight, ShieldCheck, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 
 export function DiscountPopup() {
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [honeypot, setHoneypot] = useState("");
@@ -15,7 +17,15 @@ export function DiscountPopup() {
   const [errorMessage, setErrorMessage] = useState("");
   const mountTimeRef = useRef<number>(Date.now());
 
+  // Hide on admin, login, and church/group ordering portal routes
+  const isHiddenRoute =
+    location.pathname.startsWith('/admin') ||
+    location.pathname.startsWith('/login') ||
+    location.pathname.startsWith('/group');
+
   useEffect(() => {
+    if (isHiddenRoute) return;
+
     // Check if user has already seen or closed Dash's VIP deals popup
     const hasSeenPopup = localStorage.getItem("vip_deals_popup_seen");
     
@@ -27,7 +37,7 @@ export function DiscountPopup() {
       }, 3500);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [isHiddenRoute]);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -110,7 +120,7 @@ export function DiscountPopup() {
     }
   };
 
-  if (!isOpen) return null;
+  if (isHiddenRoute || !isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 sm:p-0">
