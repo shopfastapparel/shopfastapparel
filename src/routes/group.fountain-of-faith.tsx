@@ -74,7 +74,7 @@ const APPAREL_OPTIONS: ApparelOption[] = [
     image:
       "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_prayer_ls_1792254252.jpg",
     badge: "Long Sleeve Tee",
-    defaultPrice: 16.0,
+    defaultPrice: 21.0,
   },
   {
     id: "opt-fountain-ls",
@@ -86,7 +86,7 @@ const APPAREL_OPTIONS: ApparelOption[] = [
     image:
       "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_fountain_ls_1792254252.jpg",
     badge: "2-Location Long Sleeve",
-    defaultPrice: 19.0,
+    defaultPrice: 24.0,
   },
   {
     id: "opt-prayer-hoodie",
@@ -98,7 +98,7 @@ const APPAREL_OPTIONS: ApparelOption[] = [
     image:
       "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_prayer_hoodie_1792254252.jpg",
     badge: "Pullover Hoodie",
-    defaultPrice: 25.0,
+    defaultPrice: 30.0,
   },
   {
     id: "opt-fountain-hoodie",
@@ -110,7 +110,7 @@ const APPAREL_OPTIONS: ApparelOption[] = [
     image:
       "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_fountain_hoodie_1792254252.jpg",
     badge: "2-Location Pullover",
-    defaultPrice: 28.0,
+    defaultPrice: 33.0,
   },
   {
     id: "opt-prayer-zip",
@@ -126,7 +126,7 @@ const APPAREL_OPTIONS: ApparelOption[] = [
     frontImage:
       "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_prayer_zip_front_1792254252.jpg",
     badge: "Full Back + Front Crest",
-    defaultPrice: 34.0,
+    defaultPrice: 39.0,
   },
   {
     id: "opt-fountain-zip",
@@ -142,7 +142,7 @@ const APPAREL_OPTIONS: ApparelOption[] = [
     frontImage:
       "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/fofmbc_fountain_zip_front_1792254252.jpg",
     badge: "Full Back + Front Crest",
-    defaultPrice: 34.0,
+    defaultPrice: 39.0,
   },
 ];
 
@@ -245,7 +245,7 @@ function FountainOfFaithCollectionPage() {
   const [items, setItems] = useState<SelectedItem[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [deadline, setDeadline] = useState("November 1st, 2026");
+  const [deadline, setDeadline] = useState("November 6th, 2026");
   const [organizerPhone, setOrganizerPhone] = useState("404-933-6254");
   const [organizerEmail, setOrganizerEmail] = useState("pastorpkids@comcast.net");
   const [paymentInstructions, setPaymentInstructions] = useState(
@@ -269,12 +269,12 @@ function FountainOfFaithCollectionPage() {
 
   // Dynamic prices from database settings (falls back to defaults)
   const [optionPrices, setOptionPrices] = useState<Record<string, number>>({
-    "opt-prayer-ls": 16.0,
-    "opt-fountain-ls": 19.0,
-    "opt-prayer-hoodie": 25.0,
-    "opt-fountain-hoodie": 28.0,
-    "opt-prayer-zip": 34.0,
-    "opt-fountain-zip": 34.0,
+    "opt-prayer-ls": 21.0,
+    "opt-fountain-ls": 24.0,
+    "opt-prayer-hoodie": 30.0,
+    "opt-fountain-hoodie": 33.0,
+    "opt-prayer-zip": 39.0,
+    "opt-fountain-zip": 39.0,
   });
 
   const [paymentMethod, setPaymentMethod] = useState("Zelle (Fountain of Faith MBC · 470-856-1172)");
@@ -362,7 +362,7 @@ function FountainOfFaithCollectionPage() {
   }, []);
 
   const getItemUnitPrice = (optionId: string, size: string) => {
-    const basePrice = optionPrices[optionId] ?? 25.0;
+    const basePrice = optionPrices[optionId] ?? 30.0;
     const cleanSize = (size || "").trim().toUpperCase();
     if (cleanSize.includes("2XL")) return basePrice + 2.5;
     if (cleanSize.includes("3XL")) return basePrice + 3.5;
@@ -665,6 +665,11 @@ ${notes || "None"}
                 <span>
                   Submit By Date: <strong>{deadline}</strong>
                 </span>
+              </div>
+
+              <div className="inline-flex items-center gap-2 bg-[#7414CA] text-white px-4 py-2 rounded-full font-bold text-xs md:text-sm border border-purple-400/50 shadow-sm">
+                <Church className="w-4 h-4 text-yellow-brand" />
+                <span>$5.00 from each apparel goes to Church Fund!</span>
               </div>
 
               <button
@@ -1256,9 +1261,14 @@ ${notes || "None"}
                                   ${basePrice.toFixed(2)}
                                 </span>
                               </div>
-                              <span className="text-[11px] text-muted-foreground">
-                                2XL (+$2.50) &middot; 3XL (+$3.50)
-                              </span>
+                              <div className="text-right">
+                                <span className="text-[11px] text-muted-foreground block">
+                                  2XL (+$2.50) &middot; 3XL (+$3.50)
+                                </span>
+                                <span className="text-[10px] text-purple-400 font-semibold block">
+                                  Includes $5 church donation
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>

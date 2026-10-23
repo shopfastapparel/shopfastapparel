@@ -89,37 +89,37 @@ const GROUP_OPTIONS = [
     id: "opt-prayer-ls",
     name: '"What Prayer Can\'t Do, Nothing Will" Long Sleeve',
     garment: "Gildan 5400 Heavyweight 100% Cotton Long Sleeve",
-    defaultPrice: 16.0,
+    defaultPrice: 21.0,
   },
   {
     id: "opt-fountain-ls",
     name: '"Together We Are Fountain Strong!" Long Sleeve',
     garment: "Gildan 5400 Long Sleeve + Angled Sleeve Patch",
-    defaultPrice: 19.0,
+    defaultPrice: 24.0,
   },
   {
     id: "opt-prayer-hoodie",
     name: '"What Prayer Can\'t Do, Nothing Will" Pullover Hoodie',
     garment: "Gildan 18500 Heavy Blend 8.0 oz Pullover Fleece",
-    defaultPrice: 25.0,
+    defaultPrice: 30.0,
   },
   {
     id: "opt-fountain-hoodie",
     name: '"Together We Are Fountain Strong!" Pullover Hoodie',
     garment: "Gildan 18500 Pullover Fleece + Angled Sleeve Patch",
-    defaultPrice: 28.0,
+    defaultPrice: 33.0,
   },
   {
     id: "opt-prayer-zip",
     name: '"What Prayer Can\'t Do, Nothing Will" Full-Zip Hoodie',
     garment: "Gildan 18600 Full-Zip Fleece (Full Back + Front Crest)",
-    defaultPrice: 34.0,
+    defaultPrice: 39.0,
   },
   {
     id: "opt-fountain-zip",
     name: '"Together We Are Fountain Strong!" Full-Zip Hoodie',
     garment: "Gildan 18600 Full-Zip Fleece (Full Back + Front Crest)",
-    defaultPrice: 34.0,
+    defaultPrice: 39.0,
   },
 ];
 
@@ -144,7 +144,7 @@ function FountainOfFaithGroupAdminDashboard() {
   const [filterQuery, setFilterQuery] = useState("");
 
   // Settings
-  const [submitByDate, setSubmitByDate] = useState("November 1st, 2026");
+  const [submitByDate, setSubmitByDate] = useState("November 6th, 2026");
   const [savingDeadline, setSavingDeadline] = useState(false);
   const [adminPhone, setAdminPhone] = useState("404-933-6254");
   const [adminEmail, setAdminEmail] = useState("pastorpkids@comcast.net");
@@ -155,12 +155,12 @@ function FountainOfFaithGroupAdminDashboard() {
   const [savingPayment, setSavingPayment] = useState(false);
 
   const [optionPrices, setOptionPrices] = useState<Record<string, number>>({
-    "opt-prayer-ls": 16.0,
-    "opt-fountain-ls": 19.0,
-    "opt-prayer-hoodie": 25.0,
-    "opt-fountain-hoodie": 28.0,
-    "opt-prayer-zip": 34.0,
-    "opt-fountain-zip": 34.0,
+    "opt-prayer-ls": 21.0,
+    "opt-fountain-ls": 24.0,
+    "opt-prayer-hoodie": 30.0,
+    "opt-fountain-hoodie": 33.0,
+    "opt-prayer-zip": 39.0,
+    "opt-fountain-zip": 39.0,
   });
 
   // Edit Modal state
@@ -181,7 +181,7 @@ function FountainOfFaithGroupAdminDashboard() {
   const [flyerPreview, setFlyerPreview] = useState<"print" | "social" | null>(null);
 
   const getItemPrice = (optionName: string, size: string) => {
-    let base = 25.0;
+    let base = 30.0;
     const optMatch = GROUP_OPTIONS.find(
       (g) =>
         optionName.toLowerCase().includes(g.id.toLowerCase()) ||
@@ -191,11 +191,11 @@ function FountainOfFaithGroupAdminDashboard() {
       base = optionPrices[optMatch.id] ?? optMatch.defaultPrice;
     } else {
       if (optionName.toLowerCase().includes("long sleeve")) {
-        base = optionName.toLowerCase().includes("strong") ? 19.0 : 16.0;
+        base = optionName.toLowerCase().includes("strong") ? 24.0 : 21.0;
       } else if (optionName.toLowerCase().includes("pullover")) {
-        base = optionName.toLowerCase().includes("strong") ? 28.0 : 25.0;
+        base = optionName.toLowerCase().includes("strong") ? 33.0 : 30.0;
       } else if (optionName.toLowerCase().includes("zip")) {
-        base = 34.0;
+        base = 39.0;
       }
     }
 
@@ -600,6 +600,8 @@ ${editNotes || "None"}
   let grandTotalGarments = 0;
   let grandTotalRevenue = 0;
 
+  const CHURCH_DONATION_PER_ITEM = 5.0;
+
   submissions.forEach((sub) => {
     grandTotalRevenue += sub.totalPrice || 0;
     sub.items.forEach((item) => {
@@ -620,6 +622,8 @@ ${editNotes || "None"}
     });
   });
 
+  const grandTotalChurchFund = grandTotalGarments * CHURCH_DONATION_PER_ITEM;
+
   // Calculate size column totals
   const sizeColumnTotals: Record<string, number> = {};
   GROUP_SIZES.forEach((sz) => {
@@ -637,16 +641,18 @@ ${editNotes || "None"}
     }
 
     let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Date,Member Name,Email,Phone,Apparel Style,Size,Qty,Unit Price,Line Total,Payment Method,Order Total\n";
+    csvContent += "Date,Member Name,Email,Phone,Apparel Style,Size,Qty,Unit Price,Line Total,Church Fund ($5/item),Payment Method,Order Total\n";
 
     submissions.forEach((sub) => {
+      const orderChurchFund = sub.totalGarments * CHURCH_DONATION_PER_ITEM;
       if (sub.items.length === 0) {
-        csvContent += `"${sub.createdAt}","${sub.memberName}","${sub.memberEmail}","${sub.memberPhone}","General Order","N/A",${sub.totalGarments},"$0.00","$0.00","${sub.paymentMethod}","$${sub.totalPrice.toFixed(2)}"\n`;
+        csvContent += `"${sub.createdAt}","${sub.memberName}","${sub.memberEmail}","${sub.memberPhone}","General Order","N/A",${sub.totalGarments},"$0.00","$0.00","$${orderChurchFund.toFixed(2)}","${sub.paymentMethod}","$${sub.totalPrice.toFixed(2)}"\n`;
       } else {
         sub.items.forEach((item) => {
           const unitP = item.unitPrice ?? getItemPrice(item.optionName, item.size);
           const lineP = unitP * item.quantity;
-          csvContent += `"${sub.createdAt}","${sub.memberName}","${sub.memberEmail}","${sub.memberPhone}","${item.optionName}","${item.size}",${item.quantity},"$${unitP.toFixed(2)}","$${lineP.toFixed(2)}","${sub.paymentMethod}","$${sub.totalPrice.toFixed(2)}"\n`;
+          const itemChurchFund = item.quantity * CHURCH_DONATION_PER_ITEM;
+          csvContent += `"${sub.createdAt}","${sub.memberName}","${sub.memberEmail}","${sub.memberPhone}","${item.optionName}","${item.size}",${item.quantity},"$${unitP.toFixed(2)}","$${lineP.toFixed(2)}","$${itemChurchFund.toFixed(2)}","${sub.paymentMethod}","$${sub.totalPrice.toFixed(2)}"\n`;
         });
       }
     });
@@ -757,7 +763,7 @@ ${editNotes || "None"}
           /* Dashboard Content */
           <div className="space-y-10">
             {/* Top Metric Cards */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
               <div className="bg-card border-2 border-ink rounded-xl p-5 shadow-pop flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-magenta-brand/10 text-magenta-brand grid place-items-center flex-shrink-0 border border-magenta-brand/20">
                   <Users className="w-6 h-6" />
@@ -786,15 +792,33 @@ ${editNotes || "None"}
                 </div>
               </div>
 
+              {/* Total Collected for Church Card */}
+              <div className="bg-gradient-to-br from-purple-900/15 via-card to-purple-950/20 border-2 border-purple-600 rounded-xl p-5 shadow-pop flex items-center gap-4 relative overflow-hidden">
+                <div className="w-12 h-12 rounded-xl bg-[#7414CA]/20 text-[#7414CA] dark:text-purple-300 grid place-items-center flex-shrink-0 border border-[#7414CA]/40">
+                  <Church className="w-6 h-6 text-[#7414CA] dark:text-purple-300" />
+                </div>
+                <div>
+                  <span className="text-xs font-black uppercase tracking-wider text-[#7414CA] dark:text-purple-300 block">
+                    Total For Church
+                  </span>
+                  <span className="text-2xl md:text-3xl font-black text-[#7414CA] dark:text-yellow-brand font-mono">
+                    ${grandTotalChurchFund.toFixed(2)}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground block font-medium">
+                    {grandTotalGarments} items &times; $5.00
+                  </span>
+                </div>
+              </div>
+
               <div className="bg-card border-2 border-ink rounded-xl p-5 shadow-pop flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-yellow-brand/20 text-yellow-600 dark:text-yellow-400 grid place-items-center flex-shrink-0 border border-yellow-brand/30">
                   <DollarSign className="w-6 h-6" />
                 </div>
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
-                    Total Collection Value
+                    Total Order Value
                   </span>
-                  <span className="text-2xl md:text-3xl font-extrabold text-yellow-brand">
+                  <span className="text-2xl md:text-3xl font-extrabold text-yellow-brand font-mono">
                     ${grandTotalRevenue.toFixed(2)}
                   </span>
                 </div>
@@ -978,8 +1002,11 @@ ${editNotes || "None"}
                           {sz}
                         </th>
                       ))}
-                      <th className="p-3 text-center border border-white/10 rounded-tr-lg bg-yellow-brand text-ink">
+                      <th className="p-3 text-center border border-white/10 bg-yellow-brand text-ink">
                         Style Total
+                      </th>
+                      <th className="p-3 text-center border border-white/10 rounded-tr-lg bg-[#7414CA] text-white whitespace-nowrap">
+                        Church Fund ($5/ea)
                       </th>
                     </tr>
                   </thead>
@@ -989,6 +1016,7 @@ ${editNotes || "None"}
                         (sum, sz) => sum + (styleTallies[g.name]?.[sz] || 0),
                         0
                       );
+                      const rowChurchFund = rowTotal * CHURCH_DONATION_PER_ITEM;
                       return (
                         <tr
                           key={g.id}
@@ -1013,6 +1041,12 @@ ${editNotes || "None"}
                           <td className="p-3 text-center border border-border font-extrabold text-sm text-foreground bg-yellow-brand/10">
                             {rowTotal}
                           </td>
+                          <td className="p-3 text-center border border-border font-black text-sm text-[#7414CA] dark:text-purple-300 bg-purple-50 dark:bg-purple-950/30 whitespace-nowrap font-mono">
+                            ${rowChurchFund.toFixed(2)}
+                            <span className="block text-[10px] font-normal text-muted-foreground font-sans">
+                              ({rowTotal} &times; $5)
+                            </span>
+                          </td>
                         </tr>
                       );
                     })}
@@ -1030,6 +1064,9 @@ ${editNotes || "None"}
                       ))}
                       <td className="p-3 text-center border border-border font-black text-sm text-yellow-brand bg-ink">
                         {grandTotalGarments}
+                      </td>
+                      <td className="p-3 text-center border border-border font-black text-sm text-yellow-brand bg-[#7414CA] whitespace-nowrap font-mono">
+                        ${grandTotalChurchFund.toFixed(2)}
                       </td>
                     </tr>
                   </tfoot>
@@ -1131,8 +1168,13 @@ ${editNotes || "None"}
                               {sub.paymentMethod}
                             </span>
                           </td>
-                          <td className="p-3 text-right font-extrabold text-sm text-yellow-brand">
-                            ${sub.totalPrice.toFixed(2)}
+                          <td className="p-3 text-right">
+                            <span className="font-extrabold text-sm text-yellow-brand block font-mono">
+                              ${sub.totalPrice.toFixed(2)}
+                            </span>
+                            <span className="text-[10px] font-bold text-[#7414CA] dark:text-purple-300 block">
+                              (${((sub.totalGarments || 1) * 5).toFixed(2)} church)
+                            </span>
                           </td>
                           <td className="p-3 text-center whitespace-nowrap">
                             <div className="flex items-center justify-center gap-1.5">
@@ -1310,9 +1352,14 @@ ${editNotes || "None"}
 
                         <div className="flex items-baseline justify-between pt-2 border-t border-border/80">
                           <span className="text-xs text-muted-foreground font-semibold">Standard Unit:</span>
-                          <span className="font-black text-lg text-foreground font-mono bg-yellow-brand/20 dark:bg-yellow-brand/10 text-yellow-950 dark:text-yellow-300 px-2.5 py-0.5 rounded border border-yellow-brand/40">
-                            ${price.toFixed(2)}
-                          </span>
+                          <div className="text-right">
+                            <span className="font-black text-lg text-foreground font-mono bg-yellow-brand/20 dark:bg-yellow-brand/10 text-yellow-950 dark:text-yellow-300 px-2.5 py-0.5 rounded border border-yellow-brand/40 inline-block">
+                              ${price.toFixed(2)}
+                            </span>
+                            <span className="block text-[10px] text-purple-700 dark:text-purple-300 font-bold mt-0.5">
+                              Includes $5.00 for Church
+                            </span>
+                          </div>
                         </div>
                       </div>
                     );
