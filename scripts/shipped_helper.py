@@ -1,12 +1,11 @@
 import os
 import json
-import resend
-from dotenv import load_dotenv
+try:
+    import resend
+    resend.api_key = os.environ.get("RESEND_API_KEY")
+except ImportError:
+    resend = None
 
-load_dotenv("/Users/tavarus/.gemini/antigravity/scratch/shopfastapparel/.env")
-load_dotenv()
-
-resend.api_key = os.environ.get("RESEND_API_KEY")
 ADMIN_EMAIL = os.environ.get("RESEND_TO_EMAIL", "shopfastapparel@gmail.com")
 FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "Fast Apparel <info@shopfastapparel.com>")
 
@@ -164,7 +163,8 @@ def generate_shipped_html(
     proof_urls=None,
     manifest_rows=None,
     closing_note=None,
-    is_draft=False
+    is_draft=False,
+    total_qty_label="TOTAL CUSTOM PIECES IN SHIPMENT:"
 ):
     with open(TEMPLATE_PATH, "r") as f:
         template = f.read()
@@ -184,7 +184,7 @@ def generate_shipped_html(
         """
 
     proof_gallery_html = render_proof_gallery_html(proof_urls) if proof_urls else ""
-    manifest_html = render_manifest_table_html(manifest_rows) if manifest_rows else ""
+    manifest_html = render_manifest_table_html(manifest_rows, total_qty_label=total_qty_label) if manifest_rows else ""
     default_closing = f"Thank you so much for partnering with Fast Apparel for <strong>{customer_company}</strong>! We loved bringing these shirts to life and know your team will wear them with pride. Whenever you are ready for reorders, staff additions, or future events, Dash and our crew are always here for you!"
     closing_text = closing_note or default_closing
 
@@ -207,3 +207,19 @@ def generate_shipped_html(
     )
 
     return html
+
+
+def register_order_to_delivery_watcher(order_data):
+    """
+    Registers a dispatched customer shipment into the Delivery Watcher queue
+    so tracking is monitored automatically until delivery.
+    """
+    try:
+        try:
+            from scripts.delivery_watcher import register_shipped_order
+        except ImportError:
+            from delivery_watcher import register_shipped_order
+        return register_shipped_order(order_data)
+    except Exception as e:
+        print(f"[ShippedHelper] Warning: Could not register with Delivery Watcher: {e}")
+        return None
