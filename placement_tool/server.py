@@ -177,6 +177,10 @@ class PlacementHandler(SimpleHTTPRequestHandler):
                 self.end_headers()
                 with open(config_path, "rb") as f:
                     self.wfile.write(f.read())
+            else:
+                self.send_response(404)
+                self.end_headers()
+            return
         if self.path.startswith("/api/config_ursa"):
             config_path = os.path.join(APP_ROOT, "ursa_placement_config.json")
             if os.path.exists(config_path):
@@ -207,6 +211,62 @@ class PlacementHandler(SimpleHTTPRequestHandler):
             return
         if self.path.startswith("/api/config_lauren"):
             config_path = os.path.join(APP_ROOT, "lauren_placement_config.json")
+            if os.path.exists(config_path):
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                with open(config_path, "rb") as f:
+                    self.wfile.write(f.read())
+            else:
+                self.send_response(404)
+                self.end_headers()
+            return
+        if self.path.startswith("/api/config_sharan") or self.path.startswith("/api/config_sheran"):
+            config_path = os.path.join(APP_ROOT, "sharan_placement_config.json")
+            if os.path.exists(config_path):
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                with open(config_path, "rb") as f:
+                    self.wfile.write(f.read())
+            else:
+                self.send_response(404)
+                self.end_headers()
+            return
+        if self.path.startswith("/api/config_bindi"):
+            config_path = os.path.join(APP_ROOT, "bindi_placement_config.json")
+            if os.path.exists(config_path):
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                with open(config_path, "rb") as f:
+                    self.wfile.write(f.read())
+            else:
+                self.send_response(404)
+                self.end_headers()
+            return
+        if self.path.startswith("/api/config_taz"):
+            config_path = os.path.join(APP_ROOT, "taz_placement_config.json")
+            if os.path.exists(config_path):
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                with open(config_path, "rb") as f:
+                    self.wfile.write(f.read())
+            else:
+                self.send_response(404)
+                self.end_headers()
+            return
+        if self.path.startswith("/api/config_leslie"):
+            config_path = os.path.join(APP_ROOT, "leslie_placement_config.json")
             if os.path.exists(config_path):
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json")
@@ -878,6 +938,149 @@ class PlacementHandler(SimpleHTTPRequestHandler):
                 self.send_header("Access-Control-Allow-Origin", "*")
                 self.end_headers()
                 self.wfile.write(json.dumps({"success": False, "error": str(e)}).encode("utf-8"))
+        elif self.path in ("/api/save_sharan", "/api/save_sheran"):
+            content_length = int(self.headers.get("Content-Length", 0))
+            post_data = self.rfile.read(content_length)
+            try:
+                data = json.loads(post_data.decode("utf-8"))
+                config_path = os.path.join(APP_ROOT, "sharan_placement_config.json")
+                with open(config_path, "w") as f:
+                    json.dump(data, f, indent=2)
+                pub_config = os.path.join(PUBLIC_DIR, "sharan", "config.json")
+                with open(pub_config, "w") as f:
+                    json.dump(data, f, indent=2)
+                print(f"[Placement Server] Saved Sharan config to {config_path}")
+
+                env = os.environ.copy()
+                env["DEVELOPER_DIR"] = "/Library/Developer/CommandLineTools"
+                render_script = os.path.join(APP_ROOT, "render_sharan_custom_placements.py")
+                res = subprocess.run([sys.executable, render_script, config_path], capture_output=True, text=True, cwd=APP_ROOT, env=env)
+                print(f"[Placement Server] Sharan render output: {res.stdout}")
+                if res.stderr:
+                    print(f"[Placement Server] Sharan render stderr: {res.stderr}")
+                if res.returncode != 0:
+                    raise Exception(f"Render script failed (exit code {res.returncode}): {res.stderr or res.stdout}")
+
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": True, "message": "Placements applied and proofs re-rendered!"}).encode("utf-8"))
+            except Exception as e:
+                self.send_response(500)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": str(e)}).encode("utf-8"))
+        elif self.path == "/api/save_bindi":
+            content_length = int(self.headers.get("Content-Length", 0))
+            post_data = self.rfile.read(content_length)
+            try:
+                data = json.loads(post_data.decode("utf-8"))
+                config_path = os.path.join(APP_ROOT, "bindi_placement_config.json")
+                with open(config_path, "w") as f:
+                    json.dump(data, f, indent=2)
+
+                pub_config = os.path.join(PUBLIC_DIR, "bindi", "config.json")
+                with open(pub_config, "w") as f:
+                    json.dump(data, f, indent=2)
+                print(f"[Placement Server] Saved Bindi config to {config_path}")
+
+                env = os.environ.copy()
+                env["DEVELOPER_DIR"] = "/Library/Developer/CommandLineTools"
+                render_script = os.path.join(APP_ROOT, "render_bindi_custom_placements.py")
+                res = subprocess.run([sys.executable, render_script, config_path], capture_output=True, text=True, cwd=APP_ROOT, env=env)
+                print(f"[Placement Server] Bindi render output: {res.stdout}")
+                if res.stderr:
+                    print(f"[Placement Server] Bindi render stderr: {res.stderr}")
+                if res.returncode != 0:
+                    raise Exception(f"Render script failed (exit code {res.returncode}): {res.stderr or res.stdout}")
+
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "success", "success": True, "message": "Placements applied and proofs re-rendered!"}).encode("utf-8"))
+            except Exception as e:
+                self.send_response(500)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "error", "success": False, "error": str(e)}).encode("utf-8"))
+        elif self.path == "/api/save_taz":
+            content_length = int(self.headers.get("Content-Length", 0))
+            post_data = self.rfile.read(content_length)
+            try:
+                data = json.loads(post_data.decode("utf-8"))
+                config_path = os.path.join(APP_ROOT, "taz_placement_config.json")
+                with open(config_path, "w") as f:
+                    json.dump(data, f, indent=2)
+
+                pub_config = os.path.join(PUBLIC_DIR, "taz", "config.json")
+                with open(pub_config, "w") as f:
+                    json.dump(data, f, indent=2)
+                print(f"[Placement Server] Saved Taz config to {config_path}")
+
+                env = os.environ.copy()
+                env["DEVELOPER_DIR"] = "/Library/Developer/CommandLineTools"
+                render_script = os.path.join(APP_ROOT, "render_taz_custom_placements.py")
+                res = subprocess.run([sys.executable, render_script, config_path], capture_output=True, text=True, cwd=APP_ROOT, env=env)
+                print(f"[Placement Server] Taz render output: {res.stdout}")
+                if res.stderr:
+                    print(f"[Placement Server] Taz render stderr: {res.stderr}")
+                if res.returncode != 0:
+                    raise Exception(f"Render script failed (exit code {res.returncode}): {res.stderr or res.stdout}")
+
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "success", "success": True, "message": "Placements applied and proofs re-rendered!"}).encode("utf-8"))
+            except Exception as e:
+                self.send_response(500)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "error", "success": False, "error": str(e)}).encode("utf-8"))
+        elif self.path == "/api/save_leslie":
+            content_length = int(self.headers.get("Content-Length", 0))
+            post_data = self.rfile.read(content_length)
+            try:
+                data = json.loads(post_data.decode("utf-8"))
+                config_path = os.path.join(APP_ROOT, "leslie_placement_config.json")
+                with open(config_path, "w") as f:
+                    json.dump(data, f, indent=2)
+
+                pub_config = os.path.join(PUBLIC_DIR, "leslie", "config.json")
+                with open(pub_config, "w") as f:
+                    json.dump(data, f, indent=2)
+                print(f"[Placement Server] Saved Leslie config to {config_path}")
+
+                env = os.environ.copy()
+                env["DEVELOPER_DIR"] = "/Library/Developer/CommandLineTools"
+                render_script = os.path.join(APP_ROOT, "render_leslie_custom_placements.py")
+                res = subprocess.run([sys.executable, render_script, config_path], capture_output=True, text=True, cwd=APP_ROOT, env=env)
+                print(f"[Placement Server] Leslie render output: {res.stdout}")
+                if res.stderr:
+                    print(f"[Placement Server] Leslie render stderr: {res.stderr}")
+                if res.returncode != 0:
+                    raise Exception(f"Render script failed (exit code {res.returncode}): {res.stderr or res.stdout}")
+
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "success", "success": True, "message": "Placements applied and proofs re-rendered!"}).encode("utf-8"))
+            except Exception as e:
+                self.send_response(500)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "error", "success": False, "error": str(e)}).encode("utf-8"))
         else:
             self.send_response(404)
             self.end_headers()
