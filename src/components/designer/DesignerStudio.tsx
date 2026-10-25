@@ -28,6 +28,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { fetchStyleColors } from "@/lib/ssactivewear.functions";
 
 export interface DesignerStudioProps {
   initialStyle?: ApparelStyle;
@@ -78,14 +79,42 @@ export function DesignerStudio({
     if (initialQuantity && initialQuantity > 0) setQuantity(initialQuantity);
   }, [initialQuantity]);
 
+  // Load real photographed blanks from distributor CDN for selected style & color
+  useEffect(() => {
+    if (!selectedStyle?.ssStyleId) return;
+    fetchStyleColors({ data: { styleId: selectedStyle.ssStyleId } })
+      .then((colors) => {
+        if (colors && colors.length > 0) {
+          const match = colors.find(
+            (c) =>
+              c.colorName.toLowerCase() === selectedColor.name.toLowerCase() ||
+              selectedColor.name.toLowerCase().includes(c.colorName.toLowerCase()) ||
+              c.colorName.toLowerCase().includes(selectedColor.name.toLowerCase())
+          );
+          if (match) {
+            setSelectedColor((prev) => ({
+              ...prev,
+              hex: match.colorHex || prev.hex,
+              frontImage: match.frontImage || prev.frontImage,
+              backImage: match.backImage || prev.backImage,
+              sideImage: match.sideImage || prev.sideImage,
+            }));
+          }
+        }
+      })
+      .catch((err) => console.error("Error loading style photos:", err));
+  }, [selectedStyle?.ssStyleId, selectedColor.name]);
+
   // Modal State
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [frontProofUrl, setFrontProofUrl] = useState<string | null>(null);
   const [backProofUrl, setBackProofUrl] = useState<string | null>(null);
+  const [leftSleeveProofUrl, setLeftSleeveProofUrl] = useState<string | null>(null);
+  const [rightSleeveProofUrl, setRightSleeveProofUrl] = useState<string | null>(null);
   const [rawUploadFiles, setRawUploadFiles] = useState<File[]>([]);
   const [isExporting, setIsExporting] = useState(false);
 
-  // Handle Quote Submission Opening
+  // Handle Quote Submission Opening (Exports proofs for all customized sides)
   const handleOpenSubmitModal = async () => {
     if (!canvasRef.current) return;
     setIsExporting(true);
@@ -93,8 +122,12 @@ export function DesignerStudio({
     try {
       const front = await canvasRef.current.exportProofDataUrl("front");
       const back = await canvasRef.current.exportProofDataUrl("back");
+      const leftSleeve = await canvasRef.current.exportProofDataUrl("left_sleeve");
+      const rightSleeve = await canvasRef.current.exportProofDataUrl("right_sleeve");
       setFrontProofUrl(front);
       setBackProofUrl(back);
+      setLeftSleeveProofUrl(leftSleeve);
+      setRightSleeveProofUrl(rightSleeve);
       setIsSubmitModalOpen(true);
     } catch (err) {
       console.error("Export proof error:", err);
@@ -401,6 +434,16 @@ export function DesignerStudio({
                   ? layers.length
                   : canvasRef.current?.getLayerCount("back") || 0
               }
+              leftSleeveLayerCount={
+                activeSide === "left_sleeve"
+                  ? layers.length
+                  : canvasRef.current?.getLayerCount("left_sleeve") || 0
+              }
+              rightSleeveLayerCount={
+                activeSide === "right_sleeve"
+                  ? layers.length
+                  : canvasRef.current?.getLayerCount("right_sleeve") || 0
+              }
               quantity={quantity}
               onQuantityChange={setQuantity}
               onSubmitQuote={handleOpenSubmitModal}
@@ -419,6 +462,8 @@ export function DesignerStudio({
         quantity={quantity}
         frontProofUrl={frontProofUrl}
         backProofUrl={backProofUrl}
+        leftSleeveProofUrl={leftSleeveProofUrl}
+        rightSleeveProofUrl={rightSleeveProofUrl}
         rawUploadFiles={rawUploadFiles}
       />
     </div>

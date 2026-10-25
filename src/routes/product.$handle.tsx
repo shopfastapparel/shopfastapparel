@@ -507,10 +507,18 @@ function ProductPage() {
         isOpen={isDesignerModalOpen}
         onClose={() => setIsDesignerModalOpen(false)}
         product={product}
-        selectedColor={resolveGarmentColor(
-          selectedColor,
-          inventory?.find((i) => i.colorName === selectedColor)?.colorHex
-        )}
+        selectedColor={(() => {
+          const matchedItem = inventory?.find((i) => i.colorName === selectedColor);
+          return resolveGarmentColor(
+            selectedColor,
+            matchedItem?.colorHex,
+            {
+              frontImage: matchedItem?.frontImage,
+              backImage: matchedItem?.backImage,
+              sideImage: matchedItem?.sideImage,
+            }
+          );
+        })()}
         quantity={totalSizesSelected > 0 ? totalSizesSelected : 24}
         initialSizes={totalSizesSelected > 0 ? selectedSizes : undefined}
       />

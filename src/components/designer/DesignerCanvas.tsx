@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef } from "react";
 import * as fabric from "fabric";
 import { ViewSide, CanvasLayerItem } from "./designerTypes";
-import { GarmentVectorBackground, PRINT_BOUNDS } from "./garmentTemplates";
+import { RealisticGarmentBackground, PRINT_BOUNDS } from "./garmentTemplates";
 import { ApparelStyle } from "@/lib/apparel";
 import { GarmentColor } from "./designerTypes";
 import { ZoomIn, ZoomOut, RotateCcw, Eye, ShieldCheck } from "lucide-react";
@@ -38,10 +38,12 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
     const stageRef = useRef<HTMLDivElement | null>(null);
     const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
 
-    // Stored JSON states for both sides
+    // Stored JSON states for all 4 views (front, back, left_sleeve, right_sleeve)
     const sidesStateRef = useRef<Record<ViewSide, any>>({
       front: null,
       back: null,
+      left_sleeve: null,
+      right_sleeve: null,
     });
 
     const [zoom, setZoom] = useState(1);
@@ -49,7 +51,14 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
     const [responsiveScale, setResponsiveScale] = useState(1);
 
     const isHoodie = style.id.includes("18500") || style.id.includes("hoodie");
-    const bounds = isHoodie ? PRINT_BOUNDS.hoodie[activeSide] : PRINT_BOUNDS.default[activeSide];
+    const isLongSleeve =
+      style.id.includes("6014") || style.id.includes("5400") || style.id.includes("long-sleeve");
+    const styleBoundsGroup = isHoodie
+      ? PRINT_BOUNDS.hoodie
+      : isLongSleeve
+      ? PRINT_BOUNDS.longsleeve
+      : PRINT_BOUNDS.default;
+    const bounds = styleBoundsGroup[activeSide] || styleBoundsGroup.front;
 
     // Responsive scaling observer for mobile / tablet screens
     useEffect(() => {
@@ -136,10 +145,18 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
     // Switch Sides (Save current, load target)
     const switchSide = async (targetSide: ViewSide) => {
       const canvas = fabricCanvasRef.current;
-      if (!canvas) return;
+      if (!canvas || targetSide === activeSide) return;
 
       // Save current side state
       sidesStateRef.current[activeSide] = canvas.toJSON();
+
+      // Update dimensions for target side
+      const targetBounds =
+        styleBoundsGroup[targetSide] || styleBoundsGroup.front;
+      canvas.setDimensions({
+        width: targetBounds.width,
+        height: targetBounds.height,
+      });
 
       // Load new side state
       const targetState = sidesStateRef.current[targetSide];
@@ -337,13 +354,17 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
         const canvas = fabricCanvasRef.current;
         if (!canvas) return "";
 
+        const sideBounds =
+          styleBoundsGroup[side] || styleBoundsGroup.front;
+
         // Temporarily render target side if different
         let exportCanvas = canvas;
+        let tempCanvas: fabric.Canvas | null = null;
         if (side !== activeSide && sidesStateRef.current[side]) {
           const tempCanvasEl = document.createElement("canvas");
-          const tempCanvas = new fabric.Canvas(tempCanvasEl, {
-            width: bounds.width,
-            height: bounds.height,
+          tempCanvas = new fabric.Canvas(tempCanvasEl, {
+            width: sideBounds.width,
+            height: sideBounds.height,
           });
           await tempCanvas.loadFromJSON(sidesStateRef.current[side]);
           exportCanvas = tempCanvas;
@@ -356,25 +377,42 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
         const ctx = masterCanvas.getContext("2d");
         if (!ctx) return "";
 
-        // Draw background garment
-        ctx.fillStyle = "#F8FAFC";
+        // Crisp white studio background
+        ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(0, 0, 1000, 1000);
 
-        // Convert garment SVG to image
-        const svgContainer = stageRef.current?.querySelector("svg");
-        if (svgContainer) {
-          const svgData = new XMLSerializer().serializeToString(svgContainer);
-          const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-          const URL = window.URL || window.webkitURL || window;
-          const blobURL = URL.createObjectURL(svgBlob);
+        // Determine image URL for this side
+        let photoUrl = "";
+        let isMirrored = false;
+        if (side === "front") photoUrl = color.frontImage || style.image || "";
+        else if (side === "back") photoUrl = color.backImage || "";
+        else if (side === "left_sleeve") photoUrl = color.sideImage || "";
+        else if (side === "right_sleeve") {
+          photoUrl = color.sideImage || "";
+          isMirrored = true;
+        }
 
-          const garmentImg = new Image();
-          await new Promise((resolve) => {
-            garmentImg.onload = resolve;
-            garmentImg.src = blobURL;
-          });
-          ctx.drawImage(garmentImg, 0, 0, 1000, 1000);
-          URL.revokeObjectURL(blobURL);
+        if (photoUrl) {
+          try {
+            const garmentImg = new Image();
+            garmentImg.crossOrigin = "anonymous";
+            await new Promise((resolve) => {
+              garmentImg.onload = resolve;
+              garmentImg.onerror = resolve;
+              garmentImg.src = photoUrl;
+            });
+            if (isMirrored) {
+              ctx.save();
+              ctx.translate(1000, 0);
+              ctx.scale(-1, 1);
+              ctx.drawImage(garmentImg, 0, 0, 1000, 1000);
+              ctx.restore();
+            } else {
+              ctx.drawImage(garmentImg, 0, 0, 1000, 1000);
+            }
+          } catch (e) {
+            console.warn("Garment proof img draw failed:", e);
+          }
         }
 
         // Draw canvas artwork on top at scaled position (2x multiplier)
@@ -382,17 +420,22 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
         const artImg = new Image();
         await new Promise((resolve) => {
           artImg.onload = resolve;
+          artImg.onerror = resolve;
           artImg.src = artDataUrl;
         });
 
         // 500x500 base scaled to 1000x1000
         ctx.drawImage(
           artImg,
-          bounds.left * 2,
-          bounds.top * 2,
-          bounds.width * 2,
-          bounds.height * 2
+          sideBounds.left * 2,
+          sideBounds.top * 2,
+          sideBounds.width * 2,
+          sideBounds.height * 2
         );
+
+        if (tempCanvas) {
+          tempCanvas.dispose();
+        }
 
         return masterCanvas.toDataURL("image/png");
       },
@@ -412,40 +455,44 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
 
     return (
       <div className="w-full flex flex-col items-center justify-center select-none">
-        {/* Top Controls: View Toggle (Front/Back) & Zoom */}
-        <div className="w-full max-w-lg flex items-center justify-between gap-2 mb-3 px-2">
-          {/* Front / Back Toggle */}
-          <div className="flex bg-muted/60 p-1 rounded-xl border-2 border-ink shadow-sm">
-            <button
-              onClick={() => switchSide("front")}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                activeSide === "front"
-                  ? "bg-ink text-background shadow"
-                  : "text-muted-foreground hover:text-ink"
-              }`}
-            >
-              <span>Front View</span>
-              {sidesStateRef.current.front?.objects?.length > 0 && (
-                <span className="w-2 h-2 rounded-full bg-cyan-brand" />
-              )}
-            </button>
-            <button
-              onClick={() => switchSide("back")}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                activeSide === "back"
-                  ? "bg-ink text-background shadow"
-                  : "text-muted-foreground hover:text-ink"
-              }`}
-            >
-              <span>Back View</span>
-              {sidesStateRef.current.back?.objects?.length > 0 && (
-                <span className="w-2 h-2 rounded-full bg-cyan-brand" />
-              )}
-            </button>
+        {/* Top Controls: 4-View Switcher (Front, Back, Left Sleeve, Right Sleeve) & Zoom */}
+        <div className="w-full flex items-center justify-between gap-2 mb-3 px-1">
+          {/* 4-View Switcher */}
+          <div className="flex bg-muted/70 p-1 rounded-xl border-2 border-ink shadow-sm gap-1">
+            {(
+              [
+                { id: "front", label: "Front" },
+                { id: "back", label: "Back" },
+                { id: "left_sleeve", label: "Left Sleeve" },
+                { id: "right_sleeve", label: "Right Sleeve" },
+              ] as const
+            ).map((v) => {
+              const count =
+                v.id === activeSide
+                  ? fabricCanvasRef.current?.getObjects().length || 0
+                  : sidesStateRef.current[v.id]?.objects?.length || 0;
+              return (
+                <button
+                  key={v.id}
+                  type="button"
+                  onClick={() => switchSide(v.id)}
+                  className={`flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
+                    activeSide === v.id
+                      ? "bg-ink text-background shadow"
+                      : "text-muted-foreground hover:text-ink"
+                  }`}
+                >
+                  <span>{v.label}</span>
+                  {count > 0 && (
+                    <span className="w-2 h-2 rounded-full bg-cyan-brand ring-1 ring-background shrink-0" />
+                  )}
+                </button>
+              );
+            })}
           </div>
 
           {/* Canvas Tools (Zoom, Safe-Zone Toggle) */}
-          <div className="flex items-center gap-1 bg-card border-2 border-ink p-1 rounded-xl shadow-sm text-ink">
+          <div className="flex items-center gap-1 bg-card border-2 border-ink p-1 rounded-xl shadow-sm text-ink shrink-0">
             <button
               onClick={() => setZoom((z) => Math.min(z + 0.1, 1.4))}
               className="p-1.5 hover:bg-muted rounded-lg text-xs font-bold"
@@ -495,21 +542,25 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
               transform: `scale(${finalScale})`,
               transformOrigin: "top center",
             }}
-            className="relative shrink-0 flex items-center justify-center transition-transform duration-100"
+            className="relative shrink-0 flex items-center justify-center transition-transform duration-100 rounded-2xl shadow-sm"
           >
-            {/* Realistic Garment Vector Backdrop (Fixed 500x500) */}
-            <GarmentVectorBackground
+            {/* Photorealistic Actual Blank Garment Backdrop (500x500) */}
+            <RealisticGarmentBackground
               styleId={style.id}
               side={activeSide}
               colorHex={color.hex}
               isDark={color.isDark}
+              frontImage={color.frontImage}
+              backImage={color.backImage}
+              sideImage={color.sideImage}
+              styleImage={style.image}
             />
 
-            {/* Printable Area Boundary & Fabric Canvas (Fixed 230x290 at Top: 120, Left: 135) */}
+            {/* Printable Area Boundary & Fabric Canvas */}
             <div
               className={`absolute transition-all ${
                 showBounds
-                  ? "border-2 border-dashed border-cyan-brand shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+                  ? "border-2 border-dashed border-cyan-brand shadow-[0_0_15px_rgba(0,240,255,0.25)]"
                   : "border-0"
               }`}
               style={{
@@ -521,7 +572,13 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
             >
               {showBounds && (
                 <span className="absolute -top-5 left-0 text-[10px] font-mono font-bold tracking-wider uppercase text-cyan-brand bg-ink/90 px-1.5 py-0.5 rounded shadow whitespace-nowrap">
-                  {activeSide === "front" ? "Front Print Safe-Zone (11\" x 13\")" : "Back Print Safe-Zone"}
+                  {activeSide === "front"
+                    ? 'Front Print Safe-Zone (11" x 13")'
+                    : activeSide === "back"
+                    ? 'Back Print Safe-Zone (11" x 13")'
+                    : activeSide === "left_sleeve"
+                    ? 'Left Sleeve Safe-Zone (3.5" x 3.5")'
+                    : 'Right Sleeve Safe-Zone (3.5" x 3.5")'}
                 </span>
               )}
               <canvas ref={canvasElRef} />

@@ -1,11 +1,14 @@
 import { ApparelStyle } from "@/lib/apparel";
 
-export type ViewSide = "front" | "back";
+export type ViewSide = "front" | "back" | "left_sleeve" | "right_sleeve";
 
 export interface GarmentColor {
   name: string;
   hex: string;
   isDark?: boolean;
+  frontImage?: string;
+  backImage?: string;
+  sideImage?: string;
 }
 
 export interface CanvasLayerItem {
@@ -28,8 +31,12 @@ export interface DesignState {
   color: GarmentColor;
   frontCanvasJson: string | null;
   backCanvasJson: string | null;
+  leftSleeveCanvasJson?: string | null;
+  rightSleeveCanvasJson?: string | null;
   frontPreviewDataUrl: string | null;
   backPreviewDataUrl: string | null;
+  leftSleevePreviewDataUrl?: string | null;
+  rightSleevePreviewDataUrl?: string | null;
 }
 
 export interface DpiInfo {
@@ -57,8 +64,20 @@ export const POPULAR_GARMENT_COLORS: GarmentColor[] = [
   { name: "Orange", hex: "#EA580C", isDark: true },
 ];
 
-export function resolveGarmentColor(colorName?: string | null, colorHex?: string | null): GarmentColor {
-  if (!colorName) return POPULAR_GARMENT_COLORS[0];
+export function resolveGarmentColor(
+  colorName?: string | null,
+  colorHex?: string | null,
+  photoUrls?: { frontImage?: string; backImage?: string; sideImage?: string }
+): GarmentColor {
+  if (!colorName) {
+    const defaultColor = POPULAR_GARMENT_COLORS[0];
+    return {
+      ...defaultColor,
+      frontImage: photoUrls?.frontImage,
+      backImage: photoUrls?.backImage,
+      sideImage: photoUrls?.sideImage,
+    };
+  }
   const normalized = colorName.trim().toLowerCase();
   
   // Try exact or substring match in popular colors
@@ -68,7 +87,13 @@ export function resolveGarmentColor(colorName?: string | null, colorHex?: string
          c.name.toLowerCase().includes(normalized)
   );
   if (found) {
-    return colorHex ? { ...found, hex: colorHex } : found;
+    return {
+      ...found,
+      hex: colorHex || found.hex,
+      frontImage: photoUrls?.frontImage,
+      backImage: photoUrls?.backImage,
+      sideImage: photoUrls?.sideImage,
+    };
   }
   
   // Determine if color is dark based on hex luminance
@@ -85,6 +110,9 @@ export function resolveGarmentColor(colorName?: string | null, colorHex?: string
   return {
     name: colorName,
     hex: colorHex || "#18181B",
-    isDark
+    isDark,
+    frontImage: photoUrls?.frontImage,
+    backImage: photoUrls?.backImage,
+    sideImage: photoUrls?.sideImage,
   };
 }

@@ -15,6 +15,8 @@ interface SubmitDesignModalProps {
   quantity: number;
   frontProofUrl: string | null;
   backProofUrl: string | null;
+  leftSleeveProofUrl?: string | null;
+  rightSleeveProofUrl?: string | null;
   rawUploadFiles?: File[];
 }
 
@@ -26,6 +28,8 @@ export function SubmitDesignModal({
   quantity,
   frontProofUrl,
   backProofUrl,
+  leftSleeveProofUrl,
+  rightSleeveProofUrl,
   rawUploadFiles,
 }: SubmitDesignModalProps) {
   const [name, setName] = useState("");
@@ -269,7 +273,7 @@ export function SubmitDesignModal({
             </div>
 
             {/* Proofs Preview */}
-            <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto pt-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-lg mx-auto pt-2">
               {frontProofUrl && (
                 <div className="border rounded-lg p-2 bg-muted/20">
                   <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1">
@@ -290,6 +294,30 @@ export function SubmitDesignModal({
                   <img
                     src={backProofUrl}
                     alt="Back Proof"
+                    className="w-full h-auto rounded border"
+                  />
+                </div>
+              )}
+              {leftSleeveProofUrl && (
+                <div className="border rounded-lg p-2 bg-muted/20">
+                  <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1">
+                    Left Sleeve
+                  </p>
+                  <img
+                    src={leftSleeveProofUrl}
+                    alt="Left Sleeve Proof"
+                    className="w-full h-auto rounded border"
+                  />
+                </div>
+              )}
+              {rightSleeveProofUrl && (
+                <div className="border rounded-lg p-2 bg-muted/20">
+                  <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1">
+                    Right Sleeve
+                  </p>
+                  <img
+                    src={rightSleeveProofUrl}
+                    alt="Right Sleeve Proof"
                     className="w-full h-auto rounded border"
                   />
                 </div>

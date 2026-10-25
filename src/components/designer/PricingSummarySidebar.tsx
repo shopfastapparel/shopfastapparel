@@ -10,6 +10,8 @@ interface PricingSummarySidebarProps {
   color: GarmentColor;
   frontLayerCount: number;
   backLayerCount: number;
+  leftSleeveLayerCount?: number;
+  rightSleeveLayerCount?: number;
   quantity: number;
   onQuantityChange: (qty: number) => void;
   onSubmitQuote: () => void;
@@ -21,6 +23,8 @@ export function PricingSummarySidebar({
   color,
   frontLayerCount,
   backLayerCount,
+  leftSleeveLayerCount = 0,
+  rightSleeveLayerCount = 0,
   quantity,
   onQuantityChange,
   onSubmitQuote,
@@ -48,9 +52,17 @@ export function PricingSummarySidebar({
       .finally(() => setLoadingPrice(false));
   }, [style.ssStyleId]);
 
-  // Auto-detect number of print locations
-  const locations: 1 | 2 =
-    frontLayerCount > 0 && backLayerCount > 0 ? 2 : 1;
+  // Auto-detect number of print locations across all 4 views
+  const customizedLocations = useMemo(() => {
+    const list: string[] = [];
+    if (frontLayerCount > 0) list.push("Front");
+    if (backLayerCount > 0) list.push("Back");
+    if (leftSleeveLayerCount > 0) list.push("Left Sleeve");
+    if (rightSleeveLayerCount > 0) list.push("Right Sleeve");
+    return list;
+  }, [frontLayerCount, backLayerCount, leftSleeveLayerCount, rightSleeveLayerCount]);
+
+  const locationsCount = Math.max(1, customizedLocations.length);
 
   const { unitPrice, totalPrice, discountPct, baseRetail } = useMemo(() => {
     let discount = 0;
@@ -60,7 +72,8 @@ export function PricingSummarySidebar({
     else if (quantity >= 12) discount = 0.05;
 
     const baseCost = liveBaseCost ?? style.baseCost ?? 4.0;
-    const printCost = locations === 1 ? 2.0 : 5.0;
+    const printCost =
+      locationsCount === 1 ? 2.0 : locationsCount === 2 ? 5.0 : locationsCount === 3 ? 7.5 : 10.0;
 
     // Fast Apparel Formula: (Base Cost + $1 Shipping + Print Cost) * 2
     const retail = (baseCost + 1.0 + printCost) * 2;
@@ -72,7 +85,7 @@ export function PricingSummarySidebar({
       discountPct: discount,
       baseRetail: retail,
     };
-  }, [liveBaseCost, style.baseCost, locations, quantity]);
+  }, [liveBaseCost, style.baseCost, locationsCount, quantity]);
 
   return (
     <div className="bg-card border-2 border-ink rounded-xl p-5 shadow-[4px_4px_0px_0px_#1a1a2e] space-y-5">
@@ -125,7 +138,9 @@ export function PricingSummarySidebar({
             Print Locations:
           </span>
           <span className="font-bold text-ink bg-background px-2 py-0.5 rounded border border-ink/20">
-            {locations === 2 ? "2 Sides (Front & Back)" : "1 Side"}
+            {locationsCount === 1
+              ? "1 Location"
+              : `${locationsCount} Locations (${customizedLocations.join(", ")})`}
           </span>
         </div>
 

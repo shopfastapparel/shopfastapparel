@@ -8,6 +8,9 @@ export type InventoryItem = {
   qty: number;
   sku: string;
   basePrice?: number;
+  frontImage?: string;
+  backImage?: string;
+  sideImage?: string;
 };
 
 export type CatalogStyle = {
@@ -160,6 +163,8 @@ export type GarmentColor = {
   color2?: string;
   swatchImage?: string;
   frontImage?: string;
+  backImage?: string;
+  sideImage?: string;
 };
 
 const colorsCache = new Map<number, { timestamp: number; data: GarmentColor[] }>();
@@ -208,8 +213,25 @@ export const fetchStyleColors = createServerFn({ method: "POST" })
             swatch = `https://cdn.ssactivewear.com/${swatch.replace(/^\/+/, "")}`;
           }
           let front = p.colorFrontImage || "";
-          if (front && !front.startsWith("http")) {
-            front = `https://cdn.ssactivewear.com/${front.replace(/^\/+/, "")}`;
+          if (front) {
+            front = front.replace("_fm.jpg", "_fl.jpg").replace("_th.jpg", "_fl.jpg");
+            if (!front.startsWith("http")) {
+              front = `https://cdn.ssactivewear.com/${front.replace(/^\/+/, "")}`;
+            }
+          }
+          let back = p.colorBackImage || "";
+          if (back) {
+            back = back.replace("_fm.jpg", "_fl.jpg").replace("_th.jpg", "_fl.jpg");
+            if (!back.startsWith("http")) {
+              back = `https://cdn.ssactivewear.com/${back.replace(/^\/+/, "")}`;
+            }
+          }
+          let side = p.colorDirectSideImage || p.colorSideImage || "";
+          if (side) {
+            side = side.replace("_fm.jpg", "_fl.jpg").replace("_th.jpg", "_fl.jpg");
+            if (!side.startsWith("http")) {
+              side = `https://cdn.ssactivewear.com/${side.replace(/^\/+/, "")}`;
+            }
           }
 
           colorMap.set(cName, {
@@ -218,6 +240,8 @@ export const fetchStyleColors = createServerFn({ method: "POST" })
             color2: p.color2 || undefined,
             swatchImage: swatch || undefined,
             frontImage: front || undefined,
+            backImage: back || undefined,
+            sideImage: side || undefined,
           });
         }
       }
@@ -274,15 +298,43 @@ export const fetchLiveInventory = createServerFn({ method: "POST" })
          return [{ colorName: "DEBUG_ERR", sizeName: `No Data from S&S (Type: ${typeof products})`, qty: 0, sku: "ERR-NODATA" }];
       }
 
-      // Map the S&S payload to our simplified frontend matrix
-      const inventory: InventoryItem[] = products.map((p) => ({
-        colorName: p.colorName || "Unknown",
-        colorHex: p.color1 || undefined,
-        sizeName: p.sizeName || "OS",
-        qty: p.qty || 0,
-        sku: p.sku || "",
-        basePrice: p.piecePrice || 0,
-      }));
+      // Map the S&S payload to our simplified frontend matrix with real garment photos
+      const inventory: InventoryItem[] = products.map((p) => {
+        let front = p.colorFrontImage || "";
+        if (front) {
+          front = front.replace("_fm.jpg", "_fl.jpg").replace("_th.jpg", "_fl.jpg");
+          if (!front.startsWith("http")) {
+            front = `https://cdn.ssactivewear.com/${front.replace(/^\/+/, "")}`;
+          }
+        }
+        let back = p.colorBackImage || "";
+        if (back) {
+          back = back.replace("_fm.jpg", "_fl.jpg").replace("_th.jpg", "_fl.jpg");
+          if (!back.startsWith("http")) {
+            back = `https://cdn.ssactivewear.com/${back.replace(/^\/+/, "")}`;
+          }
+        }
+        let side = p.colorDirectSideImage || p.colorSideImage || "";
+        if (side) {
+          side = side.replace("_fm.jpg", "_fl.jpg").replace("_th.jpg", "_fl.jpg");
+          if (!side.startsWith("http")) {
+            side = `https://cdn.ssactivewear.com/${side.replace(/^\/+/, "")}`;
+          }
+        }
+        return {
+          colorName: p.colorName || "Unknown",
+          colorHex: p.color1 || undefined,
+          sizeName: p.sizeName || "OS",
+          qty: p.qty || 0,
+          sku: p.sku || "",
+          basePrice: p.piecePrice || 0,
+          frontImage: front || undefined,
+          backImage: back || undefined,
+          sideImage: side || undefined,
+        };
+      });
+
+      return inventory;
 
       return inventory;
 
