@@ -7,6 +7,7 @@ export interface ClipartItem {
 
 export const CLIPART_CATEGORIES = [
   "All",
+  "Dash & Speed",
   "Athletics & Sports",
   "Badges & Emblems",
   "Banners & Ribbons",
@@ -15,6 +16,32 @@ export const CLIPART_CATEGORIES = [
 ] as const;
 
 export const CLIPART_LIBRARY: ClipartItem[] = [
+  // Dash & Speed (Official Mascot Graphics)
+  {
+    id: "dash-lightning-bolt",
+    name: "Fast Cheetah Lightning Bolt",
+    category: "Dash & Speed",
+    svg: `<svg viewBox="0 0 100 100" fill="currentColor"><polygon points="56,8 24,54 48,54 44,92 76,46 52,46"/></svg>`
+  },
+  {
+    id: "dash-paw-print",
+    name: "Cheetah Paw Print",
+    category: "Dash & Speed",
+    svg: `<svg viewBox="0 0 100 100" fill="currentColor"><ellipse cx="50" cy="62" rx="18" ry="14"/><circle cx="28" cy="40" r="7"/><circle cx="43" cy="32" r="7"/><circle cx="57" cy="32" r="7"/><circle cx="72" cy="40" r="7"/></svg>`
+  },
+  {
+    id: "dash-quality-seal",
+    name: "Dash 100% Quality Seal",
+    category: "Dash & Speed",
+    svg: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4"><circle cx="50" cy="50" r="42"/><circle cx="50" cy="50" r="35" stroke-dasharray="3,2"/><path d="M35 50 L45 60 L65 40" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+  },
+  {
+    id: "dash-speed-wings",
+    name: "Speed Wings Emblem",
+    category: "Dash & Speed",
+    svg: `<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="14"/><path d="M36 45 C20 30 10 38 8 50 C20 50 30 48 36 50 Z"/><path d="M64 45 C80 30 90 38 92 50 C80 50 70 48 64 50 Z"/><polygon points="50,26 44,40 56,40"/></svg>`
+  },
+
   // Athletics
   {
     id: "baseball-crossed-bats",

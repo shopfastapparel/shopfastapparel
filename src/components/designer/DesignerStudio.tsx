@@ -197,8 +197,15 @@ export function DesignerStudio({
           ) : (
             /* Standalone Route Header */
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-yellow-brand border-2 border-ink flex items-center justify-center shadow-sm">
-                <Sparkles className="w-4 h-4 text-ink" />
+              <div className="relative">
+                <img
+                  src="/images/mascot/dash_avatar_circle.png"
+                  alt="Dash the Cheetah"
+                  className="w-10 h-10 rounded-full border-2 border-ink shadow-sm object-cover bg-yellow-brand"
+                />
+                <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-[9px] text-white font-bold ring-2 ring-background">
+                  ✓
+                </span>
               </div>
               <div>
                 <h1 className="font-display text-base sm:text-lg text-ink leading-tight flex items-center gap-2">
@@ -207,8 +214,12 @@ export function DesignerStudio({
                     DTF Studio
                   </span>
                 </h1>
-                <p className="text-[11px] text-muted-foreground hidden sm:block">
-                  Commercial Ultra HD DTF apparel mockups &amp; instant pricing
+                <p className="text-[11px] text-muted-foreground hidden sm:flex items-center gap-1.5">
+                  <span>Commercial Ultra HD DTF Mockups</span>
+                  <span>&middot;</span>
+                  <span className="text-amber-600 dark:text-amber-400 font-semibold flex items-center gap-1">
+                    ⚡ Fast 7-10 Day Turnaround with Dash
+                  </span>
                 </p>
               </div>
             </div>
@@ -412,10 +423,15 @@ export function DesignerStudio({
               onLayersChange={setLayers}
             />
 
-            {/* Quality Note */}
-            <div className="mt-3 flex items-center justify-center gap-2 text-[11px] text-muted-foreground">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              <span>Full-Color Ultra HD DTF Transfers &middot; 50+ Industrial Washes</span>
+            {/* Dash Quality & Inspection Guarantee */}
+            <div className="mt-3 flex items-center justify-center gap-2 text-[11px] text-muted-foreground bg-white/90 dark:bg-zinc-900/90 px-3 py-1 rounded-full border border-border/80 shadow-xs">
+              <img
+                src="/images/mascot/dash_avatar_circle.png"
+                alt="Dash Quality Guarantee"
+                className="w-4 h-4 rounded-full border border-ink/40 shrink-0"
+              />
+              <span className="font-semibold text-ink">Dash's Quality Seal:</span>
+              <span>Ultra HD DTF Transfers &middot; 50+ Industrial Washes &middot; Free Proof Review</span>
             </div>
           </div>
         </div>

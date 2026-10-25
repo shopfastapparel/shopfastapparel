@@ -188,7 +188,9 @@ export const fetchStyleColors = createServerFn({ method: "POST" })
 
     try {
       const authHeader = "Basic " + btoa(`${accountNo}:${apiKey}`);
-      const res = await fetch(`https://api.ssactivewear.com/v2/products/?styleID=${styleId}`, {
+      // Style 543 (Gildan 5000B Youth) has no color photos in S&S API; companion style 16 (Gildan 5000) provides the exact color photos
+      const targetStyleId = styleId === 543 ? 16 : styleId;
+      const res = await fetch(`https://api.ssactivewear.com/v2/products/?styleID=${targetStyleId}`, {
         headers: {
           Authorization: authHeader,
           Accept: "application/json",
@@ -207,42 +209,58 @@ export const fetchStyleColors = createServerFn({ method: "POST" })
       const colorMap = new Map<string, GarmentColor>();
       for (const p of products) {
         const cName = (p.colorName || "").trim();
-        if (cName && !colorMap.has(cName)) {
+        if (!cName) continue;
+
+        let entry = colorMap.get(cName);
+        if (!entry) {
           let swatch = p.colorSwatchImage || "";
           if (swatch && !swatch.startsWith("http")) {
             swatch = `https://cdn.ssactivewear.com/${swatch.replace(/^\/+/, "")}`;
           }
-          let front = p.colorFrontImage || "";
-          if (front) {
-            front = front.replace("_fm.jpg", "_fl.jpg").replace("_th.jpg", "_fl.jpg");
-            if (!front.startsWith("http")) {
-              front = `https://cdn.ssactivewear.com/${front.replace(/^\/+/, "")}`;
-            }
-          }
-          let back = p.colorBackImage || "";
-          if (back) {
-            back = back.replace("_fm.jpg", "_fl.jpg").replace("_th.jpg", "_fl.jpg");
-            if (!back.startsWith("http")) {
-              back = `https://cdn.ssactivewear.com/${back.replace(/^\/+/, "")}`;
-            }
-          }
-          let side = p.colorDirectSideImage || p.colorSideImage || "";
-          if (side) {
-            side = side.replace("_fm.jpg", "_fl.jpg").replace("_th.jpg", "_fl.jpg");
-            if (!side.startsWith("http")) {
-              side = `https://cdn.ssactivewear.com/${side.replace(/^\/+/, "")}`;
-            }
-          }
-
-          colorMap.set(cName, {
+          entry = {
             colorName: cName,
             colorHex: p.color1 || undefined,
             color2: p.color2 || undefined,
             swatchImage: swatch || undefined,
-            frontImage: front || undefined,
-            backImage: back || undefined,
-            sideImage: side || undefined,
-          });
+          };
+          colorMap.set(cName, entry);
+        }
+
+        // 1. Front View: find highest resolution front image
+        if (!entry.frontImage && p.colorFrontImage) {
+          let front = p.colorFrontImage.replace("_fm.jpg", "_fl.jpg").replace("_th.jpg", "_fl.jpg");
+          if (!front.startsWith("http")) {
+            front = `https://cdn.ssactivewear.com/${front.replace(/^\/+/, "")}`;
+          }
+          entry.frontImage = front;
+        }
+
+        // 2. Back View: find highest resolution back image
+        if (!entry.backImage && p.colorBackImage) {
+          let back = p.colorBackImage.replace("_fm.jpg", "_fl.jpg").replace("_th.jpg", "_fl.jpg");
+          if (!back.startsWith("http")) {
+            back = `https://cdn.ssactivewear.com/${back.replace(/^\/+/, "")}`;
+          }
+          entry.backImage = back;
+        }
+
+        // 3. Direct Side View: ONLY accept authentic 90-degree direct side profile (_d_)
+        // Never accept 3/4 angled perspective images (e.g. without _d_) for sleeve views
+        if (!entry.sideImage) {
+          const directCandidate =
+            (p.colorDirectSideImage && p.colorDirectSideImage.includes("_d_"))
+              ? p.colorDirectSideImage
+              : (p.colorSideImage && p.colorSideImage.includes("_d_"))
+              ? p.colorSideImage
+              : "";
+
+          if (directCandidate) {
+            let side = directCandidate.replace("_fm.jpg", "_fl.jpg").replace("_th.jpg", "_fl.jpg");
+            if (!side.startsWith("http")) {
+              side = `https://cdn.ssactivewear.com/${side.replace(/^\/+/, "")}`;
+            }
+            entry.sideImage = side;
+          }
         }
       }
 

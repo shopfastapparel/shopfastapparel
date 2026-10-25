@@ -14,25 +14,82 @@ export interface GarmentTemplateProps {
 
 // Master Printable Bounds on a 500x500 Stage
 export const PRINT_BOUNDS: Record<string, Record<ViewSide, PrintAreaBounds>> = {
+  // Unisex Short Sleeve Tees (Gildan 5000, 64000, Bella 3001, Next Level 6210, C2 Sport 5100, Gildan 5000B, 64000B, Comfort Colors 1717)
   default: {
     front: { width: 200, height: 260, top: 115, left: 150 },
     back: { width: 200, height: 260, top: 110, left: 150 },
     left_sleeve: { width: 80, height: 80, top: 80, left: 220 },
     right_sleeve: { width: 80, height: 80, top: 80, left: 200 },
   },
-  hoodie: {
-    front: { width: 200, height: 180, top: 150, left: 150 },
-    back: { width: 200, height: 260, top: 125, left: 150 },
-    left_sleeve: { width: 76, height: 240, top: 80, left: 220 },
-    right_sleeve: { width: 76, height: 240, top: 80, left: 204 },
+  // Women's Cut (Gildan 5000L - cap sleeves and feminine tapered cut)
+  womens_tee: {
+    front: { width: 180, height: 240, top: 120, left: 160 },
+    back: { width: 180, height: 240, top: 115, left: 160 },
+    left_sleeve: { width: 70, height: 70, top: 75, left: 225 },
+    right_sleeve: { width: 70, height: 70, top: 75, left: 205 },
   },
+  // Long Sleeve Tees (Comfort Colors 6014, Gildan 5400) - Full sleeve hanging down
   longsleeve: {
     front: { width: 200, height: 260, top: 115, left: 150 },
     back: { width: 200, height: 260, top: 110, left: 150 },
-    left_sleeve: { width: 76, height: 240, top: 80, left: 220 },
-    right_sleeve: { width: 76, height: 240, top: 80, left: 204 },
+    left_sleeve: { width: 76, height: 260, top: 110, left: 220 },
+    right_sleeve: { width: 76, height: 260, top: 110, left: 204 },
+  },
+  // Fleece Hoodie (Gildan 18500) - Front above pocket, full outer sleeve
+  hoodie: {
+    front: { width: 200, height: 180, top: 150, left: 150 },
+    back: { width: 200, height: 260, top: 125, left: 150 },
+    left_sleeve: { width: 76, height: 260, top: 110, left: 220 },
+    right_sleeve: { width: 76, height: 260, top: 110, left: 204 },
+  },
+  // Fleece Crewneck Sweatshirt (Gildan 18000) - Full outer long sleeve
+  crewneck: {
+    front: { width: 200, height: 250, top: 120, left: 150 },
+    back: { width: 200, height: 260, top: 115, left: 150 },
+    left_sleeve: { width: 76, height: 260, top: 110, left: 220 },
+    right_sleeve: { width: 76, height: 260, top: 110, left: 204 },
   },
 };
+
+/**
+ * Categorizes any apparel style ID into its appropriate template & bounds group
+ */
+export function getGarmentCategory(
+  styleId: string
+): "default" | "womens_tee" | "longsleeve" | "hoodie" | "crewneck" {
+  const id = (styleId || "").toLowerCase();
+  if (id.includes("18500") || id.includes("hoodie")) return "hoodie";
+  if (id.includes("18000") || id.includes("crewneck")) return "crewneck";
+  if (
+    id.includes("6014") ||
+    id.includes("5400") ||
+    id.includes("long-sleeve") ||
+    id.includes("longsleeve")
+  )
+    return "longsleeve";
+  if (id.includes("5000l") || id.includes("women")) return "womens_tee";
+  return "default";
+}
+
+/**
+ * Returns the high-resolution direct-side master template for any garment category
+ */
+export function getFallbackSideTemplate(styleId: string): string {
+  const cat = getGarmentCategory(styleId);
+  switch (cat) {
+    case "hoodie":
+      return "/images/templates/hoodie_side_master.png";
+    case "crewneck":
+      return "/images/templates/crewneck_side_master.png";
+    case "longsleeve":
+      return "/images/templates/longsleeve_side_master.png";
+    case "womens_tee":
+      return "/images/templates/womens_tee_side_master.png";
+    case "default":
+    default:
+      return "/images/templates/tee_side_master.png";
+  }
+}
 
 /**
  * Photorealistic Garment Background Renderer
@@ -51,20 +108,60 @@ export function RealisticGarmentBackground({
 }: GarmentTemplateProps) {
   let photoUrl = "";
   let isMirrored = false;
+  let isTemplate = false;
 
   if (side === "front") {
     photoUrl = frontImage || styleImage || "";
   } else if (side === "back") {
     photoUrl = backImage || "";
   } else if (side === "left_sleeve") {
-    photoUrl = sideImage || "";
+    photoUrl = sideImage || getFallbackSideTemplate(styleId);
+    isTemplate = !sideImage || photoUrl.includes("/images/templates/");
   } else if (side === "right_sleeve") {
-    photoUrl = sideImage || "";
+    photoUrl = sideImage || getFallbackSideTemplate(styleId);
+    isTemplate = !sideImage || photoUrl.includes("/images/templates/");
     isMirrored = true;
   }
 
   // If a direct high-res photo URL is available, render the actual photographed shirt
   if (photoUrl) {
+    if (isTemplate) {
+      // Dynamic photorealistic tinting for master direct-side blanks
+      return (
+        <div className="w-[500px] h-[500px] absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden bg-white/95 rounded-2xl">
+          <div
+            className={`w-full h-full relative flex items-center justify-center transition-all duration-200 ${
+              isMirrored ? "scale-x-[-1]" : ""
+            }`}
+          >
+            {/* Color silhouette masked strictly to the garment shape */}
+            <div
+              className="w-full h-full absolute inset-0"
+              style={{
+                backgroundColor: colorHex,
+                WebkitMaskImage: `url(${photoUrl})`,
+                WebkitMaskSize: "contain",
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                maskImage: `url(${photoUrl})`,
+                maskSize: "contain",
+                maskRepeat: "no-repeat",
+                maskPosition: "center",
+              }}
+            />
+            {/* Photorealistic fabric shading, stitches, and contour folds */}
+            <img
+              src={photoUrl}
+              alt={`${side} photo`}
+              crossOrigin="anonymous"
+              className="w-full h-full object-contain pointer-events-none select-none mix-blend-multiply opacity-90"
+            />
+          </div>
+        </div>
+      );
+    }
+
+    // Direct photographed blank from distributor CDN
     return (
       <div className="w-[500px] h-[500px] absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden bg-white/95 rounded-2xl">
         <img

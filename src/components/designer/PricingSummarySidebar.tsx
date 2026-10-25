@@ -222,6 +222,23 @@ export function PricingSummarySidebar({
           <span>Zero setup or art conversion fees</span>
         </div>
       </div>
+
+      {/* Dash Fulfillment & Speed Card */}
+      <div className="mt-2 p-3 bg-yellow-brand/10 dark:bg-yellow-brand/5 rounded-xl border border-yellow-brand/30 flex items-center gap-3">
+        <img
+          src="/images/mascot/dash_avatar_circle.png"
+          alt="Dash"
+          className="w-10 h-10 rounded-full border-2 border-ink object-cover shrink-0 shadow-xs"
+        />
+        <div className="text-left">
+          <p className="text-xs font-bold text-ink leading-tight flex items-center gap-1">
+            <span>⚡ Dash's Speed Promise</span>
+          </p>
+          <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">
+            7-10 day turnaround &middot; Multi-point quality inspection &middot; Direct DTF vibrancy
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

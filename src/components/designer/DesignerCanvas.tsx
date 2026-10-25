@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef } from "react";
 import * as fabric from "fabric";
 import { ViewSide, CanvasLayerItem } from "./designerTypes";
-import { RealisticGarmentBackground, PRINT_BOUNDS } from "./garmentTemplates";
+import {
+  RealisticGarmentBackground,
+  PRINT_BOUNDS,
+  getGarmentCategory,
+  getFallbackSideTemplate,
+} from "./garmentTemplates";
 import { ApparelStyle } from "@/lib/apparel";
 import { GarmentColor } from "./designerTypes";
 import { ZoomIn, ZoomOut, RotateCcw, Eye, ShieldCheck } from "lucide-react";
@@ -50,14 +55,9 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
     const [showBounds, setShowBounds] = useState(true);
     const [responsiveScale, setResponsiveScale] = useState(1);
 
-    const isHoodie = style.id.includes("18500") || style.id.includes("hoodie");
-    const isLongSleeve =
-      style.id.includes("6014") || style.id.includes("5400") || style.id.includes("long-sleeve");
-    const styleBoundsGroup = isHoodie
-      ? PRINT_BOUNDS.hoodie
-      : isLongSleeve
-      ? PRINT_BOUNDS.longsleeve
-      : PRINT_BOUNDS.default;
+    const garmentCategory = getGarmentCategory(style.id);
+    const styleBoundsGroup =
+      PRINT_BOUNDS[garmentCategory] || PRINT_BOUNDS.default;
     const bounds = styleBoundsGroup[activeSide] || styleBoundsGroup.front;
 
     // Responsive scaling observer for mobile / tablet / desktop screens
@@ -385,11 +385,17 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
         // Determine image URL for this side
         let photoUrl = "";
         let isMirrored = false;
-        if (side === "front") photoUrl = color.frontImage || style.image || "";
-        else if (side === "back") photoUrl = color.backImage || "";
-        else if (side === "left_sleeve") photoUrl = color.sideImage || "";
-        else if (side === "right_sleeve") {
-          photoUrl = color.sideImage || "";
+        let isTemplate = false;
+        if (side === "front") {
+          photoUrl = color.frontImage || style.image || "";
+        } else if (side === "back") {
+          photoUrl = color.backImage || "";
+        } else if (side === "left_sleeve") {
+          photoUrl = color.sideImage || getFallbackSideTemplate(style.id);
+          isTemplate = !color.sideImage || photoUrl.includes("/images/templates/");
+        } else if (side === "right_sleeve") {
+          photoUrl = color.sideImage || getFallbackSideTemplate(style.id);
+          isTemplate = !color.sideImage || photoUrl.includes("/images/templates/");
           isMirrored = true;
         }
 
@@ -402,15 +408,34 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
               garmentImg.onerror = resolve;
               garmentImg.src = photoUrl;
             });
+
+            ctx.save();
             if (isMirrored) {
-              ctx.save();
               ctx.translate(1000, 0);
               ctx.scale(-1, 1);
-              ctx.drawImage(garmentImg, 0, 0, 1000, 1000);
-              ctx.restore();
+            }
+
+            if (isTemplate) {
+              // Tint master direct-side blank with garment color & natural multiply shading
+              const tintCanvas = document.createElement("canvas");
+              tintCanvas.width = 1000;
+              tintCanvas.height = 1000;
+              const tCtx = tintCanvas.getContext("2d");
+              if (tCtx) {
+                tCtx.drawImage(garmentImg, 0, 0, 1000, 1000);
+                tCtx.globalCompositeOperation = "source-in";
+                tCtx.fillStyle = color.hex;
+                tCtx.fillRect(0, 0, 1000, 1000);
+                tCtx.globalCompositeOperation = "multiply";
+                tCtx.drawImage(garmentImg, 0, 0, 1000, 1000);
+                ctx.drawImage(tintCanvas, 0, 0, 1000, 1000);
+              } else {
+                ctx.drawImage(garmentImg, 0, 0, 1000, 1000);
+              }
             } else {
               ctx.drawImage(garmentImg, 0, 0, 1000, 1000);
             }
+            ctx.restore();
           } catch (e) {
             console.warn("Garment proof img draw failed:", e);
           }
@@ -578,8 +603,16 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
                     : activeSide === "back"
                     ? 'Back Print Safe-Zone (11" x 13")'
                     : activeSide === "left_sleeve"
-                    ? 'Left Sleeve Safe-Zone (3.5" x 3.5")'
-                    : 'Right Sleeve Safe-Zone (3.5" x 3.5")'}
+                    ? garmentCategory === "hoodie" ||
+                      garmentCategory === "crewneck" ||
+                      garmentCategory === "longsleeve"
+                      ? 'Left Sleeve Safe-Zone (3.5" x 12")'
+                      : 'Left Sleeve Safe-Zone (3.5" x 3.5")'
+                    : garmentCategory === "hoodie" ||
+                      garmentCategory === "crewneck" ||
+                      garmentCategory === "longsleeve"
+                      ? 'Right Sleeve Safe-Zone (3.5" x 12")'
+                      : 'Right Sleeve Safe-Zone (3.5" x 3.5")'}
                 </span>
               )}
               <canvas ref={canvasElRef} />

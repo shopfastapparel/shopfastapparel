@@ -212,15 +212,31 @@ export function UploadToolsTab({
         </div>
       )}
 
-      {/* DTF Printing Tips */}
-      <div className="bg-muted/40 rounded-lg p-3 border text-xs text-muted-foreground space-y-1">
-        <p className="font-bold text-ink flex items-center gap-1.5">
-          <ImageIcon className="w-3.5 h-3.5 text-cyan-brand" /> DTF Artwork Tips:
-        </p>
-        <ul className="list-disc pl-4 space-y-0.5">
-          <li>Unlimited colors and gradients are 100% free!</li>
-          <li>For best results, upload PNG files with a transparent background.</li>
-          <li>We verify every artwork file before printing.</li>
+      {/* Dash DTF Artwork Pro Tips */}
+      <div className="bg-yellow-brand/15 dark:bg-yellow-brand/10 rounded-xl p-3.5 border-2 border-ink/20 text-xs text-ink space-y-2">
+        <div className="flex items-center gap-2.5">
+          <img
+            src="/images/mascot/dash_avatar_circle.png"
+            alt="Dash"
+            className="w-8 h-8 rounded-full border border-ink object-cover shrink-0 shadow-xs"
+          />
+          <div>
+            <p className="font-bold text-ink leading-tight flex items-center gap-1">
+              Dash's DTF Print Tips
+            </p>
+            <p className="text-[10px] text-muted-foreground">Chief Speed Officer Recommendations</p>
+          </div>
+        </div>
+        <ul className="list-disc pl-4 space-y-1 text-[11px] text-muted-foreground">
+          <li>
+            <strong className="text-ink">100% Free Full-Color:</strong> Unlimited gradients, photos, and fine details have zero extra charges.
+          </li>
+          <li>
+            <strong className="text-ink">Transparent PNGs:</strong> 300 DPI transparent files produce razor-sharp edges.
+          </li>
+          <li>
+            <strong className="text-ink">Dash's Quality Check:</strong> Every upload is hand-verified for resolution before printing.
+          </li>
         </ul>
       </div>
     </div>
