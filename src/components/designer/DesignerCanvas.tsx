@@ -60,13 +60,14 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
       : PRINT_BOUNDS.default;
     const bounds = styleBoundsGroup[activeSide] || styleBoundsGroup.front;
 
-    // Responsive scaling observer for mobile / tablet screens
+    // Responsive scaling observer for mobile / tablet / desktop screens
     useEffect(() => {
       const updateScale = () => {
         if (!wrapperRef.current) return;
         const width = wrapperRef.current.clientWidth;
         if (width > 0) {
-          const s = Math.min(1, (width - 16) / 500);
+          // Allow desktop to expand up to 1.15x for a spacious, prominent shirt display
+          const s = Math.min(1.15, Math.max(0.65, (width - 16) / 500));
           setResponsiveScale(s);
         }
       };

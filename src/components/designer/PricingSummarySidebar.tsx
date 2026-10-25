@@ -88,8 +88,8 @@ export function PricingSummarySidebar({
   }, [liveBaseCost, style.baseCost, locationsCount, quantity]);
 
   return (
-    <div className="bg-card border-2 border-ink rounded-xl p-5 shadow-[4px_4px_0px_0px_#1a1a2e] space-y-5">
-      <div className="flex items-center justify-between border-b pb-3">
+    <div className="space-y-4">
+      <div className="flex items-center justify-between border-b-2 border-ink pb-3">
         <h3 className="font-display text-lg text-ink">Live Order Summary</h3>
         {discountPct > 0 && (
           <span className="text-[10px] bg-magenta-brand text-background px-2 py-0.5 rounded font-bold uppercase tracking-wider">

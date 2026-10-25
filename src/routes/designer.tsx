@@ -30,12 +30,12 @@ function DesignerPage() {
   const matchedColor = color ? resolveGarmentColor(color) : undefined;
 
   return (
-    <SiteLayout>
+    <div className="fixed inset-0 w-full h-full overflow-hidden flex flex-col bg-background">
       <DesignerStudio
         initialStyle={matchedStyle}
         initialColor={matchedColor}
         initialQuantity={qty}
       />
-    </SiteLayout>
+    </div>
   );
 }

@@ -17,20 +17,20 @@ export const PRINT_BOUNDS: Record<string, Record<ViewSide, PrintAreaBounds>> = {
   default: {
     front: { width: 200, height: 260, top: 115, left: 150 },
     back: { width: 200, height: 260, top: 110, left: 150 },
-    left_sleeve: { width: 120, height: 110, top: 140, left: 190 },
-    right_sleeve: { width: 120, height: 110, top: 140, left: 190 },
+    left_sleeve: { width: 80, height: 80, top: 80, left: 220 },
+    right_sleeve: { width: 80, height: 80, top: 80, left: 200 },
   },
   hoodie: {
     front: { width: 200, height: 180, top: 150, left: 150 },
     back: { width: 200, height: 260, top: 125, left: 150 },
-    left_sleeve: { width: 120, height: 240, top: 140, left: 190 },
-    right_sleeve: { width: 120, height: 240, top: 140, left: 190 },
+    left_sleeve: { width: 76, height: 240, top: 80, left: 220 },
+    right_sleeve: { width: 76, height: 240, top: 80, left: 204 },
   },
   longsleeve: {
     front: { width: 200, height: 260, top: 115, left: 150 },
     back: { width: 200, height: 260, top: 110, left: 150 },
-    left_sleeve: { width: 120, height: 260, top: 130, left: 190 },
-    right_sleeve: { width: 120, height: 260, top: 130, left: 190 },
+    left_sleeve: { width: 76, height: 240, top: 80, left: 220 },
+    right_sleeve: { width: 76, height: 240, top: 80, left: 204 },
   },
 };
 

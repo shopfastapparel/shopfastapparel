@@ -41,10 +41,11 @@ export function FomoPopup() {
     time: ""
   });
 
-  // Hide on admin, login, and church/group ordering portal routes
+  // Hide on admin, login, designer studio, and church/group ordering portal routes
   const isHiddenRoute =
     location.pathname.startsWith('/admin') ||
     location.pathname.startsWith('/login') ||
+    location.pathname.startsWith('/designer') ||
     location.pathname.startsWith('/group');
 
   const generateRandomData = () => {

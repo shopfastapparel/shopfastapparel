@@ -37,7 +37,7 @@ export function DesignerModal({
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 bg-background flex flex-col overflow-y-auto animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 w-screen h-screen overflow-hidden bg-background flex flex-col animate-in fade-in duration-200"
     >
       <DesignerStudio
         initialStyle={product}

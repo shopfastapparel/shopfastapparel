@@ -162,10 +162,10 @@ export function DesignerStudio({
   };
 
   return (
-    <div className={`min-h-screen bg-background flex flex-col ${isModal ? "z-50" : ""}`}>
+    <div className={`w-full h-full bg-background flex flex-col overflow-hidden ${isModal ? "z-50" : ""}`}>
       {/* Studio Top Navigation Bar */}
-      <header className="border-b-2 border-ink bg-card/90 backdrop-blur sticky top-0 z-30 px-4 sm:px-6 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      <header className="h-14 border-b border-border/80 bg-card/95 backdrop-blur sticky top-0 z-30 px-4 sm:px-6 flex items-center shrink-0">
+        <div className="w-full flex items-center justify-between gap-3">
           {isModal ? (
             /* Modal Header Variant: Clean Return to Product */
             <div className="flex items-center gap-3">
@@ -173,7 +173,7 @@ export function DesignerStudio({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-ink hover:text-magenta-brand bg-muted/60 hover:bg-muted px-3 py-1.5 rounded-lg border border-border transition-colors shadow-xs"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-ink hover:text-magenta-brand bg-muted/80 hover:bg-muted px-3 py-1.5 rounded-lg border border-border transition-colors shadow-xs"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span className="hidden sm:inline">Back to Product</span>
@@ -197,18 +197,18 @@ export function DesignerStudio({
           ) : (
             /* Standalone Route Header */
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-yellow-brand border-2 border-ink flex items-center justify-center shadow-sm">
-                <Sparkles className="w-5 h-5 text-ink" />
+              <div className="w-9 h-9 rounded-xl bg-yellow-brand border-2 border-ink flex items-center justify-center shadow-sm">
+                <Sparkles className="w-4 h-4 text-ink" />
               </div>
               <div>
-                <h1 className="font-display text-lg sm:text-xl text-ink leading-tight flex items-center gap-2">
+                <h1 className="font-display text-base sm:text-lg text-ink leading-tight flex items-center gap-2">
                   Fast Apparel Design Studio
                   <span className="text-[10px] font-sans font-bold bg-magenta-brand text-background px-2 py-0.5 rounded-full uppercase tracking-wider">
                     DTF Studio
                   </span>
                 </h1>
-                <p className="text-xs text-muted-foreground hidden sm:block">
-                  Commercial Ultra HD DTF apparel mockups & instant pricing
+                <p className="text-[11px] text-muted-foreground hidden sm:block">
+                  Commercial Ultra HD DTF apparel mockups &amp; instant pricing
                 </p>
               </div>
             </div>
@@ -220,7 +220,7 @@ export function DesignerStudio({
               variant="outline"
               size="sm"
               onClick={handleShareLink}
-              className="border-2 border-ink text-ink hover:bg-ink hover:text-white text-xs font-bold gap-1.5 shadow-sm transition-colors hidden sm:inline-flex"
+              className="border border-border text-ink hover:bg-muted text-xs font-bold gap-1.5 shadow-sm transition-colors hidden sm:inline-flex"
             >
               <Share2 className="w-3.5 h-3.5" />
               <span>Share</span>
@@ -230,7 +230,7 @@ export function DesignerStudio({
               variant="outline"
               size="sm"
               onClick={handleDownloadProof}
-              className="border-2 border-ink text-ink hover:bg-ink hover:text-white text-xs font-bold gap-1.5 shadow-sm transition-colors"
+              className="border border-border text-ink hover:bg-muted text-xs font-bold gap-1.5 shadow-sm transition-colors"
             >
               <Download className="w-3.5 h-3.5" />
               <span className="hidden md:inline">Download Proof</span>
@@ -260,143 +260,143 @@ export function DesignerStudio({
         </div>
       </header>
 
-      {/* Main 3-Column Studio Stage */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Column 1: Left Design Tool Panel (4 cols) */}
-          <div className="lg:col-span-4 bg-card border-2 border-ink rounded-2xl shadow-[4px_4px_0px_0px_#1a1a2e] overflow-hidden flex flex-col">
-            {/* Tab Navigation */}
-            <div className="grid grid-cols-5 border-b-2 border-ink bg-muted/30">
-              <button
-                onClick={() => setActiveTab("product")}
-                className={`flex flex-col items-center gap-1 py-3 text-[11px] font-bold transition-all border-r border-border last:border-0 ${
-                  activeTab === "product"
-                    ? "bg-yellow-brand text-ink shadow-inner font-extrabold"
-                    : "text-muted-foreground hover:text-ink hover:bg-muted/50"
-                }`}
-                title="Garment & Colors"
-              >
-                <Shirt className="w-4 h-4" />
-                <span>Garment</span>
-              </button>
+      {/* Main 3-Column Studio Stage - True Full-Screen Experience */}
+      <main className="flex-1 w-full flex flex-col lg:flex-row overflow-hidden min-h-0 bg-background">
+        {/* Column 1: Left Design Tool Panel */}
+        <div className="w-full lg:w-[350px] xl:w-[390px] shrink-0 border-b lg:border-b-0 lg:border-r border-border/80 bg-card flex flex-col overflow-y-auto z-10 shadow-sm">
+          {/* Tab Navigation */}
+          <div className="grid grid-cols-5 border-b border-border bg-muted/40 shrink-0 sticky top-0 z-10">
+            <button
+              onClick={() => setActiveTab("product")}
+              className={`flex flex-col items-center gap-1 py-3 text-[11px] font-bold transition-all border-r border-border last:border-0 ${
+                activeTab === "product"
+                  ? "bg-yellow-brand text-ink shadow-inner font-extrabold"
+                  : "text-muted-foreground hover:text-ink hover:bg-muted/50"
+              }`}
+              title="Garment & Colors"
+            >
+              <Shirt className="w-4 h-4" />
+              <span>Garment</span>
+            </button>
 
-              <button
-                onClick={() => setActiveTab("text")}
-                className={`flex flex-col items-center gap-1 py-3 text-[11px] font-bold transition-all border-r border-border last:border-0 ${
-                  activeTab === "text"
-                    ? "bg-yellow-brand text-ink shadow-inner font-extrabold"
-                    : "text-muted-foreground hover:text-ink hover:bg-muted/50"
-                }`}
-                title="Add Custom Text"
-              >
-                <Type className="w-4 h-4" />
-                <span>Text</span>
-              </button>
+            <button
+              onClick={() => setActiveTab("text")}
+              className={`flex flex-col items-center gap-1 py-3 text-[11px] font-bold transition-all border-r border-border last:border-0 ${
+                activeTab === "text"
+                  ? "bg-yellow-brand text-ink shadow-inner font-extrabold"
+                  : "text-muted-foreground hover:text-ink hover:bg-muted/50"
+              }`}
+              title="Add Custom Text"
+            >
+              <Type className="w-4 h-4" />
+              <span>Text</span>
+            </button>
 
-              <button
-                onClick={() => setActiveTab("upload")}
-                className={`flex flex-col items-center gap-1 py-3 text-[11px] font-bold transition-all border-r border-border last:border-0 ${
-                  activeTab === "upload"
-                    ? "bg-yellow-brand text-ink shadow-inner font-extrabold"
-                    : "text-muted-foreground hover:text-ink hover:bg-muted/50"
-                }`}
-                title="Upload Artwork / Logo"
-              >
-                <Upload className="w-4 h-4" />
-                <span>Upload</span>
-              </button>
+            <button
+              onClick={() => setActiveTab("upload")}
+              className={`flex flex-col items-center gap-1 py-3 text-[11px] font-bold transition-all border-r border-border last:border-0 ${
+                activeTab === "upload"
+                  ? "bg-yellow-brand text-ink shadow-inner font-extrabold"
+                  : "text-muted-foreground hover:text-ink hover:bg-muted/50"
+              }`}
+              title="Upload Artwork / Logo"
+            >
+              <Upload className="w-4 h-4" />
+              <span>Upload</span>
+            </button>
 
-              <button
-                onClick={() => setActiveTab("clipart")}
-                className={`flex flex-col items-center gap-1 py-3 text-[11px] font-bold transition-all border-r border-border last:border-0 ${
-                  activeTab === "clipart"
-                    ? "bg-yellow-brand text-ink shadow-inner font-extrabold"
-                    : "text-muted-foreground hover:text-ink hover:bg-muted/50"
-                }`}
-                title="Graphics & Clipart"
-              >
-                <Palette className="w-4 h-4" />
-                <span>Clipart</span>
-              </button>
+            <button
+              onClick={() => setActiveTab("clipart")}
+              className={`flex flex-col items-center gap-1 py-3 text-[11px] font-bold transition-all border-r border-border last:border-0 ${
+                activeTab === "clipart"
+                  ? "bg-yellow-brand text-ink shadow-inner font-extrabold"
+                  : "text-muted-foreground hover:text-ink hover:bg-muted/50"
+              }`}
+              title="Graphics & Clipart"
+            >
+              <Palette className="w-4 h-4" />
+              <span>Clipart</span>
+            </button>
 
-              <button
-                onClick={() => setActiveTab("layers")}
-                className={`flex flex-col items-center gap-1 py-3 text-[11px] font-bold transition-all ${
-                  activeTab === "layers"
-                    ? "bg-yellow-brand text-ink shadow-inner font-extrabold"
-                    : "text-muted-foreground hover:text-ink hover:bg-muted/50"
-                }`}
-                title="Layer Management"
-              >
-                <Layers className="w-4 h-4" />
-                <span>Layers</span>
-              </button>
-            </div>
-
-            {/* Tab Content Body */}
-            <div className="p-5 flex-1 min-h-[420px]">
-              {activeTab === "product" && (
-                <ProductSelectorTab
-                  selectedStyle={selectedStyle}
-                  selectedColor={selectedColor}
-                  onSelectStyle={setSelectedStyle}
-                  onSelectColor={setSelectedColor}
-                />
-              )}
-
-              {activeTab === "text" && (
-                <TextToolsTab
-                  onAddText={(opts) => canvasRef.current?.addText(opts)}
-                  selectedTextObject={selectedObject}
-                  onUpdateSelectedText={(props) =>
-                    canvasRef.current?.updateSelected(props)
-                  }
-                />
-              )}
-
-              {activeTab === "upload" && (
-                <UploadToolsTab
-                  onAddImage={(url, w, h) =>
-                    canvasRef.current?.addImage(url, w, h)
-                  }
-                  onRawFileUpload={(file) => {
-                    setRawUploadFiles((prev) => {
-                      if (prev.some((f) => f.name === file.name && f.size === file.size))
-                        return prev;
-                      return [...prev, file];
-                    });
-                  }}
-                  selectedImageObject={selectedObject}
-                />
-              )}
-
-              {activeTab === "clipart" && (
-                <ClipartTab
-                  onAddClipart={(svg, name) =>
-                    canvasRef.current?.addClipart(svg, name)
-                  }
-                />
-              )}
-
-              {activeTab === "layers" && (
-                <LayersTab
-                  layers={layers}
-                  selectedLayerId={selectedObject?.id || null}
-                  onSelectLayer={() => {}}
-                  onMoveUp={() => canvasRef.current?.bringForward()}
-                  onMoveDown={() => canvasRef.current?.sendBackward()}
-                  onDelete={() => canvasRef.current?.deleteSelected()}
-                  onDuplicate={() => canvasRef.current?.duplicateSelected()}
-                  onToggleLock={() => canvasRef.current?.toggleLock()}
-                  onCenterH={() => canvasRef.current?.centerSelectedH()}
-                  onCenterV={() => canvasRef.current?.centerSelectedV()}
-                />
-              )}
-            </div>
+            <button
+              onClick={() => setActiveTab("layers")}
+              className={`flex flex-col items-center gap-1 py-3 text-[11px] font-bold transition-all ${
+                activeTab === "layers"
+                  ? "bg-yellow-brand text-ink shadow-inner font-extrabold"
+                  : "text-muted-foreground hover:text-ink hover:bg-muted/50"
+              }`}
+              title="Layer Management"
+            >
+              <Layers className="w-4 h-4" />
+              <span>Layers</span>
+            </button>
           </div>
 
-          {/* Column 2: Center Interactive Canvas Stage (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center bg-card/50 border-2 border-ink rounded-2xl p-4 sm:p-6 shadow-pop min-h-[540px]">
+          {/* Tab Content Body */}
+          <div className="p-4 sm:p-5 flex-1 overflow-y-auto">
+            {activeTab === "product" && (
+              <ProductSelectorTab
+                selectedStyle={selectedStyle}
+                selectedColor={selectedColor}
+                onSelectStyle={setSelectedStyle}
+                onSelectColor={setSelectedColor}
+              />
+            )}
+
+            {activeTab === "text" && (
+              <TextToolsTab
+                onAddText={(opts) => canvasRef.current?.addText(opts)}
+                selectedTextObject={selectedObject}
+                onUpdateSelectedText={(props) =>
+                  canvasRef.current?.updateSelected(props)
+                }
+              />
+            )}
+
+            {activeTab === "upload" && (
+              <UploadToolsTab
+                onAddImage={(url, w, h) =>
+                  canvasRef.current?.addImage(url, w, h)
+                }
+                onRawFileUpload={(file) => {
+                  setRawUploadFiles((prev) => {
+                    if (prev.some((f) => f.name === file.name && f.size === file.size))
+                      return prev;
+                    return [...prev, file];
+                  });
+                }}
+                selectedImageObject={selectedObject}
+              />
+            )}
+
+            {activeTab === "clipart" && (
+              <ClipartTab
+                onAddClipart={(svg, name) =>
+                  canvasRef.current?.addClipart(svg, name)
+                }
+              />
+            )}
+
+            {activeTab === "layers" && (
+              <LayersTab
+                layers={layers}
+                selectedLayerId={selectedObject?.id || null}
+                onSelectLayer={() => {}}
+                onMoveUp={() => canvasRef.current?.bringForward()}
+                onMoveDown={() => canvasRef.current?.sendBackward()}
+                onDelete={() => canvasRef.current?.deleteSelected()}
+                onDuplicate={() => canvasRef.current?.duplicateSelected()}
+                onToggleLock={() => canvasRef.current?.toggleLock()}
+                onCenterH={() => canvasRef.current?.centerSelectedH()}
+                onCenterV={() => canvasRef.current?.centerSelectedV()}
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Column 2: Center Interactive Canvas Stage (Full Screen Workspace) */}
+        <div className="flex-1 min-w-0 h-full flex flex-col items-center justify-center p-3 sm:p-6 overflow-y-auto bg-slate-100/60 dark:bg-zinc-950/60 relative">
+          <div className="w-full flex-1 flex flex-col items-center justify-center my-auto">
             <DesignerCanvas
               ref={canvasRef}
               style={selectedStyle}
@@ -418,38 +418,38 @@ export function DesignerStudio({
               <span>Full-Color Ultra HD DTF Transfers &middot; 50+ Industrial Washes</span>
             </div>
           </div>
+        </div>
 
-          {/* Column 3: Right Live Pricing & Quote Sidebar (3 cols) */}
-          <div className="lg:col-span-3">
-            <PricingSummarySidebar
-              style={selectedStyle}
-              color={selectedColor}
-              frontLayerCount={
-                activeSide === "front"
-                  ? layers.length
-                  : canvasRef.current?.getLayerCount("front") || 0
-              }
-              backLayerCount={
-                activeSide === "back"
-                  ? layers.length
-                  : canvasRef.current?.getLayerCount("back") || 0
-              }
-              leftSleeveLayerCount={
-                activeSide === "left_sleeve"
-                  ? layers.length
-                  : canvasRef.current?.getLayerCount("left_sleeve") || 0
-              }
-              rightSleeveLayerCount={
-                activeSide === "right_sleeve"
-                  ? layers.length
-                  : canvasRef.current?.getLayerCount("right_sleeve") || 0
-              }
-              quantity={quantity}
-              onQuantityChange={setQuantity}
-              onSubmitQuote={handleOpenSubmitModal}
-              initialSizes={initialSizes}
-            />
-          </div>
+        {/* Column 3: Right Live Pricing & Quote Sidebar */}
+        <div className="w-full lg:w-[330px] xl:w-[370px] shrink-0 border-t lg:border-t-0 lg:border-l border-border/80 bg-card flex flex-col overflow-y-auto p-4 sm:p-5 z-10 shadow-sm">
+          <PricingSummarySidebar
+            style={selectedStyle}
+            color={selectedColor}
+            frontLayerCount={
+              activeSide === "front"
+                ? layers.length
+                : canvasRef.current?.getLayerCount("front") || 0
+            }
+            backLayerCount={
+              activeSide === "back"
+                ? layers.length
+                : canvasRef.current?.getLayerCount("back") || 0
+            }
+            leftSleeveLayerCount={
+              activeSide === "left_sleeve"
+                ? layers.length
+                : canvasRef.current?.getLayerCount("left_sleeve") || 0
+            }
+            rightSleeveLayerCount={
+              activeSide === "right_sleeve"
+                ? layers.length
+                : canvasRef.current?.getLayerCount("right_sleeve") || 0
+            }
+            quantity={quantity}
+            onQuantityChange={setQuantity}
+            onSubmitQuote={handleOpenSubmitModal}
+            initialSizes={initialSizes}
+          />
         </div>
       </main>
 
