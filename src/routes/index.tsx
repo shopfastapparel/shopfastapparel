@@ -36,40 +36,18 @@ export const Route = createFileRoute("/")({
     meta: [
       {
         title:
-          "Custom DTF T-Shirt Printing in Lawrenceville, GA | Fast Turnaround | Fast Apparel",
+          "Fast Custom Apparel | Commercial DTF Printing & Custom T-Shirts",
       },
       {
         name: "description",
         content:
-          "Lawrenceville's #1 DTF custom t-shirt printer. Full-color DTF prints & promotional products with standard 7–10 business day turnaround. Free mockups, low minimums, free shipping on bulk orders. Serving Lawrenceville, Gwinnett County, Atlanta & all of metro GA.",
+          "Transform your ideas into premium custom apparel with commercial Ultra HD DTF printing. Fast 7–10 day turnaround, free digital mockups, low minimums, and free shipping over $149.",
       },
-      { property: "og:title", content: "Custom DTF T-Shirt Printing in Lawrenceville | Fast Apparel" },
+      { property: "og:title", content: "Fast Custom Apparel | Commercial DTF Printing & Custom T-Shirts" },
       {
         property: "og:description",
         content:
-          "Custom apparel done fast. Based in Lawrenceville, GA — DTF printing for Gwinnett, Atlanta and the entire metro area.",
-      },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "LocalBusiness",
-          name: "Fast Apparel",
-          image: "https://www.shopfastapparel.com/cdn/shop/files/Fast_Apparel_Logo_-_500_x_150.gif",
-          telephone: "+1-678-491-2655",
-          priceRange: "$$",
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: "Lawrenceville",
-            addressRegion: "GA",
-            addressCountry: "US",
-          },
-          areaServed: LOCATIONS.map((l) => `${l.city}, ${l.state}`),
-          description:
-            "DTF custom t-shirt printing and promotional products in Lawrenceville, GA and the greater metro Atlanta area.",
-        }),
+          "Custom apparel and commercial DTF printing done fast. Serving Lawrenceville, Gwinnett County, Atlanta, and shipping nationwide.",
       },
     ],
   }),

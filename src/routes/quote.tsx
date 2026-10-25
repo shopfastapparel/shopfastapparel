@@ -87,17 +87,17 @@ export const Route = createFileRoute("/quote")({
   }),
   head: () => ({
     meta: [
-      { title: "Get a Free Custom Apparel Quote | Atlanta | Fast Apparel" },
+      { title: "Free Custom Apparel Quote | Fast Custom Apparel" },
       {
         name: "description",
         content:
-          "Free custom apparel quote in 24 hours. Upload your art, choose quantity & turnaround, and get a digital mockup. Atlanta, Marietta, Alpharetta & more.",
+          "Get an instant custom apparel price quote with free digital mockups, zero hidden fees, and fast turnaround. Upload your artwork and start your order today.",
       },
-      { property: "og:title", content: "Free Quote — Custom Apparel | Fast Apparel" },
+      { property: "og:title", content: "Free Quote — Custom Apparel | Fast Custom Apparel" },
       {
         property: "og:description",
         content:
-          "Guided quote builder with file upload and instant turnaround estimates. 24-hour response.",
+          "Guided quote builder with file upload, instant estimates, and free digital mockups.",
       },
     ],
   }),

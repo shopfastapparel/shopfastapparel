@@ -5,22 +5,21 @@ export const Route = createFileRoute("/services/custom-tshirts")({
   head: () => ({
     meta: [
       {
-        title:
-          "Custom DTF T-Shirt Printing in Lawrenceville & Atlanta | Low Minimums | Fast Apparel",
+        title: "Custom T-Shirts | Fast Custom Apparel",
       },
       {
         name: "description",
         content:
-          "Premium DTF custom t-shirt printing in Lawrenceville, GA & metro Atlanta. Full-color DTF transfers with low minimums and most orders completed in as little as 7 days. Free mockups.",
+          "Design custom t-shirts online or upload your art. High-definition commercial DTF prints, low minimums, vibrant colors, and fast 7–10 day turnaround in Atlanta & nationwide.",
       },
       {
         property: "og:title",
-        content: "Custom DTF T-Shirt Printing in Lawrenceville & Atlanta | Fast Apparel",
+        content: "Custom T-Shirts | Fast Custom Apparel",
       },
       {
         property: "og:description",
         content:
-          "Full-color DTF custom t-shirts with low minimums and most orders completed in as little as 7 days.",
+          "Design custom t-shirts online with full-color commercial DTF printing, low minimums, and fast turnaround.",
       },
     ],
   }),

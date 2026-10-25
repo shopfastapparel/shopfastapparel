@@ -5,22 +5,21 @@ export const Route = createFileRoute("/services/dtf-transfers")({
   head: () => ({
     meta: [
       {
-        title:
-          "Custom DTF Transfers & Gang Sheets in Atlanta | Fast Apparel",
+        title: "Custom DTF Transfers | Fast Custom Apparel",
       },
       {
         name: "description",
         content:
-          "Order custom Direct-to-Film (DTF) transfers and gang sheets. High-quality, ready-to-press transfers shipped directly to your door with fast delivery across Georgia.",
+          "Fast Custom Apparel is an Atlanta-based commercial DTF transfer company. High-definition ready-to-press heat transfers and custom gang sheets shipped fast nationwide.",
       },
       {
         property: "og:title",
-        content: "Custom DTF Transfers & Gang Sheets | Fast Apparel",
+        content: "Custom DTF Transfers & Gang Sheets | Fast Custom Apparel",
       },
       {
         property: "og:description",
         content:
-          "Premium ready-to-press DTF transfers for DIYers and apparel brands.",
+          "High-definition ready-to-press DTF transfers and custom gang sheets shipped fast nationwide.",
       },
     ],
   }),

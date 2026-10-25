@@ -33,13 +33,28 @@ export function Footer() {
           </h4>
           <ul className="space-y-2 text-sm text-background/80">
             <li>
-              <Link to="/services/custom-tshirts" className="hover:text-background">
+              <Link to="/services/custom-tshirts" className="hover:text-background font-medium">
                 Custom T-Shirt Printing
               </Link>
             </li>
             <li>
+              <Link to="/services/dtf-transfers" className="hover:text-cyan-brand text-background font-semibold">
+                Custom DTF Transfers
+              </Link>
+            </li>
+            <li>
+              <Link to="/services/team-bulk" className="hover:text-background">
+                Bulk &amp; Team Orders
+              </Link>
+            </li>
+            <li>
+              <Link to="/catalog" className="hover:text-yellow-brand text-background font-semibold">
+                Wholesale Catalog (5,000+ Styles)
+              </Link>
+            </li>
+            <li>
               <Link to="/services/family-tees" className="hover:text-background">
-                Family Tees & Groups
+                Family Tees &amp; Groups
               </Link>
             </li>
             <li>

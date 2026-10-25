@@ -32,28 +32,31 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Fast Apparel — DTF Custom T-Shirt Printing in Lawrenceville, GA" },
+      { title: "Fast Custom Apparel | Commercial DTF Printing & Custom T-Shirts" },
       {
         name: "description",
         content:
-          "Lawrenceville's fastest DTF custom t-shirt printer. Full-color DTF prints for teams, businesses, and events. Free mockups, low minimums, free shipping on bulk orders.",
+          "Lawrenceville & Atlanta's fastest custom apparel printer. High-definition commercial DTF prints with 7-10 day turnaround, free digital mockups, and low minimums.",
       },
       { name: "author", content: "Fast Apparel LLC" },
-      { property: "og:title", content: "Fast Apparel — DTF Custom T-Shirt Printing in Lawrenceville, GA" },
+      { property: "og:title", content: "Fast Custom Apparel | Commercial DTF Printing & Custom T-Shirts" },
       {
         property: "og:description",
         content:
-          "DTF custom apparel and promotional products done fast. Serving Lawrenceville, Atlanta, Marietta, Alpharetta, Sandy Springs, Decatur & Roswell.",
+          "Full-color commercial DTF custom t-shirts, team uniforms, and promotional products done fast. Serving Lawrenceville, Gwinnett, and Metro Atlanta.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://shopfastapparel.com" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#0f172a" },
-      { name: "twitter:title", content: "Fast Apparel — DTF Custom T-Shirt Printing in Lawrenceville, GA" },
-      { name: "description", content: "SEO Shirt Finder is an e-commerce platform for custom apparel, optimized for local search and lead generation." },
-      { property: "og:description", content: "SEO Shirt Finder is an e-commerce platform for custom apparel, optimized for local search and lead generation." },
-      { name: "twitter:description", content: "SEO Shirt Finder is an e-commerce platform for custom apparel, optimized for local search and lead generation." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe155d54-5040-492c-ada5-149c7b8bba47/id-preview-20374dae--dd11a175-0db8-4bc2-878d-abff80c8f5c9.lovable.app-1778075118442.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe155d54-5040-492c-ada5-149c7b8bba47/id-preview-20374dae--dd11a175-0db8-4bc2-878d-abff80c8f5c9.lovable.app-1778075118442.png" },
+      { name: "twitter:title", content: "Fast Custom Apparel | Commercial DTF Printing & Custom T-Shirts" },
+      {
+        name: "twitter:description",
+        content:
+          "Full-color commercial DTF custom t-shirts, team uniforms, and promotional products done fast. Serving Lawrenceville, Gwinnett, and Metro Atlanta.",
+      },
+      { property: "og:image", content: "https://shopfastapparel.com/images/fast_logo_contrasted.png" },
+      { name: "twitter:image", content: "https://shopfastapparel.com/images/fast_logo_contrasted.png" },
     ],
     links: [
       { rel: "icon", type: "image/png", href: "/images/fast_logo_contrasted.png" },
@@ -69,6 +72,110 @@ export const Route = createRootRoute({
       },
     ],
     scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebSite",
+              "@id": "https://shopfastapparel.com/#website",
+              "url": "https://shopfastapparel.com/",
+              "name": "Fast Custom Apparel",
+              "alternateName": [
+                "Fast Apparel",
+                "Shop Fast Apparel",
+                "Fast Apparel LLC"
+              ],
+              "description": "Lawrenceville's fastest DTF custom t-shirt printer and apparel decorator. Commercial DTF transfers, team jerseys, corporate apparel, and custom gear.",
+              "publisher": {
+                "@id": "https://shopfastapparel.com/#organization"
+              },
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://shopfastapparel.com/catalog?q={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+              }
+            },
+            {
+              "@type": ["ClothingStore", "LocalBusiness"],
+              "@id": "https://shopfastapparel.com/#organization",
+              "name": "Fast Custom Apparel",
+              "legalName": "Fast Apparel LLC",
+              "url": "https://shopfastapparel.com",
+              "logo": "https://shopfastapparel.com/images/fast_logo_contrasted.png",
+              "image": "https://shopfastapparel.com/images/fast_logo_contrasted.png",
+              "description": "Commercial Ultra HD DTF custom t-shirt printing and apparel transfers in Lawrenceville & Greater Atlanta. Fast turnaround, low minimums, vibrant prints.",
+              "telephone": "678-491-2655",
+              "email": "info@shopfastapparel.com",
+              "priceRange": "$$",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Lawrenceville",
+                "addressRegion": "GA",
+                "postalCode": "30043",
+                "addressCountry": "US"
+              },
+              "areaServed": [
+                { "@type": "City", "name": "Lawrenceville" },
+                { "@type": "City", "name": "Atlanta" },
+                { "@type": "City", "name": "Duluth" },
+                { "@type": "City", "name": "Suwanee" },
+                { "@type": "City", "name": "Buford" },
+                { "@type": "City", "name": "Marietta" },
+                { "@type": "City", "name": "Alpharetta" },
+                { "@type": "AdministrativeArea", "name": "Georgia" }
+              ]
+            },
+            {
+              "@type": "SiteNavigationElement",
+              "@id": "https://shopfastapparel.com/#navigation",
+              "name": "Main Site Navigation",
+              "hasPart": [
+                {
+                  "@type": "WebPage",
+                  "name": "Custom T-Shirts",
+                  "description": "Design and order high-definition custom t-shirts with lightning-fast turnaround, zero hidden fees, and vibrant commercial DTF printing.",
+                  "url": "https://shopfastapparel.com/services/custom-tshirts"
+                },
+                {
+                  "@type": "WebPage",
+                  "name": "Custom DTF Transfers",
+                  "description": "Commercial Ultra HD Direct-to-Film (DTF) heat transfers printed and shipped fast. Ready to press on cotton, polyester, blends, and nylon.",
+                  "url": "https://shopfastapparel.com/services/dtf-transfers"
+                },
+                {
+                  "@type": "WebPage",
+                  "name": "Full Catalog",
+                  "description": "Search over 5,000 blank apparel styles from Champion, Adidas, Richardson, Comfort Colors, Bella+Canvas, and more with live warehouse inventory.",
+                  "url": "https://shopfastapparel.com/catalog"
+                },
+                {
+                  "@type": "WebPage",
+                  "name": "Bulk & Teams",
+                  "description": "Volume discounts and custom apparel printing for sports leagues, schools, churches, businesses, and family events across metro Atlanta.",
+                  "url": "https://shopfastapparel.com/services/team-bulk"
+                },
+                {
+                  "@type": "WebPage",
+                  "name": "Why Fast Apparel?",
+                  "description": "Meet Dash the Cheetah, our mascot and Chief Speed Officer, delivering top-quality commercial DTF prints with fast 7-10 day turnaround.",
+                  "url": "https://shopfastapparel.com/about"
+                },
+                {
+                  "@type": "WebPage",
+                  "name": "Free Quote",
+                  "description": "Get an instant custom apparel price quote with free digital mockups and proofing before production.",
+                  "url": "https://shopfastapparel.com/quote"
+                }
+              ]
+            }
+          ]
+        }),
+      },
       {
         src: "https://www.googletagmanager.com/gtag/js?id=G-QG5KZGRR5L",
         async: true,

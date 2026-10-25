@@ -5,19 +5,18 @@ export const Route = createFileRoute("/services/team-bulk")({
   head: () => ({
     meta: [
       {
-        title:
-          "Team Uniforms & Bulk DTF T-Shirt Orders | Volume Pricing | Fast Apparel",
+        title: "Bulk & Team Orders | Fast Custom Apparel",
       },
       {
         name: "description",
         content:
-          "Bulk custom DTF t-shirts and team uniforms for Lawrenceville & metro Atlanta schools, sports teams, churches, and corporations. Volume discounts and free shipping on bulk orders.",
+          "Volume discounts and custom DTF apparel printing for sports teams, schools, churches, businesses, and large events across Atlanta and nationwide.",
       },
-      { property: "og:title", content: "Bulk & Team Uniform Printing in Atlanta" },
+      { property: "og:title", content: "Bulk & Team Orders | Fast Custom Apparel" },
       {
         property: "og:description",
         content:
-          "Volume pricing on custom team apparel and bulk t-shirt orders across metro Atlanta.",
+          "Volume pricing and discounts on custom team apparel and bulk t-shirt orders.",
       },
     ],
   }),

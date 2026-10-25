@@ -13,16 +13,16 @@ import {
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About Fast Apparel | Meet Dash & Atlanta's Custom Print Shop" },
+      { title: "Why Fast Custom Apparel? | Meet Dash & Our Print Shop" },
       {
         name: "description",
         content:
-          "Fast Apparel is Atlanta's go-to custom t-shirt printing shop. Meet Dash, our Chief Speed Officer, and discover our 7–10 day turnaround and commercial DTF printing.",
+          "Fast Custom Apparel offers full-color commercial DTF process printing, lightning turnaround powered by Dash the Cheetah, and zero hidden setup fees across Atlanta and nationwide.",
       },
-      { property: "og:title", content: "About | Fast Apparel" },
+      { property: "og:title", content: "Why Fast Custom Apparel? | About Our Shop" },
       {
         property: "og:description",
-        content: "Atlanta-based custom apparel printer serving the metro area with fast turnaround and commercial DTF printing.",
+        content: "Atlanta-based commercial DTF apparel printer serving teams and brands with 7-10 day turnaround.",
       },
     ],
   }),

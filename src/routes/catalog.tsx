@@ -40,17 +40,17 @@ export const Route = createFileRoute("/catalog")({
   }),
   head: () => ({
     meta: [
-      { title: "Wholesale Apparel Catalog (5,000+ Styles) | Live Inventory Search | Fast Apparel" },
+      { title: "Collections & Wholesale Catalog | Fast Custom Apparel" },
       {
         name: "description",
         content:
-          "Search over 5,000 blank apparel styles from Champion, Adidas, Richardson, Comfort Colors, Bella+Canvas, and more. Direct live wholesale catalog with 1-click custom print quotes.",
+          "At Fast Custom Apparel, our catalog brings together thousands of blank styles from top brands like Gildan, Bella+Canvas, Champion, and Comfort Colors with live warehouse stock.",
       },
-      { property: "og:title", content: "Live Wholesale Apparel Catalog | Fast Apparel Atlanta" },
+      { property: "og:title", content: "Collections & Blank Apparel Catalog | Fast Custom Apparel" },
       {
         property: "og:description",
         content:
-          "Looking for a specific brand or garment? Search 5,000+ wholesale blanks with real-time colors and get a custom print quote in 24 hours.",
+          "Browse 5,000+ blank styles with real-time distributor warehouse inventory and instant custom print quotes.",
       },
     ],
   }),
