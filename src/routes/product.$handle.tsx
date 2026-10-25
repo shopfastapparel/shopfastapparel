@@ -5,7 +5,9 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { PricingCalculator } from "@/components/PricingCalculator";
 import { APPAREL_STYLES } from "@/lib/apparel";
-import { CheckCircle2, ChevronRight, Shield, Plus, Minus } from "lucide-react";
+import { CheckCircle2, ChevronRight, Shield, Plus, Minus, Palette, Sparkles, ArrowRight } from "lucide-react";
+import { DesignerModal } from "@/components/designer/DesignerModal";
+import { resolveGarmentColor } from "@/components/designer/designerTypes";
 
 export const Route = createFileRoute("/product/$handle")({
   component: ProductPage,
@@ -18,6 +20,7 @@ function ProductPage() {
   const [inventory, setInventory] = useState<InventoryItem[] | null>(null);
   const [loadingInv, setLoadingInv] = useState(true);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [isDesignerModalOpen, setIsDesignerModalOpen] = useState(false);
 
   useEffect(() => {
     if (!product?.ssStyleId) return;
@@ -116,7 +119,7 @@ function ProductPage() {
         </div>
       </div>
 
-      <section className="mx-auto max-w-7xl px-4 py-12 lg:py-20 grid lg:grid-cols-2 gap-12 lg:gap-20">
+      <section className="mx-auto max-w-7xl px-4 pt-12 pb-28 lg:py-20 grid lg:grid-cols-2 gap-12 lg:gap-20">
         {/* Left Column: Images */}
         <div className="space-y-4">
           <div className="aspect-[4/5] md:aspect-square bg-muted rounded-2xl overflow-hidden border">
@@ -144,6 +147,58 @@ function ProductPage() {
               <span className="text-sm font-medium text-muted-foreground">/ shirt</span>
             </div>
           )}
+
+          {/* TidalColors-style Hero "Start Designing Online" Card */}
+          <div className="mt-5 p-5 rounded-2xl bg-gradient-to-br from-magenta-brand/10 via-purple-50/50 to-cyan-brand/10 border-2 border-magenta-brand/30 shadow-sm space-y-3.5">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-black uppercase tracking-wider text-magenta-brand">
+                  Live Interactive Studio
+                </span>
+              </div>
+              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-muted-foreground bg-white/80 px-2.5 py-0.5 rounded-full border border-black/5">
+                <Sparkles className="w-3 h-3 text-yellow-500 fill-yellow-400" /> Ultra HD DTF
+              </span>
+            </div>
+
+            <div className="space-y-1">
+              <h3 className="font-display text-xl font-black text-ink flex items-center gap-2">
+                Customize & Design This Shirt
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Add custom text, upload your logo, choose front/back print placements, and see instant live pricing on {selectedColor || 'your chosen color'}.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-1">
+              <Button
+                type="button"
+                onClick={() => setIsDesignerModalOpen(true)}
+                size="lg"
+                className="flex-1 bg-gradient-to-r from-magenta-brand to-pink-600 hover:from-magenta-brand/90 hover:to-pink-700 text-white font-black text-base shadow-lg shadow-magenta-brand/25 gap-2 h-12"
+              >
+                <Palette className="w-5 h-5" />
+                Start Designing Now
+                <ArrowRight className="w-4 h-4 ml-auto" />
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 pt-1 text-[11px] text-muted-foreground font-semibold">
+              <div className="flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Zero screen fees</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-cyan-brand shrink-0" />
+                <span>Free proof before print</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-yellow-600 shrink-0" />
+                <span>Ultra HD vibrant DTF</span>
+              </div>
+            </div>
+          </div>
           
           <div className="mt-4 p-5 bg-yellow-brand/10 border-2 border-yellow-brand rounded-xl">
             <p className="font-medium text-foreground">
@@ -427,6 +482,38 @@ function ProductPage() {
           )}
         </div>
       </section>
+
+      {/* Mobile Sticky Action Bar (TidalColors inspired) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-border px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] flex items-center justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <p className="text-xs font-bold truncate text-ink">{product.name}</p>
+          <p className="text-[11px] text-muted-foreground truncate">
+            {selectedColor ? `Color: ${selectedColor}` : 'Live DTF Printing'}
+            {totalSizesSelected > 0 && ` • ${totalSizesSelected} pcs`}
+          </p>
+        </div>
+        <Button
+          type="button"
+          onClick={() => setIsDesignerModalOpen(true)}
+          className="bg-magenta-brand hover:bg-magenta-brand/90 text-white font-bold text-sm px-4 py-2 shrink-0 shadow-md gap-1.5"
+        >
+          <Palette className="w-4 h-4" />
+          Start Designing
+        </Button>
+      </div>
+
+      {/* Interactive Full-Screen Designer Modal */}
+      <DesignerModal
+        isOpen={isDesignerModalOpen}
+        onClose={() => setIsDesignerModalOpen(false)}
+        product={product}
+        selectedColor={resolveGarmentColor(
+          selectedColor,
+          inventory?.find((i) => i.colorName === selectedColor)?.colorHex
+        )}
+        quantity={totalSizesSelected > 0 ? totalSizesSelected : 24}
+        initialSizes={totalSizesSelected > 0 ? selectedSizes : undefined}
+      />
     </SiteLayout>
   );
 }

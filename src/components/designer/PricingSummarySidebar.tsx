@@ -13,6 +13,7 @@ interface PricingSummarySidebarProps {
   quantity: number;
   onQuantityChange: (qty: number) => void;
   onSubmitQuote: () => void;
+  initialSizes?: Record<string, number>;
 }
 
 export function PricingSummarySidebar({
@@ -23,6 +24,7 @@ export function PricingSummarySidebar({
   quantity,
   onQuantityChange,
   onSubmitQuote,
+  initialSizes,
 }: PricingSummarySidebarProps) {
   const [liveBaseCost, setLiveBaseCost] = useState<number | null>(null);
   const [loadingPrice, setLoadingPrice] = useState(false);
@@ -126,6 +128,26 @@ export function PricingSummarySidebar({
             {locations === 2 ? "2 Sides (Front & Back)" : "1 Side"}
           </span>
         </div>
+
+        {initialSizes && Object.entries(initialSizes).some(([_, q]) => q > 0) && (
+          <div className="bg-muted/40 p-2 rounded-md border border-border/80">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block mb-1">
+              Selected Sizes From Product:
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {Object.entries(initialSizes)
+                .filter(([_, q]) => q > 0)
+                .map(([sz, q]) => (
+                  <span
+                    key={sz}
+                    className="inline-flex items-center text-[11px] font-bold bg-background px-2 py-0.5 rounded border border-ink/20 text-ink font-mono"
+                  >
+                    {sz}: {q}
+                  </span>
+                ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Dynamic Pricing Display */}

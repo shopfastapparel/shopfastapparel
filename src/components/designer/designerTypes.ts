@@ -56,3 +56,35 @@ export const POPULAR_GARMENT_COLORS: GarmentColor[] = [
   { name: "Purple", hex: "#7E22CE", isDark: true },
   { name: "Orange", hex: "#EA580C", isDark: true },
 ];
+
+export function resolveGarmentColor(colorName?: string | null, colorHex?: string | null): GarmentColor {
+  if (!colorName) return POPULAR_GARMENT_COLORS[0];
+  const normalized = colorName.trim().toLowerCase();
+  
+  // Try exact or substring match in popular colors
+  const found = POPULAR_GARMENT_COLORS.find(
+    c => c.name.toLowerCase() === normalized ||
+         normalized.includes(c.name.toLowerCase()) ||
+         c.name.toLowerCase().includes(normalized)
+  );
+  if (found) {
+    return colorHex ? { ...found, hex: colorHex } : found;
+  }
+  
+  // Determine if color is dark based on hex luminance
+  const cleanHex = (colorHex || "#18181B").replace("#", "");
+  let isDark = true;
+  if (cleanHex.length >= 6) {
+    const r = parseInt(cleanHex.substring(0, 2), 16) || 0;
+    const g = parseInt(cleanHex.substring(2, 4), 16) || 0;
+    const b = parseInt(cleanHex.substring(4, 6), 16) || 0;
+    const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    isDark = lum < 0.55;
+  }
+
+  return {
+    name: colorName,
+    hex: colorHex || "#18181B",
+    isDark
+  };
+}
