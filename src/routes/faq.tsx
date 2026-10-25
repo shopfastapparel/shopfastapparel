@@ -4,7 +4,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 const FAQS = [
   {
     q: "What's your turnaround time?",
-    a: "Most orders ship in 3–5 business days from artwork approval. Rush production is available for tighter deadlines — just ask.",
+    a: "Our standard turnaround time is 7–10 business days (often times even sooner!) from the date your digital mockup proof is approved and invoice payment is received. Rush turnaround options may be available for time-sensitive deadlines upon request.",
   },
   {
     q: "Do you have a minimum order?",

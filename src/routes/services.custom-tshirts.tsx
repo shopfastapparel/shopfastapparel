@@ -61,7 +61,7 @@ export const Route = createFileRoute("/services/custom-tshirts")({
         },
         {
           q: "How fast is your turnaround?",
-          a: "Most orders ship within 3–5 business days. Rush options are available for tighter deadlines.",
+          a: "Our standard turnaround time is 7–10 business days (often times even sooner!). Rush turnaround options are available for tighter deadlines.",
         },
         {
           q: "Do you provide free mockups?",
