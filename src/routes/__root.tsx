@@ -108,7 +108,7 @@ export const Route = createRootRoute({
               "url": "https://shopfastapparel.com",
               "logo": "https://shopfastapparel.com/images/fast_logo_contrasted.png",
               "image": "https://shopfastapparel.com/images/fast_logo_contrasted.png",
-              "description": "Commercial Ultra HD DTF custom t-shirt printing and apparel transfers in Lawrenceville & Greater Atlanta. Fast turnaround, low minimums, vibrant prints.",
+              "description": "Commercial Ultra HD DTF custom t-shirt printing and apparel decoration in Lawrenceville & Greater Atlanta. Fast turnaround, low minimums, vibrant prints.",
               "telephone": "678-491-2655",
               "email": "info@shopfastapparel.com",
               "priceRange": "$$",
@@ -143,9 +143,9 @@ export const Route = createRootRoute({
                 },
                 {
                   "@type": "WebPage",
-                  "name": "Custom DTF Transfers",
-                  "description": "Commercial Ultra HD Direct-to-Film (DTF) heat transfers printed and shipped fast. Ready to press on cotton, polyester, blends, and nylon.",
-                  "url": "https://shopfastapparel.com/services/dtf-transfers"
+                  "name": "Design Studio",
+                  "description": "Design custom t-shirts and apparel online. Upload artwork, add text, select garment styles, and preview mockups in real time.",
+                  "url": "https://shopfastapparel.com/designer"
                 },
                 {
                   "@type": "WebPage",

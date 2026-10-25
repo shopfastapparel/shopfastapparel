@@ -38,11 +38,6 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/services/dtf-transfers" className="hover:text-cyan-brand text-background font-semibold">
-                Custom DTF Transfers
-              </Link>
-            </li>
-            <li>
               <Link to="/services/team-bulk" className="hover:text-background">
                 Bulk &amp; Team Orders
               </Link>

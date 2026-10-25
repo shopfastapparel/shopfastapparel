@@ -9,12 +9,13 @@ import { PRIMARY_PHONE } from "@/lib/locations";
 const NAV = [
   { label: "Design Studio", to: "/designer" as const, isNew: true },
   { label: "Custom T-Shirts", to: "/services/custom-tshirts" as const },
-  { label: "DTF Transfers", to: "/services/dtf-transfers" as const },
   { label: "Full Catalog", to: "/catalog" as const },
   { label: "Bulk & Teams", to: "/services/team-bulk" as const },
   { label: "Family Tees", to: "/services/family-tees" as const },
+  { label: "Promo Products", to: "/services/promotional-products" as const },
   { label: "Top Sellers", to: "/shop" as const },
   { label: "Blog", to: "/blog" as const },
+  { label: "Track Order", to: "/track" as const },
   { label: "FAQ", to: "/faq" as const },
 ];
 
