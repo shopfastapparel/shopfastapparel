@@ -75,9 +75,11 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
       const updateScale = () => {
         if (!wrapperRef.current) return;
         const width = wrapperRef.current.clientWidth;
+        const height = wrapperRef.current.clientHeight;
         if (width > 0) {
-          // Allow desktop to expand up to 1.15x for a spacious, prominent shirt display
-          const s = Math.min(1.15, Math.max(0.65, (width - 16) / 500));
+          const scaleW = (width - 16) / 500;
+          const scaleH = height > 50 ? (height - 16) / 500 : scaleW;
+          const s = Math.min(1.15, Math.max(0.55, Math.min(scaleW, scaleH)));
           setResponsiveScale(s);
         }
       };
@@ -205,6 +207,7 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
       obj.cornerStrokeColor = "#00F0FF";
       obj.cornerStyle = "circle";
       obj.cornerSize = 10;
+      obj.touchCornerSize = 36;
       obj.transparentCorners = false;
       obj.borderColor = "#00F0FF";
       obj.borderScaleFactor = 2;
@@ -289,7 +292,15 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
         selectionBorderColor: "#00F0FF",
         selectionLineWidth: 2,
         preserveObjectStacking: true,
+        allowTouchScrolling: false,
       });
+
+      if (canvas.upperCanvasEl) {
+        canvas.upperCanvasEl.style.touchAction = "none";
+      }
+      if (canvasElRef.current) {
+        canvasElRef.current.style.touchAction = "none";
+      }
 
       fabricCanvasRef.current = canvas;
 
@@ -682,17 +693,17 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
     const finalScale = responsiveScale * zoom;
 
     return (
-      <div className="w-full flex flex-col items-center justify-center select-none">
+      <div className="w-full max-w-full flex flex-col items-center justify-center select-none overflow-hidden">
         {/* Top Controls: 4-View Switcher (Front, Back, Left Sleeve, Right Sleeve) & Zoom */}
-        <div className="w-full flex items-center justify-between gap-2 mb-3 px-1">
+        <div className="w-full flex items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-3 px-1 overflow-x-auto no-scrollbar">
           {/* 4-View Switcher */}
-          <div className="flex bg-muted/70 p-1 rounded-xl border-2 border-ink shadow-sm gap-1">
+          <div className="flex bg-muted/70 p-0.5 sm:p-1 rounded-xl border-2 border-ink shadow-sm gap-0.5 sm:gap-1 shrink-0">
             {(
               [
-                { id: "front", label: "Front" },
-                { id: "back", label: "Back" },
-                { id: "left_sleeve", label: "Left Sleeve" },
-                { id: "right_sleeve", label: "Right Sleeve" },
+                { id: "front", label: "Front", short: "Front" },
+                { id: "back", label: "Back", short: "Back" },
+                { id: "left_sleeve", label: "Left Sleeve", short: "L. Sleeve" },
+                { id: "right_sleeve", label: "Right Sleeve", short: "R. Sleeve" },
               ] as const
             ).map((v) => {
               const count =
@@ -704,15 +715,16 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
                   key={v.id}
                   type="button"
                   onClick={() => switchSide(v.id)}
-                  className={`flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
+                  className={`flex items-center gap-1 px-1.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
                     activeSide === v.id
                       ? "bg-ink text-background shadow"
                       : "text-muted-foreground hover:text-ink"
                   }`}
                 >
-                  <span>{v.label}</span>
+                  <span className="hidden sm:inline">{v.label}</span>
+                  <span className="sm:hidden text-[11px]">{v.short}</span>
                   {count > 0 && (
-                    <span className="w-2 h-2 rounded-full bg-cyan-brand ring-1 ring-background shrink-0" />
+                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-cyan-brand ring-1 ring-background shrink-0" />
                   )}
                 </button>
               );
@@ -720,24 +732,24 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
           </div>
 
           {/* Canvas Tools (Zoom, Safe-Zone Toggle) */}
-          <div className="flex items-center gap-1 bg-card border-2 border-ink p-1 rounded-xl shadow-sm text-ink shrink-0">
+          <div className="flex items-center gap-0.5 sm:gap-1 bg-card border-2 border-ink p-0.5 sm:p-1 rounded-xl shadow-sm text-ink shrink-0">
             <button
               onClick={() => setZoom((z) => Math.min(z + 0.1, 1.4))}
-              className="p-1.5 hover:bg-muted rounded-lg text-xs font-bold"
+              className="p-1 sm:p-1.5 hover:bg-muted rounded-lg text-xs font-bold"
               title="Zoom In"
             >
               <ZoomIn className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => setZoom((z) => Math.max(z - 0.1, 0.7))}
-              className="p-1.5 hover:bg-muted rounded-lg text-xs font-bold"
+              className="p-1 sm:p-1.5 hover:bg-muted rounded-lg text-xs font-bold"
               title="Zoom Out"
             >
               <ZoomOut className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => setZoom(1)}
-              className="p-1.5 hover:bg-muted rounded-lg text-xs font-bold"
+              className="p-1 sm:p-1.5 hover:bg-muted rounded-lg text-xs font-bold hidden sm:inline-flex"
               title="Reset Zoom"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -745,7 +757,7 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
             <div className="h-4 w-[1px] bg-border mx-0.5" />
             <button
               onClick={() => setShowBounds((b) => !b)}
-              className={`p-1.5 rounded-lg text-xs font-bold flex items-center gap-1 ${
+              className={`p-1 sm:p-1.5 rounded-lg text-xs font-bold flex items-center gap-1 ${
                 showBounds ? "bg-cyan-brand/20 text-cyan-brand font-bold" : "text-muted-foreground"
               }`}
               title="Toggle Safe-Zone Bounds"
@@ -758,19 +770,27 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
         {/* Responsive Stage Wrapper */}
         <div
           ref={wrapperRef}
-          className="w-full flex items-center justify-center overflow-hidden py-1"
+          className="w-full max-w-full flex items-center justify-center overflow-hidden py-1"
           style={{ height: `${500 * finalScale}px` }}
         >
-          {/* Fixed 500x500 Master Coordinate Stage scaled uniformly */}
+          {/* Scaled bounding wrapper to keep layout geometry aligned with scaled canvas */}
           <div
-            ref={stageRef}
             style={{
-              width: "500px",
-              height: "500px",
-              transform: `scale(${finalScale})`,
-              transformOrigin: "top center",
+              width: `${500 * finalScale}px`,
+              height: `${500 * finalScale}px`,
             }}
-            className="relative shrink-0 flex items-center justify-center transition-transform duration-100 rounded-2xl shadow-sm"
+            className="relative shrink-0 flex items-center justify-center"
+          >
+            {/* Fixed 500x500 Master Coordinate Stage scaled uniformly */}
+            <div
+              ref={stageRef}
+              style={{
+                width: "500px",
+                height: "500px",
+                transform: `scale(${finalScale})`,
+                transformOrigin: "top left",
+              }}
+              className="absolute top-0 left-0 flex items-center justify-center transition-transform duration-100 rounded-2xl shadow-sm"
           >
             {/* Quick Action Floating Bar for Selected Layer */}
             {selectedObject && (
@@ -874,6 +894,7 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
                 height: `${bounds.height}px`,
                 top: `${bounds.top}px`,
                 left: `${bounds.left}px`,
+                touchAction: "none",
               }}
             >
               {showBounds && (
@@ -895,17 +916,18 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
                       : 'Right Sleeve Safe-Zone (3.5" x 3.5")'}
                 </span>
               )}
-              <canvas ref={canvasElRef} />
+              <canvas ref={canvasElRef} style={{ touchAction: "none" }} />
             </div>
           </div>
         </div>
-
-        {/* Quality Indicator Footer */}
-        <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground bg-muted/40 px-3 py-1.5 rounded-full border">
-          <ShieldCheck className="w-4 h-4 text-cyan-brand" />
-          <span>Full-Color DTF Proofing • Standard & Oversized Supported</span>
-        </div>
       </div>
+
+      {/* Quality Indicator Footer (DESKTOP ONLY) */}
+      <div className="hidden sm:flex mt-3 items-center gap-2 text-xs text-muted-foreground bg-muted/40 px-3 py-1.5 rounded-full border">
+        <ShieldCheck className="w-4 h-4 text-cyan-brand" />
+        <span>Full-Color DTF Proofing • Standard & Oversized Supported</span>
+      </div>
+    </div>
     );
   }
 );
