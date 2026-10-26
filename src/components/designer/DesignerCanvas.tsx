@@ -9,7 +9,16 @@ import {
 } from "./garmentTemplates";
 import { ApparelStyle } from "@/lib/apparel";
 import { GarmentColor } from "./designerTypes";
-import { ZoomIn, ZoomOut, RotateCcw, Eye, ShieldCheck } from "lucide-react";
+import {
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  Eye,
+  ShieldCheck,
+  Trash2,
+  Copy,
+  AlignCenter,
+} from "lucide-react";
 
 export interface DesignerCanvasHandle {
   addText: (options: any) => void;
@@ -54,6 +63,7 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
     const [zoom, setZoom] = useState(1);
     const [showBounds, setShowBounds] = useState(true);
     const [responsiveScale, setResponsiveScale] = useState(1);
+    const [selectedObject, setSelectedObject] = useState<any | null>(null);
 
     const garmentCategory = getGarmentCategory(style.id);
     const styleBoundsGroup =
@@ -75,6 +85,168 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
       updateScale();
       window.addEventListener("resize", updateScale);
       return () => window.removeEventListener("resize", updateScale);
+    }, []);
+
+    // Custom Canvas 2D Control Renderer for Top-Right Delete Handle
+    const renderDeleteControl = (
+      ctx: CanvasRenderingContext2D,
+      left: number,
+      top: number,
+      _styleOverride: any,
+      fabricObject: fabric.FabricObject
+    ) => {
+      ctx.save();
+      ctx.translate(left, top);
+
+      // Rotate to match garment/object angle
+      const angle = (fabricObject as any).getTotalAngle
+        ? (fabricObject as any).getTotalAngle()
+        : fabricObject.angle || 0;
+      ctx.rotate(fabric.util.degreesToRadians(angle));
+
+      const radius = 13;
+
+      // Prominent drop shadow for high contrast on light or dark blanks
+      ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
+      ctx.shadowBlur = 6;
+      ctx.shadowOffsetY = 2;
+
+      // Solid vivid red circle background
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, Math.PI * 2, false);
+      ctx.fillStyle = "#EF4444";
+      ctx.fill();
+
+      // Reset shadow for crisp borders
+      ctx.shadowColor = "transparent";
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "#FFFFFF";
+      ctx.stroke();
+
+      // High-definition Trash Can Icon
+      ctx.strokeStyle = "#FFFFFF";
+      ctx.fillStyle = "#FFFFFF";
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+
+      // Lid top handle
+      ctx.beginPath();
+      ctx.moveTo(-2, -5.5);
+      ctx.lineTo(2, -5.5);
+      ctx.stroke();
+
+      // Lid rim
+      ctx.beginPath();
+      ctx.moveTo(-5.5, -3.8);
+      ctx.lineTo(5.5, -3.8);
+      ctx.stroke();
+
+      // Can body
+      ctx.beginPath();
+      ctx.moveTo(-4.2, -2);
+      ctx.lineTo(-3.4, 5.2);
+      ctx.lineTo(3.4, 5.2);
+      ctx.lineTo(4.2, -2);
+      ctx.closePath();
+      ctx.stroke();
+
+      // Vertical slats inside
+      ctx.beginPath();
+      ctx.moveTo(-1.3, -0.2);
+      ctx.lineTo(-1.1, 3.6);
+      ctx.moveTo(1.3, -0.2);
+      ctx.lineTo(1.1, 3.6);
+      ctx.stroke();
+
+      ctx.restore();
+    };
+
+    // Attach custom delete control and clean cyan bounding box styling
+    const attachCustomControls = (obj: any) => {
+      if (!obj || !obj.controls) return;
+
+      // Replace top-right handle (tr) with our custom 1-click Delete Control
+      obj.controls.tr = new fabric.Control({
+        x: 0.5,
+        y: -0.5,
+        offsetX: 0,
+        offsetY: 0,
+        cursorStyle: "pointer",
+        mouseUpHandler: (_eventData: any, transform: any) => {
+          const target = transform?.target;
+          const canvas = target?.canvas || fabricCanvasRef.current;
+          if (!canvas) return false;
+
+          if (target) {
+            if (target.type === "activeSelection") {
+              const objs = target.getObjects ? target.getObjects() : [];
+              objs.forEach((o: any) => canvas.remove(o));
+            } else {
+              canvas.remove(target);
+            }
+          }
+          canvas.discardActiveObject();
+          canvas.requestRenderAll();
+          syncLayers(canvas);
+          setSelectedObject(null);
+          onSelectionChange(null);
+          return true;
+        },
+        render: renderDeleteControl,
+        sizeX: 24,
+        sizeY: 24,
+        touchSizeX: 36,
+        touchSizeY: 36,
+      });
+
+      // Bounding box & control handle visual styling (Clean cyan + white circles)
+      obj.cornerColor = "#FFFFFF";
+      obj.cornerStrokeColor = "#00F0FF";
+      obj.cornerStyle = "circle";
+      obj.cornerSize = 10;
+      obj.transparentCorners = false;
+      obj.borderColor = "#00F0FF";
+      obj.borderScaleFactor = 2;
+      obj.padding = 6;
+    };
+
+    // Global Keyboard listener: Delete / Backspace removes active layer
+    useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        const target = e.target as HTMLElement | null;
+        if (
+          target &&
+          (target.tagName === "INPUT" ||
+            target.tagName === "TEXTAREA" ||
+            target.isContentEditable)
+        ) {
+          return;
+        }
+
+        const canvas = fabricCanvasRef.current;
+        if (!canvas) return;
+        const activeObj = canvas.getActiveObject();
+        if (activeObj && (activeObj as any).isEditing) {
+          return;
+        }
+
+        if (e.key === "Delete" || e.key === "Backspace") {
+          if (activeObj) {
+            e.preventDefault();
+            const active = canvas.getActiveObjects();
+            active.forEach((obj) => canvas.remove(obj));
+            canvas.discardActiveObject();
+            canvas.requestRenderAll();
+            syncLayers(canvas);
+            setSelectedObject(null);
+            onSelectionChange(null);
+          }
+        }
+      };
+
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
     }, []);
 
     // Helper to update layers list
@@ -123,19 +295,37 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
 
       // Selection listeners
       canvas.on("selection:created", (e) => {
-        onSelectionChange(e.selected ? e.selected[0] : null);
+        const sel = e.selected ? e.selected[0] : null;
+        setSelectedObject(sel);
+        onSelectionChange(sel);
+        const active = canvas.getActiveObject();
+        if (active) attachCustomControls(active);
       });
       canvas.on("selection:updated", (e) => {
-        onSelectionChange(e.selected ? e.selected[0] : null);
+        const sel = e.selected ? e.selected[0] : null;
+        setSelectedObject(sel);
+        onSelectionChange(sel);
+        const active = canvas.getActiveObject();
+        if (active) attachCustomControls(active);
       });
       canvas.on("selection:cleared", () => {
+        setSelectedObject(null);
         onSelectionChange(null);
       });
 
       // Modification listeners
       canvas.on("object:modified", () => syncLayers(canvas));
-      canvas.on("object:added", () => syncLayers(canvas));
-      canvas.on("object:removed", () => syncLayers(canvas));
+      canvas.on("object:added", (e) => {
+        if (e.target) attachCustomControls(e.target);
+        syncLayers(canvas);
+      });
+      canvas.on("object:removed", () => {
+        syncLayers(canvas);
+        if (!canvas.getActiveObject()) {
+          setSelectedObject(null);
+          onSelectionChange(null);
+        }
+      });
 
       return () => {
         canvas.dispose();
@@ -163,6 +353,7 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
       const targetState = sidesStateRef.current[targetSide];
       if (targetState) {
         await canvas.loadFromJSON(targetState);
+        canvas.getObjects().forEach(attachCustomControls);
         canvas.renderAll();
       } else {
         canvas.clear();
@@ -197,9 +388,11 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
           }),
         });
 
+        attachCustomControls(text);
         canvas.add(text);
         canvas.setActiveObject(text);
         canvas.renderAll();
+        setSelectedObject(text);
       },
 
       addImage: (imgUrl, origW, origH) => {
@@ -223,9 +416,11 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
             scaleY: scale,
           });
 
+          attachCustomControls(fabricImg);
           canvas.add(fabricImg);
           canvas.setActiveObject(fabricImg);
           canvas.renderAll();
+          setSelectedObject(fabricImg);
         };
         imgEl.src = imgUrl;
       },
@@ -247,9 +442,11 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
           });
           (obj as any).name = `Clipart: ${name}`;
 
+          attachCustomControls(obj);
           canvas.add(obj);
           canvas.setActiveObject(obj);
           canvas.renderAll();
+          setSelectedObject(obj);
         });
       },
 
@@ -269,7 +466,10 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
         const active = canvas.getActiveObjects();
         active.forEach((obj) => canvas.remove(obj));
         canvas.discardActiveObject();
-        canvas.renderAll();
+        canvas.requestRenderAll();
+        syncLayers(canvas);
+        setSelectedObject(null);
+        onSelectionChange(null);
       },
 
       duplicateSelected: () => {
@@ -279,6 +479,7 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
         if (!active) return;
 
         active.clone().then((cloned: any) => {
+          attachCustomControls(cloned);
           cloned.set({
             left: (active.left || 0) + 15,
             top: (active.top || 0) + 15,
@@ -286,6 +487,7 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
           canvas.add(cloned);
           canvas.setActiveObject(cloned);
           canvas.renderAll();
+          setSelectedObject(cloned);
         });
       },
 
@@ -570,6 +772,84 @@ export const DesignerCanvas = forwardRef<DesignerCanvasHandle, DesignerCanvasPro
             }}
             className="relative shrink-0 flex items-center justify-center transition-transform duration-100 rounded-2xl shadow-sm"
           >
+            {/* Quick Action Floating Bar for Selected Layer */}
+            {selectedObject && (
+              <div
+                className="absolute top-2 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1.5 bg-ink/95 backdrop-blur text-background px-3 py-1.5 rounded-full shadow-2xl border-2 border-cyan-brand/80 animate-in fade-in zoom-in-95 duration-150"
+                style={{ pointerEvents: "auto" }}
+              >
+                <span className="text-[11px] font-bold text-cyan-brand mr-1">
+                  {selectedObject.text !== undefined || selectedObject.type === "textbox"
+                    ? "Text"
+                    : selectedObject.name?.includes("Clipart")
+                    ? "Clipart"
+                    : "Graphic"}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const canvas = fabricCanvasRef.current;
+                    if (!canvas) return;
+                    const active = canvas.getActiveObjects();
+                    active.forEach((obj) => canvas.remove(obj));
+                    canvas.discardActiveObject();
+                    canvas.requestRenderAll();
+                    syncLayers(canvas);
+                    setSelectedObject(null);
+                    onSelectionChange(null);
+                  }}
+                  className="flex items-center gap-1 px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95"
+                  title="Delete Selected Item"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Delete</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const canvas = fabricCanvasRef.current;
+                    if (!canvas) return;
+                    const active = canvas.getActiveObject();
+                    if (!active) return;
+                    active.clone().then((cloned: any) => {
+                      attachCustomControls(cloned);
+                      cloned.set({
+                        left: (active.left || 0) + 15,
+                        top: (active.top || 0) + 15,
+                      });
+                      canvas.add(cloned);
+                      canvas.setActiveObject(cloned);
+                      canvas.renderAll();
+                      syncLayers(canvas);
+                      setSelectedObject(cloned);
+                    });
+                  }}
+                  className="flex items-center gap-1 px-2 py-1 bg-white/10 hover:bg-white/20 text-white rounded-md text-xs font-medium transition-colors cursor-pointer"
+                  title="Duplicate Layer"
+                >
+                  <Copy className="w-3 h-3" />
+                  <span>Duplicate</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const canvas = fabricCanvasRef.current;
+                    if (!canvas) return;
+                    const active = canvas.getActiveObject();
+                    if (active) {
+                      active.set({ left: bounds.width / 2, originX: "center" });
+                      active.setCoords();
+                      canvas.renderAll();
+                    }
+                  }}
+                  className="p-1 hover:bg-white/20 rounded text-white transition-colors cursor-pointer"
+                  title="Center Horizontally"
+                >
+                  <AlignCenter className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+
             {/* Photorealistic Actual Blank Garment Backdrop (500x500) */}
             <RealisticGarmentBackground
               styleId={style.id}
