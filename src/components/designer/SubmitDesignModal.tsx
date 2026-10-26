@@ -228,6 +228,20 @@ export function SubmitDesignModal({
         console.error("Studio notification dispatch error:", notifyErr);
       }
 
+      // Track Meta Pixel Lead event for ad attribution
+      if (typeof window !== "undefined" && (window as any).fbq) {
+        try {
+          (window as any).fbq("track", "Lead", {
+            content_name: style.name,
+            content_category: "Design Studio Quote Request",
+            value: 0,
+            currency: "USD",
+          });
+        } catch (fbqErr) {
+          console.warn("Meta pixel lead track error:", fbqErr);
+        }
+      }
+
       setIsSuccess(true);
     } catch (err: any) {
       console.error(err);
