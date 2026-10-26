@@ -19,3 +19,13 @@
 
 - **Commercial DTF Printing Only / No Screen or Plate Fees**: Fast Apparel strictly utilizes high-definition commercial Direct-to-Film (DTF) printed transfers and industrial heat press application. We DO NOT do screen printing and NEVER make plates or screens. NEVER mention, list, or itemize "Screen / Plate Setup Fees" (even as $0.00 / Free) in any customer quote, email, invoice, or review artifact. Always describe our print process accurately as commercial Ultra HD DTF printed transfers and highlight zero hidden fees without referencing screens or plates.
 
+- **Email Header Logo Sizing & Quality**: For all email templates and dispatched emails, the Fast Custom Apparel logo in the top dark header must be large, crisp, and prominent. ALWAYS use the dedicated transparent high-contrast banner logo (`https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mascot/fast_logo_contrasted.png`) styled with `height="52"` (`max-height: 52px; width: auto; max-width: 220px;`). NEVER use square/padded signature thumbnails (which appear tiny).
+
+- **Text Contrast & Readability in Email Hero Greeting Cards**: In all email templates and drafts, the text in dark hero greeting cards (e.g. background `#0F172A` / `#1E293B`) must maintain crisp, high-contrast readability against the dark background. Paragraph text must be light (`#F1F5F9` or `#E2E8F0`) and all bold elements inside dark containers must be explicitly styled with `<strong style="color: #FFFFFF; font-weight: 800;">` (or inherit text color) so bold text never renders dark or black against dark backgrounds. In global email CSS, `strong` must always be defined as `strong { color: inherit; font-weight: 700; }` rather than hardcoding a dark color like `#111827`.
+
+- **Delivery Watcher Notifications (Milestones Only / Silent Monitoring)**: The Delivery Watcher Agent monitors active shipments continuously in the background, but must ONLY notify the owner in chat under two specific milestone events:
+  1. **Confirmed In Transit**: When an order receives its first carrier scan confirming it is actively in transit (transitioning from pre-transit/label created to in-transit).
+  2. **Delivered**: When carrier tracking confirms the package is delivered (and the auto-approved Dash-branded delivery confirmation and Google review email is sent).
+  - While packages are simply *still in transit* (routine checks with no milestone change), the Delivery Watcher runs silently in the background without posting repetitive chat updates.
+
+
