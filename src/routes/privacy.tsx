@@ -51,7 +51,12 @@ function PrivacyPage() {
           <li><strong>Vendors, Consultants, and Other Third-Party Service Providers:</strong> We may share your data with third-party vendors, service providers, contractors, or agents who perform services for us or on our behalf and require access to such information to do that work.</li>
         </ul>
 
-        <h3>4. Do We Use Cookies and Other Tracking Technologies?</h3>
+        <h3>4. Mobile Information &amp; SMS Messaging Privacy</h3>
+        <p>
+          No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. All the above categories exclude text messaging originator opt-in data and consent; this information will not be shared with or sold to any third parties for marketing purposes.
+        </p>
+
+        <h3>5. Do We Use Cookies and Other Tracking Technologies?</h3>
         <p>
           We may use cookies and similar tracking technologies (like web beacons and pixels) to access or store information. Specific information about how we use such technologies and how you can refuse certain cookies is set out in our Cookie Notice.
         </p>

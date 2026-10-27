@@ -61,6 +61,11 @@ function TermsPage() {
         <p>
           These terms and conditions are governed by and construed in accordance with the laws of the State of Georgia and you irrevocably submit to the exclusive jurisdiction of the courts in that State or location.
         </p>
+
+        <h3>8. SMS &amp; Mobile Messaging Terms</h3>
+        <p>
+          By providing your phone number through our website or advertising lead forms, you consent to receive informational and transactional SMS messages from Fast Custom Apparel regarding your custom apparel project inquiries, digital proofs, and order fulfillment status. Message frequency varies. Standard message and data rates may apply. You may opt out of receiving text messages at any time by replying <strong>STOP</strong>. For support, reply <strong>HELP</strong> or contact us directly at <a href="mailto:info@shopfastapparel.com">info@shopfastapparel.com</a> or <a href="tel:16784912655">(678) 491-2655</a>.
+        </p>
       </section>
     </SiteLayout>
   );
