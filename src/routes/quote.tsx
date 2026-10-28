@@ -1416,7 +1416,11 @@ function QuotePage() {
                     value={state.phone}
                     onChange={(e) => update("phone", e.target.value)}
                     className="mt-1.5"
+                    placeholder="(678) 555-0199"
                   />
+                  <p className="mt-1.5 text-[11px] text-muted-foreground leading-snug">
+                    By providing your phone number, you agree to receive transactional and quote update text messages from Fast Custom Apparel. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to cancel, HELP for help. View our <a href="/privacy" className="underline font-semibold hover:text-foreground" target="_blank">Privacy Policy</a> and <a href="/terms" className="underline font-semibold hover:text-foreground" target="_blank">Terms</a>.
+                  </p>
                 </div>
                 <div>
                   <Label htmlFor="contact-zip">Shipping Zip Code</Label>

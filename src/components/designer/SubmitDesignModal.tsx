@@ -411,6 +411,9 @@ export function SubmitDesignModal({
                   placeholder="(678) 555-0199"
                   className="w-full px-3 py-2 border-2 border-ink rounded-lg font-medium text-sm bg-background outline-none focus:ring-2 focus:ring-yellow-brand"
                 />
+                <p className="mt-1 text-[10px] text-muted-foreground leading-tight">
+                  By providing your phone, you consent to receive SMS updates regarding your design quote. Msg &amp; data rates may apply. Reply STOP to cancel.
+                </p>
               </div>
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
