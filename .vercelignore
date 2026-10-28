@@ -1,0 +1,40 @@
+# Python scripts, prospector & automation
+scripts/
+*.py
+*.sh
+__pycache__/
+
+# Placement tool & subprojects
+placement_tool/
+exports/
+
+# Customer artwork, print-ready files & root assets
+dtf_print_ready_*
+print_files/
+ronnie_assets/
+mary_wilson_mockups/
+lauren_assets/
+tarcheka_files/
+sarah_parrish_assets/
+crystle_assets/
+carolyn_files/
+zelisa_assets/
+c2_sport_blanks/
+upper_room_blanks/
+upper_room_mockups/
+
+# Loose root files not needed for web app
+*.zip
+*.pdf
+*.csv
+*.html
+*.png
+*.jpg
+*.jpeg
+*.webp
+!public/**
+
+# Build & dev cache
+.vercel/
+.output/
+.vinxi/
