@@ -15,25 +15,31 @@ SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 
 PROJECT_ROOT = "/Users/tavarus/.gemini/antigravity/scratch/shopfastapparel"
 
-# Available high-res blanks in repository
+# Available high-res blanks in repository with calibrated anatomical print placements
 BLANKS = {
     "black_tee": {
         "file": os.path.join(PROJECT_ROOT, "gildan_64000_black.jpg"),
         "label": "Gildan 64000 Softstyle® Ring-Spun Tee",
         "colorway": "Solid Black (4.5 oz 100% Combed Ring-Spun Cotton)",
-        "tone": "dark"
+        "tone": "dark",
+        "armpit_top_y": 305,       # Top of graphic aligned with beginning of armpit
+        "left_chest_x_pct": 0.585
     },
     "grey_tee": {
         "file": os.path.join(PROJECT_ROOT, "bella_athletic_grey_blank.jpg"),
         "label": "Bella+Canvas 3001 Premium Athletic Tee",
         "colorway": "Athletic Heather Grey (4.2 oz 90/10 Combed Ring-Spun Cotton/Poly)",
-        "tone": "light"
+        "tone": "light",
+        "armpit_top_y": 295,
+        "left_chest_x_pct": 0.585
     },
     "grey_hoodie": {
         "file": os.path.join(PROJECT_ROOT, "gildan_18500_sport_grey_front.jpg"),
         "label": "Gildan 18500 Heavy Blend Fleece Hoodie",
         "colorway": "Sport Grey (8.0 oz 50/50 Preshrunk Cotton/Polyester Fleece)",
-        "tone": "light"
+        "tone": "light",
+        "armpit_top_y": 290,
+        "left_chest_x_pct": 0.585
     }
 }
 
@@ -180,23 +186,26 @@ def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_
 
     # 3. Placement & Scaling
     aspect = logo_img.height / logo_img.width
+    armpit_y = blank_meta.get("armpit_top_y", 305)
 
     if placement == "center":
         target_w = int(bw * 0.35) # ~350px width
         target_h = int(target_w * aspect)
-        # Cap height if square/tall logo
-        if target_h > int(bh * 0.30):
-            target_h = int(bh * 0.30)
+        # Cap height if square/tall logo so it doesn't extend into stomach
+        if target_h > int(bh * 0.28):
+            target_h = int(bh * 0.28)
             target_w = int(target_h / aspect)
 
         paste_x = (bw - target_w) // 2
-        paste_y = int(bh * 0.36) # 36% down from top
+        # Align top of logo with beginning of the armpit
+        paste_y = armpit_y
         placement_label = 'Full Front Center Chest Commercial Ultra HD DTF (10.5" W × 8.5" H)'
     else: # left_chest
         target_w = int(bw * 0.15) # ~150px
         target_h = int(target_w * aspect)
-        paste_x = int(bw * 0.59) # wearer left (viewer right)
-        paste_y = int(bh * 0.36)
+        paste_x = int(bw * blank_meta.get("left_chest_x_pct", 0.585))
+        # Left chest aligned with armpit / chest level
+        paste_y = armpit_y
         placement_label = 'Left Chest Crest Commercial Ultra HD DTF (4.0" W × 3.2" H)'
 
     logo_resized = logo_img.resize((target_w, target_h), Image.Resampling.LANCZOS)

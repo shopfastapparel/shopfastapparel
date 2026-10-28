@@ -14,7 +14,7 @@ PROJECT_ROOT = "/Users/tavarus/.gemini/antigravity/scratch/shopfastapparel"
 company_name = "Good Word Brewing & Public House"
 contact_name = "Todd & the Good Word Team"
 target_email = "todd@goodwordbrewing.com"
-mockup_url = "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/b2b_outreach_good-word-brewing-public-house_1793195202.jpg"
+mockup_url = "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/b2b_outreach_good-word-brewing-public-house_1793195692.jpg"
 garment_specs = "Gildan 64000 Softstyle® Ring-Spun Tee (Solid Black • 4.5 oz 100% Combed Cotton)"
 print_specs = "Full Front Center Chest Commercial Ultra HD DTF (10.5\" W × 8.5\" H)"
 
