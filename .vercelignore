@@ -1,14 +1,12 @@
-# Python scripts, prospector & automation
+# Automation, prospector & scripts
 scripts/
+placement_tool/
+exports/
 *.py
 *.sh
 __pycache__/
 
-# Placement tool & subprojects
-placement_tool/
-exports/
-
-# Customer artwork, print-ready files & root assets
+# Heavy customer artwork & print folders in root
 dtf_print_ready_*
 print_files/
 ronnie_assets/
@@ -23,18 +21,16 @@ c2_sport_blanks/
 upper_room_blanks/
 upper_room_mockups/
 
-# Loose root files not needed for web app
-*.zip
-*.pdf
-*.csv
-*.html
-*.png
-*.jpg
-*.jpeg
-*.webp
-!public/**
+# Only loose files directly in root directory (leading slash)
+/*.zip
+/*.pdf
+/*.csv
+/*.html
+/*.png
+/*.jpg
+/*.jpeg
+/*.webp
 
-# Build & dev cache
-.vercel/
-.output/
-.vinxi/
+# Ensure application source code and public assets are completely preserved
+!src/**
+!public/**
