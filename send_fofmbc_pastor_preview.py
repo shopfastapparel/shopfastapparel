@@ -284,7 +284,7 @@ body_content = f"""
     Official Church Apparel Flyer (Print-Ready &amp; Digital Social)
   </h3>
   <p style="font-size: 13.5px; line-height: 1.6; color: #D8B4FE; margin: 0 0 18px 0;">
-    Your official, custom-designed promotional flyer is ready! It prominently features church members wearing the collection in your sanctuary, the complete 6-style garment manifest with Option A pricing, your November 1st deadline, direct Zelle details, and your verified scannable portal QR code.
+    Your official, custom-designed promotional flyer is ready! It prominently features church members wearing the collection in your sanctuary, the complete 6-style garment manifest with Option A pricing, your November 8th deadline, direct Zelle details, and your verified scannable portal QR code.
   </p>
 
   <!-- FLYER SHOWCASE CARD -->
@@ -331,7 +331,7 @@ body_content = f"""
     </tr>
     <tr>
       <td style="font-weight: 800; vertical-align: top;">Submission Deadline:</td>
-      <td><strong>Sunday, November 1st, 2026</strong> (all orders &amp; Zelle payments finalized).</td>
+      <td><strong>Sunday, November 8th, 2026</strong> (all orders &amp; Zelle payments finalized).</td>
     </tr>
     <tr>
       <td style="font-weight: 800; vertical-align: top;">Production &amp; Delivery:</td>

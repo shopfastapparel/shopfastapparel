@@ -14,7 +14,7 @@ preview_file = "fofmbc_pastor_perry_email_draft_preview.html"
 with open(preview_file, "r") as f:
     final_html = f.read()
 
-subject = "Official Church Apparel Portal & Leadership Guide — Fountain of Faith MBC"
+subject = "Official Church Apparel Portal & Leadership Guide (Updated Deadline: Nov 8) — Fountain of Faith MBC"
 
 headers = {
     "Authorization": f"Bearer {resend_api_key}",
