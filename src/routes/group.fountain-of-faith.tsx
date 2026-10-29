@@ -245,7 +245,7 @@ function FountainOfFaithCollectionPage() {
   const [items, setItems] = useState<SelectedItem[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [deadline, setDeadline] = useState("November 6th, 2026");
+  const [deadline, setDeadline] = useState("November 8th, 2026");
   const [organizerPhone, setOrganizerPhone] = useState("404-933-6254");
   const [organizerEmail, setOrganizerEmail] = useState("pastorpkids@comcast.net");
   const [paymentInstructions, setPaymentInstructions] = useState(

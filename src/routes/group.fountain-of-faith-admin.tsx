@@ -144,7 +144,7 @@ function FountainOfFaithGroupAdminDashboard() {
   const [filterQuery, setFilterQuery] = useState("");
 
   // Settings
-  const [submitByDate, setSubmitByDate] = useState("November 6th, 2026");
+  const [submitByDate, setSubmitByDate] = useState("November 8th, 2026");
   const [savingDeadline, setSavingDeadline] = useState(false);
   const [adminPhone, setAdminPhone] = useState("404-933-6254");
   const [adminEmail, setAdminEmail] = useState("pastorpkids@comcast.net");
