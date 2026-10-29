@@ -116,6 +116,49 @@ def scrape_company_logo(website_url, company_name):
         img = Image.new("RGBA", (400, 200), (15, 23, 42, 255))
         return img, ""
 
+def ensure_transparent_logo(logo_img):
+    """
+    Ensures the extracted logo has true alpha transparency.
+    If the image lacks transparency or has opaque background/corners,
+    uses rembg to isolate the foreground logo and remove the background.
+    """
+    if logo_img.mode != "RGBA":
+        logo_img = logo_img.convert("RGBA")
+
+    alpha = logo_img.getchannel("A")
+    min_a, max_a = alpha.getextrema()
+    w, h = logo_img.size
+
+    # Check the 4 outer corner pixels
+    corners = [
+        logo_img.getpixel((0, 0)),
+        logo_img.getpixel((w - 1, 0)),
+        logo_img.getpixel((0, h - 1)),
+        logo_img.getpixel((w - 1, h - 1))
+    ]
+    corners_opaque = any(c[3] > 180 for c in corners)
+
+    # Needs background removal if no transparency or corners are solid
+    if min_a > 200 or corners_opaque:
+        try:
+            import rembg
+            print(f"[Mockup] Logo has background pixels (min_alpha={min_a}, corners_opaque={corners_opaque}). Running rembg...")
+            transparent_img = rembg.remove(logo_img)
+            bbox = transparent_img.getchannel("A").getbbox()
+            if bbox:
+                transparent_img = transparent_img.crop(bbox)
+            print(f"[Mockup] Successfully isolated logo with transparent background ({transparent_img.size})")
+            return transparent_img, True
+        except Exception as e:
+            print(f"[Mockup] rembg background removal warning: {e}")
+
+    # Already transparent - crop whitespace
+    bbox = alpha.getbbox()
+    if bbox:
+        logo_img = logo_img.crop(bbox)
+
+    return logo_img, False
+
 def analyze_logo_luminance(logo_img):
     """
     Computes perceived luminance of non-transparent pixels in logo.
@@ -142,6 +185,76 @@ def analyze_logo_luminance(logo_img):
 
     return "dark" if avg_lum < 130 else "light"
 
+def adjust_logo_contrast(logo_img, garment_tone, was_bg_removed=False):
+    """
+    Evaluates contrast between logo foreground pixels and the garment tone ('dark' or 'light').
+    If contrast is insufficient (e.g. dark logo on dark garment), inverts or recolors the mark
+    so it clearly pops with maximum visibility on the shirt.
+    Returns: (adjusted_logo, was_inverted, alteration_note)
+    """
+    alpha = logo_img.getchannel("A")
+    bbox = alpha.getbbox()
+    if not bbox:
+        return logo_img, False, ""
+
+    cropped = logo_img.crop(bbox)
+    a_cropped = cropped.getchannel("A")
+    rgb_cropped = cropped.convert("RGB")
+
+    pixels = list(zip(rgb_cropped.getdata(), a_cropped.getdata()))
+    opaque_pixels = [p[0] for p in pixels if p[1] > 35]
+
+    if not opaque_pixels:
+        return logo_img, False, ""
+
+    total_lum = sum(0.299 * r + 0.587 * g + 0.114 * b for r, g, b in opaque_pixels)
+    avg_lum = total_lum / len(opaque_pixels)
+
+    # Check saturation: monochrome vs chromatic
+    saturations = [max(r, g, b) - min(r, g, b) for r, g, b in opaque_pixels]
+    avg_sat = sum(saturations) / len(saturations)
+    is_monochrome = avg_sat < 28
+
+    print(f"[Mockup] Contrast check: Garment Tone={garment_tone}, Logo Avg Luminance={avg_lum:.1f}, Saturation={avg_sat:.1f}")
+
+    if garment_tone == "dark" and avg_lum < 95:
+        # Dark logo on dark garment: Invert / recolor to White
+        r, g, b, a = logo_img.split()
+        if is_monochrome or avg_lum < 50:
+            white_channel = Image.new("L", logo_img.size, 255)
+            adjusted = Image.merge("RGBA", (white_channel, white_channel, white_channel, a))
+        else:
+            inv_rgb = ImageOps.invert(logo_img.convert("RGB"))
+            inv_r, inv_g, inv_b = inv_rgb.split()
+            adjusted = Image.merge("RGBA", (inv_r, inv_g, inv_b, a))
+
+        note = "Logo altered for mockup preview only (transparent background & inverted to white for high contrast)"
+        print(f"[Mockup] Applied auto-inversion to white for dark garment: {note}")
+        return adjusted, True, note
+
+    elif garment_tone == "light" and avg_lum > 175:
+        # Light logo on light garment: Invert / recolor to Dark Charcoal
+        r, g, b, a = logo_img.split()
+        if is_monochrome or avg_lum > 220:
+            dark_channel = Image.new("L", logo_img.size, 18)
+            adjusted = Image.merge("RGBA", (dark_channel, dark_channel, dark_channel, a))
+        else:
+            inv_rgb = ImageOps.invert(logo_img.convert("RGB"))
+            inv_r, inv_g, inv_b = inv_rgb.split()
+            adjusted = Image.merge("RGBA", (inv_r, inv_g, inv_b, a))
+
+        note = "Logo altered for mockup preview only (transparent background & inverted to dark charcoal for contrast)"
+        print(f"[Mockup] Applied auto-inversion to dark for light garment: {note}")
+        return adjusted, True, note
+
+    # Logo has natural contrast
+    if was_bg_removed:
+        note = "Logo altered for mockup preview only (transparent background optimized for garment)"
+    else:
+        note = ""
+
+    return logo_img, False, note
+
 def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_url=None, garment_choice="auto", placement="center"):
     """
     Main pipeline:
@@ -162,21 +275,16 @@ def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_
     else:
         logo_img, logo_url = scrape_company_logo(website_url, company_name)
 
-    # Clean borders
-    alpha = logo_img.getchannel("A")
-    bbox = alpha.getbbox()
-    if bbox:
-        logo_img = logo_img.crop(bbox)
+    # 2. Ensure Alpha Transparency (Remove Background Pixels if present)
+    logo_img, bg_removed = ensure_transparent_logo(logo_img)
 
-    # 2. Determine Smart Contrast & Select Blank
+    # 3. Determine Blank & Evaluate Contrast
     lum = analyze_logo_luminance(logo_img)
-    print(f"[Mockup] Logo luminance evaluated as: {lum}")
+    print(f"[Mockup] Isolated logo luminance evaluated as: {lum}")
 
     if garment_choice == "auto":
-        if lum == "dark":
-            chosen_blank_key = "grey_tee"
-        else:
-            chosen_blank_key = "black_tee"
+        # Default to premium black tee as flagship blank; contrast engine ensures crisp visibility
+        chosen_blank_key = "black_tee"
     else:
         chosen_blank_key = garment_choice
 
@@ -184,7 +292,10 @@ def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_
     blank = Image.open(blank_meta["file"]).convert("RGBA")
     bw, bh = blank.size
 
-    # 3. Placement & Scaling
+    # Invert / Recolor logo if contrast with garment tone is poor
+    logo_img, was_inverted, alteration_note = adjust_logo_contrast(logo_img, blank_meta["tone"], bg_removed)
+
+    # 4. Placement & Scaling
     aspect = logo_img.height / logo_img.width
     armpit_y = blank_meta.get("armpit_top_y", 305)
 
@@ -236,9 +347,9 @@ def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_
     shirt_composite.paste(shadow, (paste_x - 1, paste_y - 1), shadow)
     shirt_composite.paste(logo_final, (paste_x, paste_y), logo_final)
 
-    # 5. Build Master Proof Presentation Card (600x720 clean email card)
+    # 5. Build Master Proof Presentation Card (Clean high-res email card)
     card_w = 1000
-    card_h = 1380
+    card_h = 1420 if alteration_note else 1380
     card = Image.new("RGBA", (card_w, card_h), (255, 255, 255, 255))
     draw = ImageDraw.Draw(card)
 
@@ -248,10 +359,12 @@ def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_
         font_header = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 30)
         font_sub = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 20)
         font_badge = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 18)
+        font_note = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 16)
     except:
         font_header = ImageFont.load_default()
         font_sub = ImageFont.load_default()
         font_badge = ImageFont.load_default()
+        font_note = ImageFont.load_default()
 
     draw.text((30, 20), "FAST CUSTOM APPAREL  •  PRODUCTION SPECIFICATION PROOF", fill="#FFFFFF", font=font_header)
     draw.text((30, 58), f"Prepared for: {company_name.upper()}  |  Lawrenceville, GA Facility", fill="#00E5FF", font=font_sub)
@@ -260,19 +373,25 @@ def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_
     card.paste(shirt_composite, (0, 90), shirt_composite)
 
     # Bottom Specification Footer
-    draw.rectangle([(0, card_h - 100), (card_w, card_h)], fill="#F8FAFC")
-    draw.line([(0, card_h - 100), (card_w, card_h - 100)], fill="#E2E8F0", width=2)
+    footer_h = 120 if alteration_note else 100
+    draw.rectangle([(0, card_h - footer_h), (card_w, card_h)], fill="#F8FAFC")
+    draw.line([(0, card_h - footer_h), (card_w, card_h - footer_h)], fill="#E2E8F0", width=2)
 
     spec_text = f"GARMENT: {blank_meta['label']} ({blank_meta['colorway']})"
     print_text = f"PRINT PROCESS: Commercial Ultra HD DTF • {placement_label}"
-    draw.text((30, card_h - 85), spec_text, fill="#1E293B", font=font_sub)
-    draw.text((30, card_h - 50), print_text, fill="#059669", font=font_sub)
-
-    # Dash Cheetah Quality Seal in bottom right
-    seal_path = os.path.join(PROJECT_ROOT, "public", "images", "deals", "dash_quality_seal.png")
-    # If not on disk, draw clean verified badge
-    draw.rounded_rectangle([(card_w - 240, card_h - 80), (card_w - 30, card_h - 30)], radius=8, fill="#ECFDF5", outline="#10B981", width=2)
-    draw.text((card_w - 225, card_h - 66), "⚡ 100% QUALITY INSPECTED", fill="#065F46", font=font_badge)
+    
+    if alteration_note:
+        draw.text((30, card_h - 105), spec_text, fill="#1E293B", font=font_sub)
+        draw.text((30, card_h - 75), print_text, fill="#059669", font=font_sub)
+        draw.text((30, card_h - 42), f"* Note: {alteration_note}", fill="#64748B", font=font_note)
+        # Quality badge positioned on right
+        draw.rounded_rectangle([(card_w - 245, card_h - 95), (card_w - 25, card_h - 45)], radius=8, fill="#ECFDF5", outline="#10B981", width=2)
+        draw.text((card_w - 230, card_h - 80), "⚡ 100% QUALITY INSPECTED", fill="#065F46", font=font_badge)
+    else:
+        draw.text((30, card_h - 85), spec_text, fill="#1E293B", font=font_sub)
+        draw.text((30, card_h - 50), print_text, fill="#059669", font=font_sub)
+        draw.rounded_rectangle([(card_w - 240, card_h - 80), (card_w - 30, card_h - 30)], radius=8, fill="#ECFDF5", outline="#10B981", width=2)
+        draw.text((card_w - 225, card_h - 66), "⚡ 100% QUALITY INSPECTED", fill="#065F46", font=font_badge)
 
     # 6. Save and Upload to Supabase Storage
     buf = BytesIO()
@@ -308,7 +427,10 @@ def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_
         "placement_label": placement_label,
         "public_url": public_url,
         "image_bytes": image_bytes,
-        "filename": filename
+        "filename": filename,
+        "alteration_note": alteration_note,
+        "was_inverted": was_inverted,
+        "bg_removed": bg_removed
     }
 
 if __name__ == "__main__":

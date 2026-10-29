@@ -11,7 +11,7 @@ FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "Fast Apparel <info@shopfastapp
 RESEND_KEY = os.environ.get("RESEND_API_KEY")
 PROJECT_ROOT = "/Users/tavarus/.gemini/antigravity/scratch/shopfastapparel"
 
-def dispatch_b2b_outreach(company_name, contact_name, target_email, mockup_url, garment_specs, print_specs, website="", industry=""):
+def dispatch_b2b_outreach(company_name, contact_name, target_email, mockup_url, garment_specs, print_specs, website="", industry="", alteration_note=""):
     """
     Dispatches the official B2B outreach email directly to the target prospect with BCC to shopfastapparel@gmail.com.
     Logs the sent outreach to scripts/leads_contacted.csv.
@@ -20,11 +20,14 @@ def dispatch_b2b_outreach(company_name, contact_name, target_email, mockup_url, 
     with open(template_path, "r", encoding="utf-8") as f:
         template = f.read()
 
+    mockup_note_html = f'<br><span style="color: #64748B; font-size: 12px; font-style: italic;">* Note: {alteration_note}</span>' if alteration_note else ""
+
     email_html = template.replace("{{COMPANY_NAME}}", company_name)\
                          .replace("{{CONTACT_NAME}}", contact_name)\
                          .replace("{{MOCKUP_IMAGE_URL}}", mockup_url)\
                          .replace("{{GARMENT_SPECS}}", garment_specs)\
-                         .replace("{{PRINT_SPECS}}", print_specs)
+                         .replace("{{PRINT_SPECS}}", print_specs)\
+                         .replace("{{MOCKUP_NOTE}}", mockup_note_html)
 
     subject = f"Custom Apparel Mockup for {company_name} | Fast Custom Apparel"
 
