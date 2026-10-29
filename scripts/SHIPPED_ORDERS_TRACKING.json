@@ -232,11 +232,11 @@
       }
     ],
     "closing_note": "Thank you so much for continuing to partner with Fast Custom Apparel for <strong>Benfield's Diesel Repair (BDR)</strong>! We loved printing this custom run of tees and hoodies for your team and family, and we know they'll hold up tough wash after wash. Whenever you need re-orders or new gear, Dash and our crew are always ready to sprint!",
-    "status": "IN_TRANSIT",
+    "status": "DELIVERED_SENT",
     "shipped_at": "2026-10-26T00:30:00-04:00",
-    "delivered_at": null,
-    "email_sent_at": null,
-    "resend_id": null
+    "delivered_at": "2026-10-29T16:04:23Z",
+    "email_sent_at": "2026-10-29T13:00:08.773171",
+    "resend_id": "01a1889a-cc5e-73b2-b6e3-cbf948e1569d"
   },
   {
     "invoice_number": "HTNQWUIH-0001",
