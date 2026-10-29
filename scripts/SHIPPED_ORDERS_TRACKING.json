@@ -1,0 +1,388 @@
+[
+  {
+    "invoice_number": "AGWN3F4A-0001",
+    "customer_name": "Amani Mitchell",
+    "customer_company": "Team Blue Tennis",
+    "customer_email": "amani.mitchell71@gmail.com",
+    "cc_email": null,
+    "carrier": "UPS",
+    "tracking_number": "1ZX6223B0305436097",
+    "tracking_url": "https://www.ups.com/track?track=yes&trackNums=1ZX6223B0305436097",
+    "shipping_address": "3931 Kingsbrook Blvd, Decatur, GA 30034",
+    "amount_paid": "$396.58",
+    "invoice_subtitle": "24 C2 Sport 5100 Performance Athletic Tees in Classic Navy",
+    "proof_urls": [
+      {
+        "label": "Official Master Production Proof (Navy Comparison Sheet)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/armani-proof_navy_comparison-1792005306.jpg",
+        "is_master": true
+      },
+      {
+        "label": "C2 Sport 5100 Navy Performance Tee",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/armani-mockup_c2_navy-1792005306.jpg",
+        "note": "24 Performance Shirts \u2022 Full Front Ultra HD DTF"
+      }
+    ],
+    "manifest_rows": [
+      {
+        "garment": "C2 Sport 5100 Unisex Performance Athletic Tee",
+        "colorway": "Classic Navy Blue (3.5 oz 100% Polyester Performance Interlock)",
+        "prints": [
+          "Full Front Chest Commercial Ultra HD DTF Transfer (10.56\" W \u00d7 7.15\" H, 2.64\" Drop)",
+          "Moisture-Wicking & Anti-Microbial Odor Control",
+          "UPF 50+ UV Sun Shield & Elastomeric Athletic Stretch Recovery Bond"
+        ],
+        "sizes": {
+          "Small": 4,
+          "Medium": 8,
+          "Large": 8,
+          "XL": 4
+        },
+        "qty": 24
+      }
+    ],
+    "closing_note": "Thank you so much for choosing Fast Custom Apparel to outfit Team Blue Tennis for the <strong>2nd Annual Round Robin 2026</strong>! We loved bringing these performance shirts to life and know your players and supporters will wear them with pride on the court. Whenever you are ready for reorders, additional sizes, or future event gear, Dash and our crew are always here for you!",
+    "status": "DELIVERED_SENT",
+    "shipped_at": "2026-10-19T14:45:00-04:00",
+    "delivered_at": "2026-10-20T17:19:50Z",
+    "email_sent_at": "2026-10-20T17:05:51-04:00",
+    "resend_id": "01a15b22-8571-7d5a-b9da-b94d8b1961f4"
+  },
+  {
+    "invoice_number": "TKDRAIZ9-0001",
+    "customer_name": "Christopher Hart",
+    "customer_company": "Stonewall Dodgeball Team",
+    "customer_email": "christhart1188@gmail.com",
+    "cc_email": "scoonocorazon@yahoo.com",
+    "carrier": "UPS",
+    "tracking_number": "1ZY973G40319653825",
+    "tracking_url": "https://www.ups.com/track?track=yes&trackNums=1ZY973G40319653825",
+    "shipping_address": "5256 Vinings Springs CT SE, Mableton, GA 30126",
+    "amount_paid": "$141.13",
+    "invoice_subtitle": "9 Custom C2 Sport 5100 Performance Tees + Bonus Replacement Shirt w/ ROOS",
+    "proof_urls": [
+      {
+        "label": "Approved Master Production Manifest Sheet",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/christopher_hart_approved_production_manifest_sheet.jpg",
+        "is_master": true
+      },
+      {
+        "label": "Front Chest Crest View",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/christopher_hart_approved_black_front.jpg",
+        "note": "C2 Sport 5100 Solid Black \u2022 7.9\" W Front Crest"
+      },
+      {
+        "label": "Back Player Name View",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/christopher_hart_approved_black_back.jpg",
+        "note": "Custom Player Back Names \u2022 White Fill / Purple Outline"
+      }
+    ],
+    "manifest_rows": [
+      {
+        "garment": "C2 Sport 5100 Unisex Performance Athletic Tee",
+        "colorway": "Solid Black (3.5 oz 100% Polyester Performance Interlock)",
+        "prints": [
+          "Commercial Ultra HD DTF Front Chest Crest (7.9\" W \u00d7 6.5\" H, 2.75\" Drop)",
+          "Complimentary Upper Back Custom Player Names in Bold Impact Athletic Font",
+          "Lettering: Pure White Fill (#FFFFFF) with Electric Team Purple Outline (#8B5CF6)",
+          "Moisture-Wicking & Anti-Microbial Odor Control Performance Fabric",
+          "UPF 50+ Sun Protection & Athletic Stretch Recovery"
+        ],
+        "sizes": {
+          "Medium": "3 (HERBERT, CRAWFORD, SOLOMON)",
+          "Large": "3 (ICKES, RYDER, HART)",
+          "X-Large": "3 (HART, GANTT, LEAO)",
+          "Bonus Shirt": "1 (ROOS - Replacement Tee Added)"
+        },
+        "qty": 10
+      }
+    ],
+    "closing_note": "<div style=\"background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%); border: 2px solid #8B5CF6; border-radius: 12px; padding: 18px 20px; margin: 20px 0;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td width=\"36\" valign=\"top\" style=\"padding-right: 12px;\"><span style=\"font-size: 26px;\">\ud83c\udfaf</span></td><td valign=\"top\"><strong style=\"color: #6D28D9; font-size: 15px; display: block; margin-bottom: 4px;\">Complete 10-Player Roster Delivered!</strong><p style=\"color: #4C1D95; font-size: 13.5px; line-height: 1.55; margin: 0;\">Your box includes all 9 original jerseys plus the replacement athletic performance tee customized with <strong>ROOS</strong> in matching Ultra HD commercial DTF purple &amp; white lettering. Your full 10-player squad is 100% game-day ready!</p></td></tr></table></div><p style=\"font-size: 15px; color: #374151; line-height: 1.6; margin: 16px 0 0 0;\">Thank you so much for teaming up with Fast Custom Apparel for the <strong>Stonewall Dodgeball Team</strong>! We loved bringing these high-energy team jerseys to life and know your players will dominate on the court. Whenever you need tournament reorders, additional player prints, or fan gear, Dash and our crew are always in your corner!</p>",
+    "status": "DELIVERED_SENT",
+    "shipped_at": "2026-10-19T18:18:00-04:00",
+    "delivered_at": "2026-10-20T20:25:52Z",
+    "email_sent_at": "2026-10-20T17:05:56-04:00",
+    "resend_id": "01a15b22-984e-7d7b-8c51-376f17167c76"
+  },
+  {
+    "invoice_number": "AD0XFQTW-0001",
+    "customer_name": "Shade Wilson",
+    "customer_company": "Shade's 60th Birthday Celebration",
+    "customer_email": "fshowale@gmail.com",
+    "cc_email": null,
+    "carrier": "UPS",
+    "tracking_number": "1ZY973G40337667429",
+    "tracking_url": "https://www.ups.com/track?tracknum=1ZY973G40337667429",
+    "shipping_address": "3264 Creek Trace East, Powder Springs, GA 30127",
+    "amount_paid": "$545.40",
+    "invoice_subtitle": "33 Custom Pieces (Tees, Twill Caps & Bio-Washed Visors)",
+    "proof_urls": [],
+    "manifest_rows": [],
+    "closing_note": "",
+    "status": "DELIVERED_SENT",
+    "shipped_at": "2026-10-23T10:57:33.353639",
+    "delivered_at": "2026-10-26T20:03:36Z",
+    "email_sent_at": "2026-10-26T17:09:52.699225",
+    "resend_id": "01a17a0c-5b82-7e68-bfa9-976a96d4e219"
+  },
+  {
+    "invoice_number": "3SWPK1AP-0001",
+    "customer_name": "Brooke Benfield",
+    "customer_company": "Benfield's Diesel Repair (BDR)",
+    "customer_email": "beephelps@gmail.com",
+    "cc_email": null,
+    "carrier": "USPS",
+    "tracking_number": "9334611043900235850947",
+    "tracking_url": "https://tools.usps.com/go/TrackConfirmAction?tLabels=9334611043900235850947",
+    "shipping_address": "140 Gracie Lane, Mooresville, NC 28115",
+    "amount_paid": "$156.60",
+    "invoice_subtitle": "6 Custom 2-Sided Garments \u2022 Paid in Full \u2022 Complimentary Free Delivery",
+    "proof_urls": [
+      {
+        "label": "Official Master Production Proof Presentation Sheet",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/brooke-benfield-proof_master_presentation-1791723443.jpg",
+        "is_master": true
+      },
+      {
+        "label": "Comfort Colors 1717 \u2022 Neon Violet (XL)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/brooke-benfield-proof_cc1717_neon_purple-1791723443.jpg",
+        "note": "1 Shirt (XL) \u2022 Left Pocket + Center Back White Prints"
+      },
+      {
+        "label": "Gildan 2300 Pocket Tee \u2022 Solid Black (XL)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/brooke-benfield-proof_gildan_2300_black_pocket-1791723443.jpg",
+        "note": "2 Shirts (XL) \u2022 Pocket Print + Center Back White Prints"
+      },
+      {
+        "label": "Gildan 18500B Youth Hoodie \u2022 Forest Green (YM)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/brooke-benfield-proof_hoodie_forest_green-1791723443.jpg",
+        "note": "1 Hoodie (Youth M) \u2022 Left Chest + Center Back White Prints"
+      },
+      {
+        "label": "Gildan 18500B Youth Hoodie \u2022 Navy (YM)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/brooke-benfield-proof_hoodie_navy-1791723443.jpg",
+        "note": "1 Hoodie (Youth M) \u2022 Left Chest + Center Back White Prints"
+      },
+      {
+        "label": "Gildan 18500B Youth Hoodie \u2022 Light Pink (YS)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/brooke-benfield-proof_hoodie_light_pink-1791723443.jpg",
+        "note": "1 Hoodie (Youth S) \u2022 Left Chest + Center Back Solid Black Prints"
+      }
+    ],
+    "manifest_rows": [
+      {
+        "garment": "Comfort Colors 1717 Vintage Heavyweight Tee",
+        "colorway": "Neon Violet (6.1 oz 100% Ring-Spun Vintage Garment-Dyed Cotton)",
+        "prints": [
+          "Front Left Pocket/Chest: BDR Logo (Commercial Ultra HD DTF - White)",
+          "Upper Center Back: BDR Full Back Logo (Commercial Ultra HD DTF - White)"
+        ],
+        "sizes": {
+          "XL": 1
+        },
+        "qty": 1
+      },
+      {
+        "garment": "Gildan 2300 Ultra Cotton Pocket Tee",
+        "colorway": "Solid Black (6.0 oz 100% Cotton with Sewn Left Chest Pocket)",
+        "prints": [
+          "Front Left Chest Pocket: BDR Logo (Commercial Ultra HD DTF - White)",
+          "Upper Center Back: BDR Full Back Logo (Commercial Ultra HD DTF - White)"
+        ],
+        "sizes": {
+          "XL": 2
+        },
+        "qty": 2
+      },
+      {
+        "garment": "Gildan 18500B Youth Heavy Blend Fleece Hoodie",
+        "colorway": "Forest Green (8.0 oz 50/50 Preshrunk Cotton/Polyester Fleece)",
+        "prints": [
+          "Front Left Chest: BDR Logo (Commercial Ultra HD DTF - White)",
+          "Upper Center Back: BDR Full Back Logo (Commercial Ultra HD DTF - White)"
+        ],
+        "sizes": {
+          "Youth Medium": 1
+        },
+        "qty": 1
+      },
+      {
+        "garment": "Gildan 18500B Youth Heavy Blend Fleece Hoodie",
+        "colorway": "Navy Blue (8.0 oz 50/50 Preshrunk Cotton/Polyester Fleece)",
+        "prints": [
+          "Front Left Chest: BDR Logo (Commercial Ultra HD DTF - White)",
+          "Upper Center Back: BDR Full Back Logo (Commercial Ultra HD DTF - White)"
+        ],
+        "sizes": {
+          "Youth Medium": 1
+        },
+        "qty": 1
+      },
+      {
+        "garment": "Gildan 18500B Youth Heavy Blend Fleece Hoodie",
+        "colorway": "Light Pink (8.0 oz 50/50 Preshrunk Cotton/Polyester Fleece)",
+        "prints": [
+          "Front Left Chest: BDR Logo (Commercial Ultra HD DTF - Solid Black)",
+          "Upper Center Back: BDR Full Back Logo (Commercial Ultra HD DTF - Solid Black)"
+        ],
+        "sizes": {
+          "Youth Small": 1
+        },
+        "qty": 1
+      }
+    ],
+    "closing_note": "Thank you so much for continuing to partner with Fast Custom Apparel for <strong>Benfield's Diesel Repair (BDR)</strong>! We loved printing this custom run of tees and hoodies for your team and family, and we know they'll hold up tough wash after wash. Whenever you need re-orders or new gear, Dash and our crew are always ready to sprint!",
+    "status": "IN_TRANSIT",
+    "shipped_at": "2026-10-26T00:30:00-04:00",
+    "delivered_at": null,
+    "email_sent_at": null,
+    "resend_id": null
+  },
+  {
+    "invoice_number": "HTNQWUIH-0001",
+    "customer_name": "Thomas Hovden",
+    "customer_company": "Ursa Major Barbell",
+    "customer_email": "thomas@ursamajorbarbell.com",
+    "cc_email": null,
+    "carrier": "ups",
+    "tracking_number": "1ZY973G40314489245",
+    "tracking_url": "https://www.ups.com/track?track=yes&trackNums=1ZY973G40314489245",
+    "shipping_address": "1350 Blazing Star Drive, Carlisle, IA 50047",
+    "amount_paid": ".80",
+    "invoice_subtitle": "36 Gildan 64000 Softstyle\u00ae Ringspun Tees across 3 Colors (Solid Black, Fan Dark Green, Dark Chocolate)",
+    "proof_urls": [
+      {
+        "label": "Official Approved Master Production Proof Sheet (All 3 Colorways)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/ursa_master_proof_1792178261.jpg?v=1792178261",
+        "is_master": true
+      },
+      {
+        "label": "Solid Black Softstyle (12 Tees)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/ursa_gildan_64000_black_front_1792178261.jpg?v=1792178261",
+        "note": "Royal Blue #0021A5 Front + Black Knockout Back"
+      },
+      {
+        "label": "Fan Dark Green Softstyle (12 Tees)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/ursa_gildan_64000_green_front_1792178261.jpg?v=1792178261",
+        "note": "Royal Blue #0021A5 Front + Green Knockout Back"
+      },
+      {
+        "label": "Dark Chocolate Softstyle (12 Tees)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/ursa_gildan_64000_brown_front_1792178261.jpg?v=1792178261",
+        "note": "Royal Blue #0021A5 Front + Brown Knockout Back"
+      }
+    ],
+    "manifest_rows": [
+      {
+        "garment": "Gildan 64000 Softstyle\u00ae Ringspun Tees",
+        "colorway": "Solid Black (4.5 oz 100% Ring-Spun Cotton)",
+        "prints": [
+          "Commercial Ultra HD DTF Front Left Chest ('URSA MAJOR BARBELL' in Royal Blue #0021A5, 4.1\" W \u00d7 1.49\" H)",
+          "Commercial Ultra HD DTF Full Back Centered Mascot (Phantom Power Fest Bear - Black Knockout, 10.4\" W \u00d7 12.4\" H)",
+          "100% Opaque White Underbase with Calibrated Heat Press Thermal Cure",
+          "Super-soft lightweight ringspun cotton with modern athletic fit"
+        ],
+        "sizes": {
+          "Small": 2,
+          "Medium": 2,
+          "Large": 3,
+          "XL": 3,
+          "3XL": 2
+        },
+        "qty": 12
+      },
+      {
+        "garment": "Gildan 64000 Softstyle\u00ae Ringspun Tees",
+        "colorway": "Fan Dark Green (4.5 oz 100% Ring-Spun Cotton)",
+        "prints": [
+          "Commercial Ultra HD DTF Front Left Chest ('URSA MAJOR BARBELL' in Royal Blue #0021A5, 4.1\" W \u00d7 1.49\" H)",
+          "Commercial Ultra HD DTF Full Back Centered Mascot (Phantom Power Fest Bear - Green Knockout, 10.4\" W \u00d7 12.4\" H)",
+          "100% Opaque White Underbase with Calibrated Heat Press Thermal Cure",
+          "Super-soft lightweight ringspun cotton with modern athletic fit"
+        ],
+        "sizes": {
+          "Small": 2,
+          "Medium": 2,
+          "Large": 3,
+          "XL": 3,
+          "3XL": 2
+        },
+        "qty": 12
+      },
+      {
+        "garment": "Gildan 64000 Softstyle\u00ae Ringspun Tees",
+        "colorway": "Dark Chocolate (4.5 oz 100% Ring-Spun Cotton)",
+        "prints": [
+          "Commercial Ultra HD DTF Front Left Chest ('URSA MAJOR BARBELL' in Royal Blue #0021A5, 4.1\" W \u00d7 1.49\" H)",
+          "Commercial Ultra HD DTF Full Back Centered Mascot (Phantom Power Fest Bear - Brown Knockout, 10.4\" W \u00d7 12.4\" H)",
+          "100% Opaque White Underbase with Calibrated Heat Press Thermal Cure",
+          "Super-soft lightweight ringspun cotton with modern athletic fit"
+        ],
+        "sizes": {
+          "Small": 2,
+          "Medium": 2,
+          "Large": 3,
+          "XL": 3,
+          "3XL": 2
+        },
+        "qty": 12
+      }
+    ],
+    "closing_note": "",
+    "status": "DELIVERED_SENT",
+    "shipped_at": "2026-10-26T09:00:24.724574",
+    "delivered_at": "2026-10-28T23:34:10Z",
+    "email_sent_at": "2026-10-28T21:00:17.071981",
+    "resend_id": "01a1852c-04f5-70ab-913e-bb7ce39ef3c0"
+  },
+  {
+    "invoice_number": "VNS7VJDW-0001",
+    "customer_name": "Taz Barnes",
+    "customer_company": "Lighthouse Therapeutic Services, LLC",
+    "customer_email": "tazbarnes14@gmail.com",
+    "cc_email": null,
+    "carrier": "UPS",
+    "tracking_number": "1ZY973G40332214837",
+    "tracking_url": "https://www.ups.com/track?track=yes&trackNums=1ZY973G40332214837",
+    "shipping_address": "14201 Governor Lee Pl, Upper Marlboro, MD 20772",
+    "amount_paid": "$405.00",
+    "invoice_subtitle": "18 Custom Gildan 18000 Heavy Blend\u2122 Crewneck Sweatshirts (Deep Classic Navy)",
+    "proof_urls": [
+      {
+        "label": "Approved Master Production Proof Sheet",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/taz/taz_master_proof.jpg",
+        "is_master": true
+      },
+      {
+        "label": "Gildan 18000 Deep Classic Navy Mockup",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/taz/taz_mockup_gildan_navy.jpg",
+        "note": "11.0\" W Front Chest \u2022 Ultra HD DTF"
+      }
+    ],
+    "manifest_rows": [
+      {
+        "garment": "Gildan 18000 Heavy Blend\u2122 Crewneck Sweatshirt",
+        "colorway": "Deep Classic Navy (8.0 oz. 50/50 Pre-Shrunk Fleece)",
+        "prints": [
+          "Commercial Ultra HD DTF Front Chest Print (11.0\" W \u00d7 5.8\" H, 1.5\" Collar Drop)",
+          "100% Solid White Underbase with Micro-Pigment Calibration",
+          "Golden Yellow Lighthouse Crest, Vibrant Turquoise 'LIGHTHOUSE', and Plum Subtitle",
+          "Pill-Resistant Air Jet Yarn with Double-Needle Stitching",
+          "Industrial Heat Pressed \u2022 50+ Wash Durability Rating"
+        ],
+        "sizes": {
+          "Medium (M)": 5,
+          "Large (L)": 10,
+          "X-Large (XL)": 3
+        },
+        "qty": 18
+      }
+    ],
+    "closing_note": "\n<p style=\"font-size: 15px; color: #374151; line-height: 1.6; margin: 16px 0 0 0;\">\n  Thank you so much for returning to Fast Custom Apparel for <strong>Lighthouse Therapeutic Services, LLC</strong>! Dash the Cheetah and our Atlanta production crew thoroughly inspected, folded, and packaged all 18 of your Deep Classic Navy sweatshirts. We loved printing your vibrant logo and know your team will wear them with pride!\n</p>\n<p style=\"font-size: 14px; color: #64748B; line-height: 1.55; margin: 12px 0 0 0;\">\n  Whenever you're ready for seasonal reorders, staff additions, or fresh custom gear, Dash and our team are always in your corner!\n</p>\n",
+    "status": "IN_TRANSIT",
+    "shipped_at": "2026-10-28T13:38:09.514121",
+    "delivered_at": null,
+    "email_sent_at": null,
+    "resend_id": "01a18397-3dd4-7b7f-82b4-bb7b998d57d8"
+  }
+]
