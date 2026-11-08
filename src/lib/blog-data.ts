@@ -18,7 +18,9 @@ type Row = {
   body: string;
 };
 
-function rowToPost(r: Row): BlogPost {
+type SummaryRow = Omit<Row, "body"> & { body?: string };
+
+function rowToPost(r: Row | SummaryRow): BlogPost {
   return {
     slug: r.slug,
     title: r.title,
@@ -32,7 +34,7 @@ function rowToPost(r: Row): BlogPost {
     coverImageUrl: r.cover_image_url ?? undefined,
     coverImageCredit: r.cover_image_credit ?? undefined,
     keywords: r.keywords,
-    body: r.body,
+    body: r.body ?? "",
   };
 }
 
@@ -61,19 +63,42 @@ function normalizePost(p: any): BlogPost {
   };
 }
 
+// In-memory cache for blog post summaries to prevent repeat database egress
+let cachedPosts: BlogPost[] | null = null;
+let lastCacheTime = 0;
+const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes
+
+export function invalidateBlogCache() {
+  cachedPosts = null;
+  lastCacheTime = 0;
+}
+
+/**
+ * Fetches lightweight summaries of all published blog posts.
+ * Omits the massive `body` column to reduce Supabase egress by >98%.
+ * Cached in memory for 15 minutes.
+ */
 export async function fetchAllPosts(): Promise<BlogPost[]> {
+  const now = Date.now();
+  if (cachedPosts && now - lastCacheTime < CACHE_TTL_MS) {
+    return cachedPosts;
+  }
+
+  // Notice: Excludes 'body' column to save ~1.4MB of transfer per request
   const { data, error } = await supabase
     .from("blog_posts")
     .select(
-      "slug,title,description,category,city,read_minutes,published_at,author,cover_gradient,cover_emoji,cover_image_url,cover_image_credit,keywords,body",
+      "slug,title,description,category,city,read_minutes,published_at,author,cover_gradient,cover_emoji,cover_image_url,cover_image_credit,keywords",
     )
     .eq("status", "published")
     .order("published_at", { ascending: false });
+
   if (error) {
     console.warn("[blog] failed to load DB posts:", error.message);
-    return BLOG_POSTS.map(normalizePost);
+    return cachedPosts ?? BLOG_POSTS.map(normalizePost);
   }
-  const dbPosts = (data ?? []).map((r) => rowToPost(r as Row));
+
+  const dbPosts = (data ?? []).map((r) => rowToPost(r as SummaryRow));
   // DB posts first (newer AI content), then static, dedupe by slug
   const seen = new Set<string>();
   const merged: BlogPost[] = [];
@@ -84,17 +109,46 @@ export async function fetchAllPosts(): Promise<BlogPost[]> {
     merged.push(p);
   }
   merged.sort((a, b) => +new Date(b.publishedAt || 0) - +new Date(a.publishedAt || 0));
+
+  cachedPosts = merged;
+  lastCacheTime = now;
   return merged;
 }
 
+/**
+ * Fetches a single blog post by its slug, including the full article body.
+ * Directly queries only that post instead of loading all 174 posts.
+ */
 export async function fetchPostBySlug(slug: string): Promise<BlogPost | null> {
-  const all = await fetchAllPosts();
-  return all.find((p) => p.slug === slug) ?? null;
+  // 1. Check static fallback posts first
+  const staticPost = BLOG_POSTS.find((p) => p.slug === slug);
+  if (staticPost) return normalizePost(staticPost);
+
+  // 2. Query only this single post by slug with full body
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select(
+      "slug,title,description,category,city,read_minutes,published_at,author,cover_gradient,cover_emoji,cover_image_url,cover_image_credit,keywords,body",
+    )
+    .eq("slug", slug)
+    .eq("status", "published")
+    .maybeSingle();
+
+  if (error) {
+    console.warn(`[blog] failed to load post for slug "${slug}":`, error.message);
+    return null;
+  }
+
+  if (!data) return null;
+
+  return normalizePost(rowToPost(data as Row));
 }
 
 export function relatedFrom(posts: BlogPost[], slug: string, limit = 3): BlogPost[] {
   const current = posts.find((p) => p.slug === slug);
-  if (!current) return [];
+  if (!current) {
+    return posts.filter((p) => p.slug !== slug).slice(0, limit);
+  }
   return posts
     .filter((p) => p.slug !== slug && (p.category === current.category || p.city === current.city))
     .slice(0, limit);

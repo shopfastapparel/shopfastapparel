@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getGeminiModel } from "./ai-gateway.server";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { BLOG_POSTS } from "./blog";
+import { invalidateBlogCache } from "./blog-data";
 
 const CATEGORIES = [
   "Custom T-Shirts",
@@ -180,5 +181,6 @@ Pick a fresh, specific angle (don't repeat above). Make the title compelling and
     .single();
 
   if (error) throw error;
+  invalidateBlogCache();
   return data;
 }

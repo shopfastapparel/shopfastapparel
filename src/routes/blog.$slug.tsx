@@ -4,13 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MarkdownLite } from "@/components/MarkdownLite";
 import { BLOG_POSTS } from "@/lib/blog";
-import { fetchAllPosts, relatedFrom } from "@/lib/blog-data";
+import { fetchAllPosts, fetchPostBySlug, relatedFrom } from "@/lib/blog-data";
 import { ArrowLeft, Calendar, Clock, MapPin } from "lucide-react";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
-    const all = await fetchAllPosts();
-    const post = all.find((p) => p.slug === params.slug);
+    const [post, all] = await Promise.all([
+      fetchPostBySlug(params.slug),
+      fetchAllPosts(),
+    ]);
     if (!post) throw notFound();
     const related = relatedFrom(all, params.slug, 3);
     return { post, related };
