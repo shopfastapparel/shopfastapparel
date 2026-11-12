@@ -8,12 +8,34 @@ import requests
 from PIL import Image, ImageChops, ImageFilter, ImageEnhance, ImageOps, ImageDraw, ImageFont
 from dotenv import load_dotenv
 
-load_dotenv("/Users/tavarus/.gemini/antigravity/scratch/shopfastapparel/.env")
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(PROJECT_ROOT, ".env"))
 
-SUPABASE_URL = os.environ.get("VITE_SUPABASE_URL")
+SUPABASE_URL = os.environ.get("VITE_SUPABASE_URL") or os.environ.get("SUPABASE_URL") or "https://dwtvfrpqizanpnvgkpux.supabase.co"
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 
-PROJECT_ROOT = "/Users/tavarus/.gemini/antigravity/scratch/shopfastapparel"
+def get_blank_image(blank_meta):
+    file_path = blank_meta["file"]
+    if os.path.exists(file_path):
+        return Image.open(file_path).convert("RGBA")
+    
+    # Fallback to Supabase Storage
+    filename = os.path.basename(file_path)
+    blank_url = f"{SUPABASE_URL}/storage/v1/object/public/quote_artwork/blanks/{filename}"
+    print(f"[Mockup] Blank {filename} not found locally. Downloading from Supabase Storage: {blank_url}")
+    try:
+        resp = requests.get(blank_url, timeout=15)
+        resp.raise_for_status()
+        try:
+            with open(file_path, "wb") as f:
+                f.write(resp.content)
+        except Exception:
+            pass
+        return Image.open(BytesIO(resp.content)).convert("RGBA")
+    except Exception as e:
+        print(f"[Mockup] Failed to download blank from Supabase: {e}. Falling back to clean canvas.")
+        return Image.new("RGBA", (1000, 1000), (20, 20, 20, 255) if blank_meta["tone"] == "dark" else (240, 240, 240, 255))
+
 
 # Available high-res blanks in repository with calibrated anatomical print placements
 BLANKS = {
@@ -255,7 +277,7 @@ def adjust_logo_contrast(logo_img, garment_tone, was_bg_removed=False):
 
     return logo_img, False, note
 
-def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_url=None, garment_choice="auto", placement="center"):
+def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_url=None, garment_choice="auto", placement="center", custom_alteration_note=None):
     """
     Main pipeline:
     1. Fetches company logo (or uses override).
@@ -267,10 +289,13 @@ def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_
     """
     # 1. Fetch Logo
     if logo_override_url:
-        headers = {'User-Agent': 'Mozilla/5.0'}
-        req = urllib.request.Request(logo_override_url, headers=headers)
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            logo_img = Image.open(BytesIO(resp.read())).convert("RGBA")
+        if logo_override_url.startswith("http://") or logo_override_url.startswith("https://"):
+            headers = {'User-Agent': 'Mozilla/5.0'}
+            req = urllib.request.Request(logo_override_url, headers=headers)
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                logo_img = Image.open(BytesIO(resp.read())).convert("RGBA")
+        else:
+            logo_img = Image.open(logo_override_url).convert("RGBA")
         logo_url = logo_override_url
     else:
         logo_img, logo_url = scrape_company_logo(website_url, company_name)
@@ -289,11 +314,12 @@ def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_
         chosen_blank_key = garment_choice
 
     blank_meta = BLANKS.get(chosen_blank_key, BLANKS["black_tee"])
-    blank = Image.open(blank_meta["file"]).convert("RGBA")
+    blank = get_blank_image(blank_meta)
     bw, bh = blank.size
 
     # Invert / Recolor logo if contrast with garment tone is poor
-    logo_img, was_inverted, alteration_note = adjust_logo_contrast(logo_img, blank_meta["tone"], bg_removed)
+    logo_img, was_inverted, auto_alteration_note = adjust_logo_contrast(logo_img, blank_meta["tone"], bg_removed)
+    alteration_note = custom_alteration_note if custom_alteration_note is not None else auto_alteration_note
 
     # 4. Placement & Scaling
     aspect = logo_img.height / logo_img.width
@@ -349,7 +375,7 @@ def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_
 
     # 5. Build Master Proof Presentation Card (Clean high-res email card)
     card_w = 1000
-    card_h = 1420 if alteration_note else 1380
+    card_h = 1440 if alteration_note else 1390
     card = Image.new("RGBA", (card_w, card_h), (255, 255, 255, 255))
     draw = ImageDraw.Draw(card)
 
@@ -373,25 +399,30 @@ def generate_photorealistic_b2b_mockup(company_name, website_url, logo_override_
     card.paste(shirt_composite, (0, 90), shirt_composite)
 
     # Bottom Specification Footer
-    footer_h = 120 if alteration_note else 100
+    footer_h = 135 if alteration_note else 110
     draw.rectangle([(0, card_h - footer_h), (card_w, card_h)], fill="#F8FAFC")
     draw.line([(0, card_h - footer_h), (card_w, card_h - footer_h)], fill="#E2E8F0", width=2)
 
-    spec_text = f"GARMENT: {blank_meta['label']} ({blank_meta['colorway']})"
-    print_text = f"PRINT PROCESS: Commercial Ultra HD DTF • {placement_label}"
+    color_short = blank_meta['colorway'].split(' (')[0]
+    spec_text = f"GARMENT: {blank_meta['label']} • {color_short}"
+    placement_type = "Full Front Center Chest" if placement == "center" else "Left Chest Crest"
+    print_text = f"PRINT: Commercial Ultra HD DTF • {placement_type}"
     
+    # Clean Quality Inspection Badge on the right
+    badge_w = 230
+    badge_h = 42
+    badge_x = card_w - badge_w - 30
+    badge_y = card_h - footer_h + 20
+    draw.rounded_rectangle([(badge_x, badge_y), (badge_x + badge_w, badge_y + badge_h)], radius=8, fill="#ECFDF5", outline="#10B981", width=2)
+    draw.text((badge_x + 18, badge_y + 11), "100% QUALITY INSPECTED", fill="#065F46", font=font_badge)
+
     if alteration_note:
-        draw.text((30, card_h - 105), spec_text, fill="#1E293B", font=font_sub)
-        draw.text((30, card_h - 75), print_text, fill="#059669", font=font_sub)
-        draw.text((30, card_h - 42), f"* Note: {alteration_note}", fill="#64748B", font=font_note)
-        # Quality badge positioned on right
-        draw.rounded_rectangle([(card_w - 245, card_h - 95), (card_w - 25, card_h - 45)], radius=8, fill="#ECFDF5", outline="#10B981", width=2)
-        draw.text((card_w - 230, card_h - 80), "⚡ 100% QUALITY INSPECTED", fill="#065F46", font=font_badge)
+        draw.text((30, card_h - footer_h + 18), spec_text, fill="#1E293B", font=font_sub)
+        draw.text((30, card_h - footer_h + 50), print_text, fill="#059669", font=font_sub)
+        draw.text((30, card_h - footer_h + 84), f"* Note: {alteration_note}", fill="#64748B", font=font_note)
     else:
-        draw.text((30, card_h - 85), spec_text, fill="#1E293B", font=font_sub)
-        draw.text((30, card_h - 50), print_text, fill="#059669", font=font_sub)
-        draw.rounded_rectangle([(card_w - 240, card_h - 80), (card_w - 30, card_h - 30)], radius=8, fill="#ECFDF5", outline="#10B981", width=2)
-        draw.text((card_w - 225, card_h - 66), "⚡ 100% QUALITY INSPECTED", fill="#065F46", font=font_badge)
+        draw.text((30, card_h - footer_h + 24), spec_text, fill="#1E293B", font=font_sub)
+        draw.text((30, card_h - footer_h + 58), print_text, fill="#059669", font=font_sub)
 
     # 6. Save and Upload to Supabase Storage
     buf = BytesIO()

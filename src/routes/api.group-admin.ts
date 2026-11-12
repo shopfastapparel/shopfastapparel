@@ -166,7 +166,7 @@ export const Route = createFileRoute("/api/group-admin")({
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                  from: process.env.RESEND_FROM_EMAIL || "Fast Apparel Orders <info@shopfastapparel.com>",
+                  from: process.env.RESEND_FROM_EMAIL || "Tavarus from Fast Apparel <info@shopfastapparel.com>",
                   to: ["shopfastapparel@gmail.com", "info@shopfastapparel.com"],
                   subject: `⛪ New Order Placed: Fountain of Faith — ${name} (${totalGarments} Garments)`,
                   html: htmlBody,

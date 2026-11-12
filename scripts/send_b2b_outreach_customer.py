@@ -4,12 +4,12 @@ import requests
 from datetime import datetime
 from dotenv import load_dotenv
 
-load_dotenv("/Users/tavarus/.gemini/antigravity/scratch/shopfastapparel/.env")
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(PROJECT_ROOT, ".env"))
 
 ADMIN_EMAIL = os.environ.get("RESEND_TO_EMAIL", "shopfastapparel@gmail.com")
-FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "Fast Apparel <info@shopfastapparel.com>")
+FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "Tavarus from Fast Apparel <info@shopfastapparel.com>")
 RESEND_KEY = os.environ.get("RESEND_API_KEY")
-PROJECT_ROOT = "/Users/tavarus/.gemini/antigravity/scratch/shopfastapparel"
 
 def dispatch_b2b_outreach(company_name, contact_name, target_email, mockup_url, garment_specs, print_specs, website="", industry="", alteration_note=""):
     """
@@ -35,6 +35,7 @@ def dispatch_b2b_outreach(company_name, contact_name, target_email, mockup_url, 
         "from": FROM_EMAIL,
         "to": [target_email],
         "bcc": [ADMIN_EMAIL],
+        "reply_to": "info@shopfastapparel.com",
         "subject": subject,
         "html": email_html,
         "text": f"Hi {contact_name},\n\nWe created a custom apparel mockup proof for {company_name}! Check out your custom mockup proof and 15% new neighbor discount.\n\nFast Custom Apparel - Lawrenceville, GA\nhttps://www.shopfastapparel.com",

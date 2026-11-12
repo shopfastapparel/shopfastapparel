@@ -379,10 +379,244 @@
       }
     ],
     "closing_note": "\n<p style=\"font-size: 15px; color: #374151; line-height: 1.6; margin: 16px 0 0 0;\">\n  Thank you so much for returning to Fast Custom Apparel for <strong>Lighthouse Therapeutic Services, LLC</strong>! Dash the Cheetah and our Atlanta production crew thoroughly inspected, folded, and packaged all 18 of your Deep Classic Navy sweatshirts. We loved printing your vibrant logo and know your team will wear them with pride!\n</p>\n<p style=\"font-size: 14px; color: #64748B; line-height: 1.55; margin: 12px 0 0 0;\">\n  Whenever you're ready for seasonal reorders, staff additions, or fresh custom gear, Dash and our team are always in your corner!\n</p>\n",
-    "status": "IN_TRANSIT",
+    "status": "DELIVERED_SENT",
     "shipped_at": "2026-10-28T13:38:09.514121",
-    "delivered_at": null,
-    "email_sent_at": null,
-    "resend_id": "01a18397-3dd4-7b7f-82b4-bb7b998d57d8"
+    "delivered_at": "2026-10-30T20:43:35Z",
+    "email_sent_at": "2026-10-30T19:00:50.449822",
+    "resend_id": "01a18f0b-6259-73e7-835d-0d83f5bdbc16"
+  },
+  {
+    "invoice_number": "AGWN3F4A-0002",
+    "customer_name": "Amani Mitchell",
+    "customer_company": "Team Blue Tennis",
+    "customer_email": "amani.mitchell71@gmail.com",
+    "cc_email": null,
+    "carrier": "UPS",
+    "tracking_number": "1ZY973G40330357053",
+    "tracking_url": "https://www.ups.com/track?track=yes&trackNums=1ZY973G40330357053",
+    "shipping_address": "3931 Kingsbrook Blvd, Decatur, GA 30034",
+    "amount_paid": "$82.62",
+    "invoice_subtitle": "5 C2 Sport 5200 Youth Performance Athletic Tees in Classic Navy",
+    "proof_urls": [
+      {
+        "label": "Official Master Production Proof (Navy Comparison Sheet)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/armani-proof_navy_comparison-1792005306.jpg",
+        "is_master": true
+      },
+      {
+        "label": "C2 Sport 5200 Youth Navy Performance Tee",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/armani-mockup_c2_navy-1792005306.jpg",
+        "note": "5 Youth Performance Shirts \u2022 Full Front Ultra HD DTF"
+      }
+    ],
+    "manifest_rows": [
+      {
+        "garment": "C2 Sport 5200 Youth Performance Athletic Tee",
+        "colorway": "Classic Navy Blue (3.5 oz 100% Polyester Performance Interlock)",
+        "prints": [
+          "Full Front Chest Commercial Ultra HD DTF Transfer (Calibrated Youth Scale)",
+          "Moisture-Wicking & Anti-Microbial Odor Control",
+          "UPF 50+ UV Sun Shield & Elastomeric Athletic Stretch Recovery Bond"
+        ],
+        "sizes": {
+          "Youth Small": 2,
+          "Youth Medium": 1,
+          "Youth Large": 2
+        },
+        "qty": 5
+      }
+    ],
+    "closing_note": "Thank you so much once again for partnering with Fast Custom Apparel for Team Blue Tennis! We loved printing these youth performance shirts for the <strong>2nd Annual Round Robin 2026</strong> and know your young players and champions will wear them with pride on the court. Whenever you are ready for reorders, future tournament gear, or team apparel, Dash and our crew are always here for you!",
+    "status": "DELIVERED_SENT",
+    "shipped_at": "2026-10-30T12:53:52.092286",
+    "delivered_at": "2026-11-01T09:00:43.611643",
+    "email_sent_at": "2026-11-01T09:00:43.841446",
+    "resend_id": "01a19769-9e07-749d-ae5a-55232e404546"
+  },
+  {
+    "invoice_number": "7MIBZOJ2-0001",
+    "customer_name": "Sharan Coleman",
+    "customer_company": "P2P Legacy Blueprint Cohort",
+    "customer_email": "sharan@p2plegacy.com",
+    "cc_email": null,
+    "carrier": "UPS",
+    "tracking_number": "1ZY973G40331670042",
+    "tracking_url": "https://www.ups.com/track?track=yes&trackNums=1ZY973G40331670042",
+    "shipping_address": "428 Milky Way, Stockbridge, GA 30281-5902",
+    "amount_paid": "$233.28",
+    "invoice_subtitle": "8 Custom Bella+Canvas 3001 Unisex T-Shirts (Solid White \u2022 3 Print Locations)",
+    "proof_urls": [
+      {
+        "label": "Official Master Production Proof Sheet",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/sharan/sharan_master_proof.jpg",
+        "is_master": true
+      },
+      {
+        "label": "Front Chest Placement Proof",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/sharan/bella_3001_white_front_proof.jpg",
+        "note": "12.0\" W x 12.5\" H \u2022 2.84\" Collar Drop"
+      },
+      {
+        "label": "Back Scripture Placement Proof",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/sharan/bella_3001_white_back_proof.jpg",
+        "note": "12.0\" W x 15.0\" H \u2022 3.0\" Collar Drop"
+      },
+      {
+        "label": "Left Sleeve Crest Placement Proof",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/sharan/bella_3001_white_sleeve_proof.jpg",
+        "note": "4.0\" W x 2.76\" H \u2022 Berry-Pink Script"
+      }
+    ],
+    "manifest_rows": [
+      {
+        "garment": "Bella+Canvas 3001 Unisex Jersey Short-Sleeve T-Shirt",
+        "colorway": "Solid White (4.2 oz. 100% Airlume Combed Ringspun Cotton)",
+        "prints": [
+          "Front Chest: Commercial Ultra HD DTF Print (12.0\" W \u00d7 12.5\" H, 2.84\" Collar Drop) with Spaced Top Script",
+          "Full Back: Commercial Ultra HD DTF Scripture & Floral Print (12.0\" W \u00d7 15.0\" H, 3.0\" Collar Drop)",
+          "Left Sleeve: Commercial Ultra HD DTF Crest (4.0\" W \u00d7 2.76\" H) in Matching Berry-Pink Script with Full Y-Loop",
+          "Micro-Pigment Color Calibration with 100% Solid White Underbase",
+          "Industrial Heat Pressed at 310\u00b0F \u2022 50+ Wash Durability Rating"
+        ],
+        "sizes": {
+          "Small (S)": 1,
+          "Medium (M)": 1,
+          "Large (L)": 1,
+          "X-Large (XL)": 3,
+          "2X-Large (2XL)": 2
+        },
+        "qty": 8
+      }
+    ],
+    "closing_note": "\n<p style=\"font-size: 15px; color: #374151; line-height: 1.6; margin: 16px 0 0 0;\">\n  Thank you so much for partnering with Fast Custom Apparel for <strong>P2P Legacy Blueprint Cohort</strong>! Dash the Cheetah and our Atlanta production crew thoroughly inspected, folded, and packaged all 8 of your custom Bella+Canvas tees. We loved bringing your vision to life\u2014from the perfectly spaced front script to the matching berry-pink sleeve crest and full back Scripture design\u2014and we know your cohort will wear them with pride!\n</p>\n<p style=\"font-size: 14px; color: #64748B; line-height: 1.55; margin: 12px 0 0 0;\">\n  Whenever you're ready for cohort additions, upcoming events, or fresh custom gear, Dash and our team are always in your corner!\n</p>\n",
+    "status": "DELIVERED_SENT",
+    "shipped_at": "2026-10-30T12:54:01.161303",
+    "delivered_at": "2026-10-31T18:24:05Z",
+    "email_sent_at": "2026-10-31T17:01:23.386583",
+    "resend_id": "01a193c4-623c-721d-b662-d26348336b21"
+  },
+  {
+    "invoice_number": "CQQXS8GB-0001",
+    "customer_name": "Ronnie Timmons",
+    "customer_company": "The Liquid Group",
+    "customer_email": "timmons.ronnie.12@gmail.com",
+    "cc_email": null,
+    "carrier": "USPS",
+    "tracking_number": "9334611043900240440232",
+    "tracking_url": "https://tools.usps.com/go/TrackConfirmAction?tLabels=9334611043900240440232",
+    "shipping_address": "3328 Alcovy Club Court, Dacula, GA 30019",
+    "amount_paid": "$168.38",
+    "invoice_subtitle": "5 Custom Gildan 64000 Softstyle\u00ae Ringspun T-Shirts (Red \u2022 2-Sided Ultra HD DTF + Custom Names)",
+    "proof_urls": [
+      {
+        "label": "Official Master Production Proof Sheet",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/ronnie_timmons_master_presentation_proof_1792679699.jpg?v=1792679699",
+        "is_master": true
+      },
+      {
+        "label": "Front Chest Braves Script Mockup",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/ronnie_mockup_gildan_64000_front_1792679699.jpg?v=1792679699",
+        "note": "8.25\" W \u2022 Commercial Ultra HD DTF"
+      },
+      {
+        "label": "Back Simpson Rd Arch & Names Mockup",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/ronnie_mockup_gildan_64000_back_1792679699.jpg?v=1792679699",
+        "note": "9.21\" W Arch + 5.25\" W Names"
+      }
+    ],
+    "manifest_rows": [
+      {
+        "garment": "Gildan 64000 Softstyle\u00ae Adult T-Shirt",
+        "colorway": "Red (4.5 oz. 100% Combed Ringspun Cotton)",
+        "prints": [
+          "Front Chest: Commercial Ultra HD DTF Print (8.25\" W Braves Script in Red / White / Navy)",
+          "Full Back: Commercial Ultra HD DTF Arched Graphic (9.21\" W Simpson Rd)",
+          "Upper Back: Commercial Ultra HD DTF Personalized Names (5.25\" W)",
+          "Micro-Pigment Color Calibration with 100% Solid White Underbase",
+          "Industrial Heat Pressed at 310\u00b0F \u2022 50+ Wash Durability Rating"
+        ],
+        "sizes": {
+          "Large (L)": "2 Shirts (Vernell, Henshaw)",
+          "X-Large (XL)": "1 Shirt (Ronnita)",
+          "2X-Large (2XL)": "2 Shirts (Ronnie, Torrance)"
+        },
+        "qty": 5
+      }
+    ],
+    "closing_note": "\n<p style=\"font-size: 15px; color: #374151; line-height: 1.6; margin: 16px 0 0 0;\">\n  Thank you so much for choosing Fast Custom Apparel for <strong>The Liquid Group</strong>, Ronnie! Dash the Cheetah and our Atlanta production crew thoroughly inspected, folded, and packaged all 5 of your custom red Gildan 64000 Softstyle tees. We loved printing your custom Braves script front and Simpson Rd back with personalized names, and we know your crew will wear them with pride!\n</p>\n<p style=\"font-size: 14px; color: #64748B; line-height: 1.55; margin: 12px 0 0 0;\">\n  Your package is officially on its way to you via <strong>USPS</strong> to Dacula, GA. Whenever you're ready for reorders, new team gear, or upcoming events, Dash and our crew are always in your corner!\n</p>\n",
+    "status": "DELIVERED_SENT",
+    "shipped_at": "2026-11-02T10:35:25.332559",
+    "delivered_at": "2026-11-05T16:50:53Z",
+    "email_sent_at": "2026-11-05T13:00:21.760668",
+    "resend_id": "01a1acde-71de-703e-8075-2ea1b8a7176f"
+  },
+  {
+    "invoice_number": "AD0XFQTW-0001 (Complimentary Ballcap Reprint)",
+    "customer_name": "Shade Wale",
+    "customer_company": "SMT 60th Birthday Celebration",
+    "customer_email": "fshowale@gmail.com",
+    "cc_email": null,
+    "carrier": "USPS",
+    "tracking_number": "9334611043900242042953",
+    "tracking_url": "https://tools.usps.com/go/TrackConfirmAction_input?qtc_tLabels1=9334611043900242042953",
+    "shipping_address": "Shade Showale, 3264 Creek Trace East, Powder Springs, GA 30127",
+    "amount_paid": "$0.00 (Complimentary VIP Customer Reprint \u2022 Original Order Paid $545.40)",
+    "invoice_subtitle": "Complimentary Customer Satisfaction Ballcap Reprint \u2014 5 VC300A Khaki Dad Hats",
+    "proof_urls": [
+      {
+        "label": "Approved Complimentary Reprint Production Proof Sheet",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/shade-wale-proof_vc300a_khaki_dad_hat-1792942000.jpg",
+        "is_master": true
+      },
+      {
+        "label": "Valucap VC300A Classic Dad Hat (Khaki)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/shade-wale-proof_vc300a_khaki_front-1792942000.jpg",
+        "note": "4.50\" W Front Crown \u2022 Carolina Sky Blue & Brown Hands"
+      }
+    ],
+    "manifest_rows": [
+      {
+        "garment": "Valucap VC300A Bio-Washed Classic Dad Hat",
+        "colorway": "Classic Khaki (100% Bio-Washed Chino Cotton Twill)",
+        "prints": [
+          "Commercial Ultra HD DTF Front Crown Print (4.50\" W \u00d7 2.65\" H)",
+          "Vibrant Carolina Sky Blue Arched 'SMT IS 3 Score!' Typography",
+          "Custom Multi-Tone Brown Clapping Hands Illustration",
+          "100% Solid White Underbase with Micro-Pigment Calibration",
+          "Curved Hat Platen Application \u2022 50+ Wash Durability Rating"
+        ],
+        "sizes": {
+          "One Size / Adjustable (Brass Buckle)": 5
+        },
+        "qty": 5
+      }
+    ],
+    "closing_note": "\n<p style=\"font-size: 15px; color: #374151; line-height: 1.6; margin: 16px 0 0 0;\">\n  Hi Shade, thank you so much again for partnering with Fast Custom Apparel for your milestone <strong>SMT 60th Birthday Celebration</strong>! We wanted to ensure your custom ballcaps were 100% flawless, so Dash the Cheetah and our Atlanta team custom printed, curved, inspected, and packaged these 5 complimentary replacement dad hats in Classic Khaki with the vibrant Carolina Blue arched print and custom brown clapping hands. We know you and your guests will wear them with pride!\n</p>\n<p style=\"font-size: 14px; color: #64748B; line-height: 1.55; margin: 12px 0 0 0;\">\n  Whenever you're ready for future milestone celebrations, family gatherings, or custom apparel, Dash and our team are always in your corner!\n</p>\n",
+    "status": "DELIVERED_SENT",
+    "shipped_at": "2026-11-04T11:50:20.274033",
+    "delivered_at": "2026-11-06T18:33:09Z",
+    "email_sent_at": "2026-11-06T15:00:19.667861",
+    "resend_id": "01a1b272-a2c2-76e0-95fb-dd75196d37ae"
+  },
+  {
+    "invoice_number": "7MIBZOJ2-REPLACE-01",
+    "customer_name": "Sharan Coleman",
+    "customer_company": "P2P Legacy Blueprint Cohort",
+    "customer_email": "sharan@p2plegacy.com",
+    "cc_email": null,
+    "carrier": "USPS",
+    "tracking_number": "9334611043900242605820",
+    "tracking_url": "https://tools.usps.com/go/TrackConfirmAction?tLabels=9334611043900242605820",
+    "shipping_address": "428 Milky Way, Stockbridge, GA 30281-5902",
+    "amount_paid": "$233.28 (Free Warranty Replacement)",
+    "invoice_subtitle": "8 Custom Bella+Canvas 3001 Unisex T-Shirts (Solid White \u2022 Midnight Navy Color Correction)",
+    "proof_urls": [],
+    "manifest_rows": [],
+    "closing_note": "",
+    "status": "DELIVERED_SENT",
+    "shipped_at": "2026-11-05T09:01:40.771966",
+    "delivered_at": "2026-11-07T17:50:30Z",
+    "email_sent_at": "2026-11-07T13:00:18.528320",
+    "resend_id": "01a1b72b-1d4a-7116-96ce-e5de3b6c1c60"
   }
 ]

@@ -2,13 +2,12 @@ import os
 import requests
 from dotenv import load_dotenv
 
-load_dotenv("/Users/tavarus/.gemini/antigravity/scratch/shopfastapparel/.env")
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(PROJECT_ROOT, ".env"))
 
 ADMIN_EMAIL = os.environ.get("RESEND_TO_EMAIL", "shopfastapparel@gmail.com")
-FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "Fast Apparel <info@shopfastapparel.com>")
+FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "Tavarus from Fast Apparel <info@shopfastapparel.com>")
 RESEND_KEY = os.environ.get("RESEND_API_KEY")
-
-PROJECT_ROOT = "/Users/tavarus/.gemini/antigravity/scratch/shopfastapparel"
 
 def dispatch_b2b_preview(company_name, contact_name, target_email, mockup_url, garment_specs, print_specs, alteration_note=""):
     """

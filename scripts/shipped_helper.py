@@ -7,7 +7,7 @@ except ImportError:
     resend = None
 
 ADMIN_EMAIL = os.environ.get("RESEND_TO_EMAIL", "shopfastapparel@gmail.com")
-FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "Fast Apparel <info@shopfastapparel.com>")
+FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "Tavarus from Fast Apparel <info@shopfastapparel.com>")
 
 TEMPLATE_PATH = "/Users/tavarus/.gemini/antigravity/scratch/shopfastapparel/scripts/email_template_shipped.html"
 

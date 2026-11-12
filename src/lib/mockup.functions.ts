@@ -148,7 +148,7 @@ export const sendMockup = createServerFn({ method: "POST" })
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) throw new Error("Email service not configured");
     const resend = new Resend(apiKey);
-    const customerFrom = "Tavarus Johnson <info@shopfastapparel.com>";
+    const customerFrom = process.env.RESEND_FROM_EMAIL || "Tavarus from Fast Apparel <info@shopfastapparel.com>";
     const adminEmail = process.env.RESEND_TO_EMAIL || "shopfastapparel@gmail.com";
     const customerSubject = `Re: Design Mockup & Approval — ${quote.company || quote.name}`;
 

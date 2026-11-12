@@ -31,4 +31,15 @@ dist-ssr
 *.sln
 *.sw?
 .env
-scripts/
+scripts/*
+!scripts/mandy_daily_engine.py
+!scripts/mandy_lead_recorder.py
+!scripts/generate_realistic_b2b_mockup.py
+!scripts/preview_b2b_outreach.py
+!scripts/email_template_b2b_outreach.html
+!scripts/email_template.html
+!scripts/email_template_invoice_paid.html
+!scripts/email_template_shipped.html
+!scripts/email_template_delivered.html
+!scripts/delivery_watcher.py
+!scripts/leads.csv

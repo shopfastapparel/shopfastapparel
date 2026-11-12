@@ -443,7 +443,7 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
     const quoteIdShort = quoteId.substring(0, 8);
 
     // Determine sender — use verified domain if available, otherwise default
-    const from = process.env.RESEND_FROM_EMAIL || "Tavarus Johnson <info@shopfastapparel.com>";
+    const from = process.env.RESEND_FROM_EMAIL || "Tavarus from Fast Apparel <info@shopfastapparel.com>";
 
     // Send email to shop owner
     const toEmail = process.env.RESEND_TO_EMAIL || "shopfastapparel@gmail.com";
@@ -462,7 +462,7 @@ export const submitQuoteRequest = createServerFn({ method: "POST" })
 
     // Send confirmation email to customer (Delivered to Primary inbox via Deliverability Rules)
     try {
-      const customerFrom = "Tavarus Johnson <info@shopfastapparel.com>";
+      const customerFrom = process.env.RESEND_FROM_EMAIL || "Tavarus from Fast Apparel <info@shopfastapparel.com>";
       const customerSubject = `Re: Custom Apparel Request — ${data.company || data.name || "Fast Apparel"}`;
       await resend.emails.send({
         from: customerFrom,
@@ -736,7 +736,7 @@ export const notifyStudioSubmission = createServerFn({ method: "POST" })
     }
 
     const resend = new Resend(apiKey);
-    const from = process.env.RESEND_FROM_EMAIL || "Fast Apparel <info@shopfastapparel.com>";
+    const from = process.env.RESEND_FROM_EMAIL || "Tavarus from Fast Apparel <info@shopfastapparel.com>";
     const toEmail = process.env.RESEND_TO_EMAIL || "shopfastapparel@gmail.com";
 
     const quoteIdShort = data.quoteId ? data.quoteId.substring(0, 8) : "STUDIO";
@@ -828,7 +828,7 @@ export const notifyStudioSubmission = createServerFn({ method: "POST" })
       });
 
       // Customer confirmation (Delivered to Primary inbox via Deliverability Rules)
-      const customerFrom = "Tavarus Johnson <info@shopfastapparel.com>";
+      const customerFrom = process.env.RESEND_FROM_EMAIL || "Tavarus from Fast Apparel <info@shopfastapparel.com>";
       const customerSubject = `Re: Custom Design Request — ${data.company || data.name || "Fast Apparel"}`;
       await resend.emails.send({
         from: customerFrom,

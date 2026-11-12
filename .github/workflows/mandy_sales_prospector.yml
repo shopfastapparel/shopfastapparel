@@ -1,0 +1,55 @@
+name: Mandy 24/7 B2B Sales Prospector
+
+on:
+  schedule:
+    # Runs daily at 14:00 UTC (9:00 AM EST)
+    - cron: '0 14 * * *'
+  workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  run-mandy-prospector:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests python-dotenv pillow
+
+      - name: Execute Mandy B2B Prospecting Engine
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_TO_EMAIL: ${{ secrets.RESEND_TO_EMAIL || 'shopfastapparel@gmail.com' }}
+          RESEND_FROM_EMAIL: ${{ secrets.RESEND_FROM_EMAIL || 'Tavarus from Fast Apparel <info@shopfastapparel.com>' }}
+          GOOGLE_SHEET_LEADS_WEBHOOK_URL: ${{ secrets.GOOGLE_SHEET_LEADS_WEBHOOK_URL }}
+        run: |
+          python scripts/mandy_daily_engine.py
+
+      - name: Commit and Push Updated Leads & Mockups
+        run: |
+          git config --local user.name "Mandy (Sales Prospector)"
+          git config --local user.email "info@shopfastapparel.com"
+          git add -f leads.csv scripts/leads.csv scripts/daily_b2b_mockups_latest.json || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore(mandy): record automated daily b2b leads and mockups [skip ci]"
+            git push origin main
+          fi

@@ -5,19 +5,18 @@ import requests
 from datetime import datetime
 from dotenv import load_dotenv
 
-load_dotenv("/Users/tavarus/.gemini/antigravity/scratch/shopfastapparel/.env")
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(PROJECT_ROOT, ".env"))
 
-SUPABASE_URL = os.environ.get("VITE_SUPABASE_URL")
+SUPABASE_URL = os.environ.get("VITE_SUPABASE_URL") or os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 RESEND_KEY = os.environ.get("RESEND_API_KEY")
-FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "Fast Apparel <info@shopfastapparel.com>")
+FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "Tavarus from Fast Apparel <info@shopfastapparel.com>")
 ADMIN_EMAIL = os.environ.get("RESEND_TO_EMAIL", "shopfastapparel@gmail.com")
 GOOGLE_SHEET_WEBHOOK_URL = os.environ.get(
     "GOOGLE_SHEET_LEADS_WEBHOOK_URL",
     "https://script.google.com/macros/s/AKfycbznY1FNZvXGIH4QQ9dh28AfnXkgey-GWrBPdwIJ9rZdmNw84VsaKPSZa64zza6A_rp5/exec"
 )
-
-PROJECT_ROOT = "/Users/tavarus/.gemini/antigravity/scratch/shopfastapparel"
 
 def record_daily_leads(leads, date_label=None):
     """

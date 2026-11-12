@@ -146,18 +146,21 @@ function FamilyTeesPage() {
             
             {/* Vacation */}
             <div className="group">
-              <div className="relative overflow-hidden rounded-2xl border-2 border-border mb-6 aspect-video">
+              <div className="relative overflow-hidden rounded-2xl border-2 border-border mb-6 aspect-video bg-muted">
                 <img 
-                  src="/images/family-tees/vacation.webp" 
-                  alt="Family wearing matching orange shirts on a beach vacation" 
+                  src="/images/team-showcase/cruise_crew_bahamas_navy_tee.webp" 
+                  alt="Real customer order: Choi Oh Choi Bahamas 2026 Cruise Crew custom t-shirts in navy" 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
+                <div className="absolute top-3 left-3 bg-amber-500 text-white text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md border border-ink shadow-sm">
+                  Real Customer Order • Bahamas Cruise 2026
+                </div>
               </div>
               <div className="flex items-center gap-3 mb-2">
                 <Plane className="w-6 h-6 text-magenta-brand" />
-                <h3 className="text-2xl font-bold">Family Vacations</h3>
+                <h3 className="text-2xl font-bold">Family Vacations & Group Cruises</h3>
               </div>
-              <p className="text-muted-foreground">Make your cruise, beach trip, or theme park adventure stand out with matching vibrant shirts. Great for keeping track of the group and taking amazing photos.</p>
+              <p className="text-muted-foreground">Make your cruise, beach trip, or theme park adventure stand out with matching vibrant shirts (like our recent 3-family Bahamas cruise order!). Great for keeping track of the group and taking unforgettable family photos.</p>
             </div>
 
             {/* Milestone Birthdays */}

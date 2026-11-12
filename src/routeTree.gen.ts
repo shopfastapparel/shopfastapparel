@@ -47,6 +47,7 @@ import { Route as GroupFountainOfFaithRouteImport } from './routes/group.fountai
 import { Route as GroupDemoRouteImport } from './routes/group.demo'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
+import { Route as ApiShippoWebhookRouteImport } from './routes/api.shippo-webhook'
 import { Route as ApiGroupAdminRouteImport } from './routes/api.group-admin'
 import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
 import { Route as AdminSalesRouteImport } from './routes/admin.sales'
@@ -253,6 +254,11 @@ const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   path: '/api/stripe-webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiShippoWebhookRoute = ApiShippoWebhookRouteImport.update({
+  id: '/api/shippo-webhook',
+  path: '/api/shippo-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiGroupAdminRoute = ApiGroupAdminRouteImport.update({
   id: '/api/group-admin',
   path: '/api/group-admin',
@@ -341,6 +347,7 @@ export interface FileRoutesByFullPath {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/api/group-admin': typeof ApiGroupAdminRoute
+  '/api/shippo-webhook': typeof ApiShippoWebhookRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/group/demo': typeof GroupDemoRoute
@@ -393,6 +400,7 @@ export interface FileRoutesByTo {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/api/group-admin': typeof ApiGroupAdminRoute
+  '/api/shippo-webhook': typeof ApiShippoWebhookRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/group/demo': typeof GroupDemoRoute
@@ -446,6 +454,7 @@ export interface FileRoutesById {
   '/admin/sales': typeof AdminSalesRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/api/group-admin': typeof ApiGroupAdminRoute
+  '/api/shippo-webhook': typeof ApiShippoWebhookRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/group/demo': typeof GroupDemoRoute
@@ -500,6 +509,7 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/api/group-admin'
+    | '/api/shippo-webhook'
     | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/group/demo'
@@ -552,6 +562,7 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/api/group-admin'
+    | '/api/shippo-webhook'
     | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/group/demo'
@@ -604,6 +615,7 @@ export interface FileRouteTypes {
     | '/admin/sales'
     | '/admin/subscribers'
     | '/api/group-admin'
+    | '/api/shippo-webhook'
     | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/group/demo'
@@ -657,6 +669,7 @@ export interface RootRouteChildren {
   AdminSalesRoute: typeof AdminSalesRoute
   AdminSubscribersRoute: typeof AdminSubscribersRoute
   ApiGroupAdminRoute: typeof ApiGroupAdminRoute
+  ApiShippoWebhookRoute: typeof ApiShippoWebhookRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   BlogSlugRoute: typeof BlogSlugRoute
   GroupDemoRoute: typeof GroupDemoRoute
@@ -952,6 +965,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiStripeWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/shippo-webhook': {
+      id: '/api/shippo-webhook'
+      path: '/api/shippo-webhook'
+      fullPath: '/api/shippo-webhook'
+      preLoaderRoute: typeof ApiShippoWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/group-admin': {
       id: '/api/group-admin'
       path: '/api/group-admin'
@@ -1065,6 +1085,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSalesRoute: AdminSalesRoute,
   AdminSubscribersRoute: AdminSubscribersRoute,
   ApiGroupAdminRoute: ApiGroupAdminRoute,
+  ApiShippoWebhookRoute: ApiShippoWebhookRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   BlogSlugRoute: BlogSlugRoute,
   GroupDemoRoute: GroupDemoRoute,
