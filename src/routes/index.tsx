@@ -8,6 +8,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { Testimonials } from "@/components/Testimonials";
 import { PricingCalculator } from "@/components/PricingCalculator";
+import { CompetitorComparison } from "@/components/CompetitorComparison";
 import { APPAREL_STYLES } from "@/lib/apparel";
 import { LOCATIONS } from "@/lib/locations";
 import {
@@ -754,6 +755,9 @@ function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* WHY CHOOSE FAST APPAREL VS NATIONAL PRINTERS */}
+      <CompetitorComparison />
 
       {/* LOCATIONS */}
       <section className="mx-auto max-w-7xl px-4 py-20 overflow-hidden">

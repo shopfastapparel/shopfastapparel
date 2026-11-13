@@ -42,6 +42,7 @@ import {
 } from "lucide-react";
 import { LOCATIONS, PRIMARY_EMAIL, PRIMARY_PHONE } from "@/lib/locations";
 import { APPAREL_STYLES } from "@/lib/apparel";
+import { CompetitorComparison } from "@/components/CompetitorComparison";
 
 type ServiceKey = "custom-tshirts" | "team-bulk" | "family-tees" | "promo" | "other";
 type TurnaroundKey = "rush" | "standard" | "flexible";
@@ -1517,6 +1518,9 @@ function QuotePage() {
           </a>
         </p>
       </section>
+
+      {/* WHY CHOOSE FAST APPAREL VS NATIONAL BROKERS */}
+      <CompetitorComparison className="border-t-2 border-ink" />
 
       {/* Wholesale Apparel Live Catalog Search Modal */}
       {catalogModalOpen && (
