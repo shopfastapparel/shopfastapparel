@@ -12,7 +12,7 @@ export function CompetitorComparison({ className = "", showBlogLink = true }: Co
     {
       feature: "Standard Turnaround",
       icon: Clock,
-      fastApparel: "3 – 5 Business Days",
+      fastApparel: "5 – 7 Business Days",
       fastApparelSub: "Fastest standard turnaround in GA",
       nationalBrokers: "10 – 14 Business Days",
       screenPrinters: "10 – 15 Business Days",
