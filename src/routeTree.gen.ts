@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TurnaroundTimeRouteImport } from './routes/turnaround-time'
 import { Route as TrackRouteImport } from './routes/track'
+import { Route as TextRouteImport } from './routes/text'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SmsRouteImport } from './routes/sms'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as ReturnsRouteImport } from './routes/returns'
@@ -71,9 +73,19 @@ const TrackRoute = TrackRouteImport.update({
   path: '/track',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TextRoute = TextRouteImport.update({
+  id: '/text',
+  path: '/text',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SmsRoute = SmsRouteImport.update({
+  id: '/sms',
+  path: '/sms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShopRoute = ShopRouteImport.update({
@@ -336,7 +348,9 @@ export interface FileRoutesByFullPath {
   '/returns': typeof ReturnsRoute
   '/reviews': typeof ReviewsRoute
   '/shop': typeof ShopRoute
+  '/sms': typeof SmsRoute
   '/terms': typeof TermsRoute
+  '/text': typeof TextRoute
   '/track': typeof TrackRoute
   '/turnaround-time': typeof TurnaroundTimeRoute
   '/admin/announcement': typeof AdminAnnouncementRoute
@@ -389,7 +403,9 @@ export interface FileRoutesByTo {
   '/returns': typeof ReturnsRoute
   '/reviews': typeof ReviewsRoute
   '/shop': typeof ShopRoute
+  '/sms': typeof SmsRoute
   '/terms': typeof TermsRoute
+  '/text': typeof TextRoute
   '/track': typeof TrackRoute
   '/turnaround-time': typeof TurnaroundTimeRoute
   '/admin/announcement': typeof AdminAnnouncementRoute
@@ -443,7 +459,9 @@ export interface FileRoutesById {
   '/returns': typeof ReturnsRoute
   '/reviews': typeof ReviewsRoute
   '/shop': typeof ShopRoute
+  '/sms': typeof SmsRoute
   '/terms': typeof TermsRoute
+  '/text': typeof TextRoute
   '/track': typeof TrackRoute
   '/turnaround-time': typeof TurnaroundTimeRoute
   '/admin/announcement': typeof AdminAnnouncementRoute
@@ -498,7 +516,9 @@ export interface FileRouteTypes {
     | '/returns'
     | '/reviews'
     | '/shop'
+    | '/sms'
     | '/terms'
+    | '/text'
     | '/track'
     | '/turnaround-time'
     | '/admin/announcement'
@@ -551,7 +571,9 @@ export interface FileRouteTypes {
     | '/returns'
     | '/reviews'
     | '/shop'
+    | '/sms'
     | '/terms'
+    | '/text'
     | '/track'
     | '/turnaround-time'
     | '/admin/announcement'
@@ -604,7 +626,9 @@ export interface FileRouteTypes {
     | '/returns'
     | '/reviews'
     | '/shop'
+    | '/sms'
     | '/terms'
+    | '/text'
     | '/track'
     | '/turnaround-time'
     | '/admin/announcement'
@@ -658,7 +682,9 @@ export interface RootRouteChildren {
   ReturnsRoute: typeof ReturnsRoute
   ReviewsRoute: typeof ReviewsRoute
   ShopRoute: typeof ShopRoute
+  SmsRoute: typeof SmsRoute
   TermsRoute: typeof TermsRoute
+  TextRoute: typeof TextRoute
   TrackRoute: typeof TrackRoute
   TurnaroundTimeRoute: typeof TurnaroundTimeRoute
   AdminAnnouncementRoute: typeof AdminAnnouncementRoute
@@ -713,11 +739,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/text': {
+      id: '/text'
+      path: '/text'
+      fullPath: '/text'
+      preLoaderRoute: typeof TextRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sms': {
+      id: '/sms'
+      path: '/sms'
+      fullPath: '/sms'
+      preLoaderRoute: typeof SmsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shop': {
@@ -1074,7 +1114,9 @@ const rootRouteChildren: RootRouteChildren = {
   ReturnsRoute: ReturnsRoute,
   ReviewsRoute: ReviewsRoute,
   ShopRoute: ShopRoute,
+  SmsRoute: SmsRoute,
   TermsRoute: TermsRoute,
+  TextRoute: TextRoute,
   TrackRoute: TrackRoute,
   TurnaroundTimeRoute: TurnaroundTimeRoute,
   AdminAnnouncementRoute: AdminAnnouncementRoute,
