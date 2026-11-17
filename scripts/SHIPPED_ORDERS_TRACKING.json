@@ -618,5 +618,116 @@
     "delivered_at": "2026-11-07T17:50:30Z",
     "email_sent_at": "2026-11-07T13:00:18.528320",
     "resend_id": "01a1b72b-1d4a-7116-96ce-e5de3b6c1c60"
+  },
+  {
+    "invoice_number": "in_1UYpJmItAldTRryiPiUGePD4-BX1",
+    "customer_name": "Dana Byerly",
+    "customer_company": "Burn and Reconstructive Centers of America (BRCA) & Joseph M. Still Burn Centers",
+    "customer_email": "dana.byerly@burncenters.com",
+    "cc_email": null,
+    "carrier": "UPS",
+    "tracking_number": "1ZX6223B0336176140",
+    "tracking_url": "https://www.ups.com/track?track=yes&trackNums=1ZX6223B0336176140",
+    "shipping_address": "3675 J Dewey Gray Circle, Suite 300, Augusta, GA 30909",
+    "amount_paid": "$2,193.62",
+    "invoice_subtitle": "Box 1 of 3: 65 Tees (BRCA Healthcare Team) \u2022 200 Custom M&O 4800 Gold Softspun Ringspun Tees (Deep Navy \u2022 2-Sided Ultra HD DTF \u2022 Paid in Full)",
+    "proof_urls": [
+      {
+        "label": "Official Master Production Proof Sheet (Both Designs)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/dana/dana_both_designs_presentation_v1793831585.jpg",
+        "is_master": true
+      },
+      {
+        "label": "Design 1: BRCA Healthcare Team",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/dana/dana_mo_4800_combo_v1793831614.jpg",
+        "note": "2-Sided Ultra HD DTF \u2022 100 Tees"
+      },
+      {
+        "label": "Design 2: Joseph M. Still Burn Centers",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/dana/dana_jms_mo_4800_combo_v1793831293.jpg",
+        "note": "2-Sided Ultra HD DTF \u2022 100 Tees"
+      }
+    ],
+    "manifest_rows": [],
+    "closing_note": "",
+    "status": "DELIVERED_SENT",
+    "shipped_at": "2026-11-16T10:11:09.631448",
+    "delivered_at": "2026-11-17T15:23:11Z",
+    "email_sent_at": "2026-11-17T11:00:59.011213",
+    "resend_id": "01a1ea3d-7626-7a58-805f-64582a063079"
+  },
+  {
+    "invoice_number": "in_1UYpJmItAldTRryiPiUGePD4-BX2",
+    "customer_name": "Dana Byerly",
+    "customer_company": "Burn and Reconstructive Centers of America (BRCA) & Joseph M. Still Burn Centers",
+    "customer_email": "dana.byerly@burncenters.com",
+    "cc_email": null,
+    "carrier": "UPS",
+    "tracking_number": "1ZX6223B0316267704",
+    "tracking_url": "https://www.ups.com/track?track=yes&trackNums=1ZX6223B0316267704",
+    "shipping_address": "3675 J Dewey Gray Circle, Suite 300, Augusta, GA 30909",
+    "amount_paid": "$2,193.62",
+    "invoice_subtitle": "Box 2 of 3: 70 Tees (BRCA + JMS) \u2022 200 Custom M&O 4800 Gold Softspun Ringspun Tees (Deep Navy \u2022 2-Sided Ultra HD DTF \u2022 Paid in Full)",
+    "proof_urls": [
+      {
+        "label": "Official Master Production Proof Sheet (Both Designs)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/dana/dana_both_designs_presentation_v1793831585.jpg",
+        "is_master": true
+      },
+      {
+        "label": "Design 1: BRCA Healthcare Team",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/dana/dana_mo_4800_combo_v1793831614.jpg",
+        "note": "2-Sided Ultra HD DTF \u2022 100 Tees"
+      },
+      {
+        "label": "Design 2: Joseph M. Still Burn Centers",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/dana/dana_jms_mo_4800_combo_v1793831293.jpg",
+        "note": "2-Sided Ultra HD DTF \u2022 100 Tees"
+      }
+    ],
+    "manifest_rows": [],
+    "closing_note": "",
+    "status": "DELIVERED_SENT",
+    "shipped_at": "2026-11-16T10:11:10.886829",
+    "delivered_at": "2026-11-17T15:23:11Z",
+    "email_sent_at": "2026-11-17T11:00:59.225654",
+    "resend_id": "01a1ea3d-7745-78c7-9bcc-180a1a572e5f"
+  },
+  {
+    "invoice_number": "in_1UYpJmItAldTRryiPiUGePD4-BX3",
+    "customer_name": "Dana Byerly",
+    "customer_company": "Burn and Reconstructive Centers of America (BRCA) & Joseph M. Still Burn Centers",
+    "customer_email": "dana.byerly@burncenters.com",
+    "cc_email": null,
+    "carrier": "UPS",
+    "tracking_number": "1ZX6223B0329140530",
+    "tracking_url": "https://www.ups.com/track?track=yes&trackNums=1ZX6223B0329140530",
+    "shipping_address": "3675 J Dewey Gray Circle, Suite 300, Augusta, GA 30909",
+    "amount_paid": "$2,193.62",
+    "invoice_subtitle": "Box 3 of 3: 65 Tees (Joseph M. Still Burn Centers) \u2022 200 Custom M&O 4800 Gold Softspun Ringspun Tees (Deep Navy \u2022 2-Sided Ultra HD DTF \u2022 Paid in Full)",
+    "proof_urls": [
+      {
+        "label": "Official Master Production Proof Sheet (Both Designs)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/dana/dana_both_designs_presentation_v1793831585.jpg",
+        "is_master": true
+      },
+      {
+        "label": "Design 1: BRCA Healthcare Team",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/dana/dana_mo_4800_combo_v1793831614.jpg",
+        "note": "2-Sided Ultra HD DTF \u2022 100 Tees"
+      },
+      {
+        "label": "Design 2: Joseph M. Still Burn Centers",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/dana/dana_jms_mo_4800_combo_v1793831293.jpg",
+        "note": "2-Sided Ultra HD DTF \u2022 100 Tees"
+      }
+    ],
+    "manifest_rows": [],
+    "closing_note": "",
+    "status": "DELIVERED_SENT",
+    "shipped_at": "2026-11-16T10:11:11.126198",
+    "delivered_at": "2026-11-17T15:23:11Z",
+    "email_sent_at": "2026-11-17T11:00:59.452494",
+    "resend_id": "01a1ea3d-7827-7d21-8a31-8fc9cd71958c"
   }
 ]
