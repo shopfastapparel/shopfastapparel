@@ -216,7 +216,7 @@ const TURNAROUNDS: {
 
 const STEPS = ["Service", "Quantity", "Timing", "Artwork", "Contact"] as const;
 
-const MAX_FILE_SIZE = 8 * 1024 * 1024; // 8 MB
+const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20 MB
 const MAX_FILES = 5;
 const ACCEPTED_TYPES = [
   "image/png",
@@ -231,7 +231,8 @@ const ACCEPTED_TYPES = [
 function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  const mb = bytes / (1024 * 1024);
+  return Number.isInteger(mb) ? `${mb} MB` : `${mb.toFixed(1)} MB`;
 }
 
 function readFileAsDataUrl(file: File): Promise<string | undefined> {
