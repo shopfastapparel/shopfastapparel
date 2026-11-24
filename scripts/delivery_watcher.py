@@ -76,30 +76,80 @@ STATE_TIMEZONES = {
 SUPABASE_URL = os.environ.get("VITE_SUPABASE_URL") or os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 
-def load_tracking_records():
-    # 1. Try local file first
-    if os.path.exists(TRACKING_FILE):
-        try:
-            with open(TRACKING_FILE, "r") as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"[Watcher] Warning reading local tracking file: {e}")
+def merge_tracking_records(local_records, remote_records):
+    """
+    Merges local and remote tracking records.
+    Matches by invoice_number or tracking_number.
+    Status 'DELIVERED_SENT' in either remote or local always wins.
+    """
+    records_by_key = {}
 
-    # 2. Fallback to Supabase Storage
+    def get_key(r):
+        return (r.get("invoice_number") or "").strip().upper() or (r.get("tracking_number") or "").strip().upper()
+
+    for r in local_records:
+        k = get_key(r)
+        if k:
+            records_by_key[k] = dict(r)
+
+    for r in remote_records:
+        k = get_key(r)
+        if not k:
+            continue
+        if k not in records_by_key:
+            records_by_key[k] = dict(r)
+        else:
+            local_r = records_by_key[k]
+            # If remote says DELIVERED_SENT, override local status
+            if r.get("status") == "DELIVERED_SENT":
+                local_r["status"] = "DELIVERED_SENT"
+                if r.get("resend_id"):
+                    local_r["resend_id"] = r["resend_id"]
+                if r.get("email_sent_at"):
+                    local_r["email_sent_at"] = r["email_sent_at"]
+                if r.get("delivered_at"):
+                    local_r["delivered_at"] = r["delivered_at"]
+            # Copy over any missing fields from remote
+            for field, val in r.items():
+                if field not in local_r or not local_r[field]:
+                    local_r[field] = val
+
+    return list(records_by_key.values())
+
+
+def load_tracking_records():
+    """
+    Loads tracking records, ALWAYS pulling from Supabase Cloud Storage first
+    so updates from the 24/7 Remote Cloud Webhook Agent (Vercel) are immediately reflected locally.
+    """
+    remote_records = None
     if SUPABASE_URL:
         try:
             get_url = f"{SUPABASE_URL}/storage/v1/object/public/quote_artwork/tracking/SHIPPED_ORDERS_TRACKING.json?t={int(datetime.datetime.now().timestamp())}"
             req = urllib.request.Request(get_url, headers={"User-Agent": "FastApparel-Watcher/1.0"})
             with urllib.request.urlopen(req, timeout=10) as resp:
-                records = json.loads(resp.read().decode())
-                # Sync back to local file
-                with open(TRACKING_FILE, "w") as f:
-                    json.dump(records, f, indent=2)
-                return records
+                remote_records = json.loads(resp.read().decode())
         except Exception as e:
-            print(f"[Watcher] Warning reading remote storage tracking records: {e}")
+            print(f"[Watcher] Note: Could not fetch remote storage records: {e}")
 
-    return []
+    local_records = []
+    if os.path.exists(TRACKING_FILE):
+        try:
+            with open(TRACKING_FILE, "r") as f:
+                local_records = json.load(f)
+        except Exception as e:
+            print(f"[Watcher] Warning reading local tracking file: {e}")
+
+    if remote_records is not None:
+        merged = merge_tracking_records(local_records, remote_records)
+        try:
+            with open(TRACKING_FILE, "w") as f:
+                json.dump(merged, f, indent=2)
+        except Exception as e:
+            print(f"[Watcher] Warning writing synced tracking file: {e}")
+        return merged
+
+    return local_records
 
 
 def save_tracking_records(records):
@@ -252,6 +302,34 @@ def check_carrier_delivery_status(carrier, tracking_number):
         return False, None, str(e)
 
 
+def check_already_sent_resend(customer_email, invoice_number):
+    """
+    Directly queries Resend API to verify if a delivery confirmation email
+    has already been sent to this customer. Prevents duplicate dispatches.
+    """
+    if not RESEND_API_KEY:
+        return False, None
+    try:
+        import subprocess
+        res = subprocess.run(
+            ["curl", "-s", "-H", f"Authorization: Bearer {RESEND_API_KEY}", "https://api.resend.com/emails?limit=50"],
+            capture_output=True,
+            text=True,
+            timeout=8
+        )
+        if res.returncode == 0 and res.stdout:
+            data = json.loads(res.stdout)
+            emails = data.get("data", [])
+            for em in emails:
+                to_list = [t.lower() for t in em.get("to", [])]
+                subj = em.get("subject", "")
+                if customer_email.lower() in to_list and ("Order Has Arrived" in subj or (invoice_number and invoice_number in subj)):
+                    return True, em.get("id")
+    except Exception as e:
+        print(f"[Watcher] Warning during Resend deduplication check: {e}")
+    return False, None
+
+
 def dispatch_auto_delivery_email(record, carrier_data=None):
     """
     Generates and sends the official Dash-branded delivery confirmation email
@@ -279,6 +357,12 @@ def dispatch_auto_delivery_email(record, carrier_data=None):
     if not customer_email:
         print(f"[Watcher] Error: No customer email for order #{invoice_number}")
         return False, "Missing customer email"
+
+    # Pre-dispatch deduplication check against Resend API
+    already_sent, existing_resend_id = check_already_sent_resend(customer_email, invoice_number)
+    if already_sent:
+        print(f"[Watcher] 🛑 DEDUPLICATION GUARANTEE: Delivery confirmation email already sent to {customer_email} (Resend ID: {existing_resend_id}). Skipping duplicate dispatch.")
+        return True, existing_resend_id
 
     html_content = generate_delivered_html(
         customer_name=customer_name,

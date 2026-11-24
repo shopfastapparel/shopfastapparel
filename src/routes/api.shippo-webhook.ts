@@ -184,6 +184,40 @@ export const Route = createFileRoute("/api/shippo-webhook")({
           });
         }
 
+        // Pre-dispatch Deduplication check directly against Resend API
+        try {
+          const resendCheck = await fetch("https://api.resend.com/emails?limit=50", {
+            headers: { Authorization: `Bearer ${resendKey}` },
+          });
+          if (resendCheck.ok) {
+            const resendList: any = await resendCheck.json();
+            const existingEmail = resendList?.data?.find((em: any) =>
+              em.to?.some((t: string) => t.toLowerCase() === targetRecord!.customer_email.toLowerCase()) &&
+              (em.subject?.includes("Order Has Arrived") || (targetRecord!.invoice_number && em.subject?.includes(targetRecord!.invoice_number)))
+            );
+            if (existingEmail) {
+              console.log(`[Shippo Webhook] 🛑 Deduplication: Delivery email already found in Resend (${existingEmail.id}). Skipping duplicate dispatch.`);
+              targetRecord.status = "DELIVERED_SENT";
+              targetRecord.resend_id = existingEmail.id;
+              targetRecord.email_sent_at = existingEmail.created_at;
+              if (recordIndex >= 0) {
+                records[recordIndex] = targetRecord;
+              } else {
+                records.push(targetRecord);
+              }
+              await saveStorageTrackingRecords(supabaseUrl, supabaseKey, records);
+              return Response.json({
+                received: true,
+                already_sent: true,
+                deduplicated: true,
+                resend_id: existingEmail.id,
+              });
+            }
+          }
+        } catch (resendErr) {
+          console.warn("[Shippo Webhook] Warning checking Resend API deduplication:", resendErr);
+        }
+
         // Time window check (9:00 AM – 9:00 PM in customer local timezone)
         const windowCheck = isWithinCustomerWindow(targetRecord.shipping_address);
         console.log(
