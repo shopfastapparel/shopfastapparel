@@ -729,5 +729,138 @@
     "delivered_at": "2026-11-17T15:23:11Z",
     "email_sent_at": "2026-11-17T11:00:59.452494",
     "resend_id": "01a1ea3d-7827-7d21-8a31-8fc9cd71958c"
+  },
+  {
+    "invoice_number": "FA-2026-1111-CM",
+    "customer_name": "Christina Maher",
+    "customer_company": "Large & Gilbert",
+    "customer_email": "cmaher@largeandgilbert.com",
+    "cc_email": null,
+    "carrier": "UPS",
+    "tracking_number": "1ZX6223B0316582319",
+    "tracking_url": "https://www.ups.com/track?track=yes&trackNums=1ZX6223B0316582319",
+    "shipping_address": "6849 Peachtree Dunwoody Rd, Building A-2, Sandy Springs, GA 30328",
+    "amount_paid": "$979.98",
+    "invoice_subtitle": "60 Custom Gildan 5000 Heavy Cotton\u2122 T-Shirts (Forest Green \u2022 5 Bahamas Cruise Concepts \u2022 Paid in Full)",
+    "proof_urls": [
+      {
+        "label": "Approved Master Production Proof Sheet (All 5 Concepts)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/christina/master_proof_1794424259.jpg",
+        "is_master": true
+      },
+      {
+        "label": "Concept 1: Ship Happens",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/christina/combo_proof_1_1794424259.jpg",
+        "note": "2-Sided Ultra HD DTF \u2022 13 Tees"
+      },
+      {
+        "label": "Concept 2: Out of Office",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/christina/combo_proof_2_1794424259.jpg",
+        "note": "2-Sided Ultra HD DTF \u2022 13 Tees"
+      },
+      {
+        "label": "Concept 3: Making Waves",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/christina/combo_proof_3_1794424259.jpg",
+        "note": "2-Sided Ultra HD DTF \u2022 7 Tees"
+      },
+      {
+        "label": "Concept 4: Beach Seats",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/christina/combo_proof_4_1794424259.jpg",
+        "note": "2-Sided Ultra HD DTF \u2022 13 Tees"
+      },
+      {
+        "label": "Concept 5: Less Taxing",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/christina/combo_proof_5_1794424259.jpg",
+        "note": "2-Sided Ultra HD DTF \u2022 14 Tees"
+      }
+    ],
+    "manifest_rows": [
+      {
+        "garment": "Concept 1: 'Ship Happens' (Gildan 5000 Heavy Cotton\u2122)",
+        "colorway": "Forest Green \u2022 5.3 oz. 100% Preshrunk Cotton",
+        "prints": [
+          "Front Left Chest: Universal L&G EST. 1966 Monogram (Ultra HD DTF)",
+          "Full Back: 'Ship Happens - We Account For It' Bahamas Cruise Graphic (Ultra HD DTF)",
+          "Industrial Heat Pressed \u2022 50+ Wash Durability Rating"
+        ],
+        "sizes": {
+          "Medium (M)": 5,
+          "Large (L)": 3,
+          "X-Large (XL)": 4,
+          "3X-Large (3XL)": 1
+        },
+        "qty": 13
+      },
+      {
+        "garment": "Concept 2: 'Out of Office' (Gildan 5000 Heavy Cotton\u2122)",
+        "colorway": "Forest Green \u2022 5.3 oz. 100% Preshrunk Cotton",
+        "prints": [
+          "Front Left Chest: Universal L&G EST. 1966 Monogram (Ultra HD DTF)",
+          "Full Back: 'Out of Office - Out to Sea' Bahamas Cruise Graphic (Ultra HD DTF)",
+          "Industrial Heat Pressed \u2022 50+ Wash Durability Rating"
+        ],
+        "sizes": {
+          "Medium (M)": 5,
+          "X-Large (XL)": 6,
+          "2X-Large (2XL)": 1,
+          "3X-Large (3XL)": 1
+        },
+        "qty": 13
+      },
+      {
+        "garment": "Concept 3: 'Making Waves' (Gildan 5000 Heavy Cotton\u2122)",
+        "colorway": "Forest Green \u2022 5.3 oz. 100% Preshrunk Cotton",
+        "prints": [
+          "Front Left Chest: Universal L&G EST. 1966 Monogram (Ultra HD DTF)",
+          "Full Back: '60 Years of Making Waves' Bahamas Cruise Graphic (Ultra HD DTF)",
+          "Industrial Heat Pressed \u2022 50+ Wash Durability Rating"
+        ],
+        "sizes": {
+          "Medium (M)": 2,
+          "Large (L)": 1,
+          "X-Large (XL)": 4
+        },
+        "qty": 7
+      },
+      {
+        "garment": "Concept 4: 'Beach Seats' (Gildan 5000 Heavy Cotton\u2122)",
+        "colorway": "Forest Green \u2022 5.3 oz. 100% Preshrunk Cotton",
+        "prints": [
+          "Front Left Chest: Universal L&G EST. 1966 Monogram (Ultra HD DTF)",
+          "Full Back: 'Balance Sheets to Beach Seats' Bahamas Cruise Graphic (Ultra HD DTF)",
+          "Industrial Heat Pressed \u2022 50+ Wash Durability Rating"
+        ],
+        "sizes": {
+          "Small (S)": 2,
+          "Medium (M)": 2,
+          "Large (L)": 4,
+          "X-Large (XL)": 3,
+          "2X-Large (2XL)": 2
+        },
+        "qty": 13
+      },
+      {
+        "garment": "Concept 5: 'Less Taxing' (Gildan 5000 Heavy Cotton\u2122)",
+        "colorway": "Forest Green \u2022 5.3 oz. 100% Preshrunk Cotton",
+        "prints": [
+          "Front Left Chest: Universal L&G EST. 1966 Monogram (Ultra HD DTF)",
+          "Full Back: 'Less Taxing, More Relaxing' Bahamas Cruise Graphic (Ultra HD DTF)",
+          "Industrial Heat Pressed \u2022 50+ Wash Durability Rating"
+        ],
+        "sizes": {
+          "Medium (M)": 4,
+          "Large (L)": 5,
+          "X-Large (XL)": 3,
+          "2X-Large (2XL)": 2
+        },
+        "qty": 14
+      }
+    ],
+    "closing_note": "\n<p style=\"font-size: 15px; color: #374151; line-height: 1.6; margin: 16px 0 0 0;\">\n  Thank you so much for partnering with Fast Custom Apparel for <strong>Large & Gilbert's 60th Anniversary Bahamas Cruise</strong>! Dash the Cheetah and our Atlanta production crew thoroughly inspected, counted, folded, and custom-packed all 60 of your Forest Green commemorative tees into your heavy-duty 20&times;15&times;15 carton. We loved bringing all 5 unique concepts to life and know the team will have an incredible time wearing them on the cruise!\n</p>\n<p style=\"font-size: 14px; color: #64748B; line-height: 1.55; margin: 12px 0 0 0;\">\n  Whenever you're ready for future corporate events, reorders, or custom team gear, Dash and our crew are always right here in your corner!\n</p>\n",
+    "status": "DELIVERED_SENT",
+    "shipped_at": "2026-11-22T23:29:31.221086",
+    "delivered_at": "2026-11-24T16:07:18Z",
+    "email_sent_at": "2026-11-24T13:00:56.498811",
+    "resend_id": "01a20eb7-cd6d-7cf4-82e4-c739b91b0b6b"
   }
 ]
