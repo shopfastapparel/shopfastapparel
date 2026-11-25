@@ -862,5 +862,53 @@
     "delivered_at": "2026-11-24T16:07:18Z",
     "email_sent_at": "2026-11-24T13:00:56.498811",
     "resend_id": "01a20eb7-cd6d-7cf4-82e4-c739b91b0b6b"
+  },
+  {
+    "invoice_number": "AGWN3F4A-0004",
+    "customer_name": "Armani Mitchell",
+    "customer_company": "Team Blue Tennis",
+    "customer_email": "amani.mitchell71@gmail.com",
+    "cc_email": null,
+    "carrier": "UPS",
+    "tracking_number": "1ZY973G40312240051",
+    "tracking_url": "https://www.ups.com/track?track=yes&trackNums=1ZY973G40312240051",
+    "shipping_address": "3931 Kingsbrook Blvd, Decatur, GA 30034",
+    "amount_paid": "$116.95",
+    "invoice_subtitle": "5 Custom Adult Gildan 18500 Pullover Hoodies (Classic Navy \u2022 Front Center Ultra HD DTF Print \u2022 Paid in Full)",
+    "proof_urls": [
+      {
+        "label": "Official Master Production Proof Sheet",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/armani-hoodie-master-proof-1793908155.jpg",
+        "is_master": true
+      },
+      {
+        "label": "Adult Navy Hoodie (Gildan 18500)",
+        "url": "https://dwtvfrpqizanpnvgkpux.supabase.co/storage/v1/object/public/quote_artwork/mockups/armani-hoodie-adult-navy-1793908155.jpg",
+        "note": "5 Custom Navy Hoodies"
+      }
+    ],
+    "manifest_rows": [
+      {
+        "garment": "Adult Gildan 18500 Heavy Blend\u2122 Pullover Hoodie",
+        "colorway": "Classic Navy \u2022 8.0 oz. 50/50 Cotton/Poly Fleece",
+        "prints": [
+          "Front Center Chest: Official Team Blue Tennis Crest (Ultra HD DTF)",
+          "Print Dimensions: 10.0\" W x 6.7\" H (Top Aligned at Armpit Height)",
+          "Industrial Heat Pressed \u2022 50+ Wash Durability Rating"
+        ],
+        "sizes": {
+          "Large (L)": 2,
+          "X-Large (XL)": 2,
+          "2X-Large (2XL)": 1
+        },
+        "qty": 5
+      }
+    ],
+    "closing_note": "Thank you so much for continuing to partner with Fast Custom Apparel for Team Blue Tennis! We loved producing this add-on run of 5 custom navy hoodies and know your players will love wearing them. Whenever you need future tournament gear or additional pieces, Dash and our crew are always here for you!",
+    "status": "IN_TRANSIT",
+    "shipped_at": "2026-11-24T17:51:04.888388",
+    "delivered_at": null,
+    "email_sent_at": null,
+    "resend_id": "01a20fc1-6d11-7378-b53b-5ad0d7b7caa3"
   }
 ]
