@@ -193,7 +193,7 @@ export const Route = createFileRoute("/api/shippo-webhook")({
             const resendList: any = await resendCheck.json();
             const existingEmail = resendList?.data?.find((em: any) =>
               em.to?.some((t: string) => t.toLowerCase() === targetRecord!.customer_email.toLowerCase()) &&
-              (em.subject?.includes("Order Has Arrived") || (targetRecord!.invoice_number && em.subject?.includes(targetRecord!.invoice_number)))
+              (em.subject?.includes("Order Has Arrived") || (em.subject?.toLowerCase().includes("delivered") && targetRecord!.invoice_number && em.subject?.includes(targetRecord!.invoice_number)))
             );
             if (existingEmail) {
               console.log(`[Shippo Webhook] 🛑 Deduplication: Delivery email already found in Resend (${existingEmail.id}). Skipping duplicate dispatch.`);

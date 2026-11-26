@@ -323,8 +323,10 @@ def check_already_sent_resend(customer_email, invoice_number):
             for em in emails:
                 to_list = [t.lower() for t in em.get("to", [])]
                 subj = em.get("subject", "")
-                if customer_email.lower() in to_list and ("Order Has Arrived" in subj or (invoice_number and invoice_number in subj)):
-                    return True, em.get("id")
+                if customer_email.lower() in to_list:
+                    # Must specifically be a delivery confirmation email
+                    if "Order Has Arrived" in subj or ("Delivered" in subj and invoice_number and invoice_number in subj):
+                        return True, em.get("id")
     except Exception as e:
         print(f"[Watcher] Warning during Resend deduplication check: {e}")
     return False, None

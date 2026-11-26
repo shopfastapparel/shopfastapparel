@@ -905,10 +905,10 @@
       }
     ],
     "closing_note": "Thank you so much for continuing to partner with Fast Custom Apparel for Team Blue Tennis! We loved producing this add-on run of 5 custom navy hoodies and know your players will love wearing them. Whenever you need future tournament gear or additional pieces, Dash and our crew are always here for you!",
-    "status": "IN_TRANSIT",
+    "status": "DELIVERED_SENT",
     "shipped_at": "2026-11-24T17:51:04.888388",
-    "delivered_at": null,
-    "email_sent_at": null,
-    "resend_id": "01a20fc1-6d11-7378-b53b-5ad0d7b7caa3"
+    "delivered_at": "2026-11-25T20:01:29Z",
+    "email_sent_at": "2026-11-25T19:01:51.050564",
+    "resend_id": "01a21528-95d5-717b-bff5-8f065a13a9d4"
   }
 ]
